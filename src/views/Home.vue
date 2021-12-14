@@ -27,7 +27,11 @@
 
 <script>
 export default {
-
+  data(){
+    return{
+      linkList :[],
+    }
+  }
 }
 </script>
 

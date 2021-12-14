@@ -26,7 +26,7 @@ npm run test:unit
 npm run lint
 ```ss
 hyx update
-​```ss
+​```sss
     hhh
     kkkkkk
     kk

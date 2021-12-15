@@ -16,7 +16,6 @@
                             </template>
                             <el-menu-item-group>
                                 <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path">
-                                    <!-- <i :class="children.meta.icon"></i> -->
                                     <span>{{ children.meta.title }}</span>
                                 </el-menu-item>
                             </el-menu-item-group>
@@ -28,7 +27,6 @@
         <el-container>
             <el-header class="header">
                 <div class="top_left">
-                    <i :class="$route.meta.icon"></i>
                     <span>{{ $route.meta.title }}</span>
                 </div>
                 <i class="el-icon-arrow-left"></i>
@@ -73,7 +71,7 @@ export default {
             padding: 20px;
             display: grid;
             grid-template-columns: 1fr 10fr;
-          
+
             & .logo {
                 width: 180%;
             }
@@ -83,11 +81,18 @@ export default {
             }
         }
 
-        .aside_main {
-            text-align: center;
-
-            .aside_menu {
+        & .aside_main {
+           text-align: left;
+            & .aside_menu {
                 width: 100%;
+            }
+
+            & i{
+              margin-right: 20px;
+            }
+
+            & .el-menu-item{
+              text-align: center;
             }
         }
     }
@@ -101,7 +106,7 @@ export default {
         align-items: center;
 
         & .top_left {
-            &>span {
+            & >span {
                 margin-left: 10px;
             }
         }

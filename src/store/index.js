@@ -26,20 +26,21 @@ export default new Vuex.Store({
     },
     mutations: {},
     actions: {
-        /**
-         * @description 用户登录
-         * @param username  用户名
-         * @param password 密码
-         */
-        login(ctx, payload) {
-            return Api.login(payload)
+        //登录
+        userLogin(ctx, payload) {
+            return Api.userLogin(payload);
         },
-        /**
-         * @description 验证码
-         */
+        //验证码
         getCaptcha() {
             return Api.getCaptcha()
-        }
+        },
+
+
+        //商品管理
+        //商品类目接口
+        getCategoryList(ctx, payload) {
+            return Api.getCategoryList(payload);
+        },
     },
     modules: {}
 })

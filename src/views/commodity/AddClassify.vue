@@ -1,6 +1,6 @@
 <template>
   <div>
-    index
+      AddClassify
   </div>
 </template>
 

@@ -1,6 +1,7 @@
 <template>
-  <div class="CommodityAttribute">
-      <!-- CommodityAttribute -->
+  <div>
+    <!-- ProductParameters商品属性 -->
+    <div class="main">
       <h1 class="h1">属性项信息</h1>
       <div class="message">
         <div class="main-top">
@@ -35,23 +36,39 @@
         prop="name"
         label="属性值"
         width="250">
+        <template>
+          <input type="text" class="property" v-model="name">
+        </template>
       </el-table-column>
-      <el-table-column
-        prop="money"
-        label="加价(元)"
-        width="250">
+      <el-table-column label="加价(元)" width="200">
+        <template>
+          <input type="text" class="inp" v-model="input">
+        </template>
       </el-table-column>
       <el-table-column
         prop="sort"
         label="排序"
         width="250">
+        <template>
+          <img src="../../assets/images/zhiding.png" class="iconimg">
+          <img src="../../assets/images/xiangshang.png" class="iconimg">
+          <img src="../../assets/images/xiangxia.png" class="iconimg">
+        </template>
       </el-table-column>
       <el-table-column
-        prop="address"
+        prop="operate"
         label="操作"
         width="250">
+        <template>
+          <el-button
+          size="mini"
+          type="danger"
+          @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+        </template>
       </el-table-column>
     </el-table>
+      </div>
+      <el-footer><el-button type="primary">保存</el-button></el-footer>
       </div>
   </div>
 </template>
@@ -60,50 +77,45 @@
 export default {
   data() {
       return {
+        input:10,
+        name:'微辣',
         form: {
           name: '',
           choice: '',
           required: '',
         },
-
         tableData: [{
-            id: '2016-05-02',
-            name: '王小虎',
-            sort: '上海市普陀区金沙江路 1518 弄',
-            money:'0'
+            id: '1',
           }, {
-            id: '2016-05-04',
-            name: '王小虎',
-            sort: '上海市普陀区金沙江路 1517 弄',
-            money:'0'
+            id: '2',
           }, {
-            id: '2016-05-01',
-            name: '王小虎',
-            sort: '上海市普陀区金沙江路 1519 弄',
-            money:'0'
+            id: '3',
           }, {
-            id: '2016-05-03',
-            name: '王小虎',
-            sort: '上海市普陀区金沙江路 1516 弄',
-            money:'0'
+            id: '4',
           }]
       }
-    }
+    },
+    methods: {
+      handleDelete(index, row) {
+        console.log(index, row);
+      }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-.CommodityAttribute{
-  // margin: 30px 0 30px 0;
+.main{
+  margin: 0 10px 0 10px;
+  background: #ffffff;
 }
 .message{
   width: 100%;
-  height: 250px;
+  // height: 250px;
   border-top: 2px solid #e5e5e5;
   // border-bottom: 2px solid #e5e5e5;
 }
 .h1{
-  margin-bottom: 10px;
+  padding: 5px 0;
 }
 .top{
   margin-top: 30px;
@@ -120,4 +132,29 @@ export default {
 .button{
   margin: 10px 0 10px 0;
 }
+.inp{
+  border: 1px solid #d8dce5;
+  width: 50px;
+  height: 32px;
+  // text-indent: 16px;
+  border-radius: 5px;
+  text-align: center;
+}
+.property{
+  border: 1px solid #d8dce5;
+  width: 130px;
+  height: 32px;
+  text-indent: 15px;
+  border-radius: 5px;
+}
+.iconimg{
+  width: 15px;
+  height: 15px;
+}
+.el-footer {
+    background-color: #ffffff;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
 </style>

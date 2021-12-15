@@ -1,6 +1,6 @@
 <template>
   <div>
-      task
+      MerchantRecommend
   </div>
 </template>
 

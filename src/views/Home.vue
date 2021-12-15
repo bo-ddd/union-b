@@ -2,14 +2,14 @@
 <div class="home">
     <el-container>
         <el-aside width="200px">
-            <div class="aside-head">
-                <img src="../assets/logo.png" alt="" class="head_tag">
+            <div class="logobox">
+                <img src="../assets/logo.png" alt="" class="logo">
                 <div class="fw-b">系统管理中心</div>
             </div>
             <div class="aside_main">
                 <el-col :span="12" class="aside_menu">
                     <el-menu class="menu" :router="true" default-active="">
-                        <el-submenu  v-for="(link, index) in routes" :key="index" :index="link.path">
+                        <el-submenu v-for="(link, index) in routes" :key="index" :index="link.path">
                             <template slot="title">
                                 <i :class="link.meta.icon"></i>
                                 <span>{{ link.meta.title }}</span>
@@ -48,8 +48,7 @@ import {
 } from 'vuex';
 export default {
     data() {
-        return {
-        }
+        return {}
     },
     computed: {
         ...mapGetters(['routes'])
@@ -60,21 +59,23 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+    background-color: #fcf9fa;
     height: 100vh;
     color: #0a0a0a;
+
     & .el-aside {
         background-color: #ffffff;
         color: #333;
         text-align: center;
         height: 100vh;
 
-        & .aside-head {
-            text-align: center;
-            margin-top: 20px;
-
-            & .head_tag {
-                width: 40%;
-                margin-bottom: 10px;
+        & .logobox {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 10fr;
+          
+            & .logo {
+                width: 180%;
             }
 
             & .fw-b {
@@ -94,7 +95,8 @@ export default {
     & .el-header {
         display: grid;
         grid-template-columns: 40fr 1fr 1fr;
-        box-shadow: 0 0 4px #ccc;
+        box-shadow: 0 0 2px #3a3434;
+        background-color: #ffffff;
         font-size: 16px;
         align-items: center;
 
@@ -104,5 +106,6 @@ export default {
             }
         }
     }
+
 }
 </style>

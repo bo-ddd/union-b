@@ -1,390 +1,418 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../views/UserCenter/Login.vue'
-import Registration from '../views/UserCenter/Registration.vue'
+import Login from '../views/user/Login.vue'
+import Registration from '../views/user/Registration.vue'
 
 Vue.use(VueRouter)
 
 export const routes = [{
         path: '/',
         name: '/',
-        redirect: '/datacenter/realtime',
+        redirect: '/data/realtime',
         meta: {
             title: '',
         },
     },
     {
-        path: '/datacenter',
-        name: 'Datacenter',
+        path: '/data',
+        name: 'Data',
         component: Home,
         meta: {
             title: '数据中心',
             icon: 'el-icon-s-data'
         },
         children: [{
-                path: '/datacenter/realtime',
+                path: '/data/realtime',
                 name: 'Realtime',
                 meta: {
                     title: '实时数据'
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "realtime" */ '../views/Datacenter/Realtime')
+                    import ( /* webpackChunkName: "realtime" */ '../views/data/Realtime')
             },
             {
-                path: '/datacenter/transaction',
+                path: '/data/transaction',
                 name: 'Transaction',
                 meta: {
                     title: '交易数据'
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "transaction" */ '../views/Datacenter/Transaction')
+                    import ( /* webpackChunkName: "transaction" */ '../views/data/Transaction')
             },
             {
-                path: '/datacenter/commodity',
+                path: '/data/commodity',
                 name: 'Commodity',
                 meta: {
                     title: '商品数据'
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "commodity" */ '../views/Datacenter/Commodity')
+                    import ( /* webpackChunkName: "commodity" */ '../views/data/Commodity')
             },
             {
-                path: '/datacenter/customer',
+                path: '/data/customer',
                 name: 'Customer',
                 meta: {
                     title: '客户数据'
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "customer" */ '../views/Datacenter/Customer')
+                    import ( /* webpackChunkName: "customer" */ '../views/data/Customer')
             }
         ]
     },
     {
-        path: '/ordermanage',
-        name: 'Ordermanage',
+        path: '/order',
+        name: 'Order',
         component: Home,
         meta: {
             title: '订单管理',
             icon: 'el-icon-s-order'
         },
         children: [{
-                path: '/ordermanage/allorders',
+                path: '/order/index',
                 name: 'Allorders',
                 meta: {
                     title: '全部订单',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "allorders" */ '../views/Ordermanage/Allorders')
+                    import ( /* webpackChunkName: "index" */ '../views/order/Index')
             },
             {
-                path: '/ordermanage/tobeapprovedorders',
-                name: 'TobeApprovedOrders',
+                path: '/order/examine',
+                name: 'Examine',
                 meta: {
                     title: '待审核订单',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "tobeapprovedorders" */ '../views/Ordermanage/TobeApprovedOrders')
+                    import ( /* webpackChunkName: "examine" */ '../views/order/Examine')
             },
             {
-                path: '/ordermanage/tobepaidorders',
-                name: 'TobePaidOrders',
+                path: '/order/paid',
+                name: 'Paid',
                 meta: {
                     title: '待支付订单',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "tobepaidorders" */ '../views/Ordermanage/TobePaidOrders')
+                    import ( /* webpackChunkName: "paid" */ '../views/order/Paid')
             },
             {
-                path: '/ordermanage/tobeshippedorders',
-                name: 'TobeShippedOrders',
+                path: '/order/shipped',
+                name: 'Shipped',
                 meta: {
                     title: '待发货订单',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "tobeshippedorders" */ '../views/Ordermanage/TobeShippedOrders')
+                    import ( /* webpackChunkName: "shipped" */ '../views/order/Shipped')
             },
             {
-                path: '/ordermanage/tobereceivedorders',
-                name: 'TobeReceivedOrders',
+                path: '/order/received',
+                name: 'Received',
                 meta: {
                     title: '待收货订单',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "tobereceivedorders" */ '../views/Ordermanage/TobeReceivedOrders')
+                    import ( /* webpackChunkName: "received" */ '../views/order/Received')
             },
             {
-                path: '/ordermanage/completedorders',
-                name: 'CompletedOrders',
+                path: '/order/completed',
+                name: 'Completed',
                 meta: {
                     title: '已完成订单',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "completedorders" */ '../views/Ordermanage/CompletedOrders')
+                    import ( /* webpackChunkName: "completed" */ '../views/order/Completed')
             },
             {
-                path: '/ordermanage/cancelledorders',
-                name: 'CancelledOrders',
+                path: '/order/cancelled',
+                name: 'Cancelled',
                 meta: {
                     title: '已取消订单',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "cancelledorders" */ '../views/Ordermanage/CancelledOrders')
+                    import ( /* webpackChunkName: "cancelled" */ '../views/order/Cancelled')
             },
             {
-                path: '/ordermanage/deliverymanage',
-                name: 'DeliveryManage',
+                path: '/order/delivery',
+                name: 'Delivery',
                 meta: {
                     title: '发货管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "deliverymanage" */ '../views/Ordermanage/DeliveryManage')
+                    import ( /* webpackChunkName: "delivery" */ '../views/order/Delivery')
             },
             {
-                path: '/ordermanage/abnormalorders',
-                name: 'AbnormalOrders',
+                path: '/order/abnormal',
+                name: 'Abnormal',
                 meta: {
                     title: '异常订单',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "abnormalorders" */ '../views/Ordermanage/AbnormalOrders')
+                    import ( /* webpackChunkName: "abnormal" */ '../views/order/Abnormal')
             }
         ]
     },
     {
-        path: '/commoditymanage',
-        name: 'CommodityManage',
+        path: '/commodity',
+        name: 'Commodity',
         component: Home,
         meta: {
             title: '商品管理',
             icon: 'el-icon-shopping-bag-1'
         },
         children: [{
-                path: '/commoditymanage/commoditymanagement',
-                name: 'CommodityManagement',
+                path: '/commodity/index',
+                name: 'CommodityManage',
                 meta: {
                     title: '商品管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "commoditymanagement" */ '../views/CommodityManage/CommodityManagement')
+                    import ( /* webpackChunkName: "index" */ '../views/commodity/Index')
             },
             {
-                path: '/commoditymanage/commodityclassification',
-                name: 'CommodityClassification',
+                path: '/commodity/classification',
+                name: 'Classification',
                 meta: {
                     title: '商品分类',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "commodityclassification" */ '../views/CommodityManage/CommodityClassification')
+                    import ( /* webpackChunkName: "classification" */ '../views/commodity/Classification')
             },
             {
-                path: '/commoditymanage/commodityattribute',
-                name: 'CommodityAttribute',
+                path: '/commodity/attribute',
+                name: 'Attribute',
                 meta: {
                     title: '商品属性',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "commodityattribute" */ '../views/CommodityManage/CommodityAttribute')
+                    import ( /* webpackChunkName: "attribute" */ '../views/commodity/Attribute')
             },
             {
-                path: '/commoditymanage/specificationmanage',
-                name: 'SpecificationManage',
+                path: '/commodity/specification',
+                name: 'Specification',
                 meta: {
                     title: '规格管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "specificationmanage" */ '../views/CommodityManage/SpecificationManage')
+                    import ( /* webpackChunkName: "specification" */ '../views/commodity/Specification')
             },
             {
-                path: '/commoditymanage/brandmanage',
-                name: 'BrandManage',
+                path: '/commodity/brand',
+                name: 'Brand',
                 meta: {
                     title: '品牌管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "brandmanage" */ '../views/CommodityManage/BrandManage')
+                    import ( /* webpackChunkName: "brand" */ '../views/commodity/Brand')
             },
             {
-                path: '/commoditymanage/productparameters',
-                name: 'ProductParameters',
+                path: '/commodity/parameters',
+                name: 'Parameters',
                 meta: {
                     title: '商品参数',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "productparameters" */ '../views/CommodityManage/ProductParameters')
+                    import ( /* webpackChunkName: "parameters" */ '../views/commodity/Parameters')
             },
             {
-                path: '/commoditymanage/unitmanage',
-                name: 'UnitManage',
+                path: '/commodity/unit',
+                name: 'Unit',
                 meta: {
                     title: '单位管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "unitmanage" */ '../views/CommodityManage/UnitManage')
+                    import ( /* webpackChunkName: "unit" */ '../views/commodity/Unit')
             },
         ]
     },
     {
-        path: '/marketingmanage',
-        name: 'MarketingManage',
+        path: '/marketing',
+        name: 'Marketing',
         component: Home,
         meta: {
             title: '营销管理',
             icon: 'el-icon-s-ticket'
         },
         children: [{
-                path: '/marketingmanage/seckillmanage',
-                name: 'SeckillManage',
+                path: '/marketing/seckill',
+                name: 'Seckill',
                 meta: {
                     title: '秒杀管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "seckillmanage" */ '../views/MarketingManage/SeckillManage')
+                    import ( /* webpackChunkName: "seckill" */ '../views/marketing/Seckill')
             },
             {
-                path: '/marketingmanage/salemanage',
-                name: 'SaleManage',
+                path: '/marketing/sale',
+                name: 'Sale',
                 meta: {
                     title: '特卖管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "salemanage" */ '../views/MarketingManage/SaleManage')
+                    import ( /* webpackChunkName: "sale" */ '../views/marketing/Sale')
             },
             {
-                path: '/marketingmanage/couponmanage',
-                name: 'CouponManage',
+                path: '/marketing/coupon',
+                name: 'Coupon',
                 meta: {
                     title: '优惠券管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "couponmanage" */ '../views/MarketingManage/CouponManage')
+                    import ( /* webpackChunkName: "coupon" */ '../views/marketing/Coupon')
             },
             {
-                path: '/marketingmanage/marketingactivities',
-                name: 'MarketingActivities',
+                path: '/marketing/marketingact',
+                name: 'MarketingAct',
                 meta: {
                     title: '会销活动',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "marketingactivities" */ '../views/MarketingManage/MarketingActivities')
+                    import ( /* webpackChunkName: "marketingact" */ '../views/marketing/MarketingAct')
             },
             {
-                path: '/marketingmanage/complimentaryactivities',
-                name: 'ComplimentaryActivities',
+                path: '/marketing/gift',
+                name: 'Gift',
                 meta: {
                     title: '搭赠活动',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "complimentaryactivities" */ '../views/MarketingManage/ComplimentaryActivities')
+                    import ( /* webpackChunkName: "gift" */ '../views/marketing/Gift')
             },
             {
-                path: '/marketingmanage/policymanage',
-                name: 'PolicyManage',
+                path: '/marketing/policy',
+                name: 'Policy',
                 meta: {
                     title: '策略管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "policymanage" */ '../views/MarketingManage/PolicyManage')
+                    import ( /* webpackChunkName: "policy" */ '../views/marketing/Policy')
             },
         ]
     },
     {
-        path: '/contentmanage',
-        name: 'ContentManage',
+        path: '/content',
+        name: 'Content',
         component: Home,
         meta: {
             title: '内容管理',
             icon: 'el-icon-document'
         },
         children: [{
-                path: '/contentmanage/navigationmanage',
-                name: 'NavigationManage',
+                path: '/content/navigation',
+                name: 'Navigation',
                 meta: {
                     title: '导航管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "navigationmanage" */ '../views/ContentManage/NavigationManage')
+                    import ( /* webpackChunkName: "navigation" */ '../views/content/Navigation')
             },
             {
-                path: '/contentmanage/articlemanage',
-                name: 'ArticleManage',
+                path: '/content/article',
+                name: 'Article',
                 meta: {
                     title: '文章管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "articlemanage" */ '../views/ContentManage/ArticleManage')
+                    import ( /* webpackChunkName: "article" */ '../views/content/Article')
             },
             {
-                path: '/contentmanage/labelmanage',
-                name: 'LabelManage',
+                path: '/content/label',
+                name: 'ContLabel',
                 meta: {
                     title: '标签管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "labelmanage" */ '../views/ContentManage/LabelManage')
+                    import ( /* webpackChunkName: "label" */ '../views/content/Label')
             },
             {
-                path: '/contentmanage/advertisingmanage',
-                name: 'AdvertisingManage',
+                path: '/content/advertising',
+                name: 'Advertising',
                 meta: {
                     title: '广告管理',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "advertisingmanage" */ '../views/ContentManage/AdvertisingManage')
+                    import ( /* webpackChunkName: "advertising" */ '../views/content/Advertising')
             },
             {
-                path: '/contentmanage/homepagerecommend',
-                name: 'HomePageRecommend',
+                path: '/content/homepage',
+                name: 'HomePage',
                 meta: {
                     title: '首页推荐',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "homepagerecommend" */ '../views/ContentManage/HomePageRecommend')
+                    import ( /* webpackChunkName: "homepage" */ '../views/content/HomePage')
             },
             {
-                path: '/contentmanage/localrecommend',
-                name: 'LocalRecommend',
+                path: '/content/local',
+                name: 'Local',
                 meta: {
                     title: '本地推荐',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "localrecommend" */ '../views/ContentManage/LocalRecommend')
+                    import ( /* webpackChunkName: "local" */ '../views/content/Local')
             },
             {
-                path: '/contentmanage/premiumproduct',
-                name: 'PremiumProduct',
+                path: '/content/premium',
+                name: 'Premium',
                 meta: {
                     title: '炫萌优品',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "premiumproduct" */ '../views/ContentManage/PremiumProduct')
+                    import ( /* webpackChunkName: "premium" */ '../views/content/Premium')
             },
             {
-                path: '/contentmanage/quickentrance',
-                name: 'QuickEntrance',
+                path: '/content/quick',
+                name: 'Quick',
                 meta: {
                     title: '快捷入口',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "quickentrance" */ '../views/ContentManage/QuickEntrance')
+                    import ( /* webpackChunkName: "quick" */ '../views/content/Quick')
             },
             {
-                path: '/contentmanage/merchantrecommend',
-                name: 'MerchantRecommend',
+                path: '/content/merchant',
+                name: 'Merchant',
                 meta: {
                     title: '商家推荐',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "merchantrecommend" */ '../views/ContentManage/MerchantRecommend')
+                    import ( /* webpackChunkName: "merchant" */ '../views/content/Merchant')
             },
             {
-                path: '/contentmanage/commandsharing',
-                name: 'CommandSharing',
+                path: '/content/command',
+                name: 'Command',
                 meta: {
                     title: '口令分享',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "commandsharing" */ '../views/ContentManage/CommandSharing')
+                    import ( /* webpackChunkName: "command" */ '../views/content/Command')
+            },
+        ]
+    },
+    {
+        path: '/supplier',
+        name: 'Supplier',
+        component: Home,
+        meta: {
+            title: '供应商管理',
+            icon: 'el-icon-box'
+        },
+        children: [{
+                path: '/supplier/index',
+                name: 'SupplierManage',
+                meta: {
+                    title: '供应商管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "index" */ '../views/supplier/Index')
+            },
+            {
+                path: '/supplier/label',
+                name: 'SuppLabel',
+                meta: {
+                    title: '标签管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "label" */ '../views/supplier/Label')
             },
         ]
     },

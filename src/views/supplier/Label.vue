@@ -1,6 +1,6 @@
 <template>
   <div>
-      UnitManage
+      LabelManagement
   </div>
 </template>
 

@@ -1,12 +1,11 @@
 <template>
-  <div>
-      ProductParameters
+  <div class="main">
+        商品管理
   </div>
 </template>
 
 <script>
 export default {
-
 }
 </script>
 

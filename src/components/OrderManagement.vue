@@ -121,23 +121,35 @@ export default {
       orderStatus: [
         {
           value: "选项1",
-          label: "黄金糕",
+          label: "待审核订单",
         },
         {
           value: "选项2",
-          label: "双皮奶",
+          label: "待支付订单",
         },
         {
           value: "选项3",
-          label: "蚵仔煎",
+          label: "待发货订单",
         },
         {
           value: "选项4",
-          label: "龙须面",
+          label: "待收货订单",
         },
         {
           value: "选项5",
-          label: "北京烤鸭",
+          label: "已完成订单",
+        },
+        {
+          value: "选项6",
+          label: "已取消订单",
+        },
+        {
+          value: "选项7",
+          label: "发货管理",
+        },
+        {
+          value: "选项8",
+          label: "异常订单",
         },
       ],
       paymentStatus: [
@@ -211,7 +223,7 @@ export default {
       orderStatusSelect: "全部",
       paymentStatusSelect: "全部",
       orderTypeSelect: "全部",
-      orderNoSelect: "全部",
+      orderNoSelect: "订单编号",
       tableData: [
         {
           date: "2016-05-03",
@@ -276,6 +288,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .wrap {
+  background: #fff;
   & .mr-10 {
     margin-right: 10px;
   }
@@ -289,7 +302,7 @@ export default {
     }
 
     & ::v-deep .el-input__inner {
-      width: 80px;
+      // width: 80px;
       font-size: 13px;
       height: 25px !important;
       padding: 3px;

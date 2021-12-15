@@ -61,9 +61,13 @@
         </el-table-column>
       </el-table>
       <div class="footer">
-        <el-button type="primary" plain size="small">保存排序</el-button>
-        <el-button plain class="batch_del_btn" size="small">批量删除</el-button>
-        <div class="footer_page">
+        <div class="footer_left">
+          <el-button type="primary" plain size="small">保存排序</el-button>
+          <el-button plain class="batch_del_btn" size="small"
+            >批量删除</el-button
+          >
+        </div>
+        <div class="footer_right">
           <div class="block">
             <el-pagination
               :current-page="currentPage4"
@@ -71,6 +75,8 @@
               layout="sizes"
             >
             </el-pagination>
+          </div>
+          <div class="block2">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -192,9 +198,13 @@ export default {
   display: flex;
   align-items: center;
   background-color: #ffffff;
-}
-.footer_page {
-  margin-left: 25px;
+  & .footer_right {
+    margin-left: 25px;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    justify-content: space-between;
+  }
 }
 .cell {
   text-align: center;
@@ -214,10 +224,8 @@ export default {
   background-color: #ff8b53;
   padding: 10px 10px;
 }
-.block {
-  display: flex;
-}
-.pagegn{
-  margin-left: 690px;
-}
+// .block {
+//   display: grid;
+//   grid-template-columns: 80% 20%;
+// }
 </style>

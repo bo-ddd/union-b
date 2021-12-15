@@ -8,18 +8,18 @@
       <input type="text" name="" id="" placeholder="搜索">
     </div>
     <div class="table">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="date" label="序号" width="180">
+      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}">
+        <el-table-column prop="Serial_number" label="序号" width="200">
         </el-table-column>
-        <el-table-column prop="name" label="单位名称" width="180">
+        <el-table-column prop="Unit_name" label="单位名称" width="200">
         </el-table-column>
-        <el-table-column prop="name" label="单位类型" width="180">
+        <el-table-column prop="Unit_type" label="单位类型" width="200"> 
         </el-table-column>
-        <el-table-column prop="name" label="单位来源" width="180">
+        <el-table-column prop="Unit_source" label="单位来源" width="200"> 
         </el-table-column>
-        <el-table-column prop="name" label="排序" width="180">
+        <el-table-column prop="sort" label="排序" width="200">
         </el-table-column>
-        <el-table-column prop="address" label="操作">
+        <el-table-column prop="operation" label="操作">
         </el-table-column>
       </el-table>
     </div>
@@ -31,88 +31,69 @@ export default {
    data() {
         return {
           tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
           }, 
           {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
           {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
           {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
           {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
           {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
           {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
           {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
-          {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
-          {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
-          {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
-          {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
-          {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
-          {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
-          {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
           ]
         }
       }

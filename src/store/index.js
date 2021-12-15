@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from '@/api/api'
-import  routes  from '@/router'
+import { routes } from '@/router'
 
 Vue.use(Vuex)
 

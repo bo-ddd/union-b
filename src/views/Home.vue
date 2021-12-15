@@ -9,7 +9,7 @@
             <div class="aside_main">
                 <el-col :span="12" class="aside_menu">
                     <el-menu class="menu" :router="true" default-active="">
-                        <el-submenu  v-for="(link, index) in linkList" :key="index" :index="link.path">
+                        <el-submenu  v-for="(link, index) in routes" :key="index" :index="link.path">
                             <template slot="title">
                                 <i :class="link.meta.icon"></i>
                                 <span>{{ link.meta.title }}</span>
@@ -49,16 +49,12 @@ import {
 export default {
     data() {
         return {
-            linkList: [],
         }
     },
     computed: {
         ...mapGetters(['routes'])
     },
-    async created() {
-        this.routes.shift()
-        this.linkList = this.routes
-    }
+
 }
 </script>
 

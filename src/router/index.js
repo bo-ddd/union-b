@@ -455,7 +455,7 @@ export const routes = [{
                 path: '/merchant/settled',
                 name: 'Settled',
                 meta: {
-                    title: '商户入住',
+                    title: '商户入驻',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "settled" */ '../views/merchant/Settled')

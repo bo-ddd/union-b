@@ -9,6 +9,7 @@
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
+        align="center"
         style="width: 100%"
         stripe
         header-align="center"

@@ -323,6 +323,69 @@ export const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "labelmanage" */ '../views/ContentManage/LabelManage')
             },
+            {
+                path: '/contentmanage/advertisingmanage',
+                name: 'AdvertisingManage',
+                meta: {
+                    title: '广告管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "advertisingmanage" */ '../views/ContentManage/AdvertisingManage')
+            },
+            {
+                path: '/contentmanage/homepagerecommend',
+                name: 'HomePageRecommend',
+                meta: {
+                    title: '首页推荐',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "homepagerecommend" */ '../views/ContentManage/HomePageRecommend')
+            },
+            {
+                path: '/contentmanage/localrecommend',
+                name: 'LocalRecommend',
+                meta: {
+                    title: '本地推荐',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "localrecommend" */ '../views/ContentManage/LocalRecommend')
+            },
+            {
+                path: '/contentmanage/premiumproduct',
+                name: 'PremiumProduct',
+                meta: {
+                    title: '炫萌优品',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "premiumproduct" */ '../views/ContentManage/PremiumProduct')
+            },
+            {
+                path: '/contentmanage/quickentrance',
+                name: 'QuickEntrance',
+                meta: {
+                    title: '快捷入口',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "quickentrance" */ '../views/ContentManage/QuickEntrance')
+            },
+            {
+                path: '/contentmanage/merchantrecommend',
+                name: 'MerchantRecommend',
+                meta: {
+                    title: '商家推荐',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "merchantrecommend" */ '../views/ContentManage/MerchantRecommend')
+            },
+            {
+                path: '/contentmanage/commandsharing',
+                name: 'CommandSharing',
+                meta: {
+                    title: '口令分享',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "commandsharing" */ '../views/ContentManage/CommandSharing')
+            },
         ]
     },
     {

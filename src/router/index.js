@@ -169,6 +169,15 @@ export const routes = [{
                     import ( /* webpackChunkName: "index" */ '../views/commodity/Index')
             },
             {
+                path: '/commodity/addgoods',
+                name: 'AddGoods',
+                meta: {
+                    title: '新增商品',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addgoods" */ '../views/commodity/AddGoods')
+            },
+            {
                 path: '/commodity/classification',
                 name: 'Classification',
                 meta: {
@@ -176,6 +185,15 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "classification" */ '../views/commodity/Classification')
+            },
+            {
+                path: '/commodity/addclassify',
+                name: 'AddClassify',
+                meta: {
+                    title: '新增分类',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addclassify" */ '../views/commodity/AddClassify')
             },
             {
                 path: '/commodity/attribute',
@@ -413,6 +431,80 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "label" */ '../views/supplier/Label')
+            },
+        ]
+    },
+    {
+        path: '/merchant',
+        name: 'Merchant',
+        component: Home,
+        meta: {
+            title: '商户管理',
+            icon: 'el-icon-s-shop'
+        },
+        children: [{
+                path: '/merchant/index',
+                name: 'MerchantManage',
+                meta: {
+                    title: '商户管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "index" */ '../views/merchant/Index')
+            },
+            {
+                path: '/merchant/settled',
+                name: 'Settled',
+                meta: {
+                    title: '商户入驻',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "settled" */ '../views/merchant/Settled')
+            },
+            {
+                path: '/merchant/label',
+                name: 'MerLabel',
+                meta: {
+                    title: '标签管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "label" */ '../views/merchant/Label')
+            },
+        ]
+    },
+    {
+        path: '/set',
+        name: 'Set',
+        component: Home,
+        meta: {
+            title: '系统设置',
+            icon: 'el-icon-s-tools'
+        },
+        children: [{
+                path: '/set/theme',
+                name: 'Theme',
+                meta: {
+                    title: '设置主题',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "theme" */ '../views/set/Theme')
+            },
+            {
+                path: '/set/userinfo',
+                name: 'UserInfo',
+                meta: {
+                    title: '用户信息',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "userinfo" */ '../views/set/UserInfo')
+            },
+            {
+                path: '/set/password',
+                name: 'Password',
+                meta: {
+                    title: '修改密码',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "password" */ '../views/set/Password')
             },
         ]
     },

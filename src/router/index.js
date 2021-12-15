@@ -417,6 +417,71 @@ export const routes = [{
         ]
     },
     {
+        path: '/merchant',
+        name: 'Merchant',
+        component: Home,
+        meta: {
+            title: '商户管理',
+            icon: 'el-icon-s-shop'
+        },
+        children: [{
+                path: '/merchant/index',
+                name: 'MerchantManage',
+                meta: {
+                    title: '商户管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "index" */ '../views/merchant/Index')
+            },
+            {
+                path: '/merchant/label',
+                name: 'MerLabel',
+                meta: {
+                    title: '标签管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "label" */ '../views/merchant/Label')
+            },
+        ]
+    },
+    {
+        path: '/set',
+        name: 'Set',
+        component: Home,
+        meta: {
+            title: '系统设置',
+            icon: 'el-icon-s-tools'
+        },
+        children: [{
+                path: '/set/theme',
+                name: 'Theme',
+                meta: {
+                    title: '设置主题',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "theme" */ '../views/set/Theme')
+            },
+            {
+                path: '/set/userinfo',
+                name: 'UserInfo',
+                meta: {
+                    title: '用户信息',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "userinfo" */ '../views/set/UserInfo')
+            },
+            {
+                path: '/set/password',
+                name: 'Password',
+                meta: {
+                    title: '修改密码',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "password" */ '../views/set/Password')
+            },
+        ]
+    },
+    {
         path: '/login',
         name: 'Login',
         component: Login,

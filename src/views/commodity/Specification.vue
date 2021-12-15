@@ -12,13 +12,18 @@
         style="width: 100%"
         stripe
         @selection-change="handleSelectionChange"
-        class="tablestyle"
       >
-        <el-table-column type="selection" width="55" align="left"> </el-table-column>
+        <el-table-column type="selection" width="55" align="center">
+        </el-table-column>
         <el-table-column label="id" width="240" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
-        <el-table-column prop="name" label="规格名称" width="240" align="center">
+        <el-table-column
+          prop="name"
+          label="规格名称"
+          width="240"
+          align="center"
+        >
         </el-table-column>
         <el-table-column
           prop="address"
@@ -35,9 +40,9 @@
           width="240"
           align="center"
         >
-        <template>
-          <input type="text" class="inp" v-model="input">
-        </template>
+          <template>
+            <input type="text" class="inp" v-model="input" />
+          </template>
         </el-table-column>
         <el-table-column
           prop="address"
@@ -47,8 +52,8 @@
           align="center"
         >
           <template>
-            <el-button type="primary" i class="el-icon-edit"></el-button>
-            <el-button type="primary" i class="el-icon-delete"></el-button>
+            <el-button type="primary" i class="el-icon-edit cell1"></el-button>
+            <el-button type="primary" i class="el-icon-delete cell2"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,7 +73,7 @@
 export default {
   data() {
     return {
-      input:10,
+      input: 10,
       tableData: [
         {
           id: "1",
@@ -135,7 +140,6 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
-  // height: 85vh;
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
 }
@@ -153,9 +157,7 @@ export default {
 .batch_del_btn {
   color: #c0c4cc;
 }
-.tablestyle {
-  padding: 0px 20px;
-}
+
 .footer {
   padding: 20px;
   display: flex;
@@ -168,11 +170,19 @@ export default {
 .cell {
   text-align: center;
 }
-.inp{
+.inp {
   border: 1px solid #d8dce5;
   width: 80px;
   height: 32px;
   text-indent: 16px;
   border-radius: 5px;
+}
+.cell1 {
+  background-color: #17d57e;
+  padding: 10px 10px;
+}
+.cell2 {
+  background-color: #ff8b53;
+  padding: 10px 10px;
 }
 </style>

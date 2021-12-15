@@ -49,7 +49,6 @@ import {
 export default {
     data() {
         return {
-            linkList: [],
         }
     },
     computed: {

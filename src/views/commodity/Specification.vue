@@ -9,24 +9,22 @@
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
-        align="center"
         style="width: 100%"
         stripe
-        header-align="center"
         @selection-change="handleSelectionChange"
-        class="tablestyle"
       >
-        <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column label="id" width="240">
+        <el-table-column type="selection" width="55" align="center"> </el-table-column>
+        <el-table-column label="id" width="240" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
-        <el-table-column prop="name" label="规格名称" width="240">
+        <el-table-column prop="name" label="规格名称" width="240" align="center">
         </el-table-column>
         <el-table-column
           prop="address"
           label="备注"
           show-overflow-tooltip
           width="240"
+          align="center"
         >
         </el-table-column>
         <el-table-column
@@ -34,9 +32,10 @@
           label="排列顺序"
           show-overflow-tooltip
           width="240"
+          align="center"
         >
         <template>
-          <input type="text" class="inp" placeholder="10">
+          <input type="text" class="inp" v-model="input">
         </template>
         </el-table-column>
         <el-table-column
@@ -44,6 +43,7 @@
           label="操作"
           show-overflow-tooltip
           width="240"
+          align="center"
         >
           <template>
             <el-button type="primary" i class="el-icon-edit"></el-button>
@@ -67,6 +67,7 @@
 export default {
   data() {
     return {
+      input:10,
       tableData: [
         {
           id: "1",
@@ -133,7 +134,6 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
-  // height: 85vh;
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
 }
@@ -151,9 +151,7 @@ export default {
 .batch_del_btn {
   color: #c0c4cc;
 }
-.tablestyle {
-  padding: 0px 20px;
-}
+
 .footer {
   padding: 20px;
   display: flex;
@@ -163,7 +161,7 @@ export default {
 .footer_page {
   margin-left: 25px;
 }
-.el-table-column {
+.cell {
   text-align: center;
 }
 .inp{
@@ -173,5 +171,4 @@ export default {
   text-indent: 16px;
   border-radius: 5px;
 }
-
 </style>

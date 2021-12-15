@@ -1,6 +1,6 @@
 <template>
   <div>
-      task
+      LabelManagement
   </div>
 </template>
 

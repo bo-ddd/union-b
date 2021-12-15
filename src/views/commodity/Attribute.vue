@@ -1,5 +1,6 @@
 <template>
-  <div class="CommodityAttribute">
+  <div>
+    <!-- ProductParameters商品属性 -->
     <div class="main">
       <h1 class="h1">属性项信息</h1>
       <div class="message">

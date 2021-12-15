@@ -1,6 +1,6 @@
 <template>
   <div>
-      UnitManage
+     单位管理
   </div>
 </template>
 

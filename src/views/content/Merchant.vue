@@ -1,6 +1,6 @@
 <template>
   <div>
-      ProductParameters
+      MerchantRecommend
   </div>
 </template>
 

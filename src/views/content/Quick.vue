@@ -1,6 +1,6 @@
 <template>
   <div>
-      ProductParameters
+      QuickEntrance
   </div>
 </template>
 

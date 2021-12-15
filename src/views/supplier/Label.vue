@@ -1,7 +1,6 @@
 <template>
-  <div class="CommodityAttribute">
-      <!-- CommodityAttribute -->
-      <h1>CommodityAttribute</h1>
+  <div>
+      LabelManagement
   </div>
 </template>
 

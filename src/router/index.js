@@ -169,6 +169,15 @@ export const routes = [{
                     import ( /* webpackChunkName: "index" */ '../views/commodity/Index')
             },
             {
+                path: '/commodity/addgoods',
+                name: 'AddGoods',
+                meta: {
+                    title: '新增商品',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addgoods" */ '../views/commodity/AddGoods')
+            },
+            {
                 path: '/commodity/classification',
                 name: 'Classification',
                 meta: {
@@ -176,6 +185,15 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "classification" */ '../views/commodity/Classification')
+            },
+            {
+                path: '/commodity/addclassify',
+                name: 'AddClassify',
+                meta: {
+                    title: '新增分类',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addclassify" */ '../views/commodity/AddClassify')
             },
             {
                 path: '/commodity/attribute',
@@ -432,6 +450,15 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "index" */ '../views/merchant/Index')
+            },
+            {
+                path: '/merchant/settled',
+                name: 'Settled',
+                meta: {
+                    title: '商户入住',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "settled" */ '../views/merchant/Settled')
             },
             {
                 path: '/merchant/label',

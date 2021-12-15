@@ -66,7 +66,6 @@ export default {
 .home {
     height: 100vh;
     color: #0a0a0a;
-
     & .el-aside {
         background-color: #ffffff;
         color: #333;

@@ -1,7 +1,6 @@
 <template>
-  <div class="CommodityAttribute">
-      <!-- CommodityAttribute -->
-      <h1>CommodityAttribute</h1>
+  <div>
+      userinfo
   </div>
 </template>
 

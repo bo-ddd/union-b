@@ -1,6 +1,6 @@
 <template>
-  <div>
-      Transaction
+  <div class="wrap">
+      
   </div>
 </template>
 

@@ -27,11 +27,35 @@ axios.interceptors.response.use(function(response) {
 
 //接口定义的方式；
 export default {
-    //登录
-    login: (params) => {
+    //用户的接口
+    /**
+     * @description  用户登录接口
+     * @params {
+     * username:[String],   用户名
+     * password:[String],   密码
+     * captcha:[String]     验证码
+     * } 
+     * */
+    userLogin(params) {
         return axios.post('/user/login', params, postConfig)
     },
-    //验证码
-    getCaptcha() { return `/api/captcha?${Math.random()}` }
+    /**
+     * @description  验证码
+     * */
+    getCaptcha() { return `/api/captcha?${Math.random()}` },
+
+
+    //商品管理
+    /**
+     * @description 商品类目接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getCategoryList(params) {
+        return axios.post('/category/list', params, postConfig)
+    },
 
 }

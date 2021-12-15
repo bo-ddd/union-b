@@ -1,8 +1,6 @@
 <template>
   <div>
-      <div>
-        <h2>实时数据</h2>
-      </div>
+      registeration
   </div>
 </template>
 

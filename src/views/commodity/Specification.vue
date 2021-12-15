@@ -11,7 +11,6 @@
         tooltip-effect="dark"
         style="width: 100%"
         stripe
-        @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center">
         </el-table-column>
@@ -53,7 +52,11 @@
         >
           <template>
             <el-button type="primary" i class="el-icon-edit cell1"></el-button>
-            <el-button type="primary" i class="el-icon-delete cell2"></el-button>
+            <el-button
+              type="primary"
+              i
+              class="el-icon-delete cell2"
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -61,8 +64,24 @@
         <el-button type="primary" plain size="small">保存排序</el-button>
         <el-button plain class="batch_del_btn" size="small">批量删除</el-button>
         <div class="footer_page">
-          <!-- <div>每页显示  条，然后按回车</div> 
-          <div>共 6 条 </div>  -->
+          <div class="block">
+            <el-pagination
+              :current-page="currentPage4"
+              :page-sizes="[6]"
+              layout="sizes"
+            >
+            </el-pagination>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage4"
+              :page-size="100"
+              :total="6"
+              layout="total,prev, pager, next"
+              class="pagegn"
+            >
+            </el-pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -74,6 +93,10 @@ export default {
   data() {
     return {
       input: 10,
+      currentPage1: 5,
+      currentPage2: 5,
+      currentPage3: 5,
+      currentPage4: 4,
       tableData: [
         {
           id: "1",
@@ -134,6 +157,12 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
   },
 };
 </script>
@@ -184,5 +213,11 @@ export default {
 .cell2 {
   background-color: #ff8b53;
   padding: 10px 10px;
+}
+.block {
+  display: flex;
+}
+.pagegn{
+  margin-left: 690px;
 }
 </style>

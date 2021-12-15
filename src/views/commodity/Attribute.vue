@@ -147,8 +147,8 @@ export default {
   border-radius: 5px;
 }
 .iconimg{
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
 }
 .el-footer {
     background-color: #ffffff;

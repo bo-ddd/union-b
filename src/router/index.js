@@ -18,7 +18,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '数据中心',
-            icon: 'el-icon-s-tools'
+            icon: 'el-icon-s-data'
         },
         children: [{
                 path: '/datacenter/realtime',
@@ -64,7 +64,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '订单管理',
-            icon: 'el-icon-menu'
+            icon: 'el-icon-s-order'
         },
         children: [{
                 path: '/ordermanage/allorders',
@@ -155,7 +155,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '商品管理',
-            icon: 'el-icon-menu'
+            icon: 'el-icon-shopping-bag-1'
         },
         children: [{
                 path: '/commoditymanage/commoditymanagement',
@@ -228,7 +228,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '营销管理',
-            icon: 'el-icon-s-grid'
+            icon: 'el-icon-s-ticket'
         },
         children: [{
                 path: '/marketingmanage/seckillmanage',
@@ -292,7 +292,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '内容管理',
-            icon: 'el-icon-s-grid'
+            icon: 'el-icon-document'
         },
         children: [{
                 path: '/contentmanage/navigationmanage',
@@ -311,6 +311,15 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "articlemanage" */ '../views/ContentManage/ArticleManage')
+            },
+            {
+                path: '/contentmanage/labelmanage',
+                name: 'LabelManage',
+                meta: {
+                    title: '标签管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "labelmanage" */ '../views/ContentManage/LabelManage')
             },
         ]
     }

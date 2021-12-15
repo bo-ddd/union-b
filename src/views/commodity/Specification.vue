@@ -12,9 +12,8 @@
         style="width: 100%"
         stripe
         @selection-change="handleSelectionChange"
-        class="tablestyle"
       >
-        <el-table-column type="selection" width="55" align="left"> </el-table-column>
+        <el-table-column type="selection" width="55" align="center"> </el-table-column>
         <el-table-column label="id" width="240" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
@@ -135,7 +134,6 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
-  // height: 85vh;
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
 }
@@ -153,9 +151,7 @@ export default {
 .batch_del_btn {
   color: #c0c4cc;
 }
-.tablestyle {
-  padding: 0px 20px;
-}
+
 .footer {
   padding: 20px;
   display: flex;

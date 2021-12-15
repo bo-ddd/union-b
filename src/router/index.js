@@ -55,7 +55,7 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "customer" */ '../views/Datacenter/Customer')
-            },
+            }
         ]
     },
     {
@@ -146,7 +146,7 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "abnormalorders" */ '../views/Ordermanage/AbnormalOrders')
-            },
+            }
         ]
     },
     {
@@ -158,14 +158,161 @@ export const routes = [{
             icon: 'el-icon-menu'
         },
         children: [{
-            path: '/commoditymanage/commoditymanagement',
-            name: 'CommodityManagement',
-            meta: {
-                title: '商品管理',
+                path: '/commoditymanage/commoditymanagement',
+                name: 'CommodityManagement',
+                meta: {
+                    title: '商品管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "commoditymanagement" */ '../views/CommodityManage/CommodityManagement')
             },
-            component: () =>
-                import ( /* webpackChunkName: "commoditymanagement" */ '../views/CommodityManage/CommodityManagement')
-        }, ]
+            {
+                path: '/commoditymanage/commodityclassification',
+                name: 'CommodityClassification',
+                meta: {
+                    title: '商品分类',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "commodityclassification" */ '../views/CommodityManage/CommodityClassification')
+            },
+            {
+                path: '/commoditymanage/commodityattribute',
+                name: 'CommodityAttribute',
+                meta: {
+                    title: '商品属性',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "commodityattribute" */ '../views/CommodityManage/CommodityAttribute')
+            },
+            {
+                path: '/commoditymanage/specificationmanage',
+                name: 'SpecificationManage',
+                meta: {
+                    title: '规格管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "specificationmanage" */ '../views/CommodityManage/SpecificationManage')
+            },
+            {
+                path: '/commoditymanage/brandmanage',
+                name: 'BrandManage',
+                meta: {
+                    title: '品牌管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "brandmanage" */ '../views/CommodityManage/BrandManage')
+            },
+            {
+                path: '/commoditymanage/productparameters',
+                name: 'ProductParameters',
+                meta: {
+                    title: '商品参数',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "productparameters" */ '../views/CommodityManage/ProductParameters')
+            },
+            {
+                path: '/commoditymanage/unitmanage',
+                name: 'UnitManage',
+                meta: {
+                    title: '单位管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "unitmanage" */ '../views/CommodityManage/UnitManage')
+            },
+        ]
+    },
+    {
+        path: '/marketingmanage',
+        name: 'MarketingManage',
+        component: Home,
+        meta: {
+            title: '营销管理',
+            icon: 'el-icon-s-grid'
+        },
+        children: [{
+                path: '/marketingmanage/seckillmanage',
+                name: 'SeckillManage',
+                meta: {
+                    title: '秒杀管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "seckillmanage" */ '../views/MarketingManage/SeckillManage')
+            },
+            {
+                path: '/marketingmanage/salemanage',
+                name: 'SaleManage',
+                meta: {
+                    title: '特卖管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "salemanage" */ '../views/MarketingManage/SaleManage')
+            },
+            {
+                path: '/marketingmanage/couponmanage',
+                name: 'CouponManage',
+                meta: {
+                    title: '优惠券管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "couponmanage" */ '../views/MarketingManage/CouponManage')
+            },
+            {
+                path: '/marketingmanage/marketingactivities',
+                name: 'MarketingActivities',
+                meta: {
+                    title: '会销活动',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "marketingactivities" */ '../views/MarketingManage/MarketingActivities')
+            },
+            {
+                path: '/marketingmanage/complimentaryactivities',
+                name: 'ComplimentaryActivities',
+                meta: {
+                    title: '搭赠活动',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "complimentaryactivities" */ '../views/MarketingManage/ComplimentaryActivities')
+            },
+            {
+                path: '/marketingmanage/policymanage',
+                name: 'PolicyManage',
+                meta: {
+                    title: '策略管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "policymanage" */ '../views/MarketingManage/PolicyManage')
+            },
+        ]
+    },
+    {
+        path: '/contentmanage',
+        name: 'ContentManage',
+        component: Home,
+        meta: {
+            title: '内容管理',
+            icon: 'el-icon-s-grid'
+        },
+        children: [{
+                path: '/contentmanage/navigationmanage',
+                name: 'NavigationManage',
+                meta: {
+                    title: '导航管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "navigationmanage" */ '../views/ContentManage/NavigationManage')
+            },
+            {
+                path: '/contentmanage/articlemanage',
+                name: 'ArticleManage',
+                meta: {
+                    title: '文章管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "articlemanage" */ '../views/ContentManage/ArticleManage')
+            },
+        ]
     }
 ]
 

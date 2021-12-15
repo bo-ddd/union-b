@@ -88,7 +88,6 @@ export default {
         }
 
         .aside_main {
-            // margin-top: 20px;
             text-align: center;
 
             .aside_menu {
@@ -109,12 +108,6 @@ export default {
                 margin-left: 10px;
             }
         }
-
-        // & .top_right {
-        //     i {
-        //         margin-left: 10px;
-        //     }
-        // }
     }
 }
 </style>

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../views/UserCenter/Login.vue'
+import Registration from '../views/UserCenter/Registration.vue'
 
 Vue.use(VueRouter)
 
@@ -322,6 +324,22 @@ export const routes = [{
                     import ( /* webpackChunkName: "labelmanage" */ '../views/ContentManage/LabelManage')
             },
         ]
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+        meta: {
+            title: '',
+        },
+    },
+    {
+        path: '/registration',
+        name: 'Registration',
+        component: Registration,
+        meta: {
+            title: '',
+        },
     }
 ]
 

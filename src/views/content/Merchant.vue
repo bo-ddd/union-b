@@ -1,6 +1,6 @@
 <template>
   <div>
-      SpecificationManage
+      MerchantRecommend
   </div>
 </template>
 

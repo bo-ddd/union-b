@@ -19,29 +19,35 @@
           tooltip-effect="dark"
           style="width: 100%"
           stripe
-           row-key="id"
-    border
-    default-expand-all
-    :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-          @selection-change="handleSelectionChange"
+          row-key="id"
+          border
+          select-on-indeterminate
+          :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
         >
           <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column label="分类名称" width="300">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
-          </el-table-column>
-          <el-table-column prop="name" label="关联" width="200">
+          <el-table-column label="分类名称" prop="classificationName" width="300"></el-table-column>
+          <el-table-column  label="关联" width="200">
+            <template slot-scope="scope">
+               <el-link type="primary">品牌</el-link>
+               <el-link class="ml-10" type="primary">{{scope.row.association || ''}}</el-link>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="address"
             label="创建日期"
             sortable
             width="200"
             show-overflow-tooltip
           >
+          <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
-          <el-table-column prop="address" label="数量" show-overflow-tooltip>
+          <el-table-column prop="num" label="数量" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="address" label="操作" show-overflow-tooltip>
+          <el-table-column label="操作" show-overflow-tooltip>
+            <template>
+                <el-link type="primary">升序</el-link>
+                  <el-link class="ml-10" type="primary">降序</el-link>
+                  <el-link class="ml-10" type="danger">删除</el-link>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -54,7 +60,82 @@
 export default {
   data() {
     return {
-      tableData: [],
+      tableData: [
+        {
+          id:1,
+          classificationName:'奶粉',
+         
+          date:"2021年12月15日",
+          num:88,
+          children:[
+            {
+          id:8,
+          classificationName:'成人奶粉',
+        association:"规格",
+          date:"2021年12月15日",
+          num:88,
+          children:[
+            {
+            id:13,
+          classificationName:'成人奶粉A',
+      association:"规格",
+          date:"2021年12月15日",
+          num:88,
+            }
+          ]
+            },
+          ]
+        },
+          {
+          id:2,
+          classificationName:'奶粉',
+         
+          date:"2021年12月15日",
+          num:88,
+          children:[
+            {
+          id:9,
+          classificationName:'成人奶粉',
+         association:"规格",
+          date:"2021年12月15日",
+          num:88,
+          children:[
+            {
+          id:16,   
+          classificationName:'成人奶粉A',
+           association:"规格",
+          date:"2021年12月15日",
+          num:88,
+            }
+          ]
+            },
+          ]
+        },  {
+           id:3,
+          classificationName:'奶粉',
+          
+          date:"2021年12月15日",
+          num:88,
+          children:[
+            {
+           id:10,   
+          classificationName:'成人奶粉',
+           association:"规格",
+          date:"2021年12月15日",
+          num:88,
+          children:[
+            {
+           id:17,   
+          classificationName:'成人奶粉A',
+          association:"规格",
+          date:"2021年12月15日",
+          num:88,
+            }
+          ]
+            },
+          ]
+        }
+      ],
     };
   },
   methods: {
@@ -97,15 +178,13 @@ export default {
          border: 1px solid #f2f2f2;
          border-radius: 5px;
          margin-left: 10px;
-           font-size: 12px;
-            margin-bottom: 15px;
+         font-size: 12px;
+         margin-bottom: 15px;
       }
     }
-    ::v-deep & .el-table tr {
-      background-color: #fcfafb;
-    }
-   
   }
 }
-
+.ml-10{
+  margin-left: 10px;
+}
 </style>

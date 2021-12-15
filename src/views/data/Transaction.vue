@@ -70,8 +70,14 @@
         <!--  -->
       </div>
       <div class="echarts_rank">
-        <h4>成交量排行榜</h4>
-        <div class="rank"></div>
+          <h4>成交量排行榜</h4>
+        <div class="rank">
+          <el-table :data="tableData" stripe style="width: 100%;height:100%">
+            <el-table-column prop="date" label="类目"> </el-table-column>
+            <el-table-column prop="name" label="名称"> </el-table-column>
+            <el-table-column prop="address" label="销售量"> </el-table-column>
+          </el-table>
+        </div>
         <!-- 商家综合排行 -->
         <!-- 商品排行 -->
       </div>
@@ -83,11 +89,35 @@
 import * as echarts from "echarts";
 export default {
   data() {
-    return {};
+    return {
+      tableData: [
+        {
+          date: "家电",
+          name: "插座",
+          address: "1518",
+        },
+        {
+          date: "生活用品",
+          name: "袜子",
+          address: "1517",
+        },
+        {
+          date: "家居",
+          name: "沙发",
+          address: "1300",
+        },
+        {
+          date: "零食",
+          name: "阿尔卑斯",
+          address: "1516",
+        },
+      ],
+    };
   },
   mounted() {
     this.drawnBar();
     this.drawnPie();
+    this.drawnTotal();
   },
   methods: {
     drawnBar() {
@@ -150,17 +180,81 @@ export default {
         ],
       });
     },
+    drawnTotal() {
+      let myChart = echarts.init(document.getElementsByClassName("info")[0]);
+      myChart.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow",
+          },
+        },
+        legend: {
+          data: ["Profit", "Expenses", "Income"],
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
+        },
+        xAxis: [
+          {
+            type: "value",
+          },
+        ],
+        yAxis: [
+          {
+            type: "category",
+            axisTick: {
+              show: false,
+            },
+            data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          },
+        ],
+        series: [
+          {
+            name: "Income",
+            type: "bar",
+            stack: "Total",
+            label: {
+              show: true,
+            },
+            emphasis: {
+              focus: "series",
+            },
+            data: [320, 302, 341, 374, 390, 450, 420],
+          },
+          {
+            name: "Expenses",
+            type: "bar",
+            stack: "Total",
+            label: {
+              show: true,
+              position: "left",
+            },
+            emphasis: {
+              focus: "series",
+            },
+            data: [-120, -132, -101, -134, -190, -230, -210],
+          },
+        ],
+      });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-table__cell {
+  padding: 5px;
+}
 .wrap {
   height: calc(100vh - 100px);
   min-width: 1000px;
   background-color: #fcf9fa;
   & > .header {
-    & > div{
+    & > div {
       padding: 10px;
     }
     height: 240px;
@@ -197,10 +291,10 @@ export default {
       justify-content: space-between;
       margin: 0 20px;
       position: relative;
-      & > section{
+      & > section {
         width: 100%;
       }
-      & > div:hover{
+      & > div:hover {
         transform: scale(1.2);
       }
       & > div {
@@ -255,7 +349,7 @@ export default {
       }
       & > .bottom_left {
         position: absolute;
-        top:56%;
+        top: 56%;
         left: 18%;
         background-color: #6058df;
       }
@@ -288,7 +382,7 @@ export default {
       background-color: #ffffff;
       height: calc(100vh - 360px);
       padding: 10px;
-      & > div {
+      &>div{
         height: 350px;
       }
     }
@@ -304,7 +398,7 @@ export default {
     }
   }
 }
-h4{
+h4 {
   border-bottom: 1px solid;
 }
 

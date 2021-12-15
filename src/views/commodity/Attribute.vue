@@ -49,9 +49,9 @@
         label="排序"
         width="250">
         <template>
-          <i class=" el-icon-top"></i>
-          <i class=" el-icon-bottom"></i>
-          <i class=" el-icon-zhiding"></i>
+          <img src="../../assets/images/zhiding.png" class="iconimg">
+          <img src="../../assets/images/xiangshang.png" class="iconimg">
+          <img src="../../assets/images/xiangxia.png" class="iconimg">
         </template>
       </el-table-column>
       <el-table-column
@@ -67,6 +67,7 @@
       </el-table-column>
     </el-table>
       </div>
+      <el-footer><el-button type="primary">保存</el-button></el-footer>
       </div>
   </div>
 </template>
@@ -83,21 +84,13 @@ export default {
           required: '',
         },
         tableData: [{
-            id: '2016-05-02',
-            name: '王小虎',
-            sort: '上海市普陀区金沙江路 1518 弄',
+            id: '1',
           }, {
-            id: '2016-05-04',
-            name: '王小虎',
-            sort: '上海市普陀区金沙江路 1517 弄',
+            id: '2',
           }, {
-            id: '2016-05-01',
-            name: '王小虎',
-            sort: '上海市普陀区金沙江路 1519 弄',
+            id: '3',
           }, {
-            id: '2016-05-03',
-            name: '王小虎',
-            sort: '上海市普陀区金沙江路 1516 弄',
+            id: '4',
           }]
       }
     },
@@ -110,12 +103,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.CommodityAttribute{
-  // margin: 30px 0 30px 0;
-  background: #ffffff;
-}
 .main{
   margin: 0 10px 0 10px;
+  background: #ffffff;
 }
 .message{
   width: 100%;
@@ -156,4 +146,14 @@ export default {
   text-indent: 15px;
   border-radius: 5px;
 }
+.iconimg{
+  width: 20px;
+  height: 20px;
+}
+.el-footer {
+    background-color: #ffffff;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
 </style>

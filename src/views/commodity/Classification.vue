@@ -21,10 +21,11 @@
           stripe
           row-key="id"
           border
-          select-on-indeterminate
+          @select="select"
           :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
         >
-          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column type="selection" width="55" v-model="checked"> 
+          </el-table-column>
           <el-table-column label="分类名称" prop="classificationName" width="300"></el-table-column>
           <el-table-column  label="关联" width="200">
             <template slot-scope="scope">
@@ -60,6 +61,7 @@
 export default {
   data() {
     return {
+         checked:false,
       tableData: [
         {
           id:1,
@@ -92,6 +94,7 @@ export default {
          
           date:"2021年12月15日",
           num:88,
+          selected:false,
           children:[
             {
           id:9,
@@ -106,6 +109,7 @@ export default {
            association:"规格",
           date:"2021年12月15日",
           num:88,
+          selected:false
             }
           ]
             },
@@ -142,6 +146,9 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    select(val){
+      console.log(val);
+    }
   },
 };
 </script>
@@ -154,7 +161,6 @@ export default {
     font-weight: 800;
   }
   & .content {
-    padding: 20px;
     background-color: #ffffff;
     & .new-module {
       display: flex;

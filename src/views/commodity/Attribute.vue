@@ -28,6 +28,7 @@
       <h1 class="h1">属性值列表</h1>
       <div class="list">
         <el-button type="primary" class="button">新增属性值</el-button>
+        <!-- <el-button type="danger" class="button">新增属性值</el-button> -->
         <el-table
       :data="tableData"
       style="width: 100%">
@@ -118,17 +119,17 @@ export default {
   background: #ffffff;
 }
 .mains{
-  margin: 0 10px;
+  margin: 0 20px;
 }
 .message{
   width: 100%;
   border-top: 2px solid #e5e5e5;
 }
 .h1{
-  padding: 5px 0;
+  padding: 15px 0;
 }
 .top{
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .el-input__inners {
   width: 200px;
@@ -138,7 +139,7 @@ export default {
   border-top: 2px solid #e5e5e5;
 }
 .button{
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
 }
 .inp{
   border: 1px solid #d8dce5;

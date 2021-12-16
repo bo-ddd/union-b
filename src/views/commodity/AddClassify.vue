@@ -50,7 +50,7 @@
    <el-form-item label="分享说明" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
-   <el-form-item label="分类图片" prop="name">
+   <el-form-item class="classify-img" label="分类图片" prop="name">
       <el-upload
   action="https://jsonplaceholder.typicode.com/posts/"
   list-type="picture-card"
@@ -115,7 +115,7 @@
    <el-form-item label="SEO描述" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
-   <el-form-item label="广告图片" prop="name">
+   <el-form-item class="poster-classify" label="广告图片" prop="name">
    <el-upload
   action="https://jsonplaceholder.typicode.com/posts/"
   list-type="picture-card"
@@ -428,5 +428,8 @@ export default {
 }
 ::v-deep .el-form-item__label{
   font-size: 12px;
+}
+.classify-img,.poster-classify{
+  margin-bottom: 0 !important;
 }
 </style>

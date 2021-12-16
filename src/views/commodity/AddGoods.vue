@@ -6,15 +6,15 @@
       <div class="essential_information">
         <div>
           <div>
-            <el-form
-              :label-position="labelPosition"
-              label-width="80px"
-              :model="formLabelAlign"
-            >
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="商品类型" class="commodity_type">
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select
+                  v-model="commodityType"
+                  filterable
+                  placeholder="请选择食品"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in typeList"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -23,27 +23,39 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="商品分类" class="commodity_classification">
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select
+                  v-model="commodityClassificationOne"
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in classificationListOne"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
                   >
                   </el-option>
                 </el-select>
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select
+                  v-model="commodityClassificationTwo"
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in classificationListTwo"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
                   >
                   </el-option>
                 </el-select>
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select
+                  v-model="commodityClassificationThree"
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in classificationListThree"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -51,28 +63,29 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="商品名称">
+              <el-form-item label="商品名称" class="trade_name">
                 <el-input
                   type="text"
                   placeholder="请填写商品标题（不超过60个字符）"
                   maxlength="60"
+                  v-model="text"
                   show-word-limit
                 >
                 </el-input>
               </el-form-item>
             </el-form>
           </div>
-          <div>
+          <div class="commodity_specifications">
             <div>
-              <el-form
-                :label-position="labelPosition"
-                label-width="80px"
-                :model="formLabelAlign"
-              >
+              <el-form :label-position="labelPosition" label-width="80px">
                 <el-form-item label="品牌">
-                  <el-select v-model="value" filterable placeholder="请选择">
+                  <el-select
+                    v-model="brand"
+                    filterable
+                    placeholder="请选择品牌"
+                  >
                     <el-option
-                      v-for="item in options"
+                      v-for="item in brandList"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
@@ -81,7 +94,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="重量">
-                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <el-input v-model="input" placeholder="请输入重量"></el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -92,9 +105,13 @@
                 :model="formLabelAlign"
               >
                 <el-form-item label="销售单位">
-                  <el-select v-model="value" filterable placeholder="请选择">
+                  <el-select
+                    v-model="company"
+                    filterable
+                    placeholder="请选择或输入自定义单位"
+                  >
                     <el-option
-                      v-for="item in options"
+                      v-for="item in companyList"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
@@ -103,7 +120,10 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="体积">
-                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <el-input
+                    v-model="input"
+                    placeholder="请填写包裹体积"
+                  ></el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -123,15 +143,12 @@
             >
               <el-form-item label="生产日期" class="date_of_manufacture">
                 <div>
-                  <el-select v-model="value" filterable placeholder="请选择">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    >
-                    </el-option>
-                  </el-select>
+                  <el-date-picker
+                    v-model="value1"
+                    type="date"
+                    placeholder="选择或输入生产日期Enter自定义"
+                  >
+                  </el-date-picker>
                 </div>
 
                 <div>
@@ -142,9 +159,9 @@
               </el-form-item>
               <el-form-item label="容量" class="capacity">
                 <div>
-                  <el-select v-model="value" filterable placeholder="请选择">
+                  <el-select v-model="capacity" filterable placeholder="选择或输入容量Enter自定义">
                     <el-option
-                      v-for="item in options"
+                      v-for="item in capacityList"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
@@ -267,6 +284,78 @@
 export default {
   data() {
     return {
+      commodityType: "",
+      typeList: [
+        {
+          value: "选项1",
+          label: "家具类",
+        },
+        {
+          value: "选项2",
+          label: "日用品类",
+        },
+        {
+          value: "选项3",
+          label: "鞋帽类",
+        },
+      ],
+      commodityClassificationOne: "",
+      classificationListOne: [
+        {
+          value: "选项1",
+          label: "奶粉",
+        },
+      ],
+      commodityClassificationTwo: "",
+      classificationListTwo: [
+        {
+          value: "选项1",
+          label: "牛奶粉",
+        },
+      ],
+      commodityClassificationThree: "",
+      classificationListThree: [
+        {
+          value: "选项1",
+          label: "1段牛奶粉",
+        },
+      ],
+      text: "",
+      brand: "",
+      brandList: [
+        {
+          value: "选项1",
+          label: "啄木鸟",
+        },
+        {
+          value: "选项2",
+          label: "花花公子",
+        },
+      ],
+      company: "",
+      companyList: [
+        {
+          value: "选项1",
+          label: "千克",
+        },
+        {
+          value: "选项2",
+          label: "克",
+        },
+      ],
+      value1: "",
+      capacity: "",
+      capacityList: [
+        {
+          value: "选项1",
+          label: "升",
+        },
+        {
+          value: "选项2",
+          label: "毫升",
+        },
+      ],
+
       labelPosition: "right",
       formLabelAlign: {
         name: "",
@@ -412,9 +501,13 @@ export default {
       padding: 20px 0px;
       & > div {
         width: 80%;
+        & > div:nth-of-type(1) {
+          width: 70%;
+        }
         & > div:nth-of-type(2) {
           display: flex;
           justify-content: space-between;
+          width: 70%;
         }
       }
     }
@@ -480,7 +573,7 @@ export default {
     margin-left: 15px;
   }
 }
-::v-deep .el-table__header-wrapper .has-gutter .el-table_1_column_7{
+::v-deep .el-table__header-wrapper .has-gutter .el-table_1_column_7 {
   & > .cell {
     width: 90px;
     height: 32px;
@@ -492,11 +585,15 @@ export default {
   }
 }
 
-::v-deep .commodity_type .el-input {
-  width: 120px;
-}
+::v-deep .commodity_type .el-input,
 ::v-deep .commodity_classification .el-input {
   width: 120px;
+}
+::v-deep .commodity_specifications .el-input {
+  width: 220px;
+}
+::v-deep .trade_name .el-input {
+  width: 100%;
 }
 ::v-deep .el-form-item__content {
   display: flex;
@@ -528,6 +625,9 @@ export default {
 ::v-deep .capacity .el-form-item__content {
   display: flex !important;
   flex-direction: column !important;
+  & .el-input {
+    width: 220px;
+  }
 }
 ::v-deep .el-button {
   width: 100px;

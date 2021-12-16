@@ -3,7 +3,7 @@
       <div class="main">
         <div class="form-left">
           <div class="left-main">
-
+            <img src="@/assets/images/login.png" alt="" srcset="">
           </div>
         </div>
         <div class="form_center"> 
@@ -13,22 +13,23 @@
             </div>
           </div>
           <div class="form_item">
-            <div class="form_item_input"><el-input class="item-input" v-model="username" placeholder="请设置账号名称"></el-input></div>
+            <div class="form_item_input"><el-input v-model="form.username" placeholder="请设置账号名称"></el-input></div>
           </div>
           <div class="form_item">
-            <div class="form_item_input"><el-input v-model="email" placeholder="请设置邮箱作为登录名"></el-input></div>
+            <div class="form_item_input"><el-input v-model="form.email" placeholder="请设置邮箱作为登录名"></el-input></div>
           </div>
           <div class="form_item">
-            <div class="form_item_input"><el-input v-model="phone" placeholder="请输入手机号码"></el-input></div>
+            <div class="form_item_input"><el-input v-model="form.phone" placeholder="请输入手机号码"></el-input></div>
           </div>
           
           <div class="form_item">
-            <div class="form_item_input"><el-input v-model="password" placeholder="请设置登录密码" show-password></el-input></div>
+            <div class="form_item_input"><el-input v-model="form.password" placeholder="请设置登录密码" show-password></el-input></div>
           </div>
           <div class="form_item">
             <div class="form_selectbox">
               <input class="selectbox_input" type="checkbox" name="" id="agreementbtn">
               <label for="agreementbtn">已阅读并同意以下协议淘宝平台服务协议、隐私权政策、法律声明、支付宝及客户端服务协议、支付宝隐私权政策</label>
+              <!-- <el-checkbox v-model="checked">已阅读并同意以下协议淘宝平台服务协议、隐私权政策、法律声明、支付宝及客户端服务协议、支付宝隐私权政策</el-checkbox> -->
             </div>
           </div>
           <div class="form_item">
@@ -45,14 +46,51 @@
 export default {
   data() {
     return {
-      password:"",
-      phone:"",
-      email:"",
-      username:"",
-      input: '',
-      checked:false,
-      check:false,
-        value: ''
+      form:{
+        username:"",
+        email:"",
+        phone:"",
+        password:"",
+      }
+    }
+  },
+  created() {
+
+  },
+  methods: {
+    verification(){
+        if (!this.form.username.length) {
+        this.$message({
+          type: "warning",
+          message: "用户名不能为空",
+        });
+      }else if(this.form.username.length < 6 || this.form.username.length > 15){
+        this.$message({
+          type:"warning",
+          message:"用户名长度为6-15位"
+        })
+      }else if(this.form.password.length < 6 || this.form.password.length > 15){
+        this.$message({
+          type:"warning",
+          message:"密码长度为6-15位"
+        })
+      }else if(/[^0-9a-zA-Z_-]+/.test(this.form.username)){
+        this.$message({
+          type:"warning",
+          message:"用户名不符合规范"
+        })
+      }else if(this.form.password){
+        this.$message({
+          type:"warning",
+          message:"密码不能为空"
+        })
+      }
+      // else if(/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.form.email)){
+      //   this.$message({
+      //     type:"warning",
+      //     message:"邮箱格式不正确"
+      //   })
+      // }
     }
   }
 }
@@ -75,42 +113,22 @@ export default {
     align-items: center;
     & .form-left{
         width: 50%;
-      height: 360px;
+      height: 430px;
+          display: flex;
+        justify-content: center;
+        align-items: center;
       & .left-main{
         width: 90%;
       }
     }
     & .form_center{
       width: 50%;
-      height: 410px;
+      height: 430px;
       & .form_item{
         width: 100%;
         margin-bottom: 16px;
         display: flex;
-          justify-content: center;
-        & .form_checkbox{
-          width: 20%;
-          height: 40px;
-          line-height: 40px;
-          font-size:13px;
-          text-align: right;
-        }
-        & .form_item_label{
-          width: 20%;
-          height: 40px;
-          line-height: 40px;
-          font-size:13px;
-          text-align: right;
-          & .form_item_label>span{
-            color: #666;
-          }
-        }
-        & .form_item_select{
-          width: 125px;
-        }
-        & .form_item_selectinput{
-          width: 155px;
-        }
+        justify-content: center;
         & .form_item_input{
           width: 70%;
           height: 40px;
@@ -133,13 +151,6 @@ export default {
             margin-top: 2px;
           }
         }
-        & .form_item_label::before{
-            display: inline-block;
-            margin-right: 4px;
-            content: "*";
-            font-family: SimSun;
-            color: red;
-        }
       }
       & .logo{
         width: 100%;
@@ -151,7 +162,6 @@ export default {
           justify-content: center;
         & .logotext{
           width: 70%;
-          
         }
       }
     }

@@ -41,6 +41,17 @@ export default new Vuex.Store({
         getCategoryList(ctx, payload) {
             return Api.getCategoryList(payload);
         },
+        //类目规格接口
+        getSpecificationList(ctx, payload) {
+            return Api.getSpecificationList(payload);
+        },
+
+
+        //内容管理
+        //快捷入口接口
+        getQuickList(ctx, payload) {
+            return Api.getQuickList(payload);
+        },
     },
     modules: {}
 })

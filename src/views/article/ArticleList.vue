@@ -1,6 +1,6 @@
 <template>
   <div>
-      ArticleManage
+      Article
   </div>
 </template>
 

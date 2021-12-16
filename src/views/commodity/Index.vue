@@ -54,9 +54,72 @@
           <div>批量删除</div>
         </div>
       </div>
-      <div></div>
+      <div>
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          stripe
+          :header-cell-style="{ background: '#fcfafb' }"
+        >
+          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column label="条码" width="120">
+            <template slot-scope="scope">{{ scope.row.date }}</template>
+          </el-table-column>
+          <el-table-column prop="name" label="商品名称" width="120">
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="售价"
+            sortable
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="库存"
+            sortable
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="销量"
+            sortable
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column prop="address" label="状态" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="创建日期"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column label="操作" show-overflow-tooltip>
+            <template>
+              <el-link type="primary" class="edit">编辑</el-link>
+              <el-link type="warning" class="off_the_shelf">下架</el-link>
+              <el-link type="danger" class="delete">删除</el-link>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="m_footer">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage4"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout=" sizes, prev, pager, next, jumper,total"
+          :total="400"
+        >
+        </el-pagination>
+      </div>
     </div>
-    <div class="m_footer"></div>
   </div>
 </template>
 
@@ -90,7 +153,58 @@ export default {
         },
       ],
       value: "",
+
+      tableData: [
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-08",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-06",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-07",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+      ],
+      multipleSelection: [],
+      currentPage1: 5,
+      currentPage2: 5,
+      currentPage3: 5,
+      currentPage4: 4,
     };
+  },
+  methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
   },
 };
 </script>
@@ -106,6 +220,8 @@ export default {
   & > .m_main {
     padding: 20px;
     display: flex;
+    flex-direction: column;
+    background: #ffffff;
     & > .m_m_center {
       display: grid;
       grid-template-rows: 1fr 1fr;
@@ -147,20 +263,19 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
-             font-weight: 700;
+            font-weight: 700;
           }
           & > div:nth-of-type(1) {
             background: #ff4370;
             color: #ffc6d3;
             margin-right: 10px;
-
           }
         }
       }
-      & >.commodity_operation{
+      & > .commodity_operation {
         margin-top: 20px;
         display: flex;
-        & >div{
+        & > div {
           height: 32px;
           width: 80px;
           border: 1px solid #c0c4cc;
@@ -171,15 +286,28 @@ export default {
           justify-content: center;
           font-weight: 700;
         }
-        & >div:nth-of-type(1){
+        & > div:nth-of-type(1) {
           background: #ff4370;
         }
       }
     }
   }
+  & >.m_footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
-
-
+.edit,
+.off_the_shelf {
+  margin-right: 10px;
+  & a:hover {
+    text-decoration: none;
+  }
+}
+.delete {
+  text-decoration: none;
+}
 input::-webkit-input-placeholder {
   color: #c0c4cc;
   font-weight: 700;
@@ -197,6 +325,15 @@ input:-moz-placeholder {
 input:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #c0c4cc;
+  font-weight: 700;
+}
+// ::v-deep .el-pagination__sizes{
+//   width: 120px;
+// }
+::v-deep .el-pagination__jump{
+  margin: 0px;
+}
+::v-deep .cell {
   font-weight: 700;
 }
 ::v-deep .el-input {

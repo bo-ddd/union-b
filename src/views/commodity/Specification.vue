@@ -11,7 +11,6 @@
         tooltip-effect="dark"
         style="width: 100%"
         stripe
-        @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center">
         </el-table-column>
@@ -53,16 +52,41 @@
         >
           <template>
             <el-button type="primary" i class="el-icon-edit cell1"></el-button>
-            <el-button type="primary" i class="el-icon-delete cell2"></el-button>
+            <el-button
+              type="primary"
+              i
+              class="el-icon-delete cell2"
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="footer">
-        <el-button type="primary" plain size="small">保存排序</el-button>
-        <el-button plain class="batch_del_btn" size="small">批量删除</el-button>
-        <div class="footer_page">
-          <!-- <div>每页显示  条，然后按回车</div> 
-          <div>共 6 条 </div>  -->
+        <div class="footer_left">
+          <el-button type="primary" plain size="small">保存排序</el-button>
+          <el-button plain class="batch_del_btn" size="small"
+            >批量删除</el-button
+          >
+        </div>
+        <div class="footer_right">
+          <div class="block">
+            <el-pagination
+              :current-page="currentPage4"
+              :page-sizes="[6]"
+              layout="sizes"
+            >
+            </el-pagination>
+          </div>
+          <div class="block2">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage4"
+              :page-size="100"
+              :total="6"
+              layout="total,prev, pager, next"
+            >
+            </el-pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -74,6 +98,10 @@ export default {
   data() {
     return {
       input: 10,
+      currentPage1: 5,
+      currentPage2: 5,
+      currentPage3: 5,
+      currentPage4: 4,
       tableData: [
         {
           id: "1",
@@ -134,6 +162,12 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
   },
 };
 </script>
@@ -142,30 +176,34 @@ export default {
 .wrap {
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
-}
-
-.tit {
-  background-color: #eceff1;
-  padding: 20px;
-  border-bottom: 1px solid #d4dde2;
-}
-.addspebut {
-  padding: 20px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #d4dde2;
-}
-.batch_del_btn {
-  color: #c0c4cc;
-}
-
-.footer {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  background-color: #ffffff;
-}
-.footer_page {
-  margin-left: 25px;
+  & .tit {
+    background-color: #eceff1;
+    padding: 20px;
+    border-bottom: 1px solid #d4dde2;
+  }
+  & .addspebut {
+    padding: 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #d4dde2;
+  }
+  & .footer {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    & .footer_left {
+      & .batch_del_btn {
+        color: #c0c4cc;
+      }
+    }
+    & .footer_right {
+      margin-left: 25px;
+      display: flex;
+      justify-content: center;
+      width: 80%;
+      justify-content: space-between;
+    }
+  }
 }
 .cell {
   text-align: center;

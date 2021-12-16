@@ -1,8 +1,5 @@
 <template>
   <div class="wrap">
-    <div class="title">
-      <span>单位管理</span>
-    </div>
     <div class="Company">
       <button>新增单位</button>
       <input type="text" name="" id="" placeholder="搜索">
@@ -94,6 +91,110 @@ export default {
             sort:'',
             operation:'禁用'  
           }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
+          {
+            Serial_number: '1',
+            Unit_name: '件',
+            Unit_type: '计数',
+            Unit_source:'商家创建',
+            sort:'',
+            operation:'禁用'  
+          }, 
           ]
         }
       }
@@ -104,10 +205,6 @@ export default {
 .wrap{
   width: 100%;
   height: calc(100vh - 100px);
-  & .title{
-    padding: 15px;
-    font-weight: 800;
-  }
   & .Company{
     padding: 15px;
     display: flex;
@@ -117,6 +214,7 @@ export default {
       height: 30px;
       background-color: pink;
       color: white;
+      cursor: pointer;
     }
     & input{
       border: 1px solid black;

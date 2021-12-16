@@ -11,11 +11,12 @@
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
+        style="width: 97%"
+        :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column type="selection" width="55" align="center">
-        </el-table-column>
-        <el-table-column label="id" align="center">
+        <el-table-column type="selection" align="center"> </el-table-column>
+        <el-table-column prop="id" label="id" align="center" sortable>
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
         <el-table-column
@@ -23,6 +24,7 @@
           label="规格名称"
           align="center"
           show-overflow-tooltip
+          sortable
         >
         </el-table-column>
         <el-table-column
@@ -30,6 +32,7 @@
           label="备注"
           show-overflow-tooltip
           align="center"
+          sortable
         >
         </el-table-column>
         <el-table-column
@@ -37,6 +40,7 @@
           label="排列顺序"
           show-overflow-tooltip
           align="center"
+          sortable
         >
           <template>
             <input type="text" class="inp" v-model="input" />
@@ -47,6 +51,8 @@
           label="操作"
           show-overflow-tooltip
           align="center"
+          :formatter="formatter"
+          sortable
         >
           <template slot-scope="scope">
             <el-button
@@ -56,9 +62,10 @@
               @click="editListData"
             ></el-button>
             <el-button
-              i class="el-icon-delete cell2"
+              i
+              class="el-icon-delete cell2"
               @click.native.prevent="deleteRow(scope.$index, tableData)"
-              type="text"             
+              type="text"
             >
             </el-button>
           </template>
@@ -66,7 +73,7 @@
       </el-table>
       <div class="footer">
         <div class="footer_left">
-          <el-button type="primary" plain size="small">保存排序</el-button>
+          <el-button type="primary" size="small">保存排序</el-button>
           <el-button
             plain
             class="batch_del_btn"
@@ -183,9 +190,7 @@ export default {
       console.log("添加成功");
     },
     //批量删除
-    batchesDelete() {
-      console.log("批量删除成功");
-    },
+    batchesDelete() {},
     //单个修改
     editListData() {
       console.log("单个修改成功");
@@ -194,13 +199,13 @@ export default {
     deleteRow(index, rows) {
       rows.splice(index, 1);
     },
+    //保存排序
+    formatter(row) {
+      return row.address;
+    },
   },
   async created() {
-    let res = await this.getSpecificationList({
-      pagination: this.pagination,
-      pageNum: this.pageNum,
-      pageSize: this.pageSize,
-    });
+    let res = await this.getSpecificationList({});
     console.log(res);
   },
 };
@@ -216,7 +221,7 @@ export default {
     height: 85vh;
   }
   & .tit {
-    background-color: #eceff1;
+    background-color: rgb(254, 249, 250);
     padding: 20px;
     border-bottom: 1px solid #d4dde2;
   }
@@ -224,6 +229,11 @@ export default {
     padding: 20px;
     background-color: #ffffff;
     border-bottom: 1px solid #d4dde2;
+  }
+  & .el-table {
+    // margin: 0px 20px 0px 20px;
+    margin-left: 20px;
+    margin-right: 20px;
   }
   & .footer {
     padding: 20px;
@@ -253,9 +263,21 @@ export default {
     }
   }
 }
-.cell {
-  text-align: center;
-}
+// ::v-deep.el-table th.el-table__cell > .cell {
+//   padding-left: 0px;
+// }
+// ::deep.el-table .cell {
+//   padding-left: 0px!important;
+// }
+// ::deep.el-table-column--selection .cell {
+//   padding-left: 0!important;
+// }
+// ::deep.el-table-column--selection .cell {
+//   padding-left: 0!important;
+// }
+// ::deep.el-table .cell{
+//   padding-left: 0!important;
+// }
 .inp {
   border: 1px solid #d8dce5;
   width: 80px;

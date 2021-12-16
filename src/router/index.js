@@ -321,7 +321,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '内容管理',
-            icon: 'el-icon-document'
+            icon: 'el-icon-tickets'
         },
         children: [{
                 path: '/content/navigation',

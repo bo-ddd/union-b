@@ -9,26 +9,24 @@
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
-        style="width: 100%"
         stripe
       >
         <el-table-column type="selection" width="55" align="center">
         </el-table-column>
-        <el-table-column label="id" width="240" align="center">
+        <el-table-column label="id" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
         <el-table-column
           prop="name"
           label="规格名称"
-          width="240"
           align="center"
+          show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
           prop="address"
           label="备注"
           show-overflow-tooltip
-          width="240"
           align="center"
         >
         </el-table-column>
@@ -36,7 +34,6 @@
           prop="list"
           label="排列顺序"
           show-overflow-tooltip
-          width="240"
           align="center"
         >
           <template>
@@ -47,7 +44,6 @@
           prop="address"
           label="操作"
           show-overflow-tooltip
-          width="240"
           align="center"
         >
           <template>
@@ -69,24 +65,25 @@
         </div>
         <div class="footer_right">
           <div class="block">
+            <div>每页显示</div>
             <el-pagination
               :current-page="currentPage4"
               :page-sizes="[6]"
               layout="sizes"
             >
             </el-pagination>
+            <div>条，输入按回车</div>
           </div>
           <div class="block2">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage4"
-              :page-size="100"
-              :total="6"
-              layout="total,prev, pager, next"
-              class="pagegn"
-            >
-            </el-pagination>
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage4"
+                :page-size="100"
+                :total="6"
+                layout="total,prev, pager, next"
+              >
+              </el-pagination>
           </div>
         </div>
       </div>
@@ -177,33 +174,45 @@ export default {
 .wrap {
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
-}
-
-.tit {
-  background-color: #eceff1;
-  padding: 20px;
-  border-bottom: 1px solid #d4dde2;
-}
-.addspebut {
-  padding: 20px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #d4dde2;
-}
-.batch_del_btn {
-  color: #c0c4cc;
-}
-
-.footer {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  background-color: #ffffff;
-  & .footer_right {
-    margin-left: 25px;
+  & .wrap_interior {
+    min-width: 1200px;
+  }
+  & .tit {
+    background-color: #eceff1;
+    padding: 20px;
+    border-bottom: 1px solid #d4dde2;
+  }
+  & .addspebut {
+    padding: 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #d4dde2;
+  }
+  & .footer {
+    padding: 20px;
+    min-width: 1200px;
     display: flex;
-    justify-content: center;
-    width: 80%;
-    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    & .footer_left {
+      & .batch_del_btn {
+        color: #c0c4cc;
+      }
+    }
+    & .footer_right {
+      margin-left: 25px;
+      display: flex;
+      justify-content: center;
+      width: 80%;
+      justify-content: space-between;
+      & .block{
+        display: flex;
+        align-items: center;
+        color: #999999;
+        & .el-pagination{
+          padding: 5px 5px;
+        }
+      }
+    }
   }
 }
 .cell {
@@ -219,13 +228,11 @@ export default {
 .cell1 {
   background-color: #17d57e;
   padding: 10px 10px;
+  border: none;
 }
 .cell2 {
   background-color: #ff8b53;
   padding: 10px 10px;
+  border: none;
 }
-// .block {
-//   display: grid;
-//   grid-template-columns: 80% 20%;
-// }
 </style>

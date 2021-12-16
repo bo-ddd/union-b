@@ -68,6 +68,16 @@ export default {
     getSpecificationList(params) {
         return axios.post('/specification/list', params, postConfig)
     },
+    /**
+     * @description 添加类目接口
+     * @params {
+     *  title : [String],   类目昵称
+     *  pid   : [Number]    父id
+     * } 
+     */
+    createCategory(params) {
+        return axios.post('/category/create', params, postConfig)
+    },
 
 
     //数据中心
@@ -92,6 +102,19 @@ export default {
      */
     getQuickList(params) {
         return axios.post('/content/list', params, postConfig)
+    },
+
+    //订单管理
+    /**
+     * @description 订单列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getOrderList(params) {
+        return axios.post('/order/list', params, postConfig)
     },
 
 }

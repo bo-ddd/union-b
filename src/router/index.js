@@ -57,7 +57,16 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "customer" */ '../views/data/Customer')
-            }
+            },
+            {
+                path: '/data/portrait',
+                name: 'Portrait',
+                meta: {
+                    title: '用户画像'
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "portrait" */ '../views/data/Portrait')
+            },
         ]
     },
     {

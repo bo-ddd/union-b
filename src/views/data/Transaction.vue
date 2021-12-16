@@ -4,48 +4,62 @@
       <div class="left">
         <div>
           <div>
-            <i>图片</i>
+            <img
+              src="@/assets/images/iconfont-merchant.png"
+              alt=""
+              class="img"
+            />
           </div>
-          <div>
+          <div class="ml-5">
             <h3>888</h3>
             <span>平台商家总数</span>
           </div>
         </div>
         <div>
           <div>
-            <i>图片</i>
+            <img
+              src="@/assets/images/iconfont-product.png"
+              alt=""
+              class="img"
+            />
           </div>
-          <div>
+          <div class="ml-5">
             <h3>8888</h3>
             <span>平台商品总数</span>
           </div>
         </div>
       </div>
       <div class="center">
-        <section><h4>平台使用情况</h4></section>
-        <div class="top_left">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="top_center">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
-        </div>
-        <div class="top_right">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="bottom_left">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
-        </div>
-        <div class="bottom_center">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="bottom_right">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
+        <h4>平台使用情况</h4>
+        <div class="main">
+          <div class="top">
+            <div class="top_left">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+            <div class="top_center">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+            <div class="top_right">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="bottom_left">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+            <div class="bottom_center">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+            <div class="bottom_right">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+          </div>
         </div>
 
         <!-- 平台使用情况 -->
@@ -70,9 +84,9 @@
         <!--  -->
       </div>
       <div class="echarts_rank">
-          <h4>成交量排行榜</h4>
+        <h4>成交量排行榜</h4>
         <div class="rank">
-          <el-table :data="tableData" stripe style="width: 100%;height:100%">
+          <el-table :data="tableData" stripe style="width: 100%; height: 100%" :fit="true">
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
             <el-table-column prop="address" label="销售量"> </el-table-column>
@@ -115,29 +129,88 @@ export default {
     };
   },
   mounted() {
-    this.drawnBar();
-    this.drawnPie();
-    this.drawnTotal();
+    let myBarChart = this.drawnBar();
+    let myPieChart = this.drawnPie();
+    let myTotalChart = this.drawnTotal();
+    window.addEventListener("resize", function () {
+      myBarChart.resize();
+      myPieChart.resize();
+      myTotalChart.resize();
+    });
   },
+
   methods: {
     drawnBar() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = echarts.init(document.getElementsByClassName("stata")[0]);
       // 绘制图表
       myChart.setOption({
-        tooltip: {},
-        xAxis: {
-          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+        tooltip: {
+          trigger: "axis",
         },
-        yAxis: {},
+        legend: {
+          data: ["Rainfall", "Evaporation"],
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ["line", "bar"] },
+            restore: { show: true },
+            saveAsImage: { show: true },
+          },
+        },
+        calculable: true,
+        xAxis: [
+          {
+            type: "category",
+            // prettier-ignore
+            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          },
+        ],
+        yAxis: [
+          {
+            type: "value",
+          },
+        ],
         series: [
           {
-            name: "销量",
+            name: "Rainfall",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20],
+            data: [
+              2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4,
+              3.3,
+            ],
+            markPoint: {
+              data: [
+                { type: "max", name: "Max" },
+                { type: "min", name: "Min" },
+              ],
+            },
+            markLine: {
+              data: [{ type: "average", name: "Avg" }],
+            },
+          },
+          {
+            name: "Evaporation",
+            type: "bar",
+            data: [
+              2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0,
+              2.3,
+            ],
+            markPoint: {
+              data: [
+                { name: "Max", value: 182.2, xAxis: 7, yAxis: 183 },
+                { name: "Min", value: 2.3, xAxis: 11, yAxis: 3 },
+              ],
+            },
+            markLine: {
+              data: [{ type: "average", name: "Avg" }],
+            },
           },
         ],
       });
+      return myChart;
     },
     drawnPie() {
       let myChart = echarts.init(document.getElementsByClassName("type")[0]);
@@ -179,6 +252,7 @@ export default {
           },
         ],
       });
+      return myChart;
     },
     drawnTotal() {
       let myChart = echarts.init(document.getElementsByClassName("info")[0]);
@@ -240,6 +314,7 @@ export default {
           },
         ],
       });
+      return myChart;
     },
   },
 };
@@ -252,19 +327,19 @@ export default {
 .wrap {
   height: calc(100vh - 100px);
   min-width: 1000px;
-  background-color: #fcf9fa;
+  overflow-y: hidden;
   & > .header {
     & > div {
       padding: 10px;
     }
-    height: 240px;
     display: flex;
     & > .left {
+      background-color: #ffffff;
       display: flex;
       flex-flow: column;
       justify-content: space-between;
-      height: 100%;
       width: 200px;
+      padding: 20px;
       & > div {
         width: 100%;
         height: 110px;
@@ -276,6 +351,10 @@ export default {
         box-sizing: border-box;
         border-radius: 10px;
         & > div {
+          & > .img {
+            width: 50px;
+            height: 50px;
+          }
           & > h3 {
             font-size: 30px;
           }
@@ -284,87 +363,62 @@ export default {
     }
     & > .center {
       background-color: #ffffff;
-
       flex: 1.5;
-      display: flex;
-      flex-flow: wrap;
-      justify-content: space-between;
       margin: 0 20px;
-      position: relative;
-      & > section {
-        width: 100%;
-      }
-      & > div:hover {
-        transform: scale(1.2);
-      }
-      & > div {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
+      & > .main {
         display: flex;
-        flex-flow: column;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        cursor: pointer;
-        transition: 1s;
-        & > .font-20 {
-          font-size: 20px;
-          font-weight: bolder;
+        flex-flow: wrap;
+        justify-content: space-between;
+        --size: 60px;
+        font-size: 12px;
+        & > .top,
+        .bottom {
+          width: 100%;
+          display: flex;
+          justify-content: space-evenly;
+          & > div {
+            min-width: var(--size);
+            min-height: var(--size);
+            border-radius: 50%;
+            display: flex;
+            flex-flow: column;
+            text-align: center;
+            color: white;
+            margin: 10px 20px;
+            justify-content: center;
+            padding: 5px;
+          }
         }
-        & > .font-15 {
-          font-size: 15px;
-          font-weight: bolder;
+        & > .top {
+          & > .top_left {
+            background-color: #f59604;
+          }
+          & > .top_center {
+            background-color: #2396e6;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #0e3a53;
+          }
+          & > .top_right {
+            background-color: #0bafa6;
+          }
         }
-        & > .font-16 {
-          font-size: 16px;
+        & > .bottom {
+          & > .bottom_left {
+            background-color: #6058df;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #1c2d59;
+
+          }
+          & > .bottom_center {
+            background-color: #e7536b;
+          }
+          & > .bottom_right {
+            background-color: #129633;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #0d3c36;
+
+          }
         }
-        & > .font-12 {
-          font-size: 12px;
-        }
-      }
-      & > div:nth-child(even) {
-        width: 70px;
-        height: 70px;
-      }
-      & > .top_left {
-        position: absolute;
-        top: 18%;
-        left: 18%;
-        background-color: #f59604;
-        box-shadow: 0 0 10px #f59604;
-      }
-      & > .top_center {
-        position: absolute;
-        top: 16%;
-        left: 38%;
-        background-color: #2396e6;
-      }
-      & > .top_right {
-        position: absolute;
-        top: 20%;
-        left: 65%;
-        background-color: #0bafa6;
-        box-shadow: 0 0 10px #0bafa6;
-      }
-      & > .bottom_left {
-        position: absolute;
-        top: 56%;
-        left: 18%;
-        background-color: #6058df;
-      }
-      & > .bottom_center {
-        position: absolute;
-        top: 65%;
-        left: 45%;
-        background-color: #e7536b;
-        box-shadow: 0 0 10px #e7536b;
-      }
-      & > .bottom_right {
-        position: absolute;
-        top: 56%;
-        left: 65%;
-        background-color: #129633;
       }
     }
     & > .right {
@@ -380,26 +434,42 @@ export default {
     display: flex;
     & > div {
       background-color: #ffffff;
-      height: calc(100vh - 360px);
       padding: 10px;
-      &>div{
-        height: 350px;
+      min-height: 350px;
+      & > div {
+        height: 320px;
       }
     }
     & > .echarts_stata {
+        position: relative;
+      & > .stata {
+        width: 100%;
+        position: absolute;
+      }
       flex: 2.5;
     }
     & > .echarts_info {
       flex: 1;
       margin: 0 20px;
+      position: relative;
+      & > .info {
+        width: 100%;
+        position: absolute;
+      }
     }
     & > .echarts_rank {
+      position: relative;
       flex: 1;
+      & >.rank{
+        width: 95%;
+        position: absolute;
+      }
     }
   }
 }
 h4 {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+  margin: 0 0 10px 0;
 }
-
 </style>

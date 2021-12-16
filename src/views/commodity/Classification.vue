@@ -21,8 +21,7 @@
           :row-class-name="rowClassNameFun"
           :header-row-class-name="headerRowClassName"
           size="mini"
-          max-height="500px"
-          style="width: 100%"
+          style="width: 98%"
           @select="selectFun"
           @select-all="selectAllFun"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
@@ -80,6 +79,7 @@
 </template>
 
 <script>
+import {mapActions} from "vuex"
 export default {
   data() {
     return {
@@ -164,11 +164,68 @@ export default {
             }
           ]
        
-        }
+        },
+         {
+          id: 10,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num:88,
+        },
+         {
+          id: 11,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num:88,
+        },
+         {
+          id: 12,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num:88,
+        },
+         {
+          id: 13,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num:88,
+        },
+         {
+          id: 14,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num:88,
+        },
+           {
+          id: 15,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num:88,
+        },
+           {
+          id: 16,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num:88,
+        },
+           {
+          id: 17,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num:88,
+        },
       ],
     };
   },
   methods: {
+    ...mapActions(["getCategoryList"]),
      initData(data) {
       data.forEach((item) => {
         item.isSelect = false; //默认为不选中
@@ -335,20 +392,27 @@ get isShow() { return Math.ceil(this.articles.length / this.pageSize) == this.pa
 }
 this.renderDynamic = pageDown.Num
   },
-
+async commodityInfo(){
+  let res = await this.getCategoryList({});
+  console.log(res)
+} 
   },   
   mounted(){
     this.initData(this.renderDynamic);
   },
+  created(){
+    this.commodityInfo()
+  }
  
 };
 </script>
 
 <style lang="scss" scoped>
 .wrap {
-  display: grid;
-  grid-template-rows: 20% 70% 10%;
+
   background-color: #fcf9fa;
+  height: calc(100vh - 100px);
+  overflow-y:auto;
   & .title {
     padding: 20px;
     font-weight: 800;
@@ -381,6 +445,9 @@ this.renderDynamic = pageDown.Num
         margin-bottom: 15px;
       }
     }
+  }
+  & .footer{
+    margin-top: 10px;
   }
 }
 .ml-10 {

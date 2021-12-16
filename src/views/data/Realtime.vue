@@ -1,16 +1,61 @@
 <template>
   <div class="warp">
     <div class="main-t">
-      <h3>实时数据</h3>
-      <span>更新时间</span>
-      <span class="date">2019-12-19 13:21:25</span>
+      <div class="main-t_left">
+        <h3>实时数据</h3>
+        <span>更新时间</span>
+        <span class="date">2019-12-19 13:21:25</span>
+      </div>
+      <div>
+        <el-cascader :options="options">
+          <template slot-scope="{ data }">
+            <span>{{ data.label }}</span>
+          </template>
+        </el-cascader>
+      </div>
     </div>
     <div class="main_c">
       <div class="main_c-left">
         <h3>成交统计</h3>
         <div class="statistics"></div>
       </div>
-      <div class="main_c-right">数据统计</div>
+      <div class="main_c-right">
+        <h3>数据统计</h3>
+        <div>
+          <div class="pub">
+            <img src="../../assets/images/icon-order.png" alt="" />
+            <div>
+              <div>订单量</div>
+              <h3>201</h3>
+              <div>-0.3% 同比昨日</div>
+            </div>
+          </div>
+          <div class="pub">
+            <img src="../../assets/images/icon-price.png" alt="" />
+            <div>
+              <div>客单价(元)</div>
+              <h3>28,429</h3>
+              <div>+1.1% 同比昨日</div>
+            </div>
+          </div>
+          <div class="pub">
+            <img src="../../assets/images/icon-browse.png" alt="" />
+            <div>
+              <div>浏览量</div>
+              <h3>38,127</h3>
+              <div>+3.9% 同比昨日</div>
+            </div>
+          </div>
+          <div class="pub">
+            <img src="../../assets/images/icon-paid.png" alt="" />
+            <div>
+              <div>待付款订单</div>
+              <h3>9</h3>
+              <div>-2.1% 同比昨日</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="main_c-left">
         <h3>商品概括</h3>
         <el-table
@@ -18,14 +63,11 @@
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
-   
-          <el-table-column prop="ranking" label="排名" >
+          <el-table-column prop="ranking" label="排名"> </el-table-column>
+          <el-table-column prop="name" label="商品"> </el-table-column>
+          <el-table-column prop="quantity" label="销量" :sortable="true">
           </el-table-column>
-          <el-table-column prop="name" label="商品" >
-          </el-table-column>
-          <el-table-column prop="quantity" label="销量" :sortable="true" width="180">
-          </el-table-column>
-          <el-table-column prop="money" label="成交金额" sortable width="180">
+          <el-table-column prop="money" label="成交金额" sortable>
           </el-table-column>
         </el-table>
       </div>
@@ -33,8 +75,30 @@
         <h3>品牌销售额占比</h3>
         <div class="ranking"></div>
       </div>
-      <div class="main_c-c" style="margin-right: 4%">采购商销售额排行榜</div>
-      <div class="main_c-c">供应商销售额排行榜</div>
+      <div class="main_c-c" style="margin-right: 1.5%">
+        <h3>采购商销售额排行榜</h3>
+        <el-table
+          :data="tableData"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column prop="ranking" label="排名"> </el-table-column>
+          <el-table-column prop="name" label="商品"> </el-table-column>
+          <el-table-column prop="money" label="成交金额"> </el-table-column>
+        </el-table>
+      </div>
+      <div class="main_c-c">
+        <h3>供应商销售额排行榜</h3>
+        <el-table
+          :data="tableData"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column prop="ranking" label="排名"> </el-table-column>
+          <el-table-column prop="name" label="商品"> </el-table-column>
+          <el-table-column prop="money" label="成交金额"> </el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
@@ -48,17 +112,22 @@ export default {
         {
           name: "可乐",
           money: 5000,
-          quantity:1000
+          quantity: 1000,
         },
         {
           name: "王小虎",
-          money: 8000,
-          quantity:100
+          money: 5500,
+          quantity: 100,
         },
         {
           name: "王小虎",
-          money: 10000,
-          quantity:10
+          money: 40000,
+          quantity: 10,
+        },
+      ],
+      options: [
+        {
+          label: "全部终端",
         },
       ],
     };
@@ -72,11 +141,19 @@ export default {
       return row.address;
     },
     statistics() {
-      var chartDom = document.getElementsByClassName("statistics");
+      var chartDom = document.getElementsByClassName("statistics")[0];
+
       var myChart = echarts.init(chartDom);
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
       var option;
 
       option = {
+        title: {
+          subtext: "纯属虚构",
+          left: "left",
+        },
         xAxis: {
           type: "category",
           data: [
@@ -104,6 +181,9 @@ export default {
     ranking() {
       var chartDom = document.getElementsByClassName("ranking")[0];
       var myChart = echarts.init(chartDom);
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
       var option;
 
       option = {
@@ -144,33 +224,43 @@ export default {
     },
   },
   created() {
-    this.tableData.sort(function(a,b){
-      return b.money-a.money
-    })
-    this.tableData.forEach((e,index)=>{
-      e['ranking']=index+1
-    })
+    this.tableData.sort(function (a, b) {
+      return b.money - a.money;
+    });
+    this.tableData.forEach((e, index) => {
+      e["ranking"] = index + 1;
+    });
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.warp {
+  overflow-y: auto;
+  height: 86vh;
+}
 .ranking {
   height: 98%;
 }
 .main-t {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: #c8c8c8;
+  padding-right: 2%;
 }
-.main-t > h3 {
+.main-t_left {
+  display: flex;
+  align-items: center;
+}
+.main-t h3 {
   margin-right: 15px;
   color: #000;
 }
 .date {
   margin-left: 10px;
 }
-#tj {
+.statistics {
   height: 98%;
 }
 .main_c {
@@ -178,23 +268,40 @@ export default {
   flex-wrap: wrap;
 }
 .main_c-left {
-  padding: 20px;
-  width: 56%;
-  margin: 2.5% 3% 0 0;
+  padding: 2%;
+  width: 50%;
+  margin: 2.5% 1.5% 0 0;
   height: 40vh;
   background-color: #fff;
 }
 .main_c-right {
-  padding: 20px;
-  width: 33%;
+  padding: 2%;
+  width: 40%;
   height: 40vh;
   margin: 2.5% 0 0 0;
   background-color: #fff;
 }
 .main_c-c {
-  width: 48%;
+  width: 45%;
   height: 40vh;
   margin-top: 2.5%;
   background-color: #fff;
+  padding: 2%;
+}
+img {
+  width: 45px;
+  height: 45px;
+  margin-right:3%;
+  border-radius: 45px;
+}
+.pub {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  height: 18vh;
+}
+.main_c-right > div {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

@@ -440,17 +440,20 @@ export default {
       }
     }
     & > .echarts_stata {
+        position: relative;
       & > .stata {
         width: 100%;
-        min-width: 500px;
+        position: absolute;
       }
       flex: 2.5;
     }
     & > .echarts_info {
       flex: 1;
       margin: 0 20px;
+      position: relative;
       & > .info {
-        min-width: 240px;
+        width: 100%;
+        position: absolute;
       }
     }
     & > .echarts_rank {

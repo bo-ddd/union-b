@@ -33,6 +33,7 @@
         <h4>平台使用情况</h4>
         <div class="main">
           <div class="top">
+            <span></span>
             <div class="top_left">
               <span class="font-15">80%</span>
               <span class="font-12">日均活跃度</span>
@@ -47,10 +48,12 @@
             </div>
           </div>
           <div class="bottom">
+            <span></span>
             <div class="bottom_left">
               <span class="font-20">80%</span>
               <span class="font-16">日均活跃度</span>
             </div>
+            <span></span>
             <div class="bottom_center">
               <span class="font-15">80%</span>
               <span class="font-12">日均活跃度</span>
@@ -86,7 +89,12 @@
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
         <div class="rank">
-          <el-table :data="tableData" stripe style="width: 100%; height: 100%" :fit="true">
+          <el-table
+            :data="tableData"
+            stripe
+            style="width: 100%; height: 100%"
+            :fit="true"
+          >
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
             <el-table-column prop="address" label="销售量"> </el-table-column>
@@ -339,7 +347,7 @@ export default {
       flex-flow: column;
       justify-content: space-between;
       width: 200px;
-      padding: 20px;
+      padding: 15px 20px;
       & > div {
         width: 100%;
         height: 110px;
@@ -387,6 +395,11 @@ export default {
             margin: 10px 20px;
             justify-content: center;
             padding: 5px;
+            transition: 1s;
+          }
+          & > div:hover{
+            transform: scale(1.5);
+            z-index: 1;
           }
         }
         & > .top {
@@ -407,7 +420,6 @@ export default {
             background-color: #6058df;
             transform: scale(1.3);
             box-shadow: 0 0 10px #1c2d59;
-
           }
           & > .bottom_center {
             background-color: #e7536b;
@@ -416,7 +428,6 @@ export default {
             background-color: #129633;
             transform: scale(1.3);
             box-shadow: 0 0 10px #0d3c36;
-
           }
         }
       }
@@ -441,7 +452,8 @@ export default {
       }
     }
     & > .echarts_stata {
-        position: relative;
+      width: 100%;
+      position: relative;
       & > .stata {
         width: 100%;
         position: absolute;
@@ -460,7 +472,7 @@ export default {
     & > .echarts_rank {
       position: relative;
       flex: 1;
-      & >.rank{
+      & > .rank {
         width: 95%;
         position: absolute;
       }

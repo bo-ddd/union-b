@@ -74,7 +74,7 @@
               layout="sizes"
             >
             </el-pagination>
-            <div>条，输入按回车</div>
+            <div>输入按回车</div>
           </div>
           <div class="block2">
             <el-pagination
@@ -218,7 +218,7 @@ export default {
         color: #999999;
         font-size: 14px;
         & .el-pagination {
-          padding: 5px 5px;
+          padding: 5px 5px; 
         }
       }
     }

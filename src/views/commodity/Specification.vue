@@ -3,7 +3,9 @@
     <div class="wrap_interior">
       <div class="tit">商品规格</div>
       <div class="addspebut">
-        <el-button type="primary" size="small">添加规格</el-button>
+        <el-button type="primary" size="small" @click="addspecification()"
+          >添加规格</el-button
+        >
       </div>
       <el-table
         ref="multipleTable"
@@ -60,7 +62,7 @@
         <div class="footer_left">
           <el-button type="primary" plain size="small">保存排序</el-button>
           <el-button plain class="batch_del_btn" size="small"
-            >批量删除</el-button
+            @click="batchesDelete">批量删除</el-button
           >
         </div>
         <div class="footer_right">
@@ -72,18 +74,18 @@
               layout="sizes"
             >
             </el-pagination>
-            <div>条，输入按回车</div>
+            <div>输入按回车</div>
           </div>
           <div class="block2">
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage4"
-                :page-size="100"
-                :total="6"
-                layout="total,prev, pager, next"
-              >
-              </el-pagination>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage4"
+              :page-size="100"
+              :total="6"
+              layout="total, prev, pager, next"
+            >
+            </el-pagination>
           </div>
         </div>
       </div>
@@ -166,6 +168,12 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+    addspecification() {
+      console.log("添加成功");
+    },
+    batchesDelete(){
+      console.log('批量删除成功');
+    }
   },
 };
 </script>
@@ -174,8 +182,11 @@ export default {
 .wrap {
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
+  overflow: hidden;
   & .wrap_interior {
-    min-width: 1200px;
+    // min-width: 1200px;
+    overflow-y:auto;
+    height: 85vh;
   }
   & .tit {
     background-color: #eceff1;
@@ -189,7 +200,6 @@ export default {
   }
   & .footer {
     padding: 20px;
-    min-width: 1200px;
     display: flex;
     align-items: center;
     background-color: #ffffff;
@@ -204,12 +214,13 @@ export default {
       justify-content: center;
       width: 80%;
       justify-content: space-between;
-      & .block{
+      & .block {
         display: flex;
         align-items: center;
         color: #999999;
-        & .el-pagination{
-          padding: 5px 5px;
+        font-size: 14px;
+        & .el-pagination {
+          padding: 5px 5px; 
         }
       }
     }

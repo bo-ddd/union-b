@@ -6,7 +6,7 @@
   <el-form-item label="分类名称" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item>
-  <el-form-item label="分类名称" prop="name">
+  <el-form-item label="上级分类" prop="name">
 <el-popover
   placement="bottom"
   width="400"
@@ -30,35 +30,44 @@
    </el-select>
 </el-popover>
   </el-form-item>
- <el-form-item label="商品模板" prop="name">
+ <!-- <el-form-item label="商品模板" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item>
  <el-form-item label="排序号" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item>
  <el-form-item label="订单推荐分类" prop="name">
-     <el-radio v-model="radio" label="1">是</el-radio>
-  <el-radio v-model="radio" label="0">否</el-radio>
+     <el-radio v-model="radio1" label="1">是</el-radio>
+  <el-radio v-model="radio1" label="0">否</el-radio>
   </el-form-item>
  <el-form-item label="商城前端显示" prop="name">
-     <el-radio v-model="radio" label="1">是</el-radio>
-  <el-radio v-model="radio" label="0">否</el-radio>
+     <el-radio v-model="radio2" label="1">是</el-radio>
+  <el-radio v-model="radio2" label="0">否</el-radio>
   </el-form-item>
    <el-form-item label="页面标题" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item>
    <el-form-item label="分享说明" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
-  </el-form-item>
+  </el-form-item> -->
    <el-form-item label="分类图片" prop="name">
-      <el-tag type="info">图片</el-tag>
+      <el-upload
+  action="https://jsonplaceholder.typicode.com/posts/"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
   </el-form-item>
 
 </el-form>
        </div>
           <div class="minor-classify">
                   <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-  <el-form-item label="分类编码" prop="name">
+  <!-- <el-form-item label="分类编码" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item>
    <el-form-item label="商家编码" prop="name">
@@ -80,7 +89,7 @@
   <el-cascader
     v-model="value"
     :options="options"
-    @change="handleChange"></el-cascader>
+    @change="handleChanges"></el-cascader>
 </div>
   </div>
    <el-select slot="reference" v-model="value"  style="width:100%">
@@ -89,25 +98,34 @@
 </el-popover>
   </el-form-item>
  <el-form-item label="商城推荐分类" prop="name">
-     <el-radio v-model="radio" label="1">是</el-radio>
-  <el-radio v-model="radio" label="0">否</el-radio>
+     <el-radio v-model="radio3" label="1">是</el-radio>
+  <el-radio v-model="radio3" label="0">否</el-radio>
   </el-form-item>
  <el-form-item label="订货前端显示" prop="name">
-     <el-radio v-model="radio" label="1">是</el-radio>
-  <el-radio v-model="radio" label="0">否</el-radio>
+     <el-radio v-model="radio4" label="1">是</el-radio>
+  <el-radio v-model="radio4" label="0">否</el-radio>
   </el-form-item>
  <el-form-item label="触屏端开单显示" prop="name">
-     <el-radio v-model="radio" label="1">是</el-radio>
-  <el-radio v-model="radio" label="0">否</el-radio>
+     <el-radio v-model="radio5" label="1">是</el-radio>
+  <el-radio v-model="radio5" label="0">否</el-radio>
   </el-form-item>
    <el-form-item label="SEO关键字" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item>
    <el-form-item label="SEO描述" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
-  </el-form-item>
+  </el-form-item> -->
    <el-form-item label="广告图片" prop="name">
-      <el-tag type="info">图片</el-tag>
+   <el-upload
+  action="https://jsonplaceholder.typicode.com/posts/"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
   </el-form-item>
 
 </el-form>
@@ -120,7 +138,13 @@
 export default {
  data() {
       return {
-        radio:'1',
+         dialogImageUrl: '',
+        dialogVisible: false,
+        radio1:'1',
+          radio2:'1',
+        radio3:'1',
+          radio4:'1',
+        radio5:'1',
         value:'',
         ruleForm: {
           name: '',
@@ -132,23 +156,6 @@ export default {
           resource: '',
           desc: ''
         },
-          tableData: [ {
-          id: 1,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-          children: [{
-              id: 31,
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-              id: 32,
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-          }]
-        }],
          options: [{
           value: 'zhinan',
           label: '指南',
@@ -371,6 +378,13 @@ export default {
       };
     },
     methods: {
+        handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -380,6 +394,12 @@ export default {
             return false;
           }
         });
+      },
+      handleChange(){
+        console.log('a')
+      },
+      handleChanges(){
+        console.log('b')
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

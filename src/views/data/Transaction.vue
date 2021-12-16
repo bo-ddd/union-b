@@ -115,10 +115,16 @@ export default {
     };
   },
   mounted() {
-    this.drawnBar();
-    this.drawnPie();
-    this.drawnTotal();
+    let myBarChart = this.drawnBar();
+    let myPieChart = this.drawnPie();
+    let myTotalChart = this.drawnTotal();
+    window.addEventListener("resize", function () {
+      myBarChart.resize();
+      myPieChart.resize();
+      myTotalChart.resize();
+    });
   },
+
   methods: {
     drawnBar() {
       // 基于准备好的dom，初始化echarts实例
@@ -190,6 +196,7 @@ export default {
           },
         ],
       });
+      return myChart;
     },
     drawnPie() {
       let myChart = echarts.init(document.getElementsByClassName("type")[0]);
@@ -231,6 +238,7 @@ export default {
           },
         ],
       });
+      return myChart;
     },
     drawnTotal() {
       let myChart = echarts.init(document.getElementsByClassName("info")[0]);
@@ -292,6 +300,7 @@ export default {
           },
         ],
       });
+      return myChart;
     },
   },
 };
@@ -304,7 +313,6 @@ export default {
 .wrap {
   height: calc(100vh - 100px);
   min-width: 1000px;
-  background-color: #fcf9fa;
   & > .header {
     & > div {
       padding: 10px;
@@ -351,7 +359,7 @@ export default {
       }
       & > div {
         width: 25%;
-        height: 25%;
+        height: 56%;
         border-radius: 50%;
         display: flex;
         flex-flow: column;
@@ -439,6 +447,9 @@ export default {
       }
     }
     & > .echarts_stata {
+      & > .stata {
+        width: 100%;
+      }
       flex: 2.5;
     }
     & > .echarts_info {
@@ -447,6 +458,9 @@ export default {
     }
     & > .echarts_rank {
       flex: 1;
+      & > .rank {
+        width: 280px;
+      }
     }
   }
 }

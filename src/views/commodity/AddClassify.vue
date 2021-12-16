@@ -390,9 +390,9 @@ export default {
 
 <style lang="scss" scoped>
 .wrap{
-  height: 100vh;
-  overflow: auto;
-  & .main-classify{
+  height: calc(100vh - 100px);
+  overflow-y:auto;
+  & .main-classify,.minor-classify{
       background-color: #fff;
     & .el-form{
       padding:20px 10px ;
@@ -404,7 +404,6 @@ export default {
   }
   & .minor-classify{
     margin-top: 30px;
-      background-color: #fff;
   }
 }
 ::v-deep .el-form-item__label{

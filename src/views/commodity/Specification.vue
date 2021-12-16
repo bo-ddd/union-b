@@ -3,7 +3,9 @@
     <div class="wrap_interior">
       <div class="tit">商品规格</div>
       <div class="addspebut">
-        <el-button type="primary" size="small">添加规格</el-button>
+        <el-button type="primary" size="small" @click="addspecification()"
+          >添加规格</el-button
+        >
       </div>
       <el-table
         ref="multipleTable"
@@ -46,44 +48,52 @@
           show-overflow-tooltip
           align="center"
         >
-          <template>
-            <el-button type="primary" i class="el-icon-edit cell1"></el-button>
+          <template slot-scope="scope">
             <el-button
               type="primary"
               i
-              class="el-icon-delete cell2"
+              class="el-icon-edit cell1"
+              @click="editListData"
             ></el-button>
+            <el-button
+              i class="el-icon-delete cell2"
+              @click.native.prevent="deleteRow(scope.$index, tableData)"
+              type="text"             
+            >
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="footer">
         <div class="footer_left">
           <el-button type="primary" plain size="small">保存排序</el-button>
-          <el-button plain class="batch_del_btn" size="small"
+          <el-button
+            plain
+            class="batch_del_btn"
+            size="small"
+            @click="batchesDelete"
             >批量删除</el-button
           >
         </div>
         <div class="footer_right">
           <div class="block">
-            <div>每页显示</div>
             <el-pagination
               :current-page="currentPage4"
-              :page-sizes="[6]"
+              :page-sizes="[6, 10, 15, 20, 30, 50, 100]"
               layout="sizes"
             >
             </el-pagination>
-            <div>条，输入按回车</div>
+            <div>输入按回车</div>
           </div>
           <div class="block2">
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage4"
-                :page-size="100"
-                :total="6"
-                layout="total,prev, pager, next"
-              >
-              </el-pagination>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :page-size="100"
+              :total="6"
+              layout="total, prev, pager, next"
+            >
+            </el-pagination>
           </div>
         </div>
       </div>
@@ -92,14 +102,15 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
       input: 10,
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
       currentPage4: 4,
+      pagination: true,
+      pageNum: 10,
+      pageSize: 1,
       tableData: [
         {
           id: "1",
@@ -148,6 +159,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["getSpecificationList"]),
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -166,6 +178,30 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+    //添加规格
+    addspecification() {
+      console.log("添加成功");
+    },
+    //批量删除
+    batchesDelete() {
+      console.log("批量删除成功");
+    },
+    //单个修改
+    editListData() {
+      console.log("单个修改成功");
+    },
+    //单个删除
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
+    },
+  },
+  async created() {
+    let res = await this.getSpecificationList({
+      pagination: this.pagination,
+      pageNum: this.pageNum,
+      pageSize: this.pageSize,
+    });
+    console.log(res);
   },
 };
 </script>
@@ -174,8 +210,10 @@ export default {
 .wrap {
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
+  overflow: hidden;
   & .wrap_interior {
-    min-width: 1200px;
+    overflow-y: auto;
+    height: 85vh;
   }
   & .tit {
     background-color: #eceff1;
@@ -189,7 +227,6 @@ export default {
   }
   & .footer {
     padding: 20px;
-    min-width: 1200px;
     display: flex;
     align-items: center;
     background-color: #ffffff;
@@ -204,11 +241,12 @@ export default {
       justify-content: center;
       width: 80%;
       justify-content: space-between;
-      & .block{
+      & .block {
         display: flex;
         align-items: center;
         color: #999999;
-        & .el-pagination{
+        font-size: 14px;
+        & .el-pagination {
           padding: 5px 5px;
         }
       }
@@ -234,5 +272,6 @@ export default {
   background-color: #ff8b53;
   padding: 10px 10px;
   border: none;
+  color: #ffffff;
 }
 </style>

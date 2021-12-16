@@ -69,8 +69,8 @@
       </el-table-column>
     </el-table>
       </div>
-      <el-footer><el-button type="primary">保存</el-button></el-footer>
         </div>
+      <el-footer><el-button type="primary">保存</el-button></el-footer>
       </div>
   </div>
 </template>
@@ -94,6 +94,10 @@ export default {
             id: '3',
           }, {
             id: '4',
+          },{
+            id: '5',
+          },{
+            id: '6',
           }]
       }
     },
@@ -106,21 +110,22 @@ export default {
 <style lang="scss" scoped>
 .main{
   background: #ffffff;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  min-height: 77vh;
 }
 .mains{
-  margin: 0 10px;
+  margin: 0 20px;
 }
 .message{
   width: 100%;
-  // height: 250px;
   border-top: 2px solid #e5e5e5;
-  // border-bottom: 2px solid #e5e5e5;
 }
 .h1{
-  padding: 5px 0;
+  padding: 15px 0;
 }
 .top{
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .el-input__inners {
   width: 200px;

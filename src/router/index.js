@@ -489,13 +489,13 @@ export const routes = [{
                     import ( /* webpackChunkName: "theme" */ '../views/set/Theme')
             },
             {
-                path: '/set/userinfo',
-                name: 'UserInfo',
+                path: '/set/feedback',
+                name: 'Feedback',
                 meta: {
-                    title: '用户信息',
+                    title: '意见反馈',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "userinfo" */ '../views/set/UserInfo')
+                    import ( /* webpackChunkName: "feedback" */ '../views/set/Feedback')
             },
             {
                 path: '/set/password',

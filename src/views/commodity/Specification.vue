@@ -9,26 +9,26 @@
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
-        style="width: 100%"
         stripe
       >
-        <el-table-column type="selection" width="55" align="center">
+        <el-table-column type="selection" align="center">
         </el-table-column>
-        <el-table-column label="id" width="240" align="center">
+        <el-table-column label="id" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
         <el-table-column
           prop="name"
           label="规格名称"
-          width="240"
+        
           align="center"
+          show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
           prop="address"
           label="备注"
           show-overflow-tooltip
-          width="240"
+        
           align="center"
         >
         </el-table-column>
@@ -36,7 +36,7 @@
           prop="list"
           label="排列顺序"
           show-overflow-tooltip
-          width="240"
+       
           align="center"
         >
           <template>
@@ -47,7 +47,7 @@
           prop="address"
           label="操作"
           show-overflow-tooltip
-          width="240"
+        
           align="center"
         >
           <template>

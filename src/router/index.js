@@ -57,7 +57,16 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "customer" */ '../views/data/Customer')
-            }
+            },
+            {
+                path: '/data/analysis',
+                name: 'Analysis',
+                meta: {
+                    title: '分析报告'
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "analysis" */ '../views/data/Analysis')
+            },
         ]
     },
     {
@@ -324,15 +333,6 @@ export const routes = [{
                     import ( /* webpackChunkName: "navigation" */ '../views/content/Navigation')
             },
             {
-                path: '/content/article',
-                name: 'Article',
-                meta: {
-                    title: '文章管理',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "article" */ '../views/content/Article')
-            },
-            {
                 path: '/content/label',
                 name: 'ContLabel',
                 meta: {
@@ -406,6 +406,44 @@ export const routes = [{
             },
         ]
     },
+    {
+        path: '/article',
+        name: 'Article',
+        component: Home,
+        meta: {
+            title: '文章管理',
+            icon: 'el-icon-document'
+        },
+        children: [{
+                path: '/article/articlelist',
+                name: 'ArticleList',
+                meta: {
+                    title: '文章列表',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "articlelist" */ '../views/article/ArticleList')
+            },
+            {
+                path: '/article/addarticle',
+                name: 'AddArticle',
+                meta: {
+                    title: '新增文章',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "articlelist" */ '../views/article/AddArticle')
+            },
+            {
+                path: '/article/details',
+                name: 'Details',
+                meta: {
+                    title: '文章详情',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "details" */ '../views/article/Details')
+            },
+        ]
+    },
+
     {
         path: '/supplier',
         name: 'Supplier',
@@ -489,13 +527,13 @@ export const routes = [{
                     import ( /* webpackChunkName: "theme" */ '../views/set/Theme')
             },
             {
-                path: '/set/userinfo',
-                name: 'UserInfo',
+                path: '/set/feedback',
+                name: 'Feedback',
                 meta: {
-                    title: '用户信息',
+                    title: '意见反馈',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "userinfo" */ '../views/set/UserInfo')
+                    import ( /* webpackChunkName: "feedback" */ '../views/set/Feedback')
             },
             {
                 path: '/set/password',

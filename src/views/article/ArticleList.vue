@@ -1,6 +1,6 @@
 <template>
   <div>
-      userinfo
+      Article
   </div>
 </template>
 

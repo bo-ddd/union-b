@@ -20,7 +20,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '数据中心',
-            icon: 'el-icon-s-data'
+            icon: 'el-icon-data-line'
         },
         children: [{
                 path: '/data/realtime',
@@ -57,7 +57,16 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "customer" */ '../views/data/Customer')
-            }
+            },
+            {
+                path: '/data/analysis',
+                name: 'Analysis',
+                meta: {
+                    title: '分析报告'
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "analysis" */ '../views/data/Analysis')
+            },
         ]
     },
     {
@@ -66,7 +75,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '订单管理',
-            icon: 'el-icon-s-order'
+            icon: 'el-icon-notebook-1'
         },
         children: [{
                 path: '/order/index',
@@ -248,7 +257,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '营销管理',
-            icon: 'el-icon-s-ticket'
+            icon: 'el-icon-wallet'
         },
         children: [{
                 path: '/marketing/seckill',
@@ -312,7 +321,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '内容管理',
-            icon: 'el-icon-document'
+            icon: 'el-icon-tickets'
         },
         children: [{
                 path: '/content/navigation',
@@ -322,15 +331,6 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "navigation" */ '../views/content/Navigation')
-            },
-            {
-                path: '/content/article',
-                name: 'Article',
-                meta: {
-                    title: '文章管理',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "article" */ '../views/content/Article')
             },
             {
                 path: '/content/label',
@@ -407,6 +407,44 @@ export const routes = [{
         ]
     },
     {
+        path: '/article',
+        name: 'Article',
+        component: Home,
+        meta: {
+            title: '文章管理',
+            icon: 'el-icon-document'
+        },
+        children: [{
+                path: '/article/articlelist',
+                name: 'ArticleList',
+                meta: {
+                    title: '文章列表',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "articlelist" */ '../views/article/ArticleList')
+            },
+            {
+                path: '/article/addarticle',
+                name: 'AddArticle',
+                meta: {
+                    title: '新增文章',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "articlelist" */ '../views/article/AddArticle')
+            },
+            {
+                path: '/article/details',
+                name: 'Details',
+                meta: {
+                    title: '文章详情',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "details" */ '../views/article/Details')
+            },
+        ]
+    },
+
+    {
         path: '/supplier',
         name: 'Supplier',
         component: Home,
@@ -440,7 +478,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '商户管理',
-            icon: 'el-icon-s-shop'
+            icon: 'el-icon-house'
         },
         children: [{
                 path: '/merchant/index',
@@ -472,12 +510,30 @@ export const routes = [{
         ]
     },
     {
+        path: '/news',
+        name: 'News',
+        component: Home,
+        meta: {
+            title: '消息管理',
+            icon: 'el-icon-bell'
+        },
+        children: [{
+            path: '/news/notification',
+            name: 'Notification',
+            meta: {
+                title: '系统通知',
+            },
+            component: () =>
+                import ( /* webpackChunkName: "notification" */ '../views/news/Notification')
+        }, ]
+    },
+    {
         path: '/set',
         name: 'Set',
         component: Home,
         meta: {
             title: '系统设置',
-            icon: 'el-icon-s-tools'
+            icon: 'el-icon-set-up'
         },
         children: [{
                 path: '/set/theme',
@@ -489,13 +545,13 @@ export const routes = [{
                     import ( /* webpackChunkName: "theme" */ '../views/set/Theme')
             },
             {
-                path: '/set/userinfo',
-                name: 'UserInfo',
+                path: '/set/feedback',
+                name: 'Feedback',
                 meta: {
-                    title: '用户信息',
+                    title: '意见反馈',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "userinfo" */ '../views/set/UserInfo')
+                    import ( /* webpackChunkName: "feedback" */ '../views/set/Feedback')
             },
             {
                 path: '/set/password',

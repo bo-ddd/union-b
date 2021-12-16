@@ -2,7 +2,7 @@
   <div>
     <div class="wrap">
       <div class="title">
-        <span>分类管理</span>
+        <span>商品分类</span>
       </div>
       <div class="content">
         <div class="new-module">
@@ -21,8 +21,7 @@
           :row-class-name="rowClassNameFun"
           :header-row-class-name="headerRowClassName"
           size="mini"
-          max-height="500px"
-          style="width: 100%"
+          style="width: 97%"
           @select="selectFun"
           @select-all="selectAllFun"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
@@ -32,7 +31,7 @@
           <el-table-column
             label="分类名称"
             prop="classificationName"
-            width="300"
+            width="200"
           ></el-table-column>
           <el-table-column label="关联" width="200">
             <template slot-scope="scope">
@@ -53,10 +52,19 @@
           <el-table-column prop="num" label="数量" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip>
-            <template>
-              <el-link type="primary">升序</el-link>
-              <el-link class="ml-10" type="primary">降序</el-link>
-              <el-link class="ml-10" type="danger">删除</el-link>
+            <template slot-scope="scope">
+              <el-link type="primary" @click="ascendingOrder(scope.row.id)"
+                >升序</el-link
+              >
+              <el-link
+                class="ml-10"
+                type="primary"
+                @click="sescendingOrder(scope.row.id)"
+                >降序</el-link
+              >
+              <el-link class="ml-10" type="danger" @click="deleteData(scope.row.id)"
+                >删除</el-link
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -80,96 +88,153 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      checked:true,
-      size:"",
-      currentPage:1,
-      articles:[],
+      checked: true,
+      size: "",
+      currentPage: 1,
+      articles: [],
       renderDynamic: [
         {
           id: 1,
           parentId: 0,
           date: "2016-05-02",
           classificationName: "奶粉",
-          num:88,
+          num: 88,
         },
         {
           id: 2,
           parentId: 0,
           date: "2016-05-01",
-           classificationName: "奶粉",
-           num:88,
+          classificationName: "奶粉1",
+          num: 88,
           children: [
             {
-              id: 3,
+              id: 12,
               parentId: 2,
               date: "2016-05-01",
-              association:"规格",
-               classificationName: "成人奶粉",
-              num:88,
+              association: "规格",
+              classificationName: "成人奶粉",
+              num: 88,
               children: [
                 {
-                  id: 4,
-                  parentId: 3,
+                  id: 15,
+                  parentId: 12,
                   date: "2016-05-01",
-                  association:"规格",
+                  association: "规格",
                   classificationName: "蒙牛成人奶粉",
-                  num:88,
+                  num: 88,
                 },
                 {
-                  id: 5,
-                  parentId: 3,
+                  id: 16,
+                  parentId: 12,
                   date: "2016-05-01",
-                    association:"规格",
+                  association: "规格",
                   classificationName: "蒙牛成人奶粉",
-                  num:88,
+                  num: 88,
                 },
               ],
             },
             {
-              id: 6,
+              id: 13,
               parentId: 2,
               date: "2016-05-01",
-              association:"规格",
-               classificationName: "成人奶粉",
-              num:88,
+              association: "规格",
+              classificationName: "成人奶粉",
+              num: 88,
             },
           ],
+        },
+        {
+          id: 3,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num: 88,
+          children: [
+            {
+              id: 14,
+              parentId: 3,
+              date: "2016-05-02",
+              classificationName: "婴儿奶粉",
+              association: "规格",
+              children: [
+                {
+                  id: 17,
+                  parentId: 14,
+                  date: "2016-05-02",
+                  classificationName: "蒙牛婴儿奶粉",
+                  association: "规格",
+                },
+              ],
+              num: 88,
+            },
+          ],
+        },
+        {
+          id: 4,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num: 88,
+        },
+        {
+          id: 5,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num: 88,
+        },
+        {
+          id: 6,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num: 88,
         },
         {
           id: 7,
           parentId: 0,
           date: "2016-05-02",
           classificationName: "奶粉",
-          num:88,
-          children:[
-            {
+          num: 88,
+        },
+        {
           id: 8,
-          parentId: 7,
+          parentId: 0,
           date: "2016-05-02",
-          classificationName: "婴儿奶粉",
-          association:"规格",
-          children:[
-            {
-               id: 9,
-          parentId: 8,
+          classificationName: "奶粉",
+          num: 88,
+        },
+        {
+          id: 9,
+          parentId: 0,
           date: "2016-05-02",
-          classificationName: "蒙牛婴儿奶粉",
-          association:"规格",
-            }
-          ],
-          num:88,
-            }
-          ]
-       
-        }
+          classificationName: "奶粉",
+          num: 88,
+        },
+        {
+          id: 10,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num: 88,
+        },
+        {
+          id: 11,
+          parentId: 0,
+          date: "2016-05-02",
+          classificationName: "奶粉",
+          num: 88,
+        },
       ],
     };
   },
   methods: {
-     initData(data) {
+    ...mapActions(["getCategoryList"]),
+    initData(data) {
       data.forEach((item) => {
         item.isSelect = false; //默认为不选中
         if (item.children && item.children.length) {
@@ -214,8 +279,8 @@ export default {
         if (row.parentId == 0) {
           if (row.children && row.children.length) {
             return 1;
-          }else{
-              return 4;
+          } else {
+            return 4;
           }
         } else {
           if (!row.children || !row.children.length) {
@@ -227,43 +292,43 @@ export default {
       }
       let result = {};
       //获取明确的节点
-      function getExplicitNode(data,parentId) {
-           data.forEach((item) => {
-               if(item.id == parentId) {
-                  result = item;
-               }
-               if(item.children && item.children.length) {
-                   getExplicitNode(item.children,parentId);
-               }
-            })
-            return result;
+      function getExplicitNode(data, parentId) {
+        data.forEach((item) => {
+          if (item.id == parentId) {
+            result = item;
+          }
+          if (item.children && item.children.length) {
+            getExplicitNode(item.children, parentId);
+          }
+        });
+        return result;
       }
       function operateLastLeve(row) {
         //操作的是子节点  1、获取父节点  2、判断子节点选中个数，如果全部选中则父节点设为选中状态，如果都不选中，则为不选中状态，如果部分选择，则设为不明确状态
-          let selectStatuaArr = [];
-          let item = getExplicitNode(that.renderDynamic,row.parentId);
-            selectStatuaArr = getSelectStatus(selectStatuaArr, item.children);
-            if (
-              selectStatuaArr.every((selectItem) => {
-                return true == selectItem;
-              })
-            ) {
-              item.isSelect = true;
-              that.$refs.product.toggleRowSelection(item, true);
-            } else if (
-              selectStatuaArr.every((selectItem) => {
-                return false == selectItem;
-              })
-            ) {
-              item.isSelect = false;
-              that.$refs.product.toggleRowSelection(item, false);
-            } else {
-              item.isSelect = "";
-            }
-            //则还有父级
-            if(item.parentId!=0) {
-                operateLastLeve(item)
-            }
+        let selectStatuaArr = [];
+        let item = getExplicitNode(that.renderDynamic, row.parentId);
+        selectStatuaArr = getSelectStatus(selectStatuaArr, item.children);
+        if (
+          selectStatuaArr.every((selectItem) => {
+            return true == selectItem;
+          })
+        ) {
+          item.isSelect = true;
+          that.$refs.product.toggleRowSelection(item, true);
+        } else if (
+          selectStatuaArr.every((selectItem) => {
+            return false == selectItem;
+          })
+        ) {
+          item.isSelect = false;
+          that.$refs.product.toggleRowSelection(item, false);
+        } else {
+          item.isSelect = "";
+        }
+        //则还有父级
+        if (item.parentId != 0) {
+          operateLastLeve(item);
+        }
       }
       //判断操作的是子级点复选框还是父级点复选框，如果是父级点，则控制子级点的全选和不全选
 
@@ -274,11 +339,11 @@ export default {
       } else if (levelSataus == 2) {
         selectAllChildrens(row.children);
         operateLastLeve(row);
-      } else if(levelSataus == 3) {
+      } else if (levelSataus == 3) {
         operateLastLeve(row);
       }
     },
-     checkIsAllSelect() {
+    checkIsAllSelect() {
       this.oneProductIsSelect = [];
       this.renderDynamic.forEach((item) => {
         this.oneProductIsSelect.push(item.isSelect);
@@ -289,20 +354,20 @@ export default {
       });
       return isAllSelect;
     },
-     selectAllFun(selection) {
+    selectAllFun(selection) {
       let isAllSelect = this.checkIsAllSelect();
       this.renderDynamic.forEach((item) => {
         item.isSelect = isAllSelect;
-         this.$refs.product.toggleRowSelection(item, !isAllSelect);
+        this.$refs.product.toggleRowSelection(item, !isAllSelect);
         this.selectFun(selection, item);
       });
     },
-     rowClassNameFun({ row }) {
+    rowClassNameFun({ row }) {
       if (row.isSelect === "") {
         return "indeterminate";
       }
     },
-     headerRowClassName() {
+    headerRowClassName() {
       let oneProductIsSelect = [];
       this.renderDynamic.forEach((item) => {
         oneProductIsSelect.push(item.isSelect);
@@ -312,43 +377,99 @@ export default {
       }
       return "";
     },
-  handleSizeChange(val){
-    return val
-  },
-  handleCurrentChange(val){
+    handleSizeChange(val) {
+      return val;
+    },
+    handleCurrentChange(val) {
       var pageDown = {
- //每页多少条
- pageSize: this.handleSizeChange()||10,
- //当前页数
- pageNum: val || 1,
- get offSize() {
- // 2 * (1-1) = 0;
- // 条数*(页数-1) 
- return this.pageSize * (this.pageNum - 1);
- },
- //每一页的内容
-get Num() {
- // article是你要分页的数据
- return this.articles.slice(this.offSize, this.offSize + this.pageSize);
-},
-get isShow() { return Math.ceil(this.articles.length / this.pageSize) == this.pageNum }
-}
-this.renderDynamic = pageDown.Num
+        //每页多少条
+        pageSize: this.handleSizeChange() || 10,
+        //当前页数
+        pageNum: val || 1,
+        get offSize() {
+          // 2 * (1-1) = 0;
+          // 条数*(页数-1)
+          return this.pageSize * (this.pageNum - 1);
+        },
+        //每一页的内容
+        get Num() {
+          // article是你要分页的数据
+          return this.articles.slice(
+            this.offSize,
+            this.offSize + this.pageSize
+          );
+        },
+        get isShow() {
+          return (
+            Math.ceil(this.articles.length / this.pageSize) == this.pageNum
+          );
+        },
+      };
+      this.renderDynamic = pageDown.Num;
+    },
+    async commodityInfo() {
+      let res = await this.getCategoryList({});
+      console.log(res);
+    },
+    mySort(arr){
+      arr.sort((a,b)=>{
+        let num1 = a.id;
+        let num2 = b.id;
+        return num1 - num2
+      })
+      this.renderDynamic = arr
+      console.log(this.renderDynamic)
+    },
+    ascendingOrder(id) {
+      if (id == 1) return;
+      this.renderDynamic.forEach((item) => {
+        if (item.id == id - 1) {
+          item.id = id;
+          return;
+        }
+        if (item.id == id) {
+          item.id = id - 1;
+        }
+      });
+      this.mySort(this.renderDynamic);
+    },
+    sescendingOrder(id) {
+      if(id == this.renderDynamic.length-1) return;
+        this.renderDynamic.forEach(el=>{
+          if(el.id == id+1){
+              el.id =id
+              return;
+          }
+          if(el.id ==id){
+            el.id = id +1
+          }
+        })
+        this.mySort(this.renderDynamic);
+    },
+    deleteData(val) {
+    let data = this.renderDynamic.slice()
+     data.forEach(el=>{
+       if(el.id == val){
+         data.splice(val-1,1)
+       }
+     })
+     this.mySort(data)
+    },
   },
-
-  },   
-  mounted(){
+  mounted() {
     this.initData(this.renderDynamic);
   },
- 
+  created() {
+    // this.commodityInfo();
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .wrap {
-  display: grid;
-  grid-template-rows: 20% 70% 10%;
   background-color: #fcf9fa;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
   & .title {
     padding: 20px;
     font-weight: 800;
@@ -364,7 +485,7 @@ this.renderDynamic = pageDown.Num
         color: #ffccd8;
         margin-top: 15px;
         margin-left: 15px;
-        margin-bottom: 15px;
+        margin-bottom: 30px;
         border: 1px solid #ffc7d5;
         border-radius: 5px;
         font-size: 12px;
@@ -378,9 +499,17 @@ this.renderDynamic = pageDown.Num
         border-radius: 5px;
         margin-left: 10px;
         font-size: 12px;
-        margin-bottom: 15px;
+        margin-bottom: 30px;
       }
     }
+    & .el-table{
+     margin-left: 15px;
+    }
+  }
+  & .footer {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
   }
 }
 .ml-10 {

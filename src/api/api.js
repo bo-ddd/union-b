@@ -68,6 +68,16 @@ export default {
     getSpecificationList(params) {
         return axios.post('/specification/list', params, postConfig)
     },
+    /**
+     * @description 添加类目接口
+     * @params {
+     *  title : [String],   类目昵称
+     *  pid   : [Number]    父id
+     * } 
+     */
+    createCategory(params) {
+        return axios.post('/category/create', params, postConfig)
+    },
 
 
     //数据中心

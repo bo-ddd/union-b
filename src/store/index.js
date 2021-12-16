@@ -45,6 +45,11 @@ export default new Vuex.Store({
         getSpecificationList(ctx, payload) {
             return Api.getSpecificationList(payload);
         },
+        //添加类目接口
+        createCategory(ctx, payload) {
+            return Api.createCategory(payload);
+        },
+
 
 
         //数据中心

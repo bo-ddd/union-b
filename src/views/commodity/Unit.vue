@@ -9,17 +9,17 @@
     </div>
     <div class="table">
       <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}">
-        <el-table-column prop="Serial_number" label="序号" width="200"> <!-- Serial_number-->
+        <el-table-column prop="Serial_number" label="序号" width="200">
         </el-table-column>
-        <el-table-column prop="Unit_name" label="单位名称" width="200"> <!-- Unit_name -->
+        <el-table-column prop="Unit_name" label="单位名称" width="200">
         </el-table-column>
-        <el-table-column prop="Unit_type" label="单位类型" width="200"> <!-- Unit_type-->
+        <el-table-column prop="Unit_type" label="单位类型" width="200"> 
         </el-table-column>
-        <el-table-column prop="Unit_source" label="单位来源" width="200"> <!-- Unit_source -->
+        <el-table-column prop="Unit_source" label="单位来源" width="200"> 
         </el-table-column>
-        <el-table-column prop="sort" label="排序" width="200"> <!-- sort-->
+        <el-table-column prop="sort" label="排序" width="200">
         </el-table-column>
-        <el-table-column prop="operation" label="操作"> <!-- operation-->
+        <el-table-column prop="operation" label="操作">
         </el-table-column>
       </el-table>
     </div>

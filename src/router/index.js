@@ -20,7 +20,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '数据中心',
-            icon: 'el-icon-s-data'
+            icon: 'el-icon-data-line'
         },
         children: [{
                 path: '/data/realtime',
@@ -75,7 +75,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '订单管理',
-            icon: 'el-icon-s-order'
+            icon: 'el-icon-notebook-1'
         },
         children: [{
                 path: '/order/index',
@@ -257,7 +257,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '营销管理',
-            icon: 'el-icon-s-ticket'
+            icon: 'el-icon-wallet'
         },
         children: [{
                 path: '/marketing/seckill',
@@ -478,7 +478,7 @@ export const routes = [{
         component: Home,
         meta: {
             title: '商户管理',
-            icon: 'el-icon-s-shop'
+            icon: 'el-icon-house'
         },
         children: [{
                 path: '/merchant/index',
@@ -510,12 +510,30 @@ export const routes = [{
         ]
     },
     {
+        path: '/news',
+        name: 'News',
+        component: Home,
+        meta: {
+            title: '消息管理',
+            icon: 'el-icon-bell'
+        },
+        children: [{
+            path: '/news/notification',
+            name: 'Notification',
+            meta: {
+                title: '系统通知',
+            },
+            component: () =>
+                import ( /* webpackChunkName: "notification" */ '../views/news/Notification')
+        }, ]
+    },
+    {
         path: '/set',
         name: 'Set',
         component: Home,
         meta: {
             title: '系统设置',
-            icon: 'el-icon-s-tools'
+            icon: 'el-icon-set-up'
         },
         children: [{
                 path: '/set/theme',

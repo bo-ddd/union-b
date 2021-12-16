@@ -47,6 +47,13 @@ export default new Vuex.Store({
         },
 
 
+        //数据中心
+        //交易数据接口
+        getTradeData(ctx, payload) {
+            return Api.getTradeData(payload);
+        },
+
+
         //内容管理
         //快捷入口接口
         getQuickList(ctx, payload) {

@@ -435,6 +435,7 @@ export default {
     & > div {
       background-color: #ffffff;
       padding: 10px;
+      min-height: 350px;
       & > div {
         height: 320px;
       }

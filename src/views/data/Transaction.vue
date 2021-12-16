@@ -4,7 +4,11 @@
       <div class="left">
         <div>
           <div>
-            <img src="@/assets/images/iconfont-merchant.png" alt="" class="img" />
+            <img
+              src="@/assets/images/iconfont-merchant.png"
+              alt=""
+              class="img"
+            />
           </div>
           <div class="ml-5">
             <h3>888</h3>
@@ -13,7 +17,11 @@
         </div>
         <div>
           <div>
-            <img src="@/assets/images/iconfont-product.png" alt="" class="img" />
+            <img
+              src="@/assets/images/iconfont-product.png"
+              alt=""
+              class="img"
+            />
           </div>
           <div class="ml-5">
             <h3>8888</h3>
@@ -22,30 +30,36 @@
         </div>
       </div>
       <div class="center">
-        <section><h4>平台使用情况</h4></section>
-        <div class="top_left">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="top_center">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
-        </div>
-        <div class="top_right">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="bottom_left">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
-        </div>
-        <div class="bottom_center">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="bottom_right">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
+        <h4>平台使用情况</h4>
+        <div class="main">
+          <div class="top">
+            <div class="top_left">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+            <div class="top_center">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+            <div class="top_right">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="bottom_left">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+            <div class="bottom_center">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+            <div class="bottom_right">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+          </div>
         </div>
 
         <!-- 平台使用情况 -->
@@ -72,7 +86,7 @@
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
         <div class="rank">
-          <el-table :data="tableData" stripe style="width: 100%; height: 100%">
+          <el-table :data="tableData" stripe style="width: 100%; height: 100%" :fit="true">
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
             <el-table-column prop="address" label="销售量"> </el-table-column>
@@ -313,11 +327,11 @@ export default {
 .wrap {
   height: calc(100vh - 100px);
   min-width: 1000px;
+  overflow-y: hidden;
   & > .header {
     & > div {
       padding: 10px;
     }
-    height: 240px;
     display: flex;
     & > .left {
       background-color: #ffffff;
@@ -325,7 +339,7 @@ export default {
       flex-flow: column;
       justify-content: space-between;
       width: 200px;
-      padding: 0;
+      padding: 20px;
       & > div {
         width: 100%;
         height: 110px;
@@ -350,85 +364,61 @@ export default {
     & > .center {
       background-color: #ffffff;
       flex: 1.5;
-      display: flex;
-      flex-flow: wrap;
-      justify-content: space-between;
       margin: 0 20px;
-      position: relative;
-      & > section {
-        width: 100%;
-      }
-      & > div:hover {
-        transform: scale(1.2);
-      }
-      & > div {
-        width: 25%;
-        height: 56%;
-        border-radius: 50%;
+      & > .main {
         display: flex;
-        flex-flow: column;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        cursor: pointer;
-        transition: 1s;
-        & > .font-20 {
-          font-size: 20px;
-          font-weight: bolder;
+        flex-flow: wrap;
+        justify-content: space-between;
+        --size: 60px;
+        font-size: 12px;
+        & > .top,
+        .bottom {
+          width: 100%;
+          display: flex;
+          justify-content: space-evenly;
+          & > div {
+            min-width: var(--size);
+            min-height: var(--size);
+            border-radius: 50%;
+            display: flex;
+            flex-flow: column;
+            text-align: center;
+            color: white;
+            margin: 10px 20px;
+            justify-content: center;
+            padding: 5px;
+          }
         }
-        & > .font-15 {
-          font-size: 15px;
-          font-weight: bolder;
+        & > .top {
+          & > .top_left {
+            background-color: #f59604;
+          }
+          & > .top_center {
+            background-color: #2396e6;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #0e3a53;
+          }
+          & > .top_right {
+            background-color: #0bafa6;
+          }
         }
-        & > .font-16 {
-          font-size: 16px;
+        & > .bottom {
+          & > .bottom_left {
+            background-color: #6058df;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #1c2d59;
+
+          }
+          & > .bottom_center {
+            background-color: #e7536b;
+          }
+          & > .bottom_right {
+            background-color: #129633;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #0d3c36;
+
+          }
         }
-        & > .font-12 {
-          font-size: 12px;
-        }
-      }
-      & > div:nth-child(even) {
-        width: 70px;
-        height: 70px;
-      }
-      & > .top_left {
-        position: absolute;
-        top: 18%;
-        left: 18%;
-        background-color: #f59604;
-        box-shadow: 0 0 10px #f59604;
-      }
-      & > .top_center {
-        position: absolute;
-        top: 16%;
-        left: 38%;
-        background-color: #2396e6;
-      }
-      & > .top_right {
-        position: absolute;
-        top: 20%;
-        left: 65%;
-        background-color: #0bafa6;
-        box-shadow: 0 0 10px #0bafa6;
-      }
-      & > .bottom_left {
-        position: absolute;
-        top: 56%;
-        left: 18%;
-        background-color: #6058df;
-      }
-      & > .bottom_center {
-        position: absolute;
-        top: 65%;
-        left: 45%;
-        background-color: #e7536b;
-        box-shadow: 0 0 10px #e7536b;
-      }
-      & > .bottom_right {
-        position: absolute;
-        top: 56%;
-        left: 65%;
-        background-color: #129633;
       }
     }
     & > .right {
@@ -444,7 +434,6 @@ export default {
     display: flex;
     & > div {
       background-color: #ffffff;
-      height: calc(100vh - 360px);
       padding: 10px;
       & > div {
         height: 320px;
@@ -453,17 +442,23 @@ export default {
     & > .echarts_stata {
       & > .stata {
         width: 100%;
+        min-width: 500px;
       }
       flex: 2.5;
     }
     & > .echarts_info {
       flex: 1;
       margin: 0 20px;
+      & > .info {
+        min-width: 240px;
+      }
     }
     & > .echarts_rank {
+      position: relative;
       flex: 1;
-      & > .rank {
-        width: 280px;
+      & >.rank{
+        width: 95%;
+        position: absolute;
       }
     }
   }

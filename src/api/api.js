@@ -58,4 +58,30 @@ export default {
         return axios.post('/category/list', params, postConfig)
     },
 
+    /**
+     * @description 类目规格接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getSpecificationList(params) {
+        return axios.post('/specification/list', params, postConfig)
+    },
+
+
+    //内容管理
+    /**
+     * @description 快捷入口接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getQuickList(params) {
+        return axios.post('/content/list', params, postConfig)
+    },
+
 }

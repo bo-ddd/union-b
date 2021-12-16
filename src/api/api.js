@@ -57,7 +57,6 @@ export default {
     getCategoryList(params) {
         return axios.post('/category/list', params, postConfig)
     },
-
     /**
      * @description 类目规格接口
      * @params {
@@ -69,6 +68,17 @@ export default {
     getSpecificationList(params) {
         return axios.post('/specification/list', params, postConfig)
     },
+
+
+    //数据中心
+    /**
+     * @description 交易数据接口
+     * @params 无
+     */
+    getTradeData(params) {
+        return axios.post('/data/trade', params, postConfig)
+    },
+
 
 
     //内容管理

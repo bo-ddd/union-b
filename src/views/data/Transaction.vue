@@ -175,7 +175,7 @@ export default {
           {
             type: "category",
             // prettier-ignore
-            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
           },
         ],
         yAxis: [
@@ -185,7 +185,7 @@ export default {
         ],
         series: [
           {
-            name: "Rainfall",
+            name: "去年同期",
             type: "bar",
             data: [
               2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4,
@@ -202,7 +202,7 @@ export default {
             },
           },
           {
-            name: "Evaporation",
+            name: "今年",
             type: "bar",
             data: [
               2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0,
@@ -286,12 +286,12 @@ export default {
             axisTick: {
               show: false,
             },
-            data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
           },
         ],
         series: [
           {
-            name: "Income",
+            name: "收入",
             type: "bar",
             stack: "Total",
             label: {
@@ -303,7 +303,7 @@ export default {
             data: [320, 302, 341, 374, 390, 450, 420],
           },
           {
-            name: "Expenses",
+            name: "成本",
             type: "bar",
             stack: "Total",
             label: {

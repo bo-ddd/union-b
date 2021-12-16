@@ -56,7 +56,6 @@ export default {
     computed: {
         ...mapGetters(['routes'])
     },
-    
 
 }
 </script>
@@ -131,6 +130,10 @@ export default {
                 margin-left: 10px;
             }
         }
+    }
+
+    & ::v-deep .el-main {
+        overflow: auto;
     }
 
 }

@@ -3,13 +3,161 @@
     <div class="title">
       <h2>客户概况</h2>
       <div class="block">
-        <span class="demonstration">事件筛选</span>
+        <span class="demonstration">时间筛选</span>
         <el-date-picker
           v-model="value1"
           type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          end-placeholder="结束日期"
+        >
+        </el-date-picker>
+      </div>
+    </div>
+    <div class="header">
+      <div>
+        <span>浏览数</span>
+        <span class="num">123,456</span>
+      </div>
+      <div>
+        <span>访客数</span>
+        <span class="num">123,456</span>
+      </div>
+      <div>
+        <span>采购商注册人数</span>
+        <span class="num">123,456</span>
+      </div>
+      <div>
+        <span>采购商购买人数</span>
+        <span class="num">123,456</span>
+      </div>
+      <div>
+        <span>供应商入驻人数</span>
+        <span class="num">123,456</span>
+      </div>
+      <div>
+        <span>供应商成交人数</span>
+        <span class="num">123,456</span>
+      </div>
+    </div>
+    <div class="main">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="采购商成交排行" name="first">
+          <div class="main_header">
+            <div class="main_header-left">
+              <span>地区</span>
+              <el-select v-model="value" placeholder="全部地区">
+                <el-option
+                  v-for="item in cities"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <span style="float: left">{{ item.label }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{
+                    item.value
+                  }}</span>
+                </el-option>
+              </el-select>
+              <el-select v-model="value" placeholder="全部">
+                <el-option
+                  v-for="item in cities"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <span style="float: left">{{ item.label }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{
+                    item.value
+                  }}</span>
+                </el-option>
+              </el-select>
+            </div>
+            <div class="main_header-right">
+              <el-button>查询</el-button>
+              <el-button>重置</el-button>
+            </div>
+          </div>
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop="date" label="排名" width="250">
+            </el-table-column>
+            <el-table-column prop="username" label="用户名" width="250">
+            </el-table-column>
+            <el-table-column prop="company" label="公司名称" width="300">
+            </el-table-column>
+            <el-table-column
+              prop="fixtureNumber"
+              label="成交数"
+              sortable
+              width="250"
+            >
+            </el-table-column>
+            <el-table-column prop="price" label="付款金额" sortable width="250">
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="供应商成交排行" name="second">
+          <div class="main_header">
+            <div class="main_header-left">
+              <span>地区</span>
+              <el-select v-model="value" placeholder="全部地区">
+                <el-option
+                  v-for="item in cities"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <span style="float: left">{{ item.label }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{
+                    item.value
+                  }}</span>
+                </el-option>
+              </el-select>
+              <el-select v-model="value" placeholder="全部">
+                <el-option
+                  v-for="item in cities"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <span style="float: left">{{ item.label }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{
+                    item.value
+                  }}</span>
+                </el-option>
+              </el-select>
+            </div>
+            <div class="main_header-right">
+              <el-button>查询</el-button>
+              <el-button>重置</el-button>
+            </div>
+          </div>
+          <div>
+            <el-table :data="tableData" stripe style="width: 100%" fit>
+              <el-table-column prop="date" label="排名" width="250">
+              </el-table-column>
+              <el-table-column prop="username" label="用户名" width="250">
+              </el-table-column>
+              <el-table-column prop="company" label="公司名称" width="300">
+              </el-table-column>
+              <el-table-column prop="fixtureNumber" label="成交数" sortabl width="250">
+              </el-table-column>
+              <el-table-column prop="price" label="付款金额" sortable  width="250">
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+      <div class="block">
+        <span class="demonstration">时间筛选</span>
+        <el-date-picker
+          v-model="value2"
+          unlink-panels
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        >
         </el-date-picker>
       </div>
     </div>
@@ -18,54 +166,150 @@
 
 <script>
 export default {
-    data() {
-      return {
-        pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
+  data() {
+    return {
+      tableData: [
+        {
+          date: "1",
+          username: "马云",
+          company: "阿里巴巴",
+          fixtureNumber: "520",
+          price: "1296500",
         },
-        value1: '',
-        value2: ''
-      };
-    }
-  };
+        {
+          date: "2",
+          username: "马化腾",
+          company: "腾讯",
+          fixtureNumber: "310",
+          price: "823200",
+        },
+        {
+          date: "3",
+          username: "王健林",
+          company: "万达",
+          fixtureNumber: "301",
+          price: "658941",
+        },
+        {
+          date: "4",
+          username: "许家印",
+          company: "恒大",
+          fixtureNumber: "250",
+          price: "23561",
+        },
+      ],
+      cities: [
+        {
+          value: "Beijing",
+          label: "北京",
+        },
+        {
+          value: "Shanghai",
+          label: "上海",
+        },
+        {
+          value: "Nanjing",
+          label: "南京",
+        },
+        {
+          value: "Chengdu",
+          label: "成都",
+        },
+        {
+          value: "Shenzhen",
+          label: "深圳",
+        },
+        {
+          value: "Guangzhou",
+          label: "广州",
+        },
+      ],
+      value: "",
+      value1: "",
+      value2: "",
+      activeName: "first",
+    };
+  },
+  created() {},
+  methods: {},
+};
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-main {
+  background-color: #a71e4c !important;
+}
 .wrap {
   & .title {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 50px;
-    & .block{
-      & .demonstration{
+    & .block {
+      & .demonstration {
         margin-right: 15px;
       }
     }
   }
+  & .header {
+    display: flex;
+    height: 100px;
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 0 20px;
+    & > div {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      & > .num {
+        display: block;
+        margin-top: 5px;
+        font-size: 20px;
+        font-weight: 700;
+      }
+    }
+  }
+  & .main {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    & ::v-deep .el-tabs__item.is-top {
+      font-weight: 700;
+      font-size: 18px;
+      margin-top: 30px;
+    }
+    & ::v-deep .el-tabs__item:hover {
+      color: #fd84a2;
+    }
+    & ::v-deep .el-tabs__item.is-active {
+      color: #fd84a2;
+    }
+    & ::v-deep .el-tabs__active-bar {
+      background-color: #fd84a2;
+    }
+    & .block {
+      position: absolute;
+      right: 0px;
+      top: 30px;
+      & .demonstration {
+        margin-right: 15px;
+      }
+    }
+    & .main_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+      padding: 0 15px;
+      & .el-select {
+        margin-left: 25px;
+      }
+    }
+  }
+}
+::v-deep .el-tabs__nav-wrap::after {
+  width: 0;
 }
 </style>

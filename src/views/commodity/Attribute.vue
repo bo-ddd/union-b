@@ -2,6 +2,7 @@
   <div>
     <!-- ProductParameters商品属性 -->
     <div class="main">
+      <div class="mains">
       <h1 class="h1">属性项信息</h1>
       <div class="message">
         <div class="main-top">
@@ -27,20 +28,21 @@
       <h1 class="h1">属性值列表</h1>
       <div class="list">
         <el-button type="primary" class="button">新增属性值</el-button>
+        <!-- <el-button type="danger" class="button">新增属性值</el-button> -->
         <el-table
       :data="tableData"
       style="width: 100%">
-      <el-table-column prop="id" label="id" width="290">
+      <el-table-column prop="id" label="id" width="100">
       </el-table-column>
       <el-table-column
         prop="name"
         label="属性值"
-        width="250">
+        >
         <template>
           <input type="text" class="property" v-model="name">
         </template>
       </el-table-column>
-      <el-table-column label="加价(元)" width="200">
+      <el-table-column label="加价(元)" >
         <template>
           <input type="text" class="inp" v-model="input">
         </template>
@@ -48,7 +50,7 @@
       <el-table-column
         prop="sort"
         label="排序"
-        width="250">
+        >
         <template>
           <img src="../../assets/images/zhiding.png" class="iconimg">
           <img src="../../assets/images/xiangshang.png" class="iconimg">
@@ -58,15 +60,16 @@
       <el-table-column
         prop="operate"
         label="操作"
-        width="250">
+        align="center"
+        >
         <template>
           <el-button
           size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+          type="danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+      </div>
       </div>
       <el-footer><el-button type="primary">保存</el-button></el-footer>
       </div>
@@ -92,51 +95,56 @@ export default {
             id: '3',
           }, {
             id: '4',
-          }]
+          },
+          {
+            id: '5',
+          },
+          {
+            id: '6',
+          }
+          ]
       }
     },
     methods: {
-      handleDelete(index, row) {
-        console.log(index, row);
-      }
+      
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .main{
-  margin: 0 10px 0 10px;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  min-height: 77vh;
   background: #ffffff;
+}
+.mains{
+  margin: 0 20px;
 }
 .message{
   width: 100%;
-  // height: 250px;
   border-top: 2px solid #e5e5e5;
-  // border-bottom: 2px solid #e5e5e5;
 }
 .h1{
-  padding: 5px 0;
+  padding: 15px 0;
 }
 .top{
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .el-input__inners {
   width: 200px;
 }
 .list{
   width: 100%;
-  // height: 250px;
   border-top: 2px solid #e5e5e5;
-  // border-bottom: 2px solid #e5e5e5;
 }
 .button{
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
 }
 .inp{
   border: 1px solid #d8dce5;
   width: 50px;
   height: 32px;
-  // text-indent: 16px;
   border-radius: 5px;
   text-align: center;
 }

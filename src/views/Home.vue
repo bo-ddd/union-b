@@ -132,5 +132,9 @@ export default {
         }
     }
 
+    & ::v-deep .el-main {
+        overflow: auto;
+    }
+
 }
 </style>

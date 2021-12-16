@@ -115,19 +115,17 @@ export default {
   min-height: 77vh;
 }
 .mains{
-  margin: 0 10px;
+  margin: 0 20px;
 }
 .message{
   width: 100%;
-  // height: 250px;
   border-top: 2px solid #e5e5e5;
-  // border-bottom: 2px solid #e5e5e5;
 }
 .h1{
-  padding: 5px 0;
+  padding: 15px 0;
 }
 .top{
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .el-input__inners {
   width: 200px;

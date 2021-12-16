@@ -42,6 +42,7 @@
               <span class="font-20">80%</span>
               <span class="font-16">日均活跃度</span>
             </div>
+            <span></span>
             <div class="top_right">
               <span class="font-15">80%</span>
               <span class="font-12">日均活跃度</span>
@@ -62,6 +63,7 @@
               <span class="font-20">80%</span>
               <span class="font-16">日均活跃度</span>
             </div>
+            <span></span>
           </div>
         </div>
 
@@ -227,12 +229,12 @@ export default {
           trigger: "item",
         },
         legend: {
-          top: "5%",
-          left: "center",
+          top: "20%",
+          left:"70%",
         },
         series: [
           {
-            name: "Access From",
+            name: "品类分布",
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
@@ -240,22 +242,15 @@ export default {
               show: false,
               position: "center",
             },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "40",
-                fontWeight: "bold",
-              },
-            },
             labelLine: {
               show: false,
             },
             data: [
-              { value: 1048, name: "Search Engine" },
-              { value: 735, name: "Direct" },
-              { value: 580, name: "Email" },
-              { value: 484, name: "Union Ads" },
-              { value: 300, name: "Video Ads" },
+              { value: 1048, name: "电器" },
+              { value: 735, name: "食品" },
+              { value: 580, name: "家居" },
+              { value: 484, name: "电子产品" },
+              { value: 300, name: "母婴用品" },
             ],
           },
         ],
@@ -335,19 +330,19 @@ export default {
 .wrap {
   height: calc(100vh - 100px);
   min-width: 1000px;
-  overflow-y: hidden;
   & > .header {
     & > div {
       padding: 10px;
     }
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(1,1fr 1.5fr 1.5fr);
+    gap: 20px;
     & > .left {
       background-color: #ffffff;
       display: flex;
       flex-flow: column;
       justify-content: space-between;
-      width: 200px;
-      padding: 15px 20px;
+      padding:20px;
       & > div {
         width: 100%;
         height: 110px;
@@ -372,7 +367,6 @@ export default {
     & > .center {
       background-color: #ffffff;
       flex: 1.5;
-      margin: 0 20px;
       & > .main {
         display: flex;
         flex-flow: wrap;
@@ -434,46 +428,36 @@ export default {
     }
     & > .right {
       background-color: #ffffff;
-
       flex: 1;
       & > .type {
-        height: 80%;
+        width: 100%;
+        height: 90%;
       }
     }
   }
   & > .footer {
-    display: flex;
+    min-height: 350px;
+    display: grid;
+    grid-template-columns: repeat(1,2fr 1fr 1fr);
+    gap: 20px;
     & > div {
       background-color: #ffffff;
       padding: 10px;
-      min-height: 350px;
       & > div {
-        height: 320px;
+        min-height: 320px;
       }
-    }
-    & > .echarts_stata {
-      width: 100%;
-      position: relative;
-      & > .stata {
-        width: 100%;
-        position: absolute;
-      }
-      flex: 2.5;
     }
     & > .echarts_info {
-      flex: 1;
-      margin: 0 20px;
       position: relative;
       & > .info {
-        width: 100%;
+        width: 90%;
         position: absolute;
       }
     }
     & > .echarts_rank {
       position: relative;
-      flex: 1;
       & > .rank {
-        width: 95%;
+        width: 90%;
         position: absolute;
       }
     }

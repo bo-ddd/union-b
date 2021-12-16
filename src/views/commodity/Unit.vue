@@ -22,8 +22,12 @@
           </template>
         </el-table-column>
         <el-table-column prop="operation" label="操作">
-             <el-link type="primary" @click="Disable">禁用</el-link>
+          <template slot-scope="scope">
+            <el-link type="primary" @click="Disable(scope.row)">禁用</el-link>
+          </template>
+          
         </el-table-column>
+        
       </el-table>
        <div class="block">
         <el-pagination :current-page="currentPage4"
@@ -60,7 +64,7 @@ export default {
           }, 
           {
             Serial_number: '3',
-            Unit_name: '件',
+            Unit_name: '3件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -68,7 +72,7 @@ export default {
           }, 
           {
             Serial_number: '4',
-            Unit_name: '件',
+            Unit_name: '4件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -214,30 +218,36 @@ export default {
         }
       },
       methods: {
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
-        },
         Topping(id){
           console.log(id+'置顶');
         },
         raise(id){
-          console.log(id+'上调');
+          // console.log(id+'上调');
           this.tableData.forEach(item=>{
+            if(item.Serial_number == id-1){
+              item.Serial_number = id;
+              return;
+            }
             if(item.Serial_number == id){
               item.Serial_number = id-1;
-              let superior = item.Serial_number
-              superior
             }
+           
           })
+          this.mySort(this.tableData);
         },
         Down(id){
           console.log(id+'下调');
         },
-        Disable(){
-          console.log('禁用');
+        Disable(a){
+          // console.log('禁用');
+          a.Unit_name = '';
+        },
+        mySort(tableData){
+            tableData.sort((a,b)=>{
+            var num1 = a.Serial_number;
+            var num2 = b.Serial_number;
+            return num1-num2;
+          })
         }
       },
 }
@@ -270,12 +280,10 @@ export default {
       height: 15px;
       margin: 0 1%;
       cursor: pointer;
-      color:#0080ff
     }
   }
   & .block{
     width: 100%;
-    height: 8%;
     display: flex;
     justify-content: center;
   }

@@ -59,13 +59,13 @@ export const routes = [{
                     import ( /* webpackChunkName: "customer" */ '../views/data/Customer')
             },
             {
-                path: '/data/portrait',
-                name: 'Portrait',
+                path: '/data/analysis',
+                name: 'Analysis',
                 meta: {
-                    title: '用户画像'
+                    title: '分析报告'
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "portrait" */ '../views/data/Portrait')
+                    import ( /* webpackChunkName: "analysis" */ '../views/data/Analysis')
             },
         ]
     },

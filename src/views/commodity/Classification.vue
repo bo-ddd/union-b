@@ -21,8 +21,7 @@
           :row-class-name="rowClassNameFun"
           :header-row-class-name="headerRowClassName"
           size="mini"
-          max-height="500px"
-          style="width: 100%"
+          style="width: 98%"
           @select="selectFun"
           @select-all="selectAllFun"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
@@ -410,9 +409,10 @@ async commodityInfo(){
 
 <style lang="scss" scoped>
 .wrap {
-  display: grid;
-  grid-template-rows: 10% 85% 10%;
+
   background-color: #fcf9fa;
+  height: calc(100vh - 100px);
+  overflow-y:auto;
   & .title {
     padding: 20px;
     font-weight: 800;

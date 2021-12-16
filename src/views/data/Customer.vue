@@ -4,13 +4,10 @@
       <h2>客户概况</h2>
       <div class="block">
         <span class="demonstration">时间筛选</span>
-        <el-date-picker
-          v-model="value1"
-          type="daterange"
+        <el-date-picker v-model="value1" type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        >
+          end-placeholder="结束日期">
         </el-date-picker>
       </div>
     </div>
@@ -41,109 +38,78 @@
       </div>
     </div>
     <div class="main">
-      <el-tabs v-model="activeName">
+      <el-tabs v-model="activeName" style="width:100%">
         <el-tab-pane label="采购商成交排行" name="first">
-          <div class="main_header">
-            <div class="main_header-left">
+          <div class="content">
+            <div class="content_header">
+              <div class="content-left">
               <span>地区</span>
               <el-select v-model="value" placeholder="全部地区">
-                <el-option
-                  v-for="item in cities"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+                <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left">{{ item.label }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{
-                    item.value
-                  }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{item.value}}</span>
                 </el-option>
               </el-select>
               <el-select v-model="value" placeholder="全部">
-                <el-option
-                  v-for="item in cities"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+                <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left">{{ item.label }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{
-                    item.value
-                  }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{item.value}}</span>
                 </el-option>
               </el-select>
-            </div>
-            <div class="main_header-right">
+              </div>
+              <div class="content-right">
               <el-button>查询</el-button>
               <el-button>重置</el-button>
+              </div>
             </div>
+            <el-table :data="tableData" stripe >
+            <el-table-column prop="date" label="排名" >
+            </el-table-column>
+            <el-table-column prop="username" label="用户名" >
+            </el-table-column>
+            <el-table-column prop="company" label="公司名称" >
+            </el-table-column>
+            <el-table-column prop="fixtureNumber" label="成交数" sortable >
+            </el-table-column>
+            <el-table-column prop="price" label="付款金额" sortable >
+            </el-table-column>
+            </el-table>
           </div>
-          <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="date" label="排名" width="250">
-            </el-table-column>
-            <el-table-column prop="username" label="用户名" width="250">
-            </el-table-column>
-            <el-table-column prop="company" label="公司名称" width="300">
-            </el-table-column>
-            <el-table-column
-              prop="fixtureNumber"
-              label="成交数"
-              sortable
-              width="250"
-            >
-            </el-table-column>
-            <el-table-column prop="price" label="付款金额" sortable width="250">
-            </el-table-column>
-          </el-table>
         </el-tab-pane>
         <el-tab-pane label="供应商成交排行" name="second">
-          <div class="main_header">
-            <div class="main_header-left">
+           <div class="content">
+            <div class="content_header">
+              <div class="content-left">
               <span>地区</span>
               <el-select v-model="value" placeholder="全部地区">
-                <el-option
-                  v-for="item in cities"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+                <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left">{{ item.label }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{
-                    item.value
-                  }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{item.value}}</span>
                 </el-option>
               </el-select>
               <el-select v-model="value" placeholder="全部">
-                <el-option
-                  v-for="item in cities"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+                <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left">{{ item.label }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{
-                    item.value
-                  }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{item.value}}</span>
                 </el-option>
               </el-select>
-            </div>
-            <div class="main_header-right">
+              </div>
+              <div class="content-right">
               <el-button>查询</el-button>
               <el-button>重置</el-button>
+              </div>
             </div>
-          </div>
-          <div>
-            <el-table :data="tableData" stripe style="width: 100%" fit>
-              <el-table-column prop="date" label="排名" width="250">
-              </el-table-column>
-              <el-table-column prop="username" label="用户名" width="250">
-              </el-table-column>
-              <el-table-column prop="company" label="公司名称" width="300">
-              </el-table-column>
-              <el-table-column prop="fixtureNumber" label="成交数" sortabl width="250">
-              </el-table-column>
-              <el-table-column prop="price" label="付款金额" sortable  width="250">
-              </el-table-column>
+            <el-table :data="tableData" stripe >
+            <el-table-column prop="date" label="排名" >
+            </el-table-column>
+            <el-table-column prop="username" label="用户名" >
+            </el-table-column>
+            <el-table-column prop="company" label="公司名称" >
+            </el-table-column>
+            <el-table-column prop="fixtureNumber" label="成交数" sortable >
+            </el-table-column>
+            <el-table-column prop="price" label="付款金额" sortable >
+            </el-table-column>
             </el-table>
           </div>
         </el-tab-pane>
@@ -236,10 +202,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+body{
+  min-width: 1000px;
+}
 ::v-deep .el-main {
   background-color: #a71e4c !important;
 }
 .wrap {
+  min-width: 1000px;
   & .title {
     display: flex;
     align-items: center;
@@ -297,12 +267,15 @@ export default {
         margin-right: 15px;
       }
     }
-    & .main_header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 80px;
-      padding: 0 15px;
+    & .content {
+      background-color: #fff;
+      padding: 10px 20px;
+      & .content_header{
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
       & .el-select {
         margin-left: 25px;
       }

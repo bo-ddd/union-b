@@ -4,7 +4,7 @@
       <div class="left">
         <div>
           <div>
-            <i class="">图片</i>
+            <img src="@/assets/images/iconfont-merchant.png" alt="" class="img" />
           </div>
           <div class="ml-5">
             <h3>888</h3>
@@ -13,7 +13,7 @@
         </div>
         <div>
           <div>
-            <i class="">图片</i>
+            <img src="@/assets/images/iconfont-product.png" alt="" class="img" />
           </div>
           <div class="ml-5">
             <h3>8888</h3>
@@ -337,6 +337,10 @@ export default {
         box-sizing: border-box;
         border-radius: 10px;
         & > div {
+          & > .img {
+            width: 50px;
+            height: 50px;
+          }
           & > h3 {
             font-size: 30px;
           }

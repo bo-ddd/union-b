@@ -436,7 +436,7 @@ export default {
     }
   }
   & > .footer {
-    min-height: 350px;
+    min-height: 250px;
     display: grid;
     grid-template-columns: repeat(1,2fr 1fr 1fr);
     gap: 20px;
@@ -444,7 +444,7 @@ export default {
       background-color: #ffffff;
       padding: 10px;
       & > div {
-        min-height: 320px;
+        min-height: 250px;
       }
     }
     & > .echarts_info {

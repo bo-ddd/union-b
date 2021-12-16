@@ -5,7 +5,7 @@
       <div class="m_m_center">
         <div class="m_m_c_top">
           <div>
-            <div class="commodity_status">
+            <!-- <div class="commodity_status">
               <span>商品状态</span>
               <el-select v-model="value" placeholder="请选择">
                 <el-option
@@ -40,9 +40,51 @@
                 </el-option>
               </el-select>
               <input type="search" class="search" placeholder="请输入" />
+            </div> -->
+            <div class="mains">
+            <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <el-form-item label="活动区域">
+    <el-select v-model="formInline.region" placeholder="活动区域">
+      <el-option label="区域一" value="shanghai"></el-option>
+      <el-option label="区域二" value="beijing"></el-option>
+      <el-option label="区域三" value="tianjian"></el-option>
+      <el-option label="区域四" value="guangzhou"></el-option>
+      <el-option label="区域五" value="shenzhen"></el-option>
+    </el-select>
+  </el-form-item>
+
+  <el-form-item label="活动区域">
+    <el-select v-model="formInline.region" placeholder="活动区域">
+      <el-option label="区域一" value="shanghai"></el-option>
+      <el-option label="区域二" value="beijing"></el-option>
+      <el-option label="区域三" value="tianjian"></el-option>
+      <el-option label="区域四" value="guangzhou"></el-option>
+      <el-option label="区域五" value="shenzhen"></el-option>
+    </el-select>
+  </el-form-item>
+  <el-form-item>
+  <div style="margin-top: 5px;">
+  <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+    <el-select v-model="select" slot="prepend" class="inputs">
+      <el-option label="餐厅名" value="1"></el-option>
+      <el-option label="订单号" value="2"></el-option>
+      <el-option label="用户电话" value="3"></el-option>
+    </el-select>
+    <el-select v-model="formInline.region" placeholder="活动区域">
+      <el-option label="区域一" value="shanghai"></el-option>
+      <el-option label="区域二" value="beijing"></el-option>
+      <el-option label="区域三" value="tianjian"></el-option>
+      <el-option label="区域四" value="guangzhou"></el-option>
+      <el-option label="区域五" value="shenzhen"></el-option>
+    </el-select>
+    <el-button slot="append" icon="el-icon-search"></el-button>
+  </el-input>
+</div>
+  </el-form-item>
+</el-form>
             </div>
           </div>
-          <div>
+          <div class="query">
             <div>查询</div>
             <div>重置</div>
           </div>
@@ -130,30 +172,14 @@ export default {
    */
   data() {
     return {
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
+      input1: '',
+      input2: '',
+      input3: '',
+      select: '',
+      formInline: {
+          user: '',
+          region: ''
         },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      value: "",
-
       tableData: [
         {
           date: "2016-05-03",
@@ -247,7 +273,7 @@ export default {
               line-height: 32px;
               border: 1px solid #dcdfe6;
               border-radius: 5px;
-              text-indent: 10px;
+              text-indent: 10px;  
               color: #c0c4cc;
             }
           }
@@ -255,6 +281,7 @@ export default {
         & > div:nth-of-type(2) {
           display: flex;
           align-items: center;
+          // margin-bottom: 3px;
           & > div {
             height: 32px;
             width: 60px;
@@ -340,7 +367,7 @@ input:-ms-input-placeholder {
   width: 100% !important;
 }
 ::v-deep .el-select {
-  width: 50% !important;
+  width: 70% !important;
 }
 ::v-deep .el-input__icon {
   line-height: 32px;
@@ -358,4 +385,24 @@ input:-ms-input-placeholder {
 //   width: 140px;
 //   height: 30px !important;
 // }
+.m_m_c_top{
+  // border: 2px solid red;
+}
+.el-form--inline .el-form-item {
+    // display: inline-block;
+    margin-right: -90px;
+    // vertical-align: top;
+}
+.el-select .el-input {
+    width: 130px;
+  }
+// .input-with-select .el-input-group__prepend {
+//     background-color: #fff;
+//   }
+.inputs{
+  margin-left: 20px;
+}
+.mains{
+  margin: 5px 0 -20px 0;
+}
 </style>

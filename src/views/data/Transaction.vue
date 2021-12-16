@@ -4,18 +4,18 @@
       <div class="left">
         <div>
           <div>
-            <i>图片</i>
+            <img src="@/assets/images/iconfont-merchant.png" alt="" class="img" />
           </div>
-          <div>
+          <div class="ml-5">
             <h3>888</h3>
             <span>平台商家总数</span>
           </div>
         </div>
         <div>
           <div>
-            <i>图片</i>
+            <img src="@/assets/images/iconfont-product.png" alt="" class="img" />
           </div>
-          <div>
+          <div class="ml-5">
             <h3>8888</h3>
             <span>平台商品总数</span>
           </div>
@@ -70,9 +70,9 @@
         <!--  -->
       </div>
       <div class="echarts_rank">
-          <h4>成交量排行榜</h4>
+        <h4>成交量排行榜</h4>
         <div class="rank">
-          <el-table :data="tableData" stripe style="width: 100%;height:100%">
+          <el-table :data="tableData" stripe style="width: 100%; height: 100%">
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
             <el-table-column prop="address" label="销售量"> </el-table-column>
@@ -115,29 +115,88 @@ export default {
     };
   },
   mounted() {
-    this.drawnBar();
-    this.drawnPie();
-    this.drawnTotal();
+    let myBarChart = this.drawnBar();
+    let myPieChart = this.drawnPie();
+    let myTotalChart = this.drawnTotal();
+    window.addEventListener("resize", function () {
+      myBarChart.resize();
+      myPieChart.resize();
+      myTotalChart.resize();
+    });
   },
+
   methods: {
     drawnBar() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = echarts.init(document.getElementsByClassName("stata")[0]);
       // 绘制图表
       myChart.setOption({
-        tooltip: {},
-        xAxis: {
-          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+        tooltip: {
+          trigger: "axis",
         },
-        yAxis: {},
+        legend: {
+          data: ["Rainfall", "Evaporation"],
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ["line", "bar"] },
+            restore: { show: true },
+            saveAsImage: { show: true },
+          },
+        },
+        calculable: true,
+        xAxis: [
+          {
+            type: "category",
+            // prettier-ignore
+            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          },
+        ],
+        yAxis: [
+          {
+            type: "value",
+          },
+        ],
         series: [
           {
-            name: "销量",
+            name: "Rainfall",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20],
+            data: [
+              2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4,
+              3.3,
+            ],
+            markPoint: {
+              data: [
+                { type: "max", name: "Max" },
+                { type: "min", name: "Min" },
+              ],
+            },
+            markLine: {
+              data: [{ type: "average", name: "Avg" }],
+            },
+          },
+          {
+            name: "Evaporation",
+            type: "bar",
+            data: [
+              2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0,
+              2.3,
+            ],
+            markPoint: {
+              data: [
+                { name: "Max", value: 182.2, xAxis: 7, yAxis: 183 },
+                { name: "Min", value: 2.3, xAxis: 11, yAxis: 3 },
+              ],
+            },
+            markLine: {
+              data: [{ type: "average", name: "Avg" }],
+            },
           },
         ],
       });
+      return myChart;
     },
     drawnPie() {
       let myChart = echarts.init(document.getElementsByClassName("type")[0]);
@@ -179,6 +238,7 @@ export default {
           },
         ],
       });
+      return myChart;
     },
     drawnTotal() {
       let myChart = echarts.init(document.getElementsByClassName("info")[0]);
@@ -240,6 +300,7 @@ export default {
           },
         ],
       });
+      return myChart;
     },
   },
 };
@@ -252,7 +313,6 @@ export default {
 .wrap {
   height: calc(100vh - 100px);
   min-width: 1000px;
-  background-color: #fcf9fa;
   & > .header {
     & > div {
       padding: 10px;
@@ -260,11 +320,12 @@ export default {
     height: 240px;
     display: flex;
     & > .left {
+      background-color: #ffffff;
       display: flex;
       flex-flow: column;
       justify-content: space-between;
-      height: 100%;
       width: 200px;
+      padding: 0;
       & > div {
         width: 100%;
         height: 110px;
@@ -276,6 +337,10 @@ export default {
         box-sizing: border-box;
         border-radius: 10px;
         & > div {
+          & > .img {
+            width: 50px;
+            height: 50px;
+          }
           & > h3 {
             font-size: 30px;
           }
@@ -284,7 +349,6 @@ export default {
     }
     & > .center {
       background-color: #ffffff;
-
       flex: 1.5;
       display: flex;
       flex-flow: wrap;
@@ -298,8 +362,8 @@ export default {
         transform: scale(1.2);
       }
       & > div {
-        width: 100px;
-        height: 100px;
+        width: 25%;
+        height: 56%;
         border-radius: 50%;
         display: flex;
         flex-flow: column;
@@ -382,11 +446,14 @@ export default {
       background-color: #ffffff;
       height: calc(100vh - 360px);
       padding: 10px;
-      &>div{
-        height: 350px;
+      & > div {
+        height: 320px;
       }
     }
     & > .echarts_stata {
+      & > .stata {
+        width: 100%;
+      }
       flex: 2.5;
     }
     & > .echarts_info {
@@ -395,11 +462,15 @@ export default {
     }
     & > .echarts_rank {
       flex: 1;
+      & > .rank {
+        width: 280px;
+      }
     }
   }
 }
 h4 {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+  margin: 0 0 10px 0;
 }
-
 </style>

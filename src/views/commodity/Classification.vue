@@ -21,7 +21,7 @@
           :row-class-name="rowClassNameFun"
           :header-row-class-name="headerRowClassName"
           size="mini"
-          style="width: 98%"
+          style="width: 97%"
           @select="selectFun"
           @select-all="selectAllFun"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
@@ -31,7 +31,7 @@
           <el-table-column
             label="分类名称"
             prop="classificationName"
-            width="300"
+            width="200"
           ></el-table-column>
           <el-table-column label="关联" width="200">
             <template slot-scope="scope">
@@ -447,7 +447,13 @@ export default {
         this.mySort(this.renderDynamic);
     },
     deleteData(val) {
-      console.log(val);
+    let data = this.renderDynamic.slice()
+     data.forEach(el=>{
+       if(el.id == val){
+         data.splice(val-1,1)
+       }
+     })
+     this.mySort(data)
     },
   },
   mounted() {
@@ -479,7 +485,7 @@ export default {
         color: #ffccd8;
         margin-top: 15px;
         margin-left: 15px;
-        margin-bottom: 15px;
+        margin-bottom: 30px;
         border: 1px solid #ffc7d5;
         border-radius: 5px;
         font-size: 12px;
@@ -493,12 +499,17 @@ export default {
         border-radius: 5px;
         margin-left: 10px;
         font-size: 12px;
-        margin-bottom: 15px;
+        margin-bottom: 30px;
       }
+    }
+    & .el-table{
+     margin-left: 15px;
     }
   }
   & .footer {
     margin-top: 10px;
+    display: flex;
+    justify-content: center;
   }
 }
 .ml-10 {

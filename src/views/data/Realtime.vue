@@ -18,12 +18,14 @@
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
-   
-          <el-table-column prop="ranking" label="排名" >
-          </el-table-column>
-          <el-table-column prop="name" label="商品" >
-          </el-table-column>
-          <el-table-column prop="quantity" label="销量" :sortable="true" width="180">
+          <el-table-column prop="ranking" label="排名"> </el-table-column>
+          <el-table-column prop="name" label="商品"> </el-table-column>
+          <el-table-column
+            prop="quantity"
+            label="销量"
+            :sortable="true"
+            width="180"
+          >
           </el-table-column>
           <el-table-column prop="money" label="成交金额" sortable width="180">
           </el-table-column>
@@ -48,17 +50,17 @@ export default {
         {
           name: "可乐",
           money: 5000,
-          quantity:1000
+          quantity: 1000,
         },
         {
           name: "王小虎",
           money: 8000,
-          quantity:100
+          quantity: 100,
         },
         {
           name: "王小虎",
           money: 10000,
-          quantity:10
+          quantity: 10,
         },
       ],
     };
@@ -72,11 +74,15 @@ export default {
       return row.address;
     },
     statistics() {
-      var chartDom = document.getElementsByClassName("statistics");
+      var chartDom = document.getElementsByClassName("statistics")[0];
       var myChart = echarts.init(chartDom);
       var option;
 
       option = {
+        title: {
+          subtext: "纯属虚构",
+          left: "left",
+        },
         xAxis: {
           type: "category",
           data: [
@@ -144,17 +150,21 @@ export default {
     },
   },
   created() {
-    this.tableData.sort(function(a,b){
-      return b.money-a.money
-    })
-    this.tableData.forEach((e,index)=>{
-      e['ranking']=index+1
-    })
+    this.tableData.sort(function (a, b) {
+      return b.money - a.money;
+    });
+    this.tableData.forEach((e, index) => {
+      e["ranking"] = index + 1;
+    });
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.warp {
+  overflow-y: auto;
+  height: 86vh;
+}
 .ranking {
   height: 98%;
 }
@@ -170,7 +180,7 @@ export default {
 .date {
   margin-left: 10px;
 }
-#tj {
+.statistics {
   height: 98%;
 }
 .main_c {

@@ -11,7 +11,7 @@
         tooltip-effect="dark"
         stripe
       >
-        <el-table-column type="selection" align="center">
+        <el-table-column type="selection" width="55" align="center">
         </el-table-column>
         <el-table-column label="id" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
@@ -19,7 +19,6 @@
         <el-table-column
           prop="name"
           label="规格名称"
-        
           align="center"
           show-overflow-tooltip
         >
@@ -28,7 +27,6 @@
           prop="address"
           label="备注"
           show-overflow-tooltip
-        
           align="center"
         >
         </el-table-column>
@@ -36,7 +34,6 @@
           prop="list"
           label="排列顺序"
           show-overflow-tooltip
-       
           align="center"
         >
           <template>
@@ -47,7 +44,6 @@
           prop="address"
           label="操作"
           show-overflow-tooltip
-        
           align="center"
         >
           <template>
@@ -69,23 +65,25 @@
         </div>
         <div class="footer_right">
           <div class="block">
+            <div>每页显示</div>
             <el-pagination
               :current-page="currentPage4"
               :page-sizes="[6]"
               layout="sizes"
             >
             </el-pagination>
+            <div>条，输入按回车</div>
           </div>
           <div class="block2">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage4"
-              :page-size="100"
-              :total="6"
-              layout="total,prev, pager, next"
-            >
-            </el-pagination>
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage4"
+                :page-size="100"
+                :total="6"
+                layout="total,prev, pager, next"
+              >
+              </el-pagination>
           </div>
         </div>
       </div>
@@ -176,6 +174,9 @@ export default {
 .wrap {
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
+  & .wrap_interior {
+    min-width: 1200px;
+  }
   & .tit {
     background-color: #eceff1;
     padding: 20px;
@@ -188,6 +189,7 @@ export default {
   }
   & .footer {
     padding: 20px;
+    min-width: 1200px;
     display: flex;
     align-items: center;
     background-color: #ffffff;
@@ -202,6 +204,14 @@ export default {
       justify-content: center;
       width: 80%;
       justify-content: space-between;
+      & .block{
+        display: flex;
+        align-items: center;
+        color: #999999;
+        & .el-pagination{
+          padding: 5px 5px;
+        }
+      }
     }
   }
 }
@@ -218,9 +228,11 @@ export default {
 .cell1 {
   background-color: #17d57e;
   padding: 10px 10px;
+  border: none;
 }
 .cell2 {
   background-color: #ff8b53;
   padding: 10px 10px;
+  border: none;
 }
 </style>

@@ -447,7 +447,13 @@ export default {
         this.mySort(this.renderDynamic);
     },
     deleteData(val) {
-      console.log(val);
+    let data = this.renderDynamic.slice()
+     data.forEach(el=>{
+       if(el.id == val){
+         data.splice(val-1,1)
+       }
+     })
+     this.mySort(data)
     },
   },
   mounted() {

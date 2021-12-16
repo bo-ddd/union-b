@@ -77,7 +77,7 @@
       <el-option label="区域四" value="guangzhou"></el-option>
       <el-option label="区域五" value="shenzhen"></el-option>
     </el-select>
-    <el-button slot="append" icon="el-icon-search"></el-button>
+    <!-- <el-button slot="append" icon="el-icon-search"></el-button> -->
   </el-input>
 </div>
   </el-form-item>
@@ -85,15 +85,19 @@
             </div>
           </div>
           <div class="query">
-            <div>查询</div>
-            <div>重置</div>
+            <el-button type="danger">查询</el-button>
+          <el-button>重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
-          <div>新增商品</div>
-          <div>批量下架</div>
+          <!-- <div>新增商品</div> -->
+          <!-- <div>批量下架</div>
           <div>批量上架</div>
-          <div>批量删除</div>
+          <div>批量删除</div> -->
+          <el-button type="danger">+新增商品</el-button>
+          <el-button>批量下架</el-button>
+          <el-button>批量上架</el-button>
+          <el-button>批量删除</el-button>
         </div>
       </div>
       <div>
@@ -150,7 +154,7 @@
         </el-table>
       </div>
       <div class="m_footer">
-        <el-pagination
+        <!-- <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage4"
@@ -159,7 +163,19 @@
           layout=" sizes, prev, pager, next, jumper,total"
           :total="400"
         >
-        </el-pagination>
+        </el-pagination> -->
+        <div class="block">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="100"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="400"
+      >
+    </el-pagination>
+  </div>
       </div>
     </div>
   </div>

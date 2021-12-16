@@ -57,7 +57,16 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "customer" */ '../views/data/Customer')
-            }
+            },
+            {
+                path: '/data/analysis',
+                name: 'Analysis',
+                meta: {
+                    title: '分析报告'
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "analysis" */ '../views/data/Analysis')
+            },
         ]
     },
     {

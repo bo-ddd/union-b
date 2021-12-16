@@ -182,8 +182,11 @@ export default {
 .wrap {
   background-color: #fcfcfc;
   border: 1px solid #d4dde2;
+  overflow: hidden;
   & .wrap_interior {
-    min-width: 1200px;
+    // min-width: 1200px;
+    overflow-y:auto;
+    height: 85vh;
   }
   & .tit {
     background-color: #eceff1;
@@ -197,7 +200,6 @@ export default {
   }
   & .footer {
     padding: 20px;
-    min-width: 1200px;
     display: flex;
     align-items: center;
     background-color: #ffffff;

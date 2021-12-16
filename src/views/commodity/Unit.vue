@@ -48,7 +48,7 @@ export default {
           currentPage4: 4,
           tableData: [{
             Serial_number: '1',
-            Unit_name: '件',
+            Unit_name: '1件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -56,7 +56,7 @@ export default {
           }, 
           {
             Serial_number: '2',
-            Unit_name: '件',
+            Unit_name: '2件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -80,7 +80,7 @@ export default {
           }, 
           {
             Serial_number: '5',
-            Unit_name: '件',
+            Unit_name: '5件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -88,7 +88,7 @@ export default {
           }, 
           {
             Serial_number: '6',
-            Unit_name: '件',
+            Unit_name: '6件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -96,7 +96,7 @@ export default {
           }, 
           {
             Serial_number: '7',
-            Unit_name: '件',
+            Unit_name: '7件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -104,7 +104,7 @@ export default {
           }, 
           {
             Serial_number: '8',
-            Unit_name: '件',
+            Unit_name: '8件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -112,7 +112,7 @@ export default {
           }, 
           {
             Serial_number: '9',
-            Unit_name: '件',
+            Unit_name: '9件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -120,7 +120,7 @@ export default {
           }, 
           {
             Serial_number: '10',
-            Unit_name: '件',
+            Unit_name: '10件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -128,7 +128,7 @@ export default {
           }, 
           {
             Serial_number: '11',
-            Unit_name: '件',
+            Unit_name: '11件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -136,7 +136,7 @@ export default {
           }, 
           {
             Serial_number: '12',
-            Unit_name: '件',
+            Unit_name: '12件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -144,7 +144,7 @@ export default {
           }, 
           {
             Serial_number: '13',
-            Unit_name: '件',
+            Unit_name: '13件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -152,7 +152,7 @@ export default {
           }, 
           {
             Serial_number: '14',
-            Unit_name: '件',
+            Unit_name: '14件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -160,7 +160,7 @@ export default {
           }, 
           {
             Serial_number: '15',
-            Unit_name: '件',
+            Unit_name: '15件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -168,7 +168,7 @@ export default {
           }, 
           {
             Serial_number: '16',
-            Unit_name: '件',
+            Unit_name: '16件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -176,7 +176,7 @@ export default {
           }, 
           {
             Serial_number: '17',
-            Unit_name: '件',
+            Unit_name: '17件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -184,7 +184,7 @@ export default {
           }, 
           {
             Serial_number: '18',
-            Unit_name: '件',
+            Unit_name: '18件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -192,7 +192,7 @@ export default {
           }, 
           {
             Serial_number: '19',
-            Unit_name: '件',
+            Unit_name: '19件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -200,7 +200,7 @@ export default {
           }, 
           {
             Serial_number: '20',
-            Unit_name: '件',
+            Unit_name: '20件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
@@ -208,21 +208,34 @@ export default {
           }, 
           {
             Serial_number: '21',
-            Unit_name: '件',
+            Unit_name: '21件',
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
-            operation:'禁用'  
+            operation:'禁用'
           }, 
           ]
         }
       },
       methods: {
+        //置顶
         Topping(id){
-          console.log(id+'置顶');
+          if (id == 1) return;
+          this.tableData.forEach(item=>{
+            if (item.Serial_number == id) {
+                item.Serial_number = 1;
+                return
+            }
+            // this.mySort(this.tableData);
+            if (item.Serial_number < id) {
+                item.Serial_number++;
+            }
+          })
+          this.mySort(this.tableData);
         },
+        //上调
         raise(id){
-          // console.log(id+'上调');
+           if (id == 1) return;
           this.tableData.forEach(item=>{
             if(item.Serial_number == id-1){
               item.Serial_number = id;
@@ -231,16 +244,25 @@ export default {
             if(item.Serial_number == id){
               item.Serial_number = id-1;
             }
-           
           })
           this.mySort(this.tableData);
         },
+        //下调
         Down(id){
-          console.log(id+'下调');
+          this.tableData.forEach(item=>{
+            if (item.Serial_number == Number(id)+1) {
+                item.Serial_number = id;
+                return;
+            }
+            if (item.Serial_number == id) {
+                item.Serial_number = Number(id)+1;
+            }
+          })
+           this.mySort(this.tableData);
         },
-        Disable(a){
-          // console.log('禁用');
-          a.Unit_name = '';
+        //禁用
+        Disable(item){
+          item.Unit_name = '';
         },
         mySort(tableData){
             tableData.sort((a,b)=>{

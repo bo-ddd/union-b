@@ -64,6 +64,13 @@ export default new Vuex.Store({
         getQuickList(ctx, payload) {
             return Api.getQuickList(payload);
         },
+
+
+        //订单管理
+        //订单列表接口
+        getOrderList(ctx, payload) {
+            return Api.getOrderList(payload);
+        },
     },
     modules: {}
 })

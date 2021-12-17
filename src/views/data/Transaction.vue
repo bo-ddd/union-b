@@ -324,10 +324,10 @@ export default {
 }
 .wrap {
   display: grid;
-  grid-template-rows: repeat(2, 40% 60%);
-  min-width: 1000px;
+  grid-template-rows: repeat(1, 40% 57%);
   gap: 20px 20px;
   height: calc(100vh - 100px);
+  overflow-y: auto;
   & > .header {
     display: grid;
     grid-template-columns: repeat(1, 1fr 2fr 2fr);
@@ -368,7 +368,7 @@ export default {
         grid-template-rows: repeat(2, 50%);
         --size: 60px;
         font-size: 12px;
-        height: 90%;
+        min-height: 90%;
         & > .top,
         .bottom {
           width: 100%;

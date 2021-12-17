@@ -1,6 +1,6 @@
 <template>
   <div>
-      商家推荐
+      help
   </div>
 </template>
 

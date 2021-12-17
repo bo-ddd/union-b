@@ -4,53 +4,57 @@
     <div class="m_main">
       <div class="m_m_center">
         <div class="m_m_c_top">
-          <div>
-            <div class="mains">
-            <el-form :inline="true" :model="formInline" class="demo-form-inline">
-  <el-form-item label="商品状态">
-    <el-select v-model="formInline.region" placeholder="全部">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-      <el-option label="区域三" value="tianjian"></el-option>
-      <el-option label="区域四" value="guangzhou"></el-option>
-      <el-option label="区域五" value="shenzhen"></el-option>
-    </el-select>
-  </el-form-item>
-
-  <el-form-item label="商品类型">
-    <el-select v-model="formInline.region" placeholder="全部">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-      <el-option label="区域三" value="tianjian"></el-option>
-      <el-option label="区域四" value="guangzhou"></el-option>
-      <el-option label="区域五" value="shenzhen"></el-option>
-    </el-select>
-  </el-form-item>
-  <el-form-item>
-  <div style="margin-top: 5px;">
-  <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-    <el-select v-model="select" slot="prepend" placeholder="商品名称" class="inputs">
-      <el-option label="餐厅名" value="1"></el-option>
-      <el-option label="订单号" value="2"></el-option>
-      <el-option label="用户电话" value="3"></el-option>
-    </el-select>
-    <el-select v-model="formInline.region" placeholder="活动区域">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-      <el-option label="区域三" value="tianjian"></el-option>
-      <el-option label="区域四" value="guangzhou"></el-option>
-      <el-option label="区域五" value="shenzhen"></el-option>
-    </el-select>
-    <!-- <el-button slot="append" icon="el-icon-search"></el-button> -->
-  </el-input>
-</div>
-  </el-form-item>
-</el-form>
-            </div>
+          <div class="mains">
+            <el-form
+              :inline="true"
+              :model="formInline"
+              class="demo-form-inline"
+            >
+              <el-form-item label="商品状态">
+                <el-select v-model="value" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="商品类型">
+                <el-select v-model="value" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-input placeholder="请输入内容" v-model="input1">
+                  <el-select
+                    v-model="value"
+                    filterable
+                    placeholder="请选择"
+                    slot="prepend"
+                  >
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-input>
+              </el-form-item>
+            </el-form>
           </div>
           <div class="query">
             <el-button type="danger">查询</el-button>
-          <el-button>重置</el-button>
+            <el-button>重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
@@ -58,7 +62,7 @@
           <!-- <div>批量下架</div>
           <div>批量上架</div>
           <div>批量删除</div> -->
-          <el-button type="danger">+新增商品</el-button>
+          <el-button type="danger">+ 新增商品</el-button>
           <el-button>批量下架</el-button>
           <el-button>批量上架</el-button>
           <el-button>批量删除</el-button>
@@ -109,11 +113,7 @@
           </el-table-column>
           <el-table-column prop="state" label="状态" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="date"
-            label="创建日期"
-            show-overflow-tooltip
-          >
+          <el-table-column prop="date" label="创建日期" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip>
             <template>
@@ -136,18 +136,18 @@
         >
         </el-pagination> -->
         <div class="block">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      :page-sizes="[100, 200, 300, 400]"
-      :page-size="100"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="400"
-      class="page"
-      >
-    </el-pagination>
-  </div>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400"
+            class="page"
+          >
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -160,91 +160,103 @@ export default {
    */
   data() {
     return {
-      input1: '',
-      input2: '',
-      input3: '',
-      select: '',
-      formInline: {
-          user: '',
-          region: ''
+      value: "",
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕",
         },
+        {
+          value: "选项2",
+          label: "双皮奶",
+        },
+      ],
+      input1: "",
+      input2: "",
+      input3: "",
+      select: "",
+      formInline: {
+        user: "",
+        region: "",
+      },
+
       tableData: [
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
       ],
       multipleSelection: [],
@@ -283,7 +295,6 @@ export default {
     background: #ffffff;
     & > .m_m_center {
       display: grid;
-      grid-template-rows: 1fr 1fr;
       width: 100%;
       & > .m_m_c_top {
         display: grid;
@@ -306,7 +317,7 @@ export default {
               line-height: 32px;
               border: 1px solid #dcdfe6;
               border-radius: 5px;
-              text-indent: 10px;  
+              text-indent: 10px;
               color: #c0c4cc;
             }
           }
@@ -333,8 +344,12 @@ export default {
         }
       }
       & > .commodity_operation {
-        // margin-top: 20px;
+        padding-top: 20px;
         display: flex;
+        & .el-button {
+          height: 40px;
+          padding: 10px;
+        }
         & > div {
           height: 32px;
           width: 80px;
@@ -351,8 +366,11 @@ export default {
         }
       }
     }
+    & > div:nth-of-type(2) {
+      padding: 20px 0px;
+    }
   }
-  & >.m_footer{
+  & > .m_footer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -364,6 +382,30 @@ export default {
   & a:hover {
     text-decoration: none;
   }
+}
+
+.mains {
+  width: 100%;
+  & > form {
+    width: 100%;
+    & > .el-form-item {
+      margin-bottom: 0px;
+    }
+    & > .el-form-item:nth-of-type(1) {
+      margin-right: 15px;
+    }
+    & > .el-form-item:nth-of-type(2) {
+      margin-right: 15px;
+    }
+  }
+}
+::v-deep
+  .mains
+  > form
+  > .el-form-item:nth-of-type(3)
+  .el-form-item__content
+  .el-input__inner {
+  width: 280px;
 }
 .delete {
   text-decoration: none;
@@ -384,44 +426,46 @@ input:-ms-input-placeholder {
   color: #c0c4cc;
   font-weight: 700;
 }
-::v-deep .el-pagination__jump{
-  margin: 0px;
+::v-deep .mains .el-input:nth-of-type(1),
+::v-deep .mains .el-input:nth-of-type(2) {
+  width: 120px;
 }
-::v-deep .cell {
-  font-weight: 700;
-}
-::v-deep .el-input {
-  width: 100% !important;
-}
-::v-deep .el-select {
-  width: 70% !important;
-}
-::v-deep .el-input__icon {
-  line-height: 32px;
-}
-::v-deep .el-input__inner {
-  height: 32px;
-  line-height: 32px;
-  font-weight: 700;
-}
-::v-deep .el-input--suffix {
-  width: 70% !important;
-}
+// ::v-deep .el-pagination__jump{
+//   margin: 0px;
+// }
+// ::v-deep .cell {
+//   font-weight: 700;
+// }
+// ::v-deep .el-input {
+//   width: 100% !important;
+// }
+// ::v-deep .el-select {
+//   width: 70% !important;
+// }
+// ::v-deep .el-input__icon {
+//   line-height: 32px;
+// }
+// ::v-deep .el-input__inner {
+//   height: 32px;
+//   line-height: 32px;
+//   font-weight: 700;
+// }
+// ::v-deep .el-input--suffix {
+//   width: 70% !important;
+// }
 .el-form--inline .el-form-item {
-    margin-right: -90px;
+  margin-right: -90px;
 }
 .el-select .el-input {
-    width: 130px;
-  }
-.inputs{
+  width: 130px;
+}
+.inputs {
   margin-left: 20px;
 }
-.mains{
-  margin: 5px 0 -20px 0;
-}
-.block{
+
+.block {
   display: flex;
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 </style>

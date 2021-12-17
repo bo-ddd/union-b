@@ -4,10 +4,7 @@
       <div class="top-l">
         <div class="select">
           <span class="mr-10" @click="updateOrderStatus">订单状态</span>
-          <el-select
-            v-model="orderStatusSelect"
-            placeholder="请选择"
-          >
+          <el-select v-model="orderStatusSelect" placeholder="请选择">
             <el-option
               v-for="item in orderStatus"
               :key="item.value"
@@ -61,37 +58,45 @@
         </div>
       </div>
       <div class="top-r">
-        <el-button type="danger" @click="querySelectOrderStatus">查询</el-button>
+        <el-button type="danger" @click="querySelectOrderStatus"
+          >查询</el-button
+        >
         <el-button @click="resetOrderStatus">重置</el-button>
         <el-button>导出</el-button>
       </div>
     </div>
     <div class="bottom">
-      <el-table :data="table" stripe style="width: 100%" class="tableBox">
+      <el-table
+        :data="table"
+        ref="checkTable"
+        stripe
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
         <el-table-column type="selection" width="45"> </el-table-column>
-        <el-table-column fixed prop="num" label="订单编号" width="170">
+        <el-table-column fixed prop="num" label="订单编号" align="center"  >
         </el-table-column>
-        <el-table-column prop="price" label="实付金额" width="100">
+        <el-table-column prop="price" label="实付金额" align="center" >
         </el-table-column>
-        <el-table-column prop="kdprice" label="快递费" width="100">
+        <el-table-column prop="kdprice" label="快递费" align="center" >
         </el-table-column>
-        <el-table-column prop="gys" label="供应商" width="230">
+        <el-table-column prop="gys" label="供应商"  align="center" >
         </el-table-column>
-        <el-table-column prop="cgs" label="采购商" width="230">
+        <el-table-column prop="cgs" label="采购商"  align="center" >
         </el-table-column>
-        <el-table-column prop="shr" label="收货人" width="100">
+        <el-table-column prop="shr" label="收货人"  align="center" >
         </el-table-column>
-        <el-table-column prop="zffs" label="支付方式" width="100">
+        <el-table-column prop="zffs" label="支付方式" align="center" >
         </el-table-column>
-        <el-table-column prop="ddzt" label="订单状态" width="100">
+        <el-table-column prop="ddzt" label="订单状态" align="center" >
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="80">
-          <template slot-scope="scope">
+        <el-table-column fixed="right" label="操作" align="center" >
+          <template>
             <el-button
               type="text"
-              @click="(dialogVisible = true), (removeOrderData = scope.row)"
+              @click="seeDetails"
             >
-              移除
+              查看
             </el-button>
           </template>
         </el-table-column>
@@ -110,35 +115,42 @@
         </el-pagination>
       </div>
     </div>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span>确定删除这条订单吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button
-          type="primary"
-          @click="(dialogVisible = false), removeOrder(removeOrderData)"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
+// import { mapActions } from 'vuex';
 export default {
+  updated() {
+    this.$nextTick(() => {
+      if (this.cacheExport.length > 0) {
+        this.cacheExport.find((item) => {
+          this.$refs.checkTable.toggleRowSelection(item, true);
+        });
+      }
+    });
+  },
   created() {
     this.updateOrderStatus();
     this.handleCurrentChange(1);
   },
   methods: {
+    // ...mapActions(["getOrderList"]),
+    // /**
+    //  * @description 获取所有订单数据
+    //  * **/ 
+    // async getOrderListData(){
+    //   let res = await this.getOrderList({});
+    //   console.log(res);
+    // },
+
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+
     /**
      * @description 重置所有选择
-     * **/ 
-    resetOrderStatus(){
+     * **/
+    resetOrderStatus() {
       this.orderStatusSelect = "全部";
       this.paymentStatusSelect = "全部";
       this.orderTypeSelect = "全部";
@@ -148,13 +160,13 @@ export default {
 
     /**
      * @description 查询所有选中的状态
-     * **/ 
-    querySelectOrderStatus(){
-      console.log(this.orderStatusSelect)
-      console.log(this.paymentStatusSelect)
-      console.log(this.orderTypeSelect)
-      console.log(this.orderNoSelect)
-      console.log(this.input)
+     * **/
+    querySelectOrderStatus() {
+      console.log(this.orderStatusSelect);
+      console.log(this.paymentStatusSelect);
+      console.log(this.orderTypeSelect);
+      console.log(this.orderNoSelect);
+      console.log(this.input);
     },
 
     /**
@@ -163,32 +175,19 @@ export default {
      * **/
     updateOrderStatus() {
       console.log(this.orderStatus);
-      for(let i=0;i<this.orderStatus.length;i++){
-        if(this.$route.meta.title != "全部订单"){
-          if(this.$route.meta.title != this.orderStatus[i].label){
-             this.orderStatus[i].disabled = true;
-          }else{
+      for (let i = 0; i < this.orderStatus.length; i++) {
+        if (this.$route.meta.title != "全部订单") {
+          if (this.$route.meta.title != this.orderStatus[i].label) {
+            this.orderStatus[i].disabled = true;
+          } else {
             this.orderStatusSelect = this.orderStatus[i].label;
           }
         }
       }
-      console.log(this.orderStatus)
+      console.log(this.orderStatus);
       // if (this.$route.meta.title != "全部订单") this.orderStatusFlag = false;
     },
 
-    /**
-     * @description 移除的模态框是否确认关闭
-     * **/
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-          console.log(_);
-        })
-        .catch((_) => {
-          console.log(_);
-        });
-    },
 
     /**
      * @description 分页每页有多少条
@@ -196,7 +195,6 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.handleCurrentChange(1);
-      // console.log(this.tableData);
       console.log(`每页 ${val} 条`);
     },
 
@@ -204,12 +202,20 @@ export default {
      * @description 分页的当前页有多少条
      * **/
     handleCurrentChange(val) {
+      this.cacheExport = this.multipleSelection;
+
       let arr = [];
-      for(let i=val*this.pageSize-this.pageSize;i<val*this.pageSize;i++){
-        if(this.tableData[i]!=undefined) arr.push(this.tableData[i]);
+      for (
+        let i = val * this.pageSize - this.pageSize;
+        i < val * this.pageSize;
+        i++
+      ) {
+        if (this.tableData[i] != undefined) arr.push(this.tableData[i]);
       }
       this.table = arr;
-      console.log(this.table)
+
+      // console.log(arr);
+      // console.log(this.table)
       console.log(`当前页: ${val}`);
     },
 
@@ -223,12 +229,23 @@ export default {
         }
       });
     },
+    
+      /**
+       * @description 跳转查看详情
+       * **/ 
+      seeDetails(){
+        this.$router.push({
+          name:'OrderDetails'
+        })
+      },
   },
   data() {
     return {
-      table:[],
-      pageSize:10,
-      dialogVisible: false,
+      cacheExport: [],
+      multipleSelection: [],
+      table: [],
+      pageSize: 10,
+
       orderStatus: [
         {
           value: "待审核",
@@ -343,9 +360,9 @@ export default {
       paymentStatusSelect: "全部",
       orderTypeSelect: "全部",
       orderNoSelect: "订单编号",
-      removeOrderData: {},
       tableData: [
         {
+          id: 1,
           num: "1111111111111",
           price: "100",
           kdprice: "10",
@@ -356,6 +373,7 @@ export default {
           ddzt: "待审核",
         },
         {
+          id: 2,
           num: "1111111111112",
           price: "1002",
           kdprice: "102",
@@ -366,6 +384,7 @@ export default {
           ddzt: "待支付",
         },
         {
+          id: 3,
           num: "11111111111113",
           price: "1003",
           kdprice: "103",
@@ -376,6 +395,7 @@ export default {
           ddzt: "待发货",
         },
         {
+          id: 4,
           num: "11111111111114",
           price: "1004",
           kdprice: "104",
@@ -386,6 +406,7 @@ export default {
           ddzt: "待收货",
         },
         {
+          id: 5,
           num: "11111111111115",
           price: "1005",
           kdprice: "105",
@@ -396,6 +417,7 @@ export default {
           ddzt: "已完成",
         },
         {
+          id: 6,
           num: "11111111111116",
           price: "1006",
           kdprice: "106",
@@ -406,6 +428,7 @@ export default {
           ddzt: "已取消",
         },
         {
+          id: 7,
           num: "11111111111117",
           price: "100",
           kdprice: "10",
@@ -416,6 +439,7 @@ export default {
           ddzt: "发货",
         },
         {
+          id: 8,
           num: "11111111111118",
           price: "100",
           kdprice: "10",
@@ -426,6 +450,7 @@ export default {
           ddzt: "异常",
         },
         {
+          id: 9,
           num: "11111111111119",
           price: "100",
           kdprice: "10",
@@ -436,6 +461,7 @@ export default {
           ddzt: "已支付",
         },
         {
+          id: 10,
           num: "11111111111110",
           price: "100",
           kdprice: "10",
@@ -446,6 +472,7 @@ export default {
           ddzt: "未支付",
         },
         {
+          id: 11,
           num: "111111111111101",
           price: "100",
           kdprice: "10",
@@ -456,6 +483,7 @@ export default {
           ddzt: "待支付",
         },
         {
+          id: 12,
           num: "111111111111102",
           price: "100",
           kdprice: "10",
@@ -466,6 +494,7 @@ export default {
           ddzt: "已完成",
         },
         {
+          id: 13,
           num: "111111111111103",
           price: "100",
           kdprice: "10",
@@ -482,7 +511,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .wrap {
+  height: calc(100vh - 100px);
   background: #fff;
+  overflow-y:auto;
+
   & .mr-10 {
     margin-right: 10px;
   }
@@ -498,6 +530,7 @@ export default {
     & ::v-deep .el-input__inner {
       font-size: 13px;
       height: 25px !important;
+      width:6vw;
       padding: 3px;
     }
 
@@ -560,21 +593,10 @@ export default {
 
   & .bottom {
     // margin: 15px;
-    padding:15px;
-    & ::v-deep .el-table .cell{
-      font-size:13px !important;
+    padding: 15px;
+    & ::v-deep .el-table .cell {
+      font-size: 13px !important;
     }
-
-    & ::v-deep .tableBox{
-      & th{
-        height:20px !important;
-      }
-
-      & td{
-        height:20px !important;
-      }
-    }
-
 
     & .el-table__fixed-right {
       box-shadow: -2px 0 3px -1px #ccc !important;

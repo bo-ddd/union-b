@@ -17,7 +17,7 @@
           row-key="id"
           :row-class-name="rowClassNameFun"
           :header-row-class-name="headerRowClassName"
-          size="mini"
+          size="small"
           style="width: 97%"
           @select="selectFun"
           @select-all="selectAllFun"

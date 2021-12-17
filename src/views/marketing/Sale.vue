@@ -20,8 +20,8 @@
       <el-descriptions-item label="订单取消时间">3分钟</el-descriptions-item>
     </el-descriptions>
     </div>
-    <el-tabs type="border-card" class="switch">
-      <el-tab-pane label="参与活动商品">
+    <el-tabs type="border-card" class="switch" size='small'>
+      <el-tab-pane label="参与活动商品" size='small'>
         <el-form :inline="true" class="demo-form-inline">
           <el-form-item>
             <el-input placeholder="商品id" size='small'></el-input>
@@ -39,7 +39,7 @@
             <el-button type="primary" size='small'>查询</el-button>
           </el-form-item>
         </el-form>
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="tableData" style="width: 100%" size='small'>
           <el-table-column prop="name" label="商品信息" width="180">
           </el-table-column>
           <el-table-column prop="date" label="价格" width="180">
@@ -50,7 +50,7 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="未参与活动商品">
+      <el-tab-pane label="未参与活动商品" size='small'>
         <el-form :inline="true"  class="demo-form-inline">
           <el-form-item>
             <el-input placeholder="商品id" size='small'></el-input>
@@ -68,7 +68,7 @@
             <el-button type="primary" size='small'>查询</el-button>
           </el-form-item>
         </el-form>
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="tableData" style="width: 100%" size='small'>
           <el-table-column prop="name" label="商品信息" width="180">
           </el-table-column>
           <el-table-column prop="date" label="价格" width="180">
@@ -118,7 +118,6 @@ export default {
 .warp {
   height: calc(100vh - 125px);
   background-color: #fff;
-  // padding: 1%;
 }
 .p-20{
   padding: 1%;

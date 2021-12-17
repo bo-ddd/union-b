@@ -42,6 +42,7 @@
               <span class="font-20">80%</span>
               <span class="font-16">日均活跃度</span>
             </div>
+            <span></span>
             <div class="top_right">
               <span class="font-15">80%</span>
               <span class="font-12">日均活跃度</span>
@@ -62,6 +63,7 @@
               <span class="font-20">80%</span>
               <span class="font-16">日均活跃度</span>
             </div>
+            <span></span>
           </div>
         </div>
 
@@ -73,7 +75,7 @@
         <!-- 商品品类分布 -->
       </div>
     </div>
-    <div class="footer mt-20">
+    <div class="footer">
       <div class="echarts_stata">
         <h4>商品成交量情况</h4>
         <div class="stata"></div>
@@ -92,8 +94,7 @@
           <el-table
             :data="tableData"
             stripe
-            style="width: 100%; height: 100%"
-            :fit="true"
+            style="width:100%;height:100%"
           >
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
@@ -173,7 +174,7 @@ export default {
           {
             type: "category",
             // prettier-ignore
-            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
           },
         ],
         yAxis: [
@@ -183,7 +184,7 @@ export default {
         ],
         series: [
           {
-            name: "Rainfall",
+            name: "去年同期",
             type: "bar",
             data: [
               2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4,
@@ -200,7 +201,7 @@ export default {
             },
           },
           {
-            name: "Evaporation",
+            name: "今年",
             type: "bar",
             data: [
               2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0,
@@ -227,12 +228,12 @@ export default {
           trigger: "item",
         },
         legend: {
-          top: "5%",
-          left: "center",
+          top: "20%",
+          left:"70%",
         },
         series: [
           {
-            name: "Access From",
+            name: "品类分布",
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
@@ -240,22 +241,15 @@ export default {
               show: false,
               position: "center",
             },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "40",
-                fontWeight: "bold",
-              },
-            },
             labelLine: {
               show: false,
             },
             data: [
-              { value: 1048, name: "Search Engine" },
-              { value: 735, name: "Direct" },
-              { value: 580, name: "Email" },
-              { value: 484, name: "Union Ads" },
-              { value: 300, name: "Video Ads" },
+              { value: 1048, name: "电器" },
+              { value: 735, name: "食品" },
+              { value: 580, name: "家居" },
+              { value: 484, name: "电子产品" },
+              { value: 300, name: "母婴用品" },
             ],
           },
         ],
@@ -289,14 +283,14 @@ export default {
           {
             type: "category",
             axisTick: {
-              show: false,
+              show: true,
             },
-            data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
           },
         ],
         series: [
           {
-            name: "Income",
+            name: "收入",
             type: "bar",
             stack: "Total",
             label: {
@@ -308,7 +302,7 @@ export default {
             data: [320, 302, 341, 374, 390, 450, 420],
           },
           {
-            name: "Expenses",
+            name: "成本",
             type: "bar",
             stack: "Total",
             label: {
@@ -333,24 +327,26 @@ export default {
   padding: 5px;
 }
 .wrap {
-  height: calc(100vh - 100px);
+  display: grid;
+  grid-template-rows: repeat(2,40% 60%);
   min-width: 1000px;
-  overflow-y: hidden;
+  gap: 20px 20px;
+  height: calc(100vh - 100px);
   & > .header {
     & > div {
       padding: 10px;
     }
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(1,1fr 2fr 2fr);
+    gap: 20px;
     & > .left {
       background-color: #ffffff;
-      display: flex;
-      flex-flow: column;
-      justify-content: space-between;
-      width: 200px;
-      padding: 15px 20px;
+      display: grid;
+      grid-template-rows: repeat(2,1fr);
+      gap: 20px;
+      padding:20px;
       & > div {
         width: 100%;
-        height: 110px;
         background-color: #e7536b;
         display: flex;
         align-items: center;
@@ -371,19 +367,18 @@ export default {
     }
     & > .center {
       background-color: #ffffff;
-      flex: 1.5;
-      margin: 0 20px;
       & > .main {
-        display: flex;
-        flex-flow: wrap;
-        justify-content: space-between;
+        display: grid;
+        grid-template-rows: repeat(2,50%);
         --size: 60px;
         font-size: 12px;
+        height: 90%;
         & > .top,
         .bottom {
           width: 100%;
           display: flex;
           justify-content: space-evenly;
+          align-items: center;
           & > div {
             min-width: var(--size);
             min-height: var(--size);
@@ -408,7 +403,7 @@ export default {
           }
           & > .top_center {
             background-color: #2396e6;
-            transform: scale(1.3);
+            transform: scale(1.2);
             box-shadow: 0 0 10px #0e3a53;
           }
           & > .top_right {
@@ -434,47 +429,26 @@ export default {
     }
     & > .right {
       background-color: #ffffff;
-
-      flex: 1;
       & > .type {
-        height: 80%;
+        width: 100%;
+        height:20vh;
       }
     }
   }
   & > .footer {
-    display: flex;
+    margin: 0;
+    height:100%;
+    display: grid;
+    grid-template-columns: repeat(1,2fr 1fr 1fr);
+    gap: 20px;
     & > div {
       background-color: #ffffff;
       padding: 10px;
-      min-height: 350px;
+      position: relative;
       & > div {
-        height: 320px;
-      }
-    }
-    & > .echarts_stata {
-      width: 100%;
-      position: relative;
-      & > .stata {
-        width: 100%;
+        height: 46vh;
         position: absolute;
-      }
-      flex: 2.5;
-    }
-    & > .echarts_info {
-      flex: 1;
-      margin: 0 20px;
-      position: relative;
-      & > .info {
-        width: 100%;
-        position: absolute;
-      }
-    }
-    & > .echarts_rank {
-      position: relative;
-      flex: 1;
-      & > .rank {
-        width: 95%;
-        position: absolute;
+        width: 90%;
       }
     }
   }
@@ -482,6 +456,5 @@ export default {
 h4 {
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
-  margin: 0 0 10px 0;
 }
 </style>

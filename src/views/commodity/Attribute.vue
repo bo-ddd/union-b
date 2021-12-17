@@ -10,7 +10,7 @@
   <el-form-item label="属性项名称:" class="top">
     <el-input v-model="form.name" class="el-input__inners"></el-input>
   </el-form-item>
-  <el-form-item label="属性项多选:">
+  <el-form-item label="属性项多选:" class="middle">
     <el-checkbox-group v-model="form.choice">
       <el-checkbox label="启用" name="type"></el-checkbox>
     </el-checkbox-group>
@@ -32,17 +32,18 @@
         <el-table
       :data="tableData"
       style="width: 100%">
-      <el-table-column prop="id" label="id" width="100">
+      <el-table-column prop="id" label="id" width="100" align="center">
       </el-table-column>
       <el-table-column
         prop="name"
         label="属性值"
+        align="center"
         >
         <template>
           <input type="text" class="property" v-model="name">
         </template>
       </el-table-column>
-      <el-table-column label="加价(元)" >
+      <el-table-column label="加价(元)"  align="center">
         <template>
           <input type="text" class="inp" v-model="input">
         </template>
@@ -50,6 +51,7 @@
       <el-table-column
         prop="sort"
         label="排序"
+        align="center"
         >
         <template>
           <img src="../../assets/images/zhiding.png" class="iconimg">
@@ -126,7 +128,9 @@ export default {
   border-top: 2px solid #e5e5e5;
 }
 .h1{
-  padding: 15px 0;
+  margin: 20px 0;
+  // display: flex;
+  // align-items: center;
 }
 .top{
   margin-top: 20px;
@@ -158,6 +162,7 @@ export default {
 .iconimg{
   width: 15px;
   height: 15px;
+  margin: 5px;
 }
 .el-footer {
     background-color: #ffffff;
@@ -165,4 +170,14 @@ export default {
     text-align: center;
     line-height: 60px;
   }
+  .el-form-item {
+    // margin-top: 20px;
+    margin-bottom: 0px;
+}
+.middle{
+  margin-top: 20px;
+}
+::v-deep .el-table__header-wrapper{
+  font-size: 17px;
+}
 </style>

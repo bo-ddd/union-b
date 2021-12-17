@@ -45,12 +45,31 @@ export default new Vuex.Store({
         getSpecificationList(ctx, payload) {
             return Api.getSpecificationList(payload);
         },
+        //添加类目接口
+        createCategory(ctx, payload) {
+            return Api.createCategory(payload);
+        },
+
+
+
+        //数据中心
+        //交易数据接口
+        getTradeData(ctx, payload) {
+            return Api.getTradeData(payload);
+        },
 
 
         //内容管理
         //快捷入口接口
         getQuickList(ctx, payload) {
             return Api.getQuickList(payload);
+        },
+
+
+        //订单管理
+        //订单列表接口
+        getOrderList(ctx, payload) {
+            return Api.getOrderList(payload);
         },
     },
     modules: {}

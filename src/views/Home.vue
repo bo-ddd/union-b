@@ -4,7 +4,7 @@
         <el-aside :width="isCollapse?'60px':'220px'">
             <el-checkbox v-model="isCollapse" class="switch"></el-checkbox>
             <div class="aside_main">
-                <el-menu class="menu el-menu-vertical-demo" unique-opened :router="true" :default-active="$route.path" @open="handleOpen" @close="handleClose" :collapse="isCollapse" active-text-color="#ff6f93">
+                <el-menu class="menu el-menu-vertical-demo" collapse-transition unique-opened :router="true" :default-active="$route.path" @open="handleOpen" @close="handleClose" :collapse="isCollapse" active-text-color="#ff6f93">
                     <div class="logobox">
                         <img src="../assets/logo.png" alt="" class="logo">
                         <div class="fw-b" v-if="!isCollapse">系统管理中心</div>
@@ -77,6 +77,9 @@ export default {
             position: absolute;
             top: 50vh;
             right: 0px;
+        }
+        .el-menu{
+          border: none;
         }
 
         &.el-menu-item:focus,

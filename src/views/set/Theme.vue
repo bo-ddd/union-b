@@ -7,16 +7,16 @@
           <span class="description">斗志、奔放</span>
         </div>
         <div class="main-color">
-          <div class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
-          <div class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
-          <div class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
-          <div class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
-          <div class="main-color-item" style="background-color:#ff4d4f"><span class="main-color-text">red-5</span></div>
-          <div class="main-color-item" style="background-color:#f5222d"><span class="main-color-text">red-6</span></div>
-          <div class="main-color-item" style="background-color:#cf1322"><span class="main-color-text">red-7</span></div>
-          <div class="main-color-item" style="background-color:#a8071a"><span class="main-color-text">red-8</span></div>
-          <div class="main-color-item" style="background-color:#820014"><span class="main-color-text">red-9</span></div>
-          <div class="main-color-item" style="background-color:#5c0011"><span class="main-color-text">red-10</span></div>
+          <div value="#fff1f0" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
+          <div value="#ffccc7" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
+          <div value="#ffa39e" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
+          <div value='#ff7875' class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
+          <div value="#ff4d4f" class="main-color-item" style="background-color:#ff4d4f"><span class="main-color-text">red-5</span></div>
+          <div value="#f5222d" class="main-color-item" style="background-color:#f5222d"><span class="main-color-text">red-6</span></div>
+          <div value="#cf1322" class="main-color-item" style="background-color:#cf1322"><span class="main-color-text">red-7</span></div>
+          <div value="#a8071a" class="main-color-item" style="background-color:#a8071a"><span class="main-color-text">red-8</span></div>
+          <div value="#820014" class="main-color-item" style="background-color:#820014"><span class="main-color-text">red-9</span></div>
+          <div value="#5c0011" class="main-color-item" style="background-color:#5c0011"><span class="main-color-text">red-10</span></div>
         </div>
       </div>
       <div class="palette">
@@ -229,13 +229,19 @@
 
 <script>
 export default {
- methods: {
+  data(){
+    return{
 
- }
+    }
+  },
+  methods:{
+
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+
 :root{
   --theme-color_red:#ff4d4f;
   --theme-color_volcano:#ff7a45;

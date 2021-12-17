@@ -36,28 +36,28 @@
             <span></span>
             <div class="top_left">
               <span class="font-15">80%</span>
-              <span class="font-12">日均活跃度</span>
+              <span class="font-12">日均销售量</span>
             </div>
             <div class="top_center">
               <span class="font-20">80%</span>
-              <span class="font-16">日均活跃度</span>
+              <span class="font-16">月销售量</span>
             </div>
             <span></span>
             <div class="top_right">
               <span class="font-15">80%</span>
-              <span class="font-12">日均活跃度</span>
+              <span class="font-12">商品成交率</span>
             </div>
           </div>
           <div class="bottom">
             <span></span>
             <div class="bottom_left">
               <span class="font-20">80%</span>
-              <span class="font-16">日均活跃度</span>
+              <span class="font-16">商家活跃度</span>
             </div>
             <span></span>
             <div class="bottom_center">
               <span class="font-15">80%</span>
-              <span class="font-12">日均活跃度</span>
+              <span class="font-12">商品好评率</span>
             </div>
             <div class="bottom_right">
               <span class="font-20">80%</span>
@@ -91,11 +91,7 @@
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
         <div class="rank">
-          <el-table
-            :data="tableData"
-            stripe
-            style="width:100%;height:100%"
-          >
+          <el-table :data="tableData" stripe style="width: 100%; height: 100%">
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
             <el-table-column prop="address" label="销售量"> </el-table-column>
@@ -229,7 +225,7 @@ export default {
         },
         legend: {
           top: "20%",
-          left:"70%",
+          left: "70%",
         },
         series: [
           {
@@ -328,23 +324,23 @@ export default {
 }
 .wrap {
   display: grid;
-  grid-template-rows: repeat(2,40% 60%);
-  min-width: 1000px;
+  grid-template-rows: repeat(1, 40% 57%);
   gap: 20px 20px;
   height: calc(100vh - 100px);
+  overflow-y: auto;
   & > .header {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr 2fr 2fr);
+    gap: 20px;
     & > div {
       padding: 10px;
     }
-    display: grid;
-    grid-template-columns: repeat(1,1fr 2fr 2fr);
-    gap: 20px;
     & > .left {
       background-color: #ffffff;
       display: grid;
-      grid-template-rows: repeat(2,1fr);
+      grid-template-rows: repeat(2, 1fr);
       gap: 20px;
-      padding:20px;
+      padding: 20px;
       & > div {
         width: 100%;
         background-color: #e7536b;
@@ -369,10 +365,10 @@ export default {
       background-color: #ffffff;
       & > .main {
         display: grid;
-        grid-template-rows: repeat(2,50%);
+        grid-template-rows: repeat(2, 50%);
         --size: 60px;
         font-size: 12px;
-        height: 90%;
+        min-height: 90%;
         & > .top,
         .bottom {
           width: 100%;
@@ -392,7 +388,7 @@ export default {
             padding: 5px;
             transition: 1s;
           }
-          & > div:hover{
+          & > div:hover {
             transform: scale(1.5);
             z-index: 1;
           }
@@ -431,15 +427,15 @@ export default {
       background-color: #ffffff;
       & > .type {
         width: 100%;
-        height:20vh;
+        height: 20vh;
       }
     }
   }
   & > .footer {
     margin: 0;
-    height:100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: repeat(1,2fr 1fr 1fr);
+    grid-template-columns: repeat(1, 2fr 1fr 1fr);
     gap: 20px;
     & > div {
       background-color: #ffffff;
@@ -448,7 +444,7 @@ export default {
       & > div {
         height: 46vh;
         position: absolute;
-        width: 90%;
+        width: 95%;
       }
     }
   }

@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <div class="m_header">商品管理</div>
     <div class="m_main">
       <div class="m_m_center">
         <div class="m_m_c_top">
@@ -9,6 +8,7 @@
               :inline="true"
               :model="formInline"
               class="demo-form-inline"
+              size="small"
             >
               <el-form-item label="商品状态">
                 <el-select v-model="value" filterable placeholder="请选择">
@@ -53,8 +53,8 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="danger">查询</el-button>
-            <el-button>重置</el-button>
+            <el-button type="danger" size="small">查询</el-button>
+            <el-button size="small">重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
@@ -62,10 +62,10 @@
           <!-- <div>批量下架</div>
           <div>批量上架</div>
           <div>批量删除</div> -->
-          <el-button type="danger">+ 新增商品</el-button>
-          <el-button>批量下架</el-button>
-          <el-button>批量上架</el-button>
-          <el-button>批量删除</el-button>
+          <el-button type="danger" size="small">+ 新增商品</el-button>
+          <el-button size="small">批量下架</el-button>
+          <el-button size="small">批量上架</el-button>
+          <el-button size="small">批量删除</el-button>
         </div>
       </div>
       <div>
@@ -75,6 +75,7 @@
           tooltip-effect="dark"
           style="width: 100%"
           stripe
+          size="small"
           :header-cell-style="{ background: '#fcfafb' }"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
@@ -115,26 +116,24 @@
           </el-table-column>
           <el-table-column prop="date" label="创建日期" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" show-overflow-tooltip>
+          <el-table-column label="操作" show-overflow-tooltip align="center">
             <template>
-              <el-link type="primary" class="edit">编辑</el-link>
-              <el-link type="warning" class="off_the_shelf">下架</el-link>
-              <el-link type="danger" class="delete">删除</el-link>
+              <el-link
+                type="primary"
+                class="edit"
+                size="small"
+                @click="dialogFormVisible = true"
+                >编辑</el-link
+              >
+              <el-link type="warning" class="off_the_shelf" size="small"
+                >下架</el-link
+              >
+              <el-link type="danger" class="delete" size="small">删除</el-link>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div class="m_footer">
-        <!-- <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout=" sizes, prev, pager, next, jumper,total"
-          :total="400"
-        >
-        </el-pagination> -->
         <div class="block">
           <el-pagination
             @size-change="handleSizeChange"
@@ -149,6 +148,28 @@
           </el-pagination>
         </div>
       </div>
+      <el-dialog title="编辑商品" :visible.sync="dialogFormVisible" class="modify_information">
+      <el-form :model="form">
+        <el-form-item label="商品名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="商品分类" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="售价" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="库存" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
     </div>
   </div>
 </template>
@@ -259,6 +280,20 @@ export default {
           date: "2019-08-12",
         },
       ],
+
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      formLabelWidth: "120px",
       multipleSelection: [],
       currentPage1: 5,
       currentPage2: 5,
@@ -284,10 +319,6 @@ export default {
   height: calc(100vh - 100px);
   overflow-y: auto;
   min-height: 77vh;
-  & > .m_header {
-    padding: 20px;
-    font-weight: 700;
-  }
   & > .m_main {
     padding: 20px;
     display: flex;
@@ -398,6 +429,9 @@ export default {
       margin-right: 15px;
     }
   }
+}
+::v-deep .modify_information .el-dialog{
+  width: 30%;
 }
 ::v-deep
   .mains

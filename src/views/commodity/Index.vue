@@ -333,7 +333,7 @@ export default {
         }
       }
       & > .commodity_operation {
-        margin-top: 20px;
+        // margin-top: 20px;
         display: flex;
         & > div {
           height: 32px;

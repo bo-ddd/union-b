@@ -1,12 +1,9 @@
 <template>
   <div>
     <div class="wrap">
-      <div class="title">
-        <span>商品分类</span>
-      </div>
       <div class="content">
         <div class="new-module">
-          <div class="add-classification">
+          <div @click="jump" class="add-classification">
             <span>+ 新增分类</span>
           </div>
           <div class="batch-association">
@@ -242,6 +239,11 @@ export default {
         }
       });
     },
+    jump(){
+      this.$router.push({
+        name:'AddClassify'
+      })
+    },
     selectFun(selection, row) {
       this.setRowIsSelect(row);
     },
@@ -470,10 +472,6 @@ export default {
   background-color: #fcf9fa;
   height: calc(100vh - 100px);
   overflow-y: auto;
-  & .title {
-    padding: 20px;
-    font-weight: 800;
-  }
   & .content {
     background-color: #ffffff;
     & .new-module {
@@ -489,6 +487,7 @@ export default {
         border: 1px solid #ffc7d5;
         border-radius: 5px;
         font-size: 12px;
+        cursor: pointer;
       }
       & .batch-association {
         padding: 5px 10px;
@@ -500,6 +499,7 @@ export default {
         margin-left: 10px;
         font-size: 12px;
         margin-bottom: 30px;
+        cursor: pointer;
       }
     }
     & .el-table{

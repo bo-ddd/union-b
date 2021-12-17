@@ -147,9 +147,9 @@
                 </div>
 
                 <div>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
+                  <el-checkbox v-model="July">18年7月</el-checkbox>
+                  <el-checkbox v-model="August">18年8月</el-checkbox>
+                  <el-checkbox v-model="September">18年9月</el-checkbox>
                 </div>
               </el-form-item>
               <el-form-item label="容量" class="capacity">
@@ -169,8 +169,8 @@
                   </el-select>
                 </div>
                 <div>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
+                  <el-checkbox v-model="Fourml">400ml</el-checkbox>
+                  <el-checkbox v-model="Sixml">600ml</el-checkbox>
                 </div>
               </el-form-item>
               <el-form-item label="销售规格"  class="sales_information">
@@ -219,7 +219,7 @@
           <div class="commodity_rotation">
             <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="商品轮播">
-                图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片
+                <span class="font">图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片</span>
               </el-form-item>
               <el-form-item label="" class="product_picture">
                 <div>
@@ -252,7 +252,7 @@
                 </div>
               </el-form-item>
               <el-form-item label="商品详情">
-                详情切图请按顺序上传，展示宽度为750px，高度不定；最多20张，每张不得大于2M
+                <span class="font">详情切图请按顺序上传，展示宽度为750px，高度不定；最多20张，每张不得大于2M</span>
               </el-form-item>
               <el-form-item label="" class="product_details">
                 <div>
@@ -363,7 +363,11 @@ export default {
 
       labelPosition: "right",
       input: "",
-      checked: "",
+      July: "",
+      August:"",
+      September:"",
+      Fourml:"",
+      Sixml:"",
       dialogImageUrl: "",
       dialogVisible: false,
 
@@ -623,5 +627,8 @@ export default {
   flex-direction: column;
   line-height: 20px;
   justify-content: center;
+}
+.font{
+  color: #a4a4a4;
 }
 </style>

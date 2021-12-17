@@ -24,12 +24,17 @@
             </div>
         </el-aside>
         <el-container>
-            <el-header class="header">
+            <el-header>
                 <div class="top_left">
-                    <span>{{ $route.meta.title }}</span>
+                    <span class="fw-b fs-20">{{ $route.meta.title }}</span>
                 </div>
-                <i class="el-icon-arrow-left"></i>
-                <i class="el-icon-refresh"></i>
+                <i class="el-icon-bell"></i>
+                <div class="top_right">
+                    <div class="avatorbox">
+                        <img class="avator" src="../assets/logo.png" alt="">
+                    </div>
+                    <span>苏苏喂苏苏</span>
+                </div>
             </el-header>
             <el-main>
                 <router-view />
@@ -56,7 +61,6 @@ export default {
     computed: {
         ...mapGetters(['routes'])
     },
-
 }
 </script>
 
@@ -65,6 +69,16 @@ export default {
     background-color: #fcf9fa;
     height: 100vh;
     color: #0a0a0a;
+    min-width: 1100px;
+
+    & .fw-b {
+        font-weight: bold;
+
+    }
+
+    & .fs-20 {
+        font-size: 20px;
+    }
 
     & .el-aside {
         background-color: #ffffff;
@@ -72,17 +86,19 @@ export default {
         text-align: center;
         height: 100vh;
         position: relative;
+        overflow-x: hidden;
 
         & .switch {
             position: absolute;
             top: 50vh;
             right: 0px;
         }
-        .el-menu{
-          border: none;
+
+        .el-menu {
+            border: none;
         }
 
-        &.el-menu-item:focus,
+        & .el-menu-item:focus,
         .el-menu-item:hover,
         .el-menu-item.is-active,
         ::v-deep .el-submenu__title:hover,
@@ -101,10 +117,6 @@ export default {
                 width: 25px;
             }
 
-            & .fw-b {
-                font-weight: bold;
-
-            }
         }
 
         & .aside_main {
@@ -122,7 +134,7 @@ export default {
 
     & .el-header {
         display: grid;
-        grid-template-columns: 40fr 1fr 1fr;
+        grid-template-columns: 30fr 1fr 5fr;
         box-shadow: 2px 0 2px #3a3434;
         background-color: #ffffff;
         font-size: 16px;
@@ -133,6 +145,23 @@ export default {
                 margin-left: 10px;
             }
         }
+
+        & .top_right {
+            display: flex;
+
+            & .avatorbox {
+                width: 25px;
+                height: 25px;
+                border-radius: 25px;
+                overflow: hidden;
+                margin-right: 10px;
+
+                & .avator {
+                    width: 25px;
+                }
+            }
+        }
+
     }
 
 }

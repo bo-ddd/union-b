@@ -414,6 +414,15 @@ export const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "command" */ '../views/content/Command')
             },
+            {
+                path: '/content/banner',
+                name: 'Banner',
+                meta: {
+                    title: 'banner管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "banner" */ '../views/content/Banner')
+            },
         ]
     },
     {
@@ -472,6 +481,15 @@ export const routes = [{
                     import ( /* webpackChunkName: "index" */ '../views/supplier/Index')
             },
             {
+                path: '/supplier/settled',
+                name: 'Settled',
+                meta: {
+                    title: '新增供应商',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "settled" */ '../views/supplier/Settled')
+            },
+            {
                 path: '/supplier/label',
                 name: 'SuppLabel',
                 meta: {
@@ -528,14 +546,24 @@ export const routes = [{
             icon: 'el-icon-bell'
         },
         children: [{
-            path: '/news/notification',
-            name: 'Notification',
-            meta: {
-                title: '系统通知',
+                path: '/news/notification',
+                name: 'Notification',
+                meta: {
+                    title: '系统通知',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "notification" */ '../views/news/Notification')
             },
-            component: () =>
-                import ( /* webpackChunkName: "notification" */ '../views/news/Notification')
-        }, ]
+            {
+                path: '/news/help',
+                name: 'Help',
+                meta: {
+                    title: '联系客服',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "help" */ '../views/news/Help')
+            },
+        ]
     },
     {
         path: '/set',

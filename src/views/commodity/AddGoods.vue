@@ -6,7 +6,7 @@
       <div class="essential_information">
         <div>
           <div>
-            <el-form :label-position="labelPosition" label-width="80px">
+            <el-form :label-position="labelPosition" label-width="80px" size='small'>
               <el-form-item label="商品类型" class="commodity_type">
                 <el-select
                   v-model="commodityType"
@@ -77,7 +77,7 @@
           </div>
           <div class="commodity_specifications">
             <div>
-              <el-form :label-position="labelPosition" label-width="80px">
+              <el-form :label-position="labelPosition" label-width="80px" size='small'>
                 <el-form-item label="品牌">
                   <el-select
                     v-model="brand"
@@ -102,7 +102,7 @@
               </el-form>
             </div>
             <div>
-              <el-form :label-position="labelPosition" label-width="80px">
+              <el-form :label-position="labelPosition" label-width="80px" size='small'>
                 <el-form-item label="销售单位">
                   <el-select
                     v-model="company"
@@ -135,7 +135,7 @@
       <div class="m_c_center">
         <div>
           <div>
-            <el-form :label-position="labelPosition" label-width="80px">
+            <el-form :label-position="labelPosition" label-width="80px" size='small'>
               <el-form-item label="生产日期" class="date_of_manufacture">
                 <div>
                   <el-date-picker
@@ -173,7 +173,7 @@
                   <el-checkbox v-model="Sixml">600ml</el-checkbox>
                 </div>
               </el-form-item>
-              <el-form-item label="销售规格"  class="sales_information">
+              <el-form-item label="销售规格" class="sales_information">
                 <el-table
                   :data="tableData"
                   :span-method="objectSpanMethod"
@@ -198,13 +198,16 @@
                   </el-table-column>
                   <el-table-column prop="amount5" label="批量填充">
                     <template>
-                       <el-link type="info">删除</el-link>
+                      <el-link type="info">删除</el-link>
                     </template>
                   </el-table-column>
                 </el-table>
               </el-form-item>
               <el-form-item label="销售区域" class="sales_area">
-                <el-button plain>添加省区</el-button>
+                <el-button @click="dialogFormVisible = true" plain
+                  >添加省区</el-button
+                >
+                <!-- <el-button plain>添加省区</el-button> -->
                 <div><span>已选省区:</span> 山东省，河南省,</div>
               </el-form-item>
             </el-form>
@@ -217,9 +220,11 @@
       <div class="m_f_center">
         <div>
           <div class="commodity_rotation">
-            <el-form :label-position="labelPosition" label-width="80px">
+            <el-form :label-position="labelPosition" label-width="80px" size='small'>
               <el-form-item label="商品轮播">
-                <span class="font">图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片</span>
+                <span class="font"
+                  >图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片</span
+                >
               </el-form-item>
               <el-form-item label="" class="product_picture">
                 <div>
@@ -252,7 +257,9 @@
                 </div>
               </el-form-item>
               <el-form-item label="商品详情">
-                <span class="font">详情切图请按顺序上传，展示宽度为750px，高度不定；最多20张，每张不得大于2M</span>
+                <span class="font"
+                  >详情切图请按顺序上传，展示宽度为750px，高度不定；最多20张，每张不得大于2M</span
+                >
               </el-form-item>
               <el-form-item label="" class="product_details">
                 <div>
@@ -280,10 +287,33 @@
       <el-button plain>预览</el-button>
       <el-button plain>发布</el-button>
     </div>
+    <el-dialog title="" :visible.sync="dialogFormVisible" align="center" class="provincial_elastic_layer">
+      <el-checkbox
+        :indeterminate="isIndeterminate"
+        v-model="checkAll"
+        @change="handleCheckAllChange"
+        ><div>全选</div> </el-checkbox>
+      <div style="margin: 15px 0"></div>
+      <el-checkbox-group
+        v-model="checkedCities"
+        @change="handleCheckedCitiesChange"
+      >
+        <el-checkbox v-for="city in cities" :label="city" :key="city">{{
+          city
+        }}</el-checkbox>
+      </el-checkbox-group>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+const cityOptions = ["上海", "北京", "广州", "深圳","成都"];
 export default {
   data() {
     return {
@@ -364,10 +394,10 @@ export default {
       labelPosition: "right",
       input: "",
       July: "",
-      August:"",
-      September:"",
-      Fourml:"",
-      Sixml:"",
+      August: "",
+      September: "",
+      Fourml: "",
+      Sixml: "",
       dialogImageUrl: "",
       dialogVisible: false,
 
@@ -391,7 +421,7 @@ export default {
           amount5: "",
         },
         {
-          dateOfManufacture: "18年6月",
+          dateOfManufacture: "18年8月",
           capacity: "400ml",
           amount1: "",
           amount2: "",
@@ -400,7 +430,7 @@ export default {
           amount5: "",
         },
         {
-          dateOfManufacture: "18年6月",
+          dateOfManufacture: "18年8月",
           capacity: "600ml",
           amount1: "",
           amount2: "",
@@ -409,6 +439,24 @@ export default {
           amount5: "",
         },
       ],
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      formLabelWidth: "120px",
+
+      checkAll: false,
+      checkedCities: ["上海", "北京"],
+      cities: cityOptions,
+      isIndeterminate: true,
     };
   },
   methods: {
@@ -444,6 +492,16 @@ export default {
         }
       }
     },
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? cityOptions : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.cities.length;
+    },
   },
 };
 </script>
@@ -458,7 +516,8 @@ export default {
   overflow-y: auto;
   & > .m_top {
     padding: 20px;
-    padding-left: 0px;
+    padding-top: 0px;
+    // padding-left: 0px;
     font-weight: 700;
   }
   & > .m_header {
@@ -533,7 +592,21 @@ export default {
   border-top: 1px solid #ff4370;
   padding: 20px 0px;
 }
-::v-deep .sales_information .cell{
+
+::v-deep .provincial_elastic_layer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & >.el-dialog{
+    width: 40%;
+    & .el-dialog__body div:nth-of-type(2){
+      display: flex;
+      justify-content: space-between;
+    }
+
+  }
+}
+::v-deep .sales_information .cell {
   text-align: center;
 }
 ::v-deep .sales_area > div {
@@ -628,7 +701,7 @@ export default {
   line-height: 20px;
   justify-content: center;
 }
-.font{
+.font {
   color: #a4a4a4;
 }
 </style>

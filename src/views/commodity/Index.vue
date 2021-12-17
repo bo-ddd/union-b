@@ -4,53 +4,54 @@
     <div class="m_main">
       <div class="m_m_center">
         <div class="m_m_c_top">
-          <div class="mains">
-            <el-form
-              :inline="true"
-              :model="formInline"
-              class="demo-form-inline"
-            >
-              <el-form-item label="商品状态">
-                <el-select v-model="value" filterable placeholder="请选择">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="商品类型">
-                <el-select v-model="value" filterable placeholder="请选择">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-input placeholder="请输入内容" v-model="input1">
+          <div>
+            <div class="mains">
+              <el-form
+                :inline="true"
+                :model="formInline"
+                class="demo-form-inline"
+              >
+                <el-form-item label="角色归属">
                   <el-select
-                    v-model="value"
-                    filterable
-                    placeholder="请选择"
-                    slot="prepend"
+                    v-model="formInline.region"
+                    placeholder="全部"
+                    size="small"
                   >
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    >
-                    </el-option>
+                    <el-option label="区域一" value="shanghai"></el-option>
+                    <el-option label="区域二" value="beijing"></el-option>
+                    <el-option label="区域三" value="tianjian"></el-option>
+                    <el-option label="区域四" value="guangzhou"></el-option>
+                    <el-option label="区域五" value="shenzhen"></el-option>
                   </el-select>
-                </el-input>
-              </el-form-item>
-            </el-form>
+                </el-form-item>
+                <el-form-item>
+                  <div style="display: flex">
+                    <el-form-item>
+                      <el-input placeholder="请输入内容" v-model="input1">
+                        <el-select
+                          v-model="value"
+                          filterable
+                          placeholder="请选择"
+                          slot="prepend"
+                        >
+                          <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </el-input>
+                    </el-form-item>
+                  </div>
+                </el-form-item>
+              </el-form>
+            </div>
+          </div>
+          <div class="query">
+            <el-button type="danger" size="small">查询</el-button>
+            <el-button size="small">重置</el-button>
           </div>
           <div class="query">
             <el-button type="danger">查询</el-button>

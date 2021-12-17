@@ -224,7 +224,7 @@ export default {
           trigger: "item",
         },
         legend: {
-          top: "20%",
+          top: "30%",
           left: "70%",
         },
         series: [
@@ -232,14 +232,7 @@ export default {
             name: "品类分布",
             type: "pie",
             radius: ["40%", "70%"],
-            avoidLabelOverlap: false,
-            label: {
-              show: false,
-              position: "center",
-            },
-            labelLine: {
-              show: false,
-            },
+            avoidLabelOverlap: true,
             data: [
               { value: 1048, name: "电器" },
               { value: 735, name: "食品" },
@@ -324,10 +317,11 @@ export default {
 }
 .wrap {
   display: grid;
-  grid-template-rows: repeat(2, 40% 60%);
-  min-width: 1000px;
+  grid-template-rows: repeat(1, 40% 57%);
   gap: 20px 20px;
   height: calc(100vh - 100px);
+  min-height:700px ;
+  overflow-y: auto;
   & > .header {
     display: grid;
     grid-template-columns: repeat(1, 1fr 2fr 2fr);
@@ -368,7 +362,7 @@ export default {
         grid-template-rows: repeat(2, 50%);
         --size: 60px;
         font-size: 12px;
-        height: 90%;
+        min-height: 90%;
         & > .top,
         .bottom {
           width: 100%;
@@ -428,6 +422,7 @@ export default {
       & > .type {
         width: 100%;
         height: 20vh;
+        margin-top: 20px;
       }
     }
   }

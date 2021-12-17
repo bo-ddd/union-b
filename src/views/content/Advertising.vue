@@ -2,10 +2,7 @@
   <div>
     <div class="header">
       <div>
-        <el-button
-          class="query"
-          icon="el-icon-plus"
-          @click="dialogFormVisible = true"
+        <el-button class="query" icon="el-icon-plus" @click="openFormDialog"
           >新增商品</el-button
         >
         <el-dialog :visible.sync="dialogFormVisible">
@@ -15,102 +12,134 @@
                 <div class="textleft">
                   <el-form :model="form">
                     <el-form-item
-                      label="活动名称"
+                      label="物流名称"
                       :label-width="formLabelWidth"
                     >
-                      <el-input
-                        v-model="form.name"
-                        autocomplete="off"
-                      ></el-input>
+                      <div class="logistics">
+                        <el-input
+                          v-model="form.name"
+                          autocomplete="off"
+                          class="logisticsIpt"
+                        ></el-input>
+                        <span>最多可输入100个字符</span>
+                      </div>
                     </el-form-item>
                     <el-form-item
-                      label="活动名称"
+                      label="文字内容"
                       :label-width="formLabelWidth"
                     >
-                      <div ref="div1"></div>
+                      <template>
+                        <div ref="editor"></div>
+                      </template>
                     </el-form-item>
                     <el-form-item
-                      label="活动名称"
+                      label="点击链接"
                       :label-width="formLabelWidth"
                     >
-                      <el-input
-                        v-model="form.name"
-                        autocomplete="off"
-                      ></el-input>
+                      <div class="logistics">
+                        <el-input
+                          v-model="form.link"
+                          autocomplete="off"
+                        ></el-input>
+                        <span>最多可输入1000个字符</span>
+                      </div>
                     </el-form-item>
+
                     <el-form-item
-                      label="活动名称"
+                      label="目标窗口"
                       :label-width="formLabelWidth"
                     >
-                      <el-input
-                        v-model="form.name"
-                        autocomplete="off"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item
-                      label="活动名称"
-                      :label-width="formLabelWidth"
-                    >
-                      <el-input
-                        v-model="form.name"
-                        autocomplete="off"
-                      ></el-input>
+                      <el-radio v-model="radio" label="1">新窗口</el-radio>
+                      <el-radio v-model="radio" label="2">原窗口</el-radio>
                     </el-form-item>
                   </el-form>
                 </div>
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article"></div>
+                    <div v-html="article" class="precontent"></div>
                   </div>
                 </div>
               </div>
             </el-tab-pane>
             <el-tab-pane label="图片" name="second">
-               <div class="texttab">
+              <div class="texttab">
                 <div class="textleft">
                   <el-form :model="form">
                     <el-form-item
-                      label="活动名称"
+                      label="物流名称"
                       :label-width="formLabelWidth"
                     >
-                      <el-input
-                        v-model="form.name"
-                        autocomplete="off"
-                      ></el-input>
+                      <div class="logistics">
+                        <el-input
+                          v-model="form.name"
+                          autocomplete="off"
+                        ></el-input>
+                        <span>最多可输入100个字符</span>
+                      </div>
                     </el-form-item>
                     <el-form-item
-                      label="活动名称"
+                      label="图片文件"
                       :label-width="formLabelWidth"
                     >
-                      <div ref="div1"></div>
+
+                    <el-upload
+                      class="upload-demo"
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :file-list="fileList"
+                      list-type="picture">
+                      <el-button size="small" type="primary">上传图片</el-button>
+                    </el-upload>
                     </el-form-item>
                     <el-form-item
-                      label="活动名称"
+                      label="图片描述"
                       :label-width="formLabelWidth"
                     >
-                      <el-input
-                        v-model="form.name"
-                        autocomplete="off"
-                      ></el-input>
+                      <div class="imagedeBox">
+                        <div class="imagede">
+                          <span>宽度</span>
+                          <el-input v-model="input1"></el-input>
+                          <span>px</span>
+                        </div>
+                        <div class="imagede">
+                          <span>高度</span>
+                          <el-input v-model="input1"></el-input>
+                          <span>px</span>
+                        </div>
+                      </div>
                     </el-form-item>
                     <el-form-item
-                      label="活动名称"
+                      label="图片描述"
                       :label-width="formLabelWidth"
                     >
-                      <el-input
-                        v-model="form.name"
-                        autocomplete="off"
-                      ></el-input>
+                      <div class="logistics">
+                        <el-input
+                          v-model="form.region"
+                          autocomplete="off"
+                        ></el-input>
+                        <span>最多可输入100个字符</span>
+                      </div>
                     </el-form-item>
                     <el-form-item
-                      label="活动名称"
+                      label="点击链接"
                       :label-width="formLabelWidth"
                     >
-                      <el-input
-                        v-model="form.name"
-                        autocomplete="off"
-                      ></el-input>
+                      <div class="logistics">
+                        <el-input
+                          v-model="form.link"
+                          autocomplete="off"
+                        ></el-input>
+                        <span>最多可输入1000个字符</span>
+                      </div>
+                    </el-form-item>
+                    <el-form-item
+                      label="目标窗口"
+                      :label-width="formLabelWidth"
+                    >
+                      <el-radio v-model="radio" label="1">新窗口</el-radio>
+                      <el-radio v-model="radio" label="2">原窗口</el-radio>
                     </el-form-item>
                   </el-form>
                 </div>
@@ -128,9 +157,9 @@
       <div class="header-right">
         <div class="header-choice">
           <el-button class="queryAt">删除</el-button>
-          <el-button class="queryAt" @click="screenBtn"
-            >筛选<i class="el-icon-caret-bottom"></i
-          ></el-button>
+          <el-button class="queryAt" @click="changeDisplay"
+            > <span v-if="isDisplay==false">筛选(点击展开)</span>
+            <span v-else>筛选(点击隐藏)</span></el-button>
         </div>
         <el-input
           placeholder="请输入物料ID 物料名称或物料内容"
@@ -141,7 +170,7 @@
         </el-input>
       </div>
     </div>
-    <div class="screen">
+   <div class="screen" v-show="isDisplay">
       <div class="screeen_top">
         <div class="screen_top-r">
           <label for="" class="lab">类型</label>
@@ -225,12 +254,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- <div>
-      <div>展示的内容:</div>
-      <div v-html="article"></div>
-    </div> -->
-    <!-- <div ref="div1"></div> -->
-    <!-- <textarea id="text1" style="width: 100%; height: 200px"></textarea> -->
   </div>
 </template>
 
@@ -239,8 +262,12 @@ import E from "wangeditor";
 export default {
   data() {
     return {
+        isDisplay:false,
       input2: "",
+      input1: "",
+      radio: "1",
       activeName: "first",
+      cont:0,
       tableData: [
         {
           date: "2016-05-03",
@@ -302,10 +329,10 @@ export default {
         },
       ],
       value: "",
-      dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
         name: "",
+        link: "",
         region: "",
         date1: "",
         date2: "",
@@ -316,20 +343,11 @@ export default {
       },
       formLabelWidth: "120px",
       article: null,
+        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
     };
   },
-  created() {
-    this.$nextTick(() => {
-      const editor = new E(this.$refs.div1);
-      editor.config.onchange = (html) => {
-        // 第二步，监控变化，同步更新到 textarea
-        // $text1.val(html);
-        console.log(html);
-        this.article = html;
-      };
-      editor.create();
-    });
-  },
+
+  created() {},
   methods: {
     handleEdit(index, row) {
       console.log(index, row);
@@ -340,9 +358,34 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    screenBtn() {},
+     handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+     changeDisplay(){
+        this.isDisplay = !this.isDisplay
+      },
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    openFormDialog() {
+      this.dialogFormVisible = true;
+      this.initEditor();
+    },
+    initEditor() {
+      this.cont++;
+      if(this.cont!=1) return;
+      this.$nextTick(() => {
+        const editor = new E(this.$refs.editor);
+        editor.config.onchange = (html) => {
+          // 第二步，监控变化，同步更新到 textarea
+          // $text1.val(html);
+          this.article = html;
+        };
+        editor.create();
+      });
     },
   },
 };
@@ -358,7 +401,7 @@ export default {
     width: 250px;
   }
   & .header-right {
-    width: 83%;
+    width: 78%;
     background: #eceff6;
     display: flex;
     justify-content: space-between;
@@ -411,15 +454,18 @@ export default {
 }
 ::v-deep .el-dialog {
   width: 60%;
-  height: 60%;
+}
+::v-deep .w-e-text-container {
+  height: 100px !important;
 }
 .texttab {
   display: flex;
   justify-content: space-around;
-}
-.textleft {
+  & .textleft {
   width: 60%;
 }
+}
+
 .preview {
   height: 320px;
   width: 280px;
@@ -431,4 +477,25 @@ export default {
     padding-left: 10px;
   }
 }
+.logistics {
+  display: flex;
+  & > span {
+    width: 210px;
+  }
+& ::v-deep .el-input__inner {
+  width: 80%;
+}
+}
+
+.imagedeBox{
+  display:flex;
+    & .imagede {
+  display: flex;
+  & > .el-input {
+    width: 30% !important;
+    margin-left: 5px;
+  }
+}
+}
+
 </style>

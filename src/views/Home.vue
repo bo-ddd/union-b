@@ -71,6 +71,10 @@ export default {
     color: #0a0a0a;
     min-width: 1100px;
 
+    ::-webkit-scrollbar {
+        width: 0px;
+    }
+
     & .fw-b {
         font-weight: bold;
 
@@ -135,7 +139,7 @@ export default {
     & .el-header {
         display: grid;
         grid-template-columns: 30fr 1fr 5fr;
-        box-shadow: 2px 0 2px #3a3434;
+        box-shadow: 2px 0 2px #e7d0d0;
         background-color: #ffffff;
         font-size: 16px;
         align-items: center;

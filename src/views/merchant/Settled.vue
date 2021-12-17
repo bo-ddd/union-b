@@ -4,17 +4,14 @@
     <div class="information">
       <div class="information-title">基本信息</div>
       <div class="information-content">
-     <el-form  >
-          <el-form-item label="活动名称"     :rules="[]">
+        <el-form label-width="100px">
+          <el-form-item label="活动名称" :rules="[{required: true}]">
+            <el-input class="el-input"></el-input>
+          </el-form-item>
+          <el-form-item label="活动名称" :rules="[{required: true}]">
             <el-input ></el-input>
           </el-form-item>
-          <el-form-item label="活动名称" :rules="[
-      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-    ]">
-            <el-input ></el-input>
-          </el-form-item>
-          <el-form-item label="活动名称" hide-required-asterisk>
+          <el-form-item label="活动名称" :rules="[{required: true}]">
             <el-input ></el-input>
           </el-form-item>
         </el-form>
@@ -51,6 +48,10 @@ export default {
         padding: 30px;
         display: flex;
         margin: 0 auto;
+        & .el-input{
+          // text-indent: 10px;
+          height: 28px;
+        }
       }
     }
   }

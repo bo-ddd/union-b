@@ -22,7 +22,41 @@
     </div>
     <!-- 编辑权限 -->
     <div class="jurisdiction">
-
+      <div class="jurisdiction-title">编辑权限</div>
+      <div class="commodity">
+        <div class="commodity-title">商品管理</div>
+        <div class="commodity-content">
+          <span>商品管理</span>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+        </div>
+        <div class="commodity-content">
+          <span>商品分类</span>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+        </div>
+        <div class="commodity-content">
+          <span>商品分类</span>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+        </div>
+        <div class="commodity-content">
+          <span>商品分类</span>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+        </div>
+        <div class="commodity-content">
+          <span>商品分类</span>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+        </div>
+        <div class="commodity-content">
+          <span>商品分类</span>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <el-checkbox v-model="checked">备选项</el-checkbox>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,7 +81,8 @@ export default {
           value: '选项5',
           label: '北京烤鸭'
         }],
-        value: ''
+        value: '',
+         checked: false
       }
     }
 }
@@ -77,6 +112,26 @@ export default {
       }
       & .information-content{
         width: 35%;
+      }
+    }
+    & .jurisdiction{
+      background-color: white;
+      margin-top: 2%;
+      & .jurisdiction-title{
+          padding:20px;
+          font-weight: 800;
+      }
+      & .commodity{
+        padding: 10px 0 0 30px;
+        & .commodity-title{
+          font-weight:800;
+        }
+        & .commodity-content{
+          margin: 20px;
+          & span{
+            padding: 0 20px 0 0;
+          }
+        }
       }
     }
   }

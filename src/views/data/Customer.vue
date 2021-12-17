@@ -62,7 +62,7 @@
               <el-button>重置</el-button>
               </div>
             </div>
-            <el-table :data="tableData" stripe >
+            <el-table :data="tableData" stripe size='small'>
             <el-table-column prop="date" label="排名" >
             </el-table-column>
             <el-table-column prop="username" label="用户名" >
@@ -99,7 +99,7 @@
               <el-button>重置</el-button>
               </div>
             </div>
-            <el-table :data="tableData" stripe >
+            <el-table :data="tableData" stripe size='small'>
             <el-table-column prop="date" label="排名" >
             </el-table-column>
             <el-table-column prop="username" label="用户名" >
@@ -122,8 +122,7 @@
           type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        >
+          end-placeholder="结束日期">
         </el-date-picker>
       </div>
     </div>
@@ -162,6 +161,13 @@ export default {
           company: "恒大",
           fixtureNumber: "250",
           price: "23561",
+        },
+        {
+          date: "5",
+          username: "杨惠妍",
+          company: "碧桂园",
+          fixtureNumber: "290",
+          price: "235610",
         },
       ],
       cities: [
@@ -269,7 +275,9 @@ body{
     }
     & .content {
       background-color: #fff;
+      min-height: 320px;
       padding: 10px 20px;
+      overflow-y: auto;
       & .content_header{
         height: 60px;
         display: flex;

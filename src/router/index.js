@@ -472,6 +472,15 @@ export const routes = [{
                     import ( /* webpackChunkName: "index" */ '../views/supplier/Index')
             },
             {
+                path: '/supplier/settled',
+                name: 'Settled',
+                meta: {
+                    title: '新增供应商',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "settled" */ '../views/supplier/Settled')
+            },
+            {
                 path: '/supplier/label',
                 name: 'SuppLabel',
                 meta: {

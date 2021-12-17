@@ -15,7 +15,7 @@
                             <span>{{ link.meta.title }}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path">
+                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path" v-show='!children.meta.flag'>
                                 <span>{{ children.meta.title }}</span>
                             </el-menu-item>
                         </el-menu-item-group>

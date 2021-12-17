@@ -87,6 +87,16 @@ export const routes = [{
                     import ( /* webpackChunkName: "index" */ '../views/order/Index')
             },
             {
+                path: '/order/details',
+                name: 'OrderDetails',
+                meta: {
+                    title: '订单详情',
+                    flag: "false"
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "details" */ '../views/order/OrderDetails')
+            },
+            {
                 path: '/order/examine',
                 name: 'Examine',
                 meta: {

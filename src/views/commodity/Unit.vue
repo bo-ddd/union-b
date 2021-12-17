@@ -298,8 +298,9 @@ export default {
   text-align: center;
 }
 .wrap{
-  width: 100%;
+  // width: 100%;
   height: calc(100vh - 100px);
+  overflow-y:auto;
   & .Company{
     padding: 15px;
     display: flex;
@@ -329,6 +330,7 @@ export default {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin: 30px 0;
   }
 }
 </style>

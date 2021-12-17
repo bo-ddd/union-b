@@ -4,7 +4,7 @@
        <div class="main-classify">
        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="分类名称" prop="name">
-    <el-input v-model="ruleForm.name"></el-input>
+    <el-input  size="small" v-model="ruleForm.name"></el-input>
   </el-form-item>
   <el-form-item label="上级分类" prop="name">
 <el-popover
@@ -14,6 +14,7 @@
   <div class="superior-classify" style="height:200px">
  <el-input
     placeholder="请输入内容"
+     size="small"
     style="width:80%">
     <i slot="prefix" class="el-input__icon el-icon-search"></i>
   </el-input>
@@ -25,7 +26,7 @@
     @change="handleChange"></el-cascader>
 </div>
   </div>
-   <el-select slot="reference" v-model="value"  style="width:100%">
+   <el-select slot="reference" v-model="value"  size="small" style="width:100%">
      
    </el-select>
 </el-popover>

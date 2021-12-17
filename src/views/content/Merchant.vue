@@ -1,6 +1,6 @@
 <template>
   <div>
-      MerchantRecommend
+      商家推荐
   </div>
 </template>
 

@@ -6,7 +6,9 @@
           <el-select v-model="value" filterable placeholder="请选择">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>  
-          <el-input  placeholder="搜索"></el-input>
+          <el-input  placeholder="请输入内容"  suffix-icon="el-icon-search">
+          </el-input>
+
       </div>
     </div>
     <div class="table">
@@ -285,7 +287,19 @@ export default {
             return num1-num2;
           })
         },
-        
+        search(){
+          let _search = this.jobNo.toLowerCase();
+          let newListData = [];
+          if (_search) {
+            this.xmgcqkJsonsData.filter(item => {
+                if (item.code.toLowerCase().indexOf(_search) !== -1) {
+                  newListData.push(item);
+              }
+            }) 
+          }
+          this.xmgcqkJsonsData = newListData;
+          // console.log(‘新数组’,newListData)
+        },  
       },
 }
 </script>

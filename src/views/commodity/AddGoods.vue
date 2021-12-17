@@ -94,7 +94,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="重量">
-                  <el-input v-model="input" placeholder="请输入重量"></el-input>
+                  <el-input v-model="weight" placeholder="请输入重量"></el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -102,7 +102,6 @@
               <el-form
                 :label-position="labelPosition"
                 label-width="80px"
-                :model="formLabelAlign"
               >
                 <el-form-item label="销售单位">
                   <el-select
@@ -121,7 +120,7 @@
                 </el-form-item>
                 <el-form-item label="体积">
                   <el-input
-                    v-model="input"
+                    v-model="volume"
                     placeholder="请填写包裹体积"
                   ></el-input>
                 </el-form-item>
@@ -139,7 +138,6 @@
             <el-form
               :label-position="labelPosition"
               label-width="80px"
-              :model="formLabelAlign"
             >
               <el-form-item label="生产日期" class="date_of_manufacture">
                 <div>
@@ -181,9 +179,9 @@
                   border
                   style="width: 100%; margin-top: 20px"
                 >
-                  <el-table-column prop="id" label="生产日期" width="180">
+                  <el-table-column prop="dateOfManufacture" label="生产日期" width="180">
                   </el-table-column>
-                  <el-table-column prop="name" label="容量"> </el-table-column>
+                  <el-table-column prop="capacity" label="容量"> </el-table-column>
                   <el-table-column prop="amount1" label="* 售价">
                   </el-table-column>
                   <el-table-column prop="amount2" label="* 库存">
@@ -213,7 +211,6 @@
             <el-form
               :label-position="labelPosition"
               label-width="80px"
-              :model="formLabelAlign"
             >
               <el-form-item label="商品轮播">
                 图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片
@@ -284,6 +281,8 @@
 export default {
   data() {
     return {
+      weight:"",
+      volume:"",
       commodityType: "",
       typeList: [
         {
@@ -356,85 +355,51 @@ export default {
         },
       ],
 
+
       labelPosition: "right",
-      formLabelAlign: {
-        name: "",
-        region: "",
-        type: "",
-      },
       input: "",
       checked: "",
       dialogImageUrl: "",
       dialogVisible: false,
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      value: "",
+     
+
 
       tableData: [
         {
-          id: "12987122",
-          name: "王小虎",
-          amount1: "234",
-          amount2: "3.2",
-          amount3: 10,
-          amount4: 9,
-          amount5: 9,
+          dateOfManufacture: "18年7月",
+          capacity: "400ml",
+          amount1: "",
+          amount2: "",
+          amount3: "",
+          amount4: "",
+          amount5: "",
         },
         {
-          id: "12987123",
-          name: "王小虎",
-          amount1: "165",
-          amount2: "4.43",
-          amount3: 12,
-          amount4: 9,
-          amount5: 9,
+          dateOfManufacture: "18年7月",
+          capacity: "600ml",
+          amount1: "",
+          amount2: "",
+          amount3: "",
+          amount4: "",
+          amount5: "",
         },
         {
-          id: "12987124",
-          name: "王小虎",
-          amount1: "324",
-          amount2: "1.9",
-          amount3: 9,
-          amount4: 9,
-          amount5: 9,
+          dateOfManufacture: "18年6月",
+          capacity: "400ml",
+          amount1: "",
+          amount2: "",
+          amount3: "",
+          amount4: "",
+          amount5: "",
         },
         {
-          id: "12987125",
-          name: "王小虎",
-          amount1: "621",
-          amount2: "2.2",
-          amount3: 17,
-          amount4: 9,
-          amount5: 9,
-        },
-        {
-          id: "12987126",
-          name: "王小虎",
-          amount1: "539",
-          amount2: "4.1",
-          amount3: 15,
-          amount4: 9,
-          amount5: 9,
+          dateOfManufacture: "18年6月",
+          capacity: "600ml",
+          amount1: "",
+          amount2: "",
+          amount3: "",
+          amount4: "",
+          amount5: "",
         },
       ],
     };

@@ -61,33 +61,15 @@ export default {
           trigger: "item",
         },
         legend: {
-          top: "5%",
-          left: "center",
+          top: "bottom",
         },
         series: [
           {
             type: "pie",
-            radius: ["40%", "70%"],
-            avoidLabelOverlap: false,
-            itemStyle: {
-              borderRadius: 10,
-              borderColor: "#fff",
-              borderWidth: 2,
-            },
-            label: {
-              show: false,
-              position: "center",
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "20",
-                fontWeight: "bold",
-              },
-            },
-            labelLine: {
-              show: false,
-            },
+            radius: [14, 70],
+            center: ["50%", "50%"],
+            roseType: "area",
+            itemStyle: {},
             data: [
               { value: 1048, name: "饮料" },
               { value: 735, name: "生活用品" },
@@ -113,36 +95,29 @@ export default {
         tooltip: {
           trigger: "item",
         },
-        legend: {
-          top: "5%",
-          left: "center",
+        visualMap: {
+          show: false,
+          min: 80,
+          max: 600,
+          inRange: {
+            colorLightness: [0, 1],
+          },
         },
         series: [
           {
             type: "pie",
-            radius: ["40%", "70%"],
-            avoidLabelOverlap: false,
-            label: {
-              show: false,
-              position: "center",
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "20",
-                fontWeight: "bold",
-              },
-            },
-            labelLine: {
-              show: false,
-            },
+            radius: "55%",
+            center: ["50%", "50%"],
             data: [
-              { value: 1048, name: "饮料" },
-              { value: 735, name: "生活用品" },
-              { value: 580, name: "床上用品" },
-              { value: 484, name: "辅料" },
-              { value: 300, name: "速食产品" },
-            ],
+              { value: 335, name: "山西" },
+              { value: 310, name: "北京" },
+              { value: 274, name: "上海" },
+              { value: 235, name: "广州" },
+              { value: 400, name: "深圳" },
+            ].sort(function (a, b) {
+              return a.value - b.value;
+            }),
+            roseType: "radius",
           },
         ],
       };
@@ -181,13 +156,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data:["10:00", 
-                "12:00", 
-                "14:00", 
-                "16:00", 
-                "20:00", 
-                "22:00", 
-                "24:00"],
+          data: ["10:00", "12:00", "14:00", "16:00", "20:00", "22:00", "24:00"],
         },
         yAxis: {
           type: "value",
@@ -246,7 +215,7 @@ export default {
               show: false,
             },
             data: [
-              { value: 1048, name: "男" },
+              { value: 55, name: "男" },
               { value: 35, name: "女" },
             ],
           },
@@ -344,10 +313,12 @@ export default {
 <style lang="scss" scoped>
 .warp {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  width: calc(100vw - 300px);
+  height: calc(100vh - 100px);
 }
 .main-l {
-  width: 56%;
+  width: 58%;
   margin-right: 2.5%;
 }
 .main-r {
@@ -365,7 +336,7 @@ export default {
 .main-right {
   padding: 1.7%;
   width: 100%;
-  height: 22.5vh;
+  height: 23.2vh;
   background-color: #fff;
   margin-bottom: 6%;
 }

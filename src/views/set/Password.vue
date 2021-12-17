@@ -12,7 +12,7 @@
           <el-input class="main_input" v-model="confirmpass" placeholder="请确认新密码"></el-input>
        </div>
        <div class="main_inputbox">
-         <el-button class="confirmbtn" type="primary">确认修改</el-button>
+         <el-button class="confirmbtn" type="danger">确认修改</el-button>
        </div>
      </div>
   </div>

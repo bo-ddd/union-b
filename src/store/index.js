@@ -34,6 +34,10 @@ export default new Vuex.Store({
         getCaptcha() {
             return Api.getCaptcha()
         },
+        //注册
+        userRegister(ctx, payload) {
+            return Api.userRegister(payload);
+        },
 
 
         //商品管理

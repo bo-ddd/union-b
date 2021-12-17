@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <div class="m_header">商品管理</div>
     <div class="m_main">
       <div class="m_m_center">
         <div class="m_m_c_top">
@@ -9,6 +8,7 @@
               :inline="true"
               :model="formInline"
               class="demo-form-inline"
+              size="small"
             >
               <el-form-item label="商品状态">
                 <el-select v-model="value" filterable placeholder="请选择">
@@ -53,8 +53,8 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="danger">查询</el-button>
-            <el-button>重置</el-button>
+            <el-button type="danger" size="small">查询</el-button>
+            <el-button size="small">重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
@@ -62,10 +62,10 @@
           <!-- <div>批量下架</div>
           <div>批量上架</div>
           <div>批量删除</div> -->
-          <el-button type="danger">+ 新增商品</el-button>
-          <el-button>批量下架</el-button>
-          <el-button>批量上架</el-button>
-          <el-button>批量删除</el-button>
+          <el-button type="danger" size="small">+ 新增商品</el-button>
+          <el-button size="small">批量下架</el-button>
+          <el-button size="small">批量上架</el-button>
+          <el-button size="small">批量删除</el-button>
         </div>
       </div>
       <div>
@@ -75,6 +75,7 @@
           tooltip-effect="dark"
           style="width: 100%"
           stripe
+          size="small"
           :header-cell-style="{ background: '#fcfafb' }"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
@@ -115,26 +116,24 @@
           </el-table-column>
           <el-table-column prop="date" label="创建日期" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" show-overflow-tooltip>
+          <el-table-column label="操作" show-overflow-tooltip align="center">
             <template>
-              <el-link type="primary" class="edit">编辑</el-link>
-              <el-link type="warning" class="off_the_shelf">下架</el-link>
-              <el-link type="danger" class="delete">删除</el-link>
+              <el-link
+                type="primary"
+                class="edit"
+                size="small"
+                @click="dialogFormVisible = true"
+                >编辑</el-link
+              >
+              <el-link type="warning" class="off_the_shelf" size="small"
+                >下架</el-link
+              >
+              <el-link type="danger" class="delete" size="small">删除</el-link>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div class="m_footer">
-        <!-- <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout=" sizes, prev, pager, next, jumper,total"
-          :total="400"
-        >
-        </el-pagination> -->
         <div class="block">
           <el-pagination
             @size-change="handleSizeChange"
@@ -149,10 +148,47 @@
           </el-pagination>
         </div>
       </div>
+      <el-dialog
+        title="编辑商品"
+        :visible.sync="dialogFormVisible"
+        class="modify_information"
+      >
+        <el-form :model="form" size="small">
+          <el-form-item label="商品名称" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="商品分类" :label-width="formLabelWidth">
+            <div class="block">
+              <el-cascader
+                placeholder="请选择分类"
+                :options="classificationList"
+                filterable
+                class="classification"
+              ></el-cascader>
+            </div>
+          </el-form-item>
+          <el-form-item label="售价" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="库存" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" size="small"
+            >取 消</el-button
+          >
+          <el-button
+            type="primary"
+            @click="dialogFormVisible = false"
+            size="small"
+            >确 定</el-button
+          >
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   /**
@@ -259,6 +295,288 @@ export default {
           date: "2019-08-12",
         },
       ],
+      
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      classificationList: [
+        {
+          value: "zhinan",
+          label: "指南",
+          children: [
+            {
+              value: "shejiyuanze",
+              label: "设计原则",
+              children: [
+                {
+                  value: "yizhi",
+                  label: "一致",
+                },
+                {
+                  value: "fankui",
+                  label: "反馈",
+                },
+                {
+                  value: "xiaolv",
+                  label: "效率",
+                },
+                {
+                  value: "kekong",
+                  label: "可控",
+                },
+              ],
+            },
+            {
+              value: "daohang",
+              label: "导航",
+              children: [
+                {
+                  value: "cexiangdaohang",
+                  label: "侧向导航",
+                },
+                {
+                  value: "dingbudaohang",
+                  label: "顶部导航",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          value: "zujian",
+          label: "组件",
+          children: [
+            {
+              value: "basic",
+              label: "Basic",
+              children: [
+                {
+                  value: "layout",
+                  label: "Layout 布局",
+                },
+                {
+                  value: "color",
+                  label: "Color 色彩",
+                },
+                {
+                  value: "typography",
+                  label: "Typography 字体",
+                },
+                {
+                  value: "icon",
+                  label: "Icon 图标",
+                },
+                {
+                  value: "button",
+                  label: "Button 按钮",
+                },
+              ],
+            },
+            {
+              value: "form",
+              label: "Form",
+              children: [
+                {
+                  value: "radio",
+                  label: "Radio 单选框",
+                },
+                {
+                  value: "checkbox",
+                  label: "Checkbox 多选框",
+                },
+                {
+                  value: "input",
+                  label: "Input 输入框",
+                },
+                {
+                  value: "input-number",
+                  label: "InputNumber 计数器",
+                },
+                {
+                  value: "select",
+                  label: "Select 选择器",
+                },
+                {
+                  value: "cascader",
+                  label: "Cascader 级联选择器",
+                },
+                {
+                  value: "switch",
+                  label: "Switch 开关",
+                },
+                {
+                  value: "slider",
+                  label: "Slider 滑块",
+                },
+                {
+                  value: "time-picker",
+                  label: "TimePicker 时间选择器",
+                },
+                {
+                  value: "date-picker",
+                  label: "DatePicker 日期选择器",
+                },
+                {
+                  value: "datetime-picker",
+                  label: "DateTimePicker 日期时间选择器",
+                },
+                {
+                  value: "upload",
+                  label: "Upload 上传",
+                },
+                {
+                  value: "rate",
+                  label: "Rate 评分",
+                },
+                {
+                  value: "form",
+                  label: "Form 表单",
+                },
+              ],
+            },
+            {
+              value: "data",
+              label: "Data",
+              children: [
+                {
+                  value: "table",
+                  label: "Table 表格",
+                },
+                {
+                  value: "tag",
+                  label: "Tag 标签",
+                },
+                {
+                  value: "progress",
+                  label: "Progress 进度条",
+                },
+                {
+                  value: "tree",
+                  label: "Tree 树形控件",
+                },
+                {
+                  value: "pagination",
+                  label: "Pagination 分页",
+                },
+                {
+                  value: "badge",
+                  label: "Badge 标记",
+                },
+              ],
+            },
+            {
+              value: "notice",
+              label: "Notice",
+              children: [
+                {
+                  value: "alert",
+                  label: "Alert 警告",
+                },
+                {
+                  value: "loading",
+                  label: "Loading 加载",
+                },
+                {
+                  value: "message",
+                  label: "Message 消息提示",
+                },
+                {
+                  value: "message-box",
+                  label: "MessageBox 弹框",
+                },
+                {
+                  value: "notification",
+                  label: "Notification 通知",
+                },
+              ],
+            },
+            {
+              value: "navigation",
+              label: "Navigation",
+              children: [
+                {
+                  value: "menu",
+                  label: "NavMenu 导航菜单",
+                },
+                {
+                  value: "tabs",
+                  label: "Tabs 标签页",
+                },
+                {
+                  value: "breadcrumb",
+                  label: "Breadcrumb 面包屑",
+                },
+                {
+                  value: "dropdown",
+                  label: "Dropdown 下拉菜单",
+                },
+                {
+                  value: "steps",
+                  label: "Steps 步骤条",
+                },
+              ],
+            },
+            {
+              value: "others",
+              label: "Others",
+              children: [
+                {
+                  value: "dialog",
+                  label: "Dialog 对话框",
+                },
+                {
+                  value: "tooltip",
+                  label: "Tooltip 文字提示",
+                },
+                {
+                  value: "popover",
+                  label: "Popover 弹出框",
+                },
+                {
+                  value: "card",
+                  label: "Card 卡片",
+                },
+                {
+                  value: "carousel",
+                  label: "Carousel 走马灯",
+                },
+                {
+                  value: "collapse",
+                  label: "Collapse 折叠面板",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          value: "ziyuan",
+          label: "资源",
+          children: [
+            {
+              value: "axure",
+              label: "Axure Components",
+            },
+            {
+              value: "sketch",
+              label: "Sketch Templates",
+            },
+            {
+              value: "jiaohu",
+              label: "组件交互文档",
+            },
+          ],
+        },
+      ],
+      formLabelWidth: "120px",
       multipleSelection: [],
       currentPage1: 5,
       currentPage2: 5,
@@ -284,10 +602,6 @@ export default {
   height: calc(100vh - 100px);
   overflow-y: auto;
   min-height: 77vh;
-  & > .m_header {
-    padding: 20px;
-    font-weight: 700;
-  }
   & > .m_main {
     padding: 20px;
     display: flex;
@@ -396,6 +710,18 @@ export default {
     }
     & > .el-form-item:nth-of-type(2) {
       margin-right: 15px;
+    }
+  }
+}
+::v-deep .modify_information .el-dialog {
+  width: 30%;
+  & > .el-dialog__body {
+    & > .el-form {
+      & > .el-form-item:nth-of-type(2) {
+        & > .el-form-item__content {
+          display: flex;
+        }
+      }
     }
   }
 }

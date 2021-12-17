@@ -1,56 +1,60 @@
 <template>
   <div class="main">
-    <div class="m_header">商品管理</div>
     <div class="m_main">
       <div class="m_m_center">
         <div class="m_m_c_top">
-          <div>
-            <div class="mains">
-            <el-form :inline="true" :model="formInline" class="demo-form-inline">
-  <el-form-item label="商品状态">
-    <el-select v-model="formInline.region" placeholder="全部">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-      <el-option label="区域三" value="tianjian"></el-option>
-      <el-option label="区域四" value="guangzhou"></el-option>
-      <el-option label="区域五" value="shenzhen"></el-option>
-    </el-select>
-  </el-form-item>
-
-  <el-form-item label="商品类型">
-    <el-select v-model="formInline.region" placeholder="全部">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-      <el-option label="区域三" value="tianjian"></el-option>
-      <el-option label="区域四" value="guangzhou"></el-option>
-      <el-option label="区域五" value="shenzhen"></el-option>
-    </el-select>
-  </el-form-item>
-  <el-form-item>
-  <div style="margin-top: 5px;">
-  <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-    <el-select v-model="select" slot="prepend" placeholder="商品名称" class="inputs">
-      <el-option label="餐厅名" value="1"></el-option>
-      <el-option label="订单号" value="2"></el-option>
-      <el-option label="用户电话" value="3"></el-option>
-    </el-select>
-    <el-select v-model="formInline.region" placeholder="活动区域">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-      <el-option label="区域三" value="tianjian"></el-option>
-      <el-option label="区域四" value="guangzhou"></el-option>
-      <el-option label="区域五" value="shenzhen"></el-option>
-    </el-select>
-    <!-- <el-button slot="append" icon="el-icon-search"></el-button> -->
-  </el-input>
-</div>
-  </el-form-item>
-</el-form>
-            </div>
+          <div class="mains">
+            <el-form
+              :inline="true"
+              :model="formInline"
+              class="demo-form-inline"
+              size="small"
+            >
+              <el-form-item label="商品状态">
+                <el-select v-model="value" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="商品类型">
+                <el-select v-model="value" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-input placeholder="请输入内容" v-model="input1">
+                  <el-select
+                    v-model="value"
+                    filterable
+                    placeholder="请选择"
+                    slot="prepend"
+                  >
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-input>
+              </el-form-item>
+            </el-form>
           </div>
           <div class="query">
-            <el-button type="danger">查询</el-button>
-          <el-button>重置</el-button>
+            <el-button type="danger" size="small">查询</el-button>
+            <el-button size="small">重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
@@ -58,10 +62,10 @@
           <!-- <div>批量下架</div>
           <div>批量上架</div>
           <div>批量删除</div> -->
-          <el-button type="danger">+新增商品</el-button>
-          <el-button>批量下架</el-button>
-          <el-button>批量上架</el-button>
-          <el-button>批量删除</el-button>
+          <el-button type="danger" size="small">+ 新增商品</el-button>
+          <el-button size="small">批量下架</el-button>
+          <el-button size="small">批量上架</el-button>
+          <el-button size="small">批量删除</el-button>
         </div>
       </div>
       <div>
@@ -71,6 +75,7 @@
           tooltip-effect="dark"
           style="width: 100%"
           stripe
+          size="small"
           :header-cell-style="{ background: '#fcfafb' }"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
@@ -109,50 +114,81 @@
           </el-table-column>
           <el-table-column prop="state" label="状态" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="date"
-            label="创建日期"
-            show-overflow-tooltip
-          >
+          <el-table-column prop="date" label="创建日期" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" show-overflow-tooltip>
+          <el-table-column label="操作" show-overflow-tooltip align="center">
             <template>
-              <el-link type="primary" class="edit">编辑</el-link>
-              <el-link type="warning" class="off_the_shelf">下架</el-link>
-              <el-link type="danger" class="delete">删除</el-link>
+              <el-link
+                type="primary"
+                class="edit"
+                size="small"
+                @click="dialogFormVisible = true"
+                >编辑</el-link
+              >
+              <el-link type="warning" class="off_the_shelf" size="small"
+                >下架</el-link
+              >
+              <el-link type="danger" class="delete" size="small">删除</el-link>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div class="m_footer">
-        <!-- <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout=" sizes, prev, pager, next, jumper,total"
-          :total="400"
-        >
-        </el-pagination> -->
         <div class="block">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      :page-sizes="[100, 200, 300, 400]"
-      :page-size="100"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="400"
-      class="page"
-      >
-    </el-pagination>
-  </div>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400"
+            class="page"
+          >
+          </el-pagination>
+        </div>
       </div>
+      <el-dialog
+        title="编辑商品"
+        :visible.sync="dialogFormVisible"
+        class="modify_information"
+      >
+        <el-form :model="form" size="small">
+          <el-form-item label="商品名称" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="商品分类" :label-width="formLabelWidth">
+            <div class="block">
+              <el-cascader
+                placeholder="请选择分类"
+                :options="classificationList"
+                filterable
+                class="classification"
+              ></el-cascader>
+            </div>
+          </el-form-item>
+          <el-form-item label="售价" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="库存" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" size="small"
+            >取 消</el-button
+          >
+          <el-button
+            type="primary"
+            @click="dialogFormVisible = false"
+            size="small"
+            >确 定</el-button
+          >
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   /**
@@ -160,93 +196,387 @@ export default {
    */
   data() {
     return {
-      input1: '',
-      input2: '',
-      input3: '',
-      select: '',
-      formInline: {
-          user: '',
-          region: ''
+      value: "",
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕",
         },
+        {
+          value: "选项2",
+          label: "双皮奶",
+        },
+      ],
+      input1: "",
+      input2: "",
+      input3: "",
+      select: "",
+      formInline: {
+        user: "",
+        region: "",
+      },
+
       tableData: [
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify:'孕产妇用品',
-          money:'159.00',
-          inventory:'4647',
-          sales:'464',
-          state:'销售中',
-          date:'2019-08-12'
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
         },
       ],
+      
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      classificationList: [
+        {
+          value: "zhinan",
+          label: "指南",
+          children: [
+            {
+              value: "shejiyuanze",
+              label: "设计原则",
+              children: [
+                {
+                  value: "yizhi",
+                  label: "一致",
+                },
+                {
+                  value: "fankui",
+                  label: "反馈",
+                },
+                {
+                  value: "xiaolv",
+                  label: "效率",
+                },
+                {
+                  value: "kekong",
+                  label: "可控",
+                },
+              ],
+            },
+            {
+              value: "daohang",
+              label: "导航",
+              children: [
+                {
+                  value: "cexiangdaohang",
+                  label: "侧向导航",
+                },
+                {
+                  value: "dingbudaohang",
+                  label: "顶部导航",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          value: "zujian",
+          label: "组件",
+          children: [
+            {
+              value: "basic",
+              label: "Basic",
+              children: [
+                {
+                  value: "layout",
+                  label: "Layout 布局",
+                },
+                {
+                  value: "color",
+                  label: "Color 色彩",
+                },
+                {
+                  value: "typography",
+                  label: "Typography 字体",
+                },
+                {
+                  value: "icon",
+                  label: "Icon 图标",
+                },
+                {
+                  value: "button",
+                  label: "Button 按钮",
+                },
+              ],
+            },
+            {
+              value: "form",
+              label: "Form",
+              children: [
+                {
+                  value: "radio",
+                  label: "Radio 单选框",
+                },
+                {
+                  value: "checkbox",
+                  label: "Checkbox 多选框",
+                },
+                {
+                  value: "input",
+                  label: "Input 输入框",
+                },
+                {
+                  value: "input-number",
+                  label: "InputNumber 计数器",
+                },
+                {
+                  value: "select",
+                  label: "Select 选择器",
+                },
+                {
+                  value: "cascader",
+                  label: "Cascader 级联选择器",
+                },
+                {
+                  value: "switch",
+                  label: "Switch 开关",
+                },
+                {
+                  value: "slider",
+                  label: "Slider 滑块",
+                },
+                {
+                  value: "time-picker",
+                  label: "TimePicker 时间选择器",
+                },
+                {
+                  value: "date-picker",
+                  label: "DatePicker 日期选择器",
+                },
+                {
+                  value: "datetime-picker",
+                  label: "DateTimePicker 日期时间选择器",
+                },
+                {
+                  value: "upload",
+                  label: "Upload 上传",
+                },
+                {
+                  value: "rate",
+                  label: "Rate 评分",
+                },
+                {
+                  value: "form",
+                  label: "Form 表单",
+                },
+              ],
+            },
+            {
+              value: "data",
+              label: "Data",
+              children: [
+                {
+                  value: "table",
+                  label: "Table 表格",
+                },
+                {
+                  value: "tag",
+                  label: "Tag 标签",
+                },
+                {
+                  value: "progress",
+                  label: "Progress 进度条",
+                },
+                {
+                  value: "tree",
+                  label: "Tree 树形控件",
+                },
+                {
+                  value: "pagination",
+                  label: "Pagination 分页",
+                },
+                {
+                  value: "badge",
+                  label: "Badge 标记",
+                },
+              ],
+            },
+            {
+              value: "notice",
+              label: "Notice",
+              children: [
+                {
+                  value: "alert",
+                  label: "Alert 警告",
+                },
+                {
+                  value: "loading",
+                  label: "Loading 加载",
+                },
+                {
+                  value: "message",
+                  label: "Message 消息提示",
+                },
+                {
+                  value: "message-box",
+                  label: "MessageBox 弹框",
+                },
+                {
+                  value: "notification",
+                  label: "Notification 通知",
+                },
+              ],
+            },
+            {
+              value: "navigation",
+              label: "Navigation",
+              children: [
+                {
+                  value: "menu",
+                  label: "NavMenu 导航菜单",
+                },
+                {
+                  value: "tabs",
+                  label: "Tabs 标签页",
+                },
+                {
+                  value: "breadcrumb",
+                  label: "Breadcrumb 面包屑",
+                },
+                {
+                  value: "dropdown",
+                  label: "Dropdown 下拉菜单",
+                },
+                {
+                  value: "steps",
+                  label: "Steps 步骤条",
+                },
+              ],
+            },
+            {
+              value: "others",
+              label: "Others",
+              children: [
+                {
+                  value: "dialog",
+                  label: "Dialog 对话框",
+                },
+                {
+                  value: "tooltip",
+                  label: "Tooltip 文字提示",
+                },
+                {
+                  value: "popover",
+                  label: "Popover 弹出框",
+                },
+                {
+                  value: "card",
+                  label: "Card 卡片",
+                },
+                {
+                  value: "carousel",
+                  label: "Carousel 走马灯",
+                },
+                {
+                  value: "collapse",
+                  label: "Collapse 折叠面板",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          value: "ziyuan",
+          label: "资源",
+          children: [
+            {
+              value: "axure",
+              label: "Axure Components",
+            },
+            {
+              value: "sketch",
+              label: "Sketch Templates",
+            },
+            {
+              value: "jiaohu",
+              label: "组件交互文档",
+            },
+          ],
+        },
+      ],
+      formLabelWidth: "120px",
       multipleSelection: [],
       currentPage1: 5,
       currentPage2: 5,
@@ -272,10 +602,6 @@ export default {
   height: calc(100vh - 100px);
   overflow-y: auto;
   min-height: 77vh;
-  & > .m_header {
-    padding: 20px;
-    font-weight: 700;
-  }
   & > .m_main {
     padding: 20px;
     display: flex;
@@ -283,7 +609,6 @@ export default {
     background: #ffffff;
     & > .m_m_center {
       display: grid;
-      grid-template-rows: 1fr 1fr;
       width: 100%;
       & > .m_m_c_top {
         display: grid;
@@ -306,7 +631,7 @@ export default {
               line-height: 32px;
               border: 1px solid #dcdfe6;
               border-radius: 5px;
-              text-indent: 10px;  
+              text-indent: 10px;
               color: #c0c4cc;
             }
           }
@@ -333,8 +658,12 @@ export default {
         }
       }
       & > .commodity_operation {
-        // margin-top: 20px;
+        padding-top: 20px;
         display: flex;
+        & .el-button {
+          height: 40px;
+          padding: 10px;
+        }
         & > div {
           height: 32px;
           width: 80px;
@@ -351,8 +680,11 @@ export default {
         }
       }
     }
+    & > div:nth-of-type(2) {
+      padding: 20px 0px;
+    }
   }
-  & >.m_footer{
+  & > .m_footer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -364,6 +696,42 @@ export default {
   & a:hover {
     text-decoration: none;
   }
+}
+
+.mains {
+  width: 100%;
+  & > form {
+    width: 100%;
+    & > .el-form-item {
+      margin-bottom: 0px;
+    }
+    & > .el-form-item:nth-of-type(1) {
+      margin-right: 15px;
+    }
+    & > .el-form-item:nth-of-type(2) {
+      margin-right: 15px;
+    }
+  }
+}
+::v-deep .modify_information .el-dialog {
+  width: 30%;
+  & > .el-dialog__body {
+    & > .el-form {
+      & > .el-form-item:nth-of-type(2) {
+        & > .el-form-item__content {
+          display: flex;
+        }
+      }
+    }
+  }
+}
+::v-deep
+  .mains
+  > form
+  > .el-form-item:nth-of-type(3)
+  .el-form-item__content
+  .el-input__inner {
+  width: 280px;
 }
 .delete {
   text-decoration: none;
@@ -384,44 +752,46 @@ input:-ms-input-placeholder {
   color: #c0c4cc;
   font-weight: 700;
 }
-::v-deep .el-pagination__jump{
-  margin: 0px;
+::v-deep .mains .el-input:nth-of-type(1),
+::v-deep .mains .el-input:nth-of-type(2) {
+  width: 120px;
 }
-::v-deep .cell {
-  font-weight: 700;
-}
-::v-deep .el-input {
-  width: 100% !important;
-}
-::v-deep .el-select {
-  width: 70% !important;
-}
-::v-deep .el-input__icon {
-  line-height: 32px;
-}
-::v-deep .el-input__inner {
-  height: 32px;
-  line-height: 32px;
-  font-weight: 700;
-}
-::v-deep .el-input--suffix {
-  width: 70% !important;
-}
+// ::v-deep .el-pagination__jump{
+//   margin: 0px;
+// }
+// ::v-deep .cell {
+//   font-weight: 700;
+// }
+// ::v-deep .el-input {
+//   width: 100% !important;
+// }
+// ::v-deep .el-select {
+//   width: 70% !important;
+// }
+// ::v-deep .el-input__icon {
+//   line-height: 32px;
+// }
+// ::v-deep .el-input__inner {
+//   height: 32px;
+//   line-height: 32px;
+//   font-weight: 700;
+// }
+// ::v-deep .el-input--suffix {
+//   width: 70% !important;
+// }
 .el-form--inline .el-form-item {
-    margin-right: -90px;
+  margin-right: -90px;
 }
 .el-select .el-input {
-    width: 130px;
-  }
-.inputs{
+  width: 130px;
+}
+.inputs {
   margin-left: 20px;
 }
-.mains{
-  margin: 5px 0 -20px 0;
-}
-.block{
+
+.block {
   display: flex;
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 </style>

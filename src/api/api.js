@@ -43,7 +43,18 @@ export default {
      * @description  验证码
      * */
     getCaptcha() { return `/api/captcha?${Math.random()}` },
-
+    /**
+     * @description  用户注册接口
+     * @params {
+     * username:[string] 必填 用户名称，
+     * password:[string] 必填 用户密码,
+     * email:[string]    必填 用户邮箱,
+     * phone:[string]  非必填 手机号码,
+     * } 
+     * */
+    userRegister(params) {
+        return axios.post('/user/register', params, postConfig)
+    },
 
     //商品管理
     /**

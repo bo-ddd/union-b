@@ -90,13 +90,11 @@
       </div>
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
-        <div class="rank">
-          <el-table :data="tableData" stripe style="width: 100%; height: 100%">
+          <el-table :data="tableData" stripe style="width: 100%;" size="small">
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
             <el-table-column prop="address" label="销售量"> </el-table-column>
           </el-table>
-        </div>
         <!-- 商家综合排行 -->
         <!-- 商品排行 -->
       </div>
@@ -317,11 +315,10 @@ export default {
 }
 .wrap {
   display: grid;
-  grid-template-rows: repeat(1, 40% 57%);
+  grid-template-rows: repeat(1, 1fr 1.5fr);
   gap: 20px 20px;
   height: calc(100vh - 100px);
-  min-height:700px ;
-  overflow-y: auto;
+  overflow-y: scroll;
   & > .header {
     display: grid;
     grid-template-columns: repeat(1, 1fr 2fr 2fr);
@@ -403,7 +400,7 @@ export default {
         & > .bottom {
           & > .bottom_left {
             background-color: #6058df;
-            transform: scale(1.3);
+            transform: scale(1.2);
             box-shadow: 0 0 10px #1c2d59;
           }
           & > .bottom_center {
@@ -411,7 +408,7 @@ export default {
           }
           & > .bottom_right {
             background-color: #129633;
-            transform: scale(1.3);
+            transform: scale(1.2);
             box-shadow: 0 0 10px #0d3c36;
           }
         }
@@ -435,11 +432,10 @@ export default {
     & > div {
       background-color: #ffffff;
       padding: 10px;
-      position: relative;
+      min-width: 100px;
       & > div {
         height: 46vh;
-        position: absolute;
-        width: 95%;
+        width: 96%;
       }
     }
   }

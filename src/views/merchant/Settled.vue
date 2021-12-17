@@ -26,35 +26,47 @@
       <div class="commodity">
         <div class="commodity-title">商品管理</div>
         <div class="commodity-content">
-          <span>商品管理</span>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <span class="commodity-content_title">商品管理</span>
+          <div>
+            <el-checkbox v-model="checked">商品查看</el-checkbox>
+            <el-checkbox v-model="checked">商品审核</el-checkbox>
+            <el-checkbox v-model="checked">备选项</el-checkbox>
+          </div>
         </div>
         <div class="commodity-content">
-          <span>商品分类</span>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <span class="commodity-content_title">商品分类</span>
+          <div>
+            <el-checkbox v-model="checked">商品分类查看</el-checkbox>
+            <el-checkbox v-model="checked">商品分类查看</el-checkbox>
+          </div>
         </div>
         <div class="commodity-content">
-          <span>商品分类</span>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <span class="commodity-content_title">商品参数</span>
+          <div>
+            <el-checkbox v-model="checked">商品参数查看</el-checkbox>
+            <el-checkbox v-model="checked">商品参数编辑</el-checkbox>
+          </div>
         </div>
         <div class="commodity-content">
-          <span>商品分类</span>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <span class="commodity-content_title">商品属性</span>
+          <div>
+            <el-checkbox v-model="checked">商品属性查看</el-checkbox>
+            <el-checkbox v-model="checked">商品属性编辑</el-checkbox>
+          </div>
         </div>
         <div class="commodity-content">
-          <span>商品分类</span>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <span class="commodity-content_title">规格管理</span>
+          <div>
+            <el-checkbox v-model="checked">规格查看</el-checkbox>
+            <el-checkbox v-model="checked">规格编辑</el-checkbox>
+          </div>
         </div>
         <div class="commodity-content">
-          <span>商品分类</span>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
-          <el-checkbox v-model="checked">备选项</el-checkbox>
+          <span class="commodity-content_title">品牌管理</span>
+          <div>
+            <el-checkbox v-model="checked">品牌查看</el-checkbox>
+            <el-checkbox v-model="checked">品牌编辑</el-checkbox>
+          </div>
         </div>
       </div>
     </div>
@@ -127,9 +139,11 @@ export default {
           font-weight:800;
         }
         & .commodity-content{
+          display: flex;
           margin: 20px;
-          & span{
-            padding: 0 20px 0 0;
+          & .commodity-content_title{
+            margin: 0 20px 0 0;
+            width: 9%;
           }
         }
       }

@@ -312,7 +312,6 @@ export default {
   text-align: center;
 }
 .wrap{
-  // width: 100%;
   height: calc(100vh - 100px);
   overflow-y:auto;
   & .Company{
@@ -320,7 +319,7 @@ export default {
     display: flex;
     justify-content: space-between;
     & button{
-      width: 6%;
+      width: 7%;
       height: 30px;
       background-color: #1296db;
       color: white;

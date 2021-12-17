@@ -229,14 +229,25 @@
 
 <script>
 export default {
+ methods: {
 
+ }
 }
 </script>
 
 <style lang="scss" scoped>
+:root{
+  --theme-color_red:#ff4d4f;
+  --theme-color_volcano:#ff7a45;
+  --theme-color_orange:#ffa940;
+  --theme-color_gold:#ffc53d;
+  --theme-color_yellow:#ffec3d;
+  --theme-color_lime:#bae637;
+}
 .warp{
   width: 100%;
-  max-height: 650px;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
   & .palette-row{
     width: 100%;
     height: 536px;
@@ -244,6 +255,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--theme-color_gold);
     & .palette{
       width: 25%;
       height: 536px;
@@ -251,7 +263,7 @@ export default {
       margin-left: 5%;
       & .title{
         margin: 0 0 24px;
-        color: #5c6b77;
+        color: #3f4553;
         font-weight: 500;
         height: 70px;
         font-size: 22px;
@@ -260,7 +272,6 @@ export default {
           height: 50px;
           line-height: 50px;
         }
-        // text-transform: capitalize;
         & .description{
           display: block;
           color: #777;
@@ -289,4 +300,5 @@ export default {
     }
   }
 }
+
 </style>

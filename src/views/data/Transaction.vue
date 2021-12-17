@@ -4,7 +4,11 @@
       <div class="left">
         <div>
           <div>
-            <img src="@/assets/images/iconfont-merchant.png" alt="" class="img" />
+            <img
+              src="@/assets/images/iconfont-merchant.png"
+              alt=""
+              class="img"
+            />
           </div>
           <div class="ml-5">
             <h3>888</h3>
@@ -13,7 +17,11 @@
         </div>
         <div>
           <div>
-            <img src="@/assets/images/iconfont-product.png" alt="" class="img" />
+            <img
+              src="@/assets/images/iconfont-product.png"
+              alt=""
+              class="img"
+            />
           </div>
           <div class="ml-5">
             <h3>8888</h3>
@@ -22,30 +30,41 @@
         </div>
       </div>
       <div class="center">
-        <section><h4>平台使用情况</h4></section>
-        <div class="top_left">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="top_center">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
-        </div>
-        <div class="top_right">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="bottom_left">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
-        </div>
-        <div class="bottom_center">
-          <span class="font-15">80%</span>
-          <span class="font-12">日均活跃度</span>
-        </div>
-        <div class="bottom_right">
-          <span class="font-20">80%</span>
-          <span class="font-16">日均活跃度</span>
+        <h4>平台使用情况</h4>
+        <div class="main">
+          <div class="top">
+            <span></span>
+            <div class="top_left">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+            <div class="top_center">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+            <span></span>
+            <div class="top_right">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+          </div>
+          <div class="bottom">
+            <span></span>
+            <div class="bottom_left">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+            <span></span>
+            <div class="bottom_center">
+              <span class="font-15">80%</span>
+              <span class="font-12">日均活跃度</span>
+            </div>
+            <div class="bottom_right">
+              <span class="font-20">80%</span>
+              <span class="font-16">日均活跃度</span>
+            </div>
+            <span></span>
+          </div>
         </div>
 
         <!-- 平台使用情况 -->
@@ -72,7 +91,12 @@
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
         <div class="rank">
-          <el-table :data="tableData" stripe style="width: 100%; height: 100%">
+          <el-table
+            :data="tableData"
+            stripe
+            style="width: 100%; height: 100%"
+            :fit="true"
+          >
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
             <el-table-column prop="address" label="销售量"> </el-table-column>
@@ -151,7 +175,7 @@ export default {
           {
             type: "category",
             // prettier-ignore
-            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
           },
         ],
         yAxis: [
@@ -161,7 +185,7 @@ export default {
         ],
         series: [
           {
-            name: "Rainfall",
+            name: "去年同期",
             type: "bar",
             data: [
               2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4,
@@ -178,7 +202,7 @@ export default {
             },
           },
           {
-            name: "Evaporation",
+            name: "今年",
             type: "bar",
             data: [
               2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0,
@@ -205,12 +229,12 @@ export default {
           trigger: "item",
         },
         legend: {
-          top: "5%",
-          left: "center",
+          top: "20%",
+          left:"70%",
         },
         series: [
           {
-            name: "Access From",
+            name: "品类分布",
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
@@ -218,22 +242,15 @@ export default {
               show: false,
               position: "center",
             },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "40",
-                fontWeight: "bold",
-              },
-            },
             labelLine: {
               show: false,
             },
             data: [
-              { value: 1048, name: "Search Engine" },
-              { value: 735, name: "Direct" },
-              { value: 580, name: "Email" },
-              { value: 484, name: "Union Ads" },
-              { value: 300, name: "Video Ads" },
+              { value: 1048, name: "电器" },
+              { value: 735, name: "食品" },
+              { value: 580, name: "家居" },
+              { value: 484, name: "电子产品" },
+              { value: 300, name: "母婴用品" },
             ],
           },
         ],
@@ -269,12 +286,12 @@ export default {
             axisTick: {
               show: false,
             },
-            data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
           },
         ],
         series: [
           {
-            name: "Income",
+            name: "收入",
             type: "bar",
             stack: "Total",
             label: {
@@ -286,7 +303,7 @@ export default {
             data: [320, 302, 341, 374, 390, 450, 420],
           },
           {
-            name: "Expenses",
+            name: "成本",
             type: "bar",
             stack: "Total",
             label: {
@@ -317,15 +334,15 @@ export default {
     & > div {
       padding: 10px;
     }
-    height: 240px;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(1,1fr 1.5fr 1.5fr);
+    gap: 20px;
     & > .left {
       background-color: #ffffff;
       display: flex;
       flex-flow: column;
       justify-content: space-between;
-      width: 200px;
-      padding: 0;
+      padding:20px;
       & > div {
         width: 100%;
         height: 110px;
@@ -350,120 +367,98 @@ export default {
     & > .center {
       background-color: #ffffff;
       flex: 1.5;
-      display: flex;
-      flex-flow: wrap;
-      justify-content: space-between;
-      margin: 0 20px;
-      position: relative;
-      & > section {
-        width: 100%;
-      }
-      & > div:hover {
-        transform: scale(1.2);
-      }
-      & > div {
-        width: 25%;
-        height: 56%;
-        border-radius: 50%;
+      & > .main {
         display: flex;
-        flex-flow: column;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        cursor: pointer;
-        transition: 1s;
-        & > .font-20 {
-          font-size: 20px;
-          font-weight: bolder;
+        flex-flow: wrap;
+        justify-content: space-between;
+        --size: 60px;
+        font-size: 12px;
+        & > .top,
+        .bottom {
+          width: 100%;
+          display: flex;
+          justify-content: space-evenly;
+          & > div {
+            min-width: var(--size);
+            min-height: var(--size);
+            border-radius: 50%;
+            display: flex;
+            flex-flow: column;
+            text-align: center;
+            color: white;
+            margin: 10px 20px;
+            justify-content: center;
+            padding: 5px;
+            transition: 1s;
+          }
+          & > div:hover{
+            transform: scale(1.5);
+            z-index: 1;
+          }
         }
-        & > .font-15 {
-          font-size: 15px;
-          font-weight: bolder;
+        & > .top {
+          & > .top_left {
+            background-color: #f59604;
+          }
+          & > .top_center {
+            background-color: #2396e6;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #0e3a53;
+          }
+          & > .top_right {
+            background-color: #0bafa6;
+          }
         }
-        & > .font-16 {
-          font-size: 16px;
+        & > .bottom {
+          & > .bottom_left {
+            background-color: #6058df;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #1c2d59;
+          }
+          & > .bottom_center {
+            background-color: #e7536b;
+          }
+          & > .bottom_right {
+            background-color: #129633;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #0d3c36;
+          }
         }
-        & > .font-12 {
-          font-size: 12px;
-        }
-      }
-      & > div:nth-child(even) {
-        width: 70px;
-        height: 70px;
-      }
-      & > .top_left {
-        position: absolute;
-        top: 18%;
-        left: 18%;
-        background-color: #f59604;
-        box-shadow: 0 0 10px #f59604;
-      }
-      & > .top_center {
-        position: absolute;
-        top: 16%;
-        left: 38%;
-        background-color: #2396e6;
-      }
-      & > .top_right {
-        position: absolute;
-        top: 20%;
-        left: 65%;
-        background-color: #0bafa6;
-        box-shadow: 0 0 10px #0bafa6;
-      }
-      & > .bottom_left {
-        position: absolute;
-        top: 56%;
-        left: 18%;
-        background-color: #6058df;
-      }
-      & > .bottom_center {
-        position: absolute;
-        top: 65%;
-        left: 45%;
-        background-color: #e7536b;
-        box-shadow: 0 0 10px #e7536b;
-      }
-      & > .bottom_right {
-        position: absolute;
-        top: 56%;
-        left: 65%;
-        background-color: #129633;
       }
     }
     & > .right {
       background-color: #ffffff;
-
       flex: 1;
       & > .type {
-        height: 80%;
+        width: 100%;
+        height: 90%;
       }
     }
   }
   & > .footer {
-    display: flex;
+    min-height: 250px;
+    display: grid;
+    grid-template-columns: repeat(1,2fr 1fr 1fr);
+    gap: 20px;
     & > div {
       background-color: #ffffff;
-      height: calc(100vh - 360px);
       padding: 10px;
       & > div {
-        height: 320px;
+        min-height: 250px;
       }
-    }
-    & > .echarts_stata {
-      & > .stata {
-        width: 100%;
-      }
-      flex: 2.5;
     }
     & > .echarts_info {
-      flex: 1;
-      margin: 0 20px;
+      position: relative;
+      & > .info {
+        width: 90%;
+        position: absolute;
+      }
     }
     & > .echarts_rank {
-      flex: 1;
+      position: relative;
       & > .rank {
-        width: 280px;
+        width: 90%;
+        position: absolute;
       }
     }
   }

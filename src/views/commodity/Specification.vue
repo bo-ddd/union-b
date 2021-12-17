@@ -11,11 +11,12 @@
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
+        style="width: 97%"
+        :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column type="selection" width="55" align="center">
-        </el-table-column>
-        <el-table-column label="id" align="center">
+        <el-table-column type="selection" align="center"> </el-table-column>
+        <el-table-column prop="id" label="id" align="center" sortable>
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
         <el-table-column
@@ -23,6 +24,7 @@
           label="规格名称"
           align="center"
           show-overflow-tooltip
+          sortable
         >
         </el-table-column>
         <el-table-column
@@ -30,6 +32,7 @@
           label="备注"
           show-overflow-tooltip
           align="center"
+          sortable
         >
         </el-table-column>
         <el-table-column
@@ -37,6 +40,7 @@
           label="排列顺序"
           show-overflow-tooltip
           align="center"
+          sortable
         >
           <template>
             <input type="text" class="inp" v-model="input" />
@@ -47,30 +51,42 @@
           label="操作"
           show-overflow-tooltip
           align="center"
+          :formatter="formatter"
+          sortable
         >
-          <template>
-            <el-button type="primary" i class="el-icon-edit cell1"></el-button>
+          <template slot-scope="scope">
             <el-button
               type="primary"
               i
-              class="el-icon-delete cell2"
+              class="el-icon-edit cell1"
+              @click="editListData"
             ></el-button>
+            <el-button
+              i
+              class="el-icon-delete cell2"
+              @click.native.prevent="deleteRow(scope.$index, tableData)"
+              type="text"
+            >
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="footer">
         <div class="footer_left">
-          <el-button type="primary" plain size="small">保存排序</el-button>
-          <el-button plain class="batch_del_btn" size="small"
-            @click="batchesDelete">批量删除</el-button
+          <el-button type="primary" size="small">保存排序</el-button>
+          <el-button
+            plain
+            class="batch_del_btn"
+            size="small"
+            @click="batchesDelete"
+            >批量删除</el-button
           >
         </div>
         <div class="footer_right">
           <div class="block">
-            <div>每页显示</div>
             <el-pagination
               :current-page="currentPage4"
-              :page-sizes="[6]"
+              :page-sizes="[6, 10, 15, 20, 30, 50, 100]"
               layout="sizes"
             >
             </el-pagination>
@@ -80,7 +96,6 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage4"
               :page-size="100"
               :total="6"
               layout="total, prev, pager, next"
@@ -94,14 +109,15 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
       input: 10,
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
       currentPage4: 4,
+      pagination: true,
+      pageNum: 10,
+      pageSize: 1,
       tableData: [
         {
           id: "1",
@@ -150,6 +166,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["getSpecificationList"]),
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -168,12 +185,28 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+    //添加规格
     addspecification() {
       console.log("添加成功");
     },
-    batchesDelete(){
-      console.log('批量删除成功');
-    }
+    //批量删除
+    batchesDelete() {},
+    //单个修改
+    editListData() {
+      console.log("单个修改成功");
+    },
+    //单个删除
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
+    },
+    //保存排序
+    formatter(row) {
+      return row.address;
+    },
+  },
+  async created() {
+    let res = await this.getSpecificationList({});
+    console.log(res);
   },
 };
 </script>
@@ -184,12 +217,11 @@ export default {
   border: 1px solid #d4dde2;
   overflow: hidden;
   & .wrap_interior {
-    // min-width: 1200px;
-    overflow-y:auto;
+    overflow-y: auto;
     height: 85vh;
   }
   & .tit {
-    background-color: #eceff1;
+    background-color: rgb(254, 249, 250);
     padding: 20px;
     border-bottom: 1px solid #d4dde2;
   }
@@ -197,6 +229,11 @@ export default {
     padding: 20px;
     background-color: #ffffff;
     border-bottom: 1px solid #d4dde2;
+  }
+  & .el-table {
+    // margin: 0px 20px 0px 20px;
+    margin-left: 20px;
+    margin-right: 20px;
   }
   & .footer {
     padding: 20px;
@@ -220,15 +257,27 @@ export default {
         color: #999999;
         font-size: 14px;
         & .el-pagination {
-          padding: 5px 5px; 
+          padding: 5px 5px;
         }
       }
     }
   }
 }
-.cell {
-  text-align: center;
-}
+// ::v-deep.el-table th.el-table__cell > .cell {
+//   padding-left: 0px;
+// }
+// ::deep.el-table .cell {
+//   padding-left: 0px!important;
+// }
+// ::deep.el-table-column--selection .cell {
+//   padding-left: 0!important;
+// }
+// ::deep.el-table-column--selection .cell {
+//   padding-left: 0!important;
+// }
+// ::deep.el-table .cell{
+//   padding-left: 0!important;
+// }
 .inp {
   border: 1px solid #d8dce5;
   width: 80px;
@@ -245,5 +294,6 @@ export default {
   background-color: #ff8b53;
   padding: 10px 10px;
   border: none;
+  color: #ffffff;
 }
 </style>

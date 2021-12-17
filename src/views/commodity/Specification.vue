@@ -217,8 +217,8 @@ export default {
   border: 1px solid #d4dde2;
   overflow: hidden;
   & .wrap_interior {
-    overflow-y: auto;
-    height: 85vh;
+  height: calc(100vh - 120px);
+  overflow-y:auto;
   }
   & .tit {
     background-color: rgb(254, 249, 250);
@@ -263,21 +263,6 @@ export default {
     }
   }
 }
-// ::v-deep.el-table th.el-table__cell > .cell {
-//   padding-left: 0px;
-// }
-// ::deep.el-table .cell {
-//   padding-left: 0px!important;
-// }
-// ::deep.el-table-column--selection .cell {
-//   padding-left: 0!important;
-// }
-// ::deep.el-table-column--selection .cell {
-//   padding-left: 0!important;
-// }
-// ::deep.el-table .cell{
-//   padding-left: 0!important;
-// }
 .inp {
   border: 1px solid #d8dce5;
   width: 80px;

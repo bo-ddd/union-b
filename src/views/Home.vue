@@ -140,12 +140,6 @@ export default {
         font-size: 16px;
         align-items: center;
 
-        & .top_left {
-            &>span {
-                margin-left: 10px;
-            }
-        }
-
         & .top_right {
             display: flex;
 

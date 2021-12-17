@@ -30,14 +30,15 @@
 </el-input>
 <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
 </div>
+
 <div class="tag-group">
-  <span class="tag-group__title">商品分类</span>
+  <span class="tag-group__title">商品管理</span>
   <el-tag class="spans"
   :key="tag"
   v-for="tag in classify"
   closable
   :disable-transitions="false"
-  @close="handleClose1(tag)">
+  @close="handleClose(tag)">
   {{tag}}
 </el-tag>
 <el-input
@@ -72,10 +73,6 @@ export default {
       handleClose(tag) {
         this.management.splice(this.management.indexOf(tag), 1);
       },
-      handleClose1(tag) {
-        // this.management.splice(this.management.indexOf(tag), 1);
-        this.classify.splice(this.classify.indexOf(tag), 1);
-      },
 
       showInput() {
         this.inputVisible = true;
@@ -89,11 +86,11 @@ export default {
         let inputValue = this.inputValue;
         if (inputValue) {
           this.management.push(inputValue);
-          this.classify.push(inputValue);
+          // this.classify.push(inputValue);
         }
         this.inputVisible = false;
         this.inputValue = '';
-      }
+      },
     }
 }
 </script>
@@ -124,7 +121,8 @@ export default {
   }
   .input-new-tag {
     width: 90px;
-    margin-left: 10px;
+    margin-left: 40px;
+    margin-top: 10px;
     vertical-align: bottom;
   }
 .tag-group{

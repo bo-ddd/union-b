@@ -1,16 +1,12 @@
 <template>
-  <div>
+  <div class="body">
     <div class="wrap">
-      <div class="left"></div>
-      <div class="right">
-        <span class="add">文章内容添加</span>
-      </div>
+      
       <div class="center">
         <div class="center-content">
           <span class="content">文章标识</span>
           <el-input
             class="input"
-            v-model="input"
             placeholder="请输入文章标识"
           ></el-input>
           <i class="el-icon-warning-outline"></i>
@@ -22,7 +18,7 @@
           <span class="content">文章标题</span>
           <el-input
             class="input"
-            v-model="input"
+            
             placeholder="请输入文章标题"
           ></el-input>
           <i class="el-icon-warning-outline"></i>
@@ -42,7 +38,18 @@
       <div class="center">
         <div class="center-content">
           <span class="content-img">文章照片</span>
-          <div class="img"></div>
+          
+            <el-upload class="img"
+  action="https://jsonplaceholder.typicode.com/posts/"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
+         
           <i class="el-icon-warning-outline icon-img"></i>
           <span class="tips-img"
             >请上传一张图片，格式jpg，尺寸640*384，大小在30k之内</span
@@ -50,11 +57,11 @@
         </div>
       </div>
       <div class="center">
-        <div class="center-content">
+        <div class="center-contents">
           <span class="content">类别名称</span>
-          <el-select class="input" v-model="value" placeholder="请选择">
+          <el-select class="input" placeholder="请选择">
             <el-option
-              v-for="item in options"
+             
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -77,7 +84,7 @@
       <div class="center">
         <div class="center-content">
           <span class="content">版权设置</span>
-          <el-select class="input" v-model="value" placeholder="请选择">
+          <el-select class="input"  placeholder="请选择">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -95,7 +102,7 @@
           <span class="content">文章作者</span>
           <el-input
             class="input"
-            v-model="input"
+            
             placeholder="请输入文章作者"
           ></el-input>
           <i class="el-icon-warning-outline character"></i>
@@ -110,7 +117,7 @@
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="textarea"
+            
           >
           </el-input>
 
@@ -123,7 +130,7 @@
           <span class="content">排序数字</span>
           <el-input
             class="input"
-            v-model="input"
+            
             placeholder="请输入排序数字"
           ></el-input>
           <i class="el-icon-warning-outline"></i>
@@ -146,38 +153,45 @@
 export default {
   data() {
     return {
+       dialogImageUrl: '',
+        dialogVisible: false,
       radio: "1",
       redio: "1",
+      options:'',
+      item:{},
     };
   },
+   methods: {
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      }
+    }
 };
 </script>
 
 <style>
+.body{
+  height: calc(100vh - 100px);
+  overflow-y:auto;
+}
 .wrap {
   padding: 20px;
-  /* background-color: hotpink; */
+ 
 }
-.left {
-  width: 20px;
-  height: 30px;
-  background-color: #ff4070;
-  float: left;
-}
+
 .add {
   color: rgb(140, 140, 140);
 }
-.right {
-  width: 120px;
-  height: 30px;
-  margin-left: 20px;
-  line-height: 30px;
-  font-size: 14px;
-}
+
 .center {
   display: flex;
   margin-top: 20px;
 }
+
 .input {
   width: 300px;
   margin-left: 10px;
@@ -222,6 +236,10 @@ export default {
   margin-top: 10px;
   display: flex;
 }
+.center-contents {
+  margin-top: 36px;
+  display: flex;
+}
 .el-icon-warning-outline {
   margin-left: 10px;
   margin-top: 10px;
@@ -248,7 +266,7 @@ export default {
 .img {
   width: 160px;
   height: 95px;
-  background-color: #ff4070;
+  /* background-color: #ff4070; */
   margin-left: 10px;
 }
 .icon-img {

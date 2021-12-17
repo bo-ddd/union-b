@@ -87,6 +87,16 @@ export const routes = [{
                     import ( /* webpackChunkName: "index" */ '../views/order/Index')
             },
             {
+                path: '/order/details',
+                name: 'OrderDetails',
+                meta: {
+                    title: '订单详情',
+                    flag: "false"
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "details" */ '../views/order/OrderDetails')
+            },
+            {
                 path: '/order/examine',
                 name: 'Examine',
                 meta: {
@@ -460,6 +470,15 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "index" */ '../views/supplier/Index')
+            },
+            {
+                path: '/supplier/settled',
+                name: 'Settled',
+                meta: {
+                    title: '新增供应商',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "settled" */ '../views/supplier/Settled')
             },
             {
                 path: '/supplier/label',

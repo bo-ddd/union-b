@@ -11,6 +11,7 @@
         ref="multipleTable"
         tooltip-effect="dark"
         :data="tableData"
+        size='small'
         style="width: 97%"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe

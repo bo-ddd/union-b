@@ -482,7 +482,7 @@ export const routes = [{
             },
             {
                 path: '/supplier/settled',
-                name: 'Settled',
+                name: 'SupplierSettled',
                 meta: {
                     title: '新增供应商',
                 },

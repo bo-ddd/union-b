@@ -15,7 +15,7 @@
                             <span>{{ link.meta.title }}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path">
+                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path" v-show='!children.meta.flag'>
                                 <span>{{ children.meta.title }}</span>
                             </el-menu-item>
                         </el-menu-item-group>
@@ -24,12 +24,17 @@
             </div>
         </el-aside>
         <el-container>
-            <el-header class="header">
+            <el-header>
                 <div class="top_left">
-                    <span>{{ $route.meta.title }}</span>
+                    <span class="fw-b fs-20">{{ $route.meta.title }}</span>
                 </div>
-                <i class="el-icon-arrow-left"></i>
-                <i class="el-icon-refresh"></i>
+                <i class="el-icon-bell"></i>
+                <div class="top_right">
+                    <div class="avatorbox">
+                        <img class="avator" src="../assets/logo.png" alt="">
+                    </div>
+                    <span>苏苏喂苏苏</span>
+                </div>
             </el-header>
             <el-main>
                 <router-view />
@@ -56,7 +61,6 @@ export default {
     computed: {
         ...mapGetters(['routes'])
     },
-
 }
 </script>
 
@@ -65,6 +69,20 @@ export default {
     background-color: #fcf9fa;
     height: 100vh;
     color: #0a0a0a;
+    min-width: 1100px;
+
+    ::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    & .fw-b {
+        font-weight: bold;
+
+    }
+
+    & .fs-20 {
+        font-size: 20px;
+    }
 
     & .el-aside {
         background-color: #ffffff;
@@ -72,23 +90,25 @@ export default {
         text-align: center;
         height: 100vh;
         position: relative;
+        overflow-x: hidden;
 
         & .switch {
             position: absolute;
             top: 50vh;
             right: 0px;
         }
-        .el-menu{
-          border: none;
+
+        .el-menu {
+            border: none;
         }
 
-        &.el-menu-item:focus,
+        & .el-menu-item:focus,
         .el-menu-item:hover,
         .el-menu-item.is-active,
         ::v-deep .el-submenu__title:hover,
         ::v-deep .el-submenu__title.is-active {
             outline: 0;
-            background-color: #ffebf0 !important;
+            background-color: var(--color) !important;
         }
 
         & .logobox {
@@ -101,10 +121,6 @@ export default {
                 width: 25px;
             }
 
-            & .fw-b {
-                font-weight: bold;
-
-            }
         }
 
         & .aside_main {
@@ -122,17 +138,28 @@ export default {
 
     & .el-header {
         display: grid;
-        grid-template-columns: 40fr 1fr 1fr;
-        box-shadow: 2px 0 2px #3a3434;
+        grid-template-columns: 30fr 1fr 5fr;
+        box-shadow: 2px 0 2px #e7d0d0;
         background-color: #ffffff;
         font-size: 16px;
         align-items: center;
 
-        & .top_left {
-            &>span {
-                margin-left: 10px;
+        & .top_right {
+            display: flex;
+
+            & .avatorbox {
+                width: 25px;
+                height: 25px;
+                border-radius: 25px;
+                overflow: hidden;
+                margin-right: 10px;
+
+                & .avator {
+                    width: 25px;
+                }
             }
         }
+
     }
 
 }

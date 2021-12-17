@@ -94,15 +94,15 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="重量">
-                  <el-input v-model="weight" placeholder="请输入重量"></el-input>
+                  <el-input
+                    v-model="weight"
+                    placeholder="请输入重量"
+                  ></el-input>
                 </el-form-item>
               </el-form>
             </div>
             <div>
-              <el-form
-                :label-position="labelPosition"
-                label-width="80px"
-              >
+              <el-form :label-position="labelPosition" label-width="80px">
                 <el-form-item label="销售单位">
                   <el-select
                     v-model="company"
@@ -135,10 +135,7 @@
       <div class="m_c_center">
         <div>
           <div>
-            <el-form
-              :label-position="labelPosition"
-              label-width="80px"
-            >
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="生产日期" class="date_of_manufacture">
                 <div>
                   <el-date-picker
@@ -150,14 +147,18 @@
                 </div>
 
                 <div>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
+                  <el-checkbox v-model="July">18年7月</el-checkbox>
+                  <el-checkbox v-model="August">18年8月</el-checkbox>
+                  <el-checkbox v-model="September">18年9月</el-checkbox>
                 </div>
               </el-form-item>
               <el-form-item label="容量" class="capacity">
                 <div>
-                  <el-select v-model="capacity" filterable placeholder="选择或输入容量Enter自定义">
+                  <el-select
+                    v-model="capacity"
+                    filterable
+                    placeholder="选择或输入容量Enter自定义"
+                  >
                     <el-option
                       v-for="item in capacityList"
                       :key="item.value"
@@ -168,20 +169,25 @@
                   </el-select>
                 </div>
                 <div>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
-                  <el-checkbox v-model="checked">备选项</el-checkbox>
+                  <el-checkbox v-model="Fourml">400ml</el-checkbox>
+                  <el-checkbox v-model="Sixml">600ml</el-checkbox>
                 </div>
               </el-form-item>
-              <el-form-item label="销售规格">
+              <el-form-item label="销售规格"  class="sales_information">
                 <el-table
                   :data="tableData"
                   :span-method="objectSpanMethod"
                   border
                   style="width: 100%; margin-top: 20px"
                 >
-                  <el-table-column prop="dateOfManufacture" label="生产日期" width="180">
+                  <el-table-column
+                    prop="dateOfManufacture"
+                    label="生产日期"
+                    width="180"
+                  >
                   </el-table-column>
-                  <el-table-column prop="capacity" label="容量"> </el-table-column>
+                  <el-table-column prop="capacity" label="容量">
+                  </el-table-column>
                   <el-table-column prop="amount1" label="* 售价">
                   </el-table-column>
                   <el-table-column prop="amount2" label="* 库存">
@@ -191,6 +197,9 @@
                   <el-table-column prop="amount4" label="* 商家编码">
                   </el-table-column>
                   <el-table-column prop="amount5" label="批量填充">
+                    <template>
+                       <el-link type="info">删除</el-link>
+                    </template>
                   </el-table-column>
                 </el-table>
               </el-form-item>
@@ -208,12 +217,9 @@
       <div class="m_f_center">
         <div>
           <div class="commodity_rotation">
-            <el-form
-              :label-position="labelPosition"
-              label-width="80px"
-            >
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="商品轮播">
-                图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片
+                <span class="font">图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片</span>
               </el-form-item>
               <el-form-item label="" class="product_picture">
                 <div>
@@ -246,7 +252,7 @@
                 </div>
               </el-form-item>
               <el-form-item label="商品详情">
-                详情切图请按顺序上传，展示宽度为750px，高度不定；最多20张，每张不得大于2M
+                <span class="font">详情切图请按顺序上传，展示宽度为750px，高度不定；最多20张，每张不得大于2M</span>
               </el-form-item>
               <el-form-item label="" class="product_details">
                 <div>
@@ -281,8 +287,8 @@
 export default {
   data() {
     return {
-      weight:"",
-      volume:"",
+      weight: "",
+      volume: "",
       commodityType: "",
       typeList: [
         {
@@ -355,14 +361,15 @@ export default {
         },
       ],
 
-
       labelPosition: "right",
       input: "",
-      checked: "",
+      July: "",
+      August:"",
+      September:"",
+      Fourml:"",
+      Sixml:"",
       dialogImageUrl: "",
       dialogVisible: false,
-     
-
 
       tableData: [
         {
@@ -444,8 +451,8 @@ export default {
 <style lang="scss" scoped>
 .main {
   // height: 100%;
-  max-height: 85vh;
-  // height: calc(100vh-100px);
+  // max-height: 85vh;
+  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -526,6 +533,16 @@ export default {
   border-top: 1px solid #ff4370;
   padding: 20px 0px;
 }
+::v-deep .sales_information .cell{
+  text-align: center;
+}
+::v-deep .sales_area > div {
+  margin-top: 10px;
+  & .el-button {
+    width: 80px;
+    padding: 6px 10px;
+  }
+}
 ::v-deep .el-table__header-wrapper .has-gutter .el-table_1_column_3,
 ::v-deep .el-table__header-wrapper .has-gutter .el-table_1_column_4,
 ::v-deep .el-table__header-wrapper .has-gutter .el-table_1_column_5,
@@ -549,7 +566,6 @@ export default {
     background: #ff4370;
   }
 }
-
 ::v-deep .commodity_type .el-input,
 ::v-deep .commodity_classification .el-input {
   width: 120px;
@@ -611,5 +627,8 @@ export default {
   flex-direction: column;
   line-height: 20px;
   justify-content: center;
+}
+.font{
+  color: #a4a4a4;
 }
 </style>

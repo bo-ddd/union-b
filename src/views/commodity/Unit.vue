@@ -1,16 +1,16 @@
 <template>
   <div class="wrap">
     <div class="Company">
-      <button>新增单位</button>
+       <el-button type="primary">新增单位</el-button>
       <div>
-          <el-select v-model="value" filterable placeholder="请选择">
+          <el-select v-model="value" filterable placeholder="请选择" size='small'> 
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>  
-          <el-input  placeholder="搜索"></el-input>
+          <el-input  size='small' placeholder="请输入内容"  suffix-icon="el-icon-search"></el-input>
       </div>
     </div>
     <div class="table">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}">
+      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}" size='small'>
         <el-table-column prop="Serial_number" label="序号">
         </el-table-column>
         <el-table-column prop="Unit_name" label="单位名称">
@@ -285,7 +285,18 @@ export default {
             return num1-num2;
           })
         },
-        
+        search(){
+          let _search = this.jobNo.toLowerCase();
+          let newListData = [];
+          if (_search) {
+            this.xmgcqkJsonsData.filter(item => {
+                if (item.code.toLowerCase().indexOf(_search) !== -1) {
+                  newListData.push(item);
+              }
+            }) 
+          }
+          this.xmgcqkJsonsData = newListData;
+        },  
       },
 }
 </script>
@@ -298,19 +309,12 @@ export default {
   text-align: center;
 }
 .wrap{
-  width: 100%;
   height: calc(100vh - 100px);
+  overflow-y:auto;
   & .Company{
     padding: 15px;
     display: flex;
     justify-content: space-between;
-    & button{
-      width: 6%;
-      height: 30px;
-      background-color: #1296db;
-      color: white;
-      cursor: pointer;
-    }
     & .el-input{
       text-indent: 10px;
       width: 200px;
@@ -329,6 +333,7 @@ export default {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin: 30px 0;
   }
 }
 </style>

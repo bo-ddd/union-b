@@ -16,7 +16,7 @@
             <div class="form_item_input"><el-input v-model="form.username" placeholder="请设置账号名称"></el-input></div>
           </div>
           <div class="form_item">
-            <div class="form_item_input"><el-input v-model="form.email" placeholder="请设置邮箱作为登录名"></el-input></div>
+            <div class="form_item_input"><el-input v-model="form.email" placeholder="请设置邮箱"></el-input></div>
           </div>
           <div class="form_item">
             <div class="form_item_input"><el-input v-model="form.phone" placeholder="请输入手机号码"></el-input></div>

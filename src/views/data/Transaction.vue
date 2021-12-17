@@ -36,28 +36,28 @@
             <span></span>
             <div class="top_left">
               <span class="font-15">80%</span>
-              <span class="font-12">日均活跃度</span>
+              <span class="font-12">日均销售量</span>
             </div>
             <div class="top_center">
               <span class="font-20">80%</span>
-              <span class="font-16">日均活跃度</span>
+              <span class="font-16">月销售量</span>
             </div>
             <span></span>
             <div class="top_right">
               <span class="font-15">80%</span>
-              <span class="font-12">日均活跃度</span>
+              <span class="font-12">商品成交率</span>
             </div>
           </div>
           <div class="bottom">
             <span></span>
             <div class="bottom_left">
               <span class="font-20">80%</span>
-              <span class="font-16">日均活跃度</span>
+              <span class="font-16">商家活跃度</span>
             </div>
             <span></span>
             <div class="bottom_center">
               <span class="font-15">80%</span>
-              <span class="font-12">日均活跃度</span>
+              <span class="font-12">商品好评率</span>
             </div>
             <div class="bottom_right">
               <span class="font-20">80%</span>
@@ -75,7 +75,7 @@
         <!-- 商品品类分布 -->
       </div>
     </div>
-    <div class="footer mt-20">
+    <div class="footer">
       <div class="echarts_stata">
         <h4>商品成交量情况</h4>
         <div class="stata"></div>
@@ -91,12 +91,7 @@
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
         <div class="rank">
-          <el-table
-            :data="tableData"
-            stripe
-            style="width: 100%; height: 100%"
-            :fit="true"
-          >
+          <el-table :data="tableData" stripe style="width: 100%; height: 100%">
             <el-table-column prop="date" label="类目"> </el-table-column>
             <el-table-column prop="name" label="名称"> </el-table-column>
             <el-table-column prop="address" label="销售量"> </el-table-column>
@@ -230,7 +225,7 @@ export default {
         },
         legend: {
           top: "20%",
-          left:"70%",
+          left: "70%",
         },
         series: [
           {
@@ -284,7 +279,7 @@ export default {
           {
             type: "category",
             axisTick: {
-              show: false,
+              show: true,
             },
             data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
           },
@@ -328,24 +323,26 @@ export default {
   padding: 5px;
 }
 .wrap {
+  display: grid;
+  grid-template-rows: repeat(1, 40% 57%);
+  gap: 20px 20px;
   height: calc(100vh - 100px);
-  min-width: 1000px;
+  overflow-y: auto;
   & > .header {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr 2fr 2fr);
+    gap: 20px;
     & > div {
       padding: 10px;
     }
-    display: grid;
-    grid-template-columns: repeat(1,1fr 1.5fr 1.5fr);
-    gap: 20px;
     & > .left {
       background-color: #ffffff;
-      display: flex;
-      flex-flow: column;
-      justify-content: space-between;
-      padding:20px;
+      display: grid;
+      grid-template-rows: repeat(2, 1fr);
+      gap: 20px;
+      padding: 20px;
       & > div {
         width: 100%;
-        height: 110px;
         background-color: #e7536b;
         display: flex;
         align-items: center;
@@ -366,18 +363,18 @@ export default {
     }
     & > .center {
       background-color: #ffffff;
-      flex: 1.5;
       & > .main {
-        display: flex;
-        flex-flow: wrap;
-        justify-content: space-between;
+        display: grid;
+        grid-template-rows: repeat(2, 50%);
         --size: 60px;
         font-size: 12px;
+        min-height: 90%;
         & > .top,
         .bottom {
           width: 100%;
           display: flex;
           justify-content: space-evenly;
+          align-items: center;
           & > div {
             min-width: var(--size);
             min-height: var(--size);
@@ -391,7 +388,7 @@ export default {
             padding: 5px;
             transition: 1s;
           }
-          & > div:hover{
+          & > div:hover {
             transform: scale(1.5);
             z-index: 1;
           }
@@ -402,7 +399,7 @@ export default {
           }
           & > .top_center {
             background-color: #2396e6;
-            transform: scale(1.3);
+            transform: scale(1.2);
             box-shadow: 0 0 10px #0e3a53;
           }
           & > .top_right {
@@ -428,37 +425,26 @@ export default {
     }
     & > .right {
       background-color: #ffffff;
-      flex: 1;
       & > .type {
         width: 100%;
-        height: 90%;
+        height: 20vh;
       }
     }
   }
   & > .footer {
-    min-height: 250px;
+    margin: 0;
+    height: 100%;
     display: grid;
-    grid-template-columns: repeat(1,2fr 1fr 1fr);
+    grid-template-columns: repeat(1, 2fr 1fr 1fr);
     gap: 20px;
     & > div {
       background-color: #ffffff;
       padding: 10px;
+      position: relative;
       & > div {
-        min-height: 250px;
-      }
-    }
-    & > .echarts_info {
-      position: relative;
-      & > .info {
-        width: 90%;
+        height: 46vh;
         position: absolute;
-      }
-    }
-    & > .echarts_rank {
-      position: relative;
-      & > .rank {
-        width: 90%;
-        position: absolute;
+        width: 95%;
       }
     }
   }
@@ -466,6 +452,5 @@ export default {
 h4 {
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
-  margin: 0 0 10px 0;
 }
 </style>

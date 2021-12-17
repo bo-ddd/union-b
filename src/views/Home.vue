@@ -104,7 +104,7 @@ export default {
         ::v-deep .el-submenu__title:hover,
         ::v-deep .el-submenu__title.is-active {
             outline: 0;
-            background-color: #ffebf0 !important;
+            background-color: var(--color) !important;
         }
 
         & .logobox {

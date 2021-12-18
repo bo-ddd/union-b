@@ -239,7 +239,7 @@ export default {
        changeColor(num) {
       let root = document.querySelector(":root");
       if (num == 'red1') {
-        root.style.setProperty("--color", "rgb(255, 241, 240);");
+        root.style.setProperty("--color", "rgb(255, 241, 240)");
         root.style.setProperty("--bck", "rgb(255, 192, 203)");
       } else if (num == 'red2') {
         root.style.setProperty("--color", "rgb(255, 204, 199)");
@@ -360,12 +360,6 @@ export default {
         root.style.setProperty("--bck", "rgb(196, 192, 255)");
       }
     }
-    // themecolor(color){
-    //   window.document.documentElement.setAttribute('data-theme', color);
-    // },
-    // themecolor(){
-    //   window.document.documentElement.setAttribute('data-theme', 'primary1');
-    // }
   }
 }
 </script>
@@ -399,7 +393,6 @@ export default {
       & .title{
         margin: 0 0 24px;
         color: var(--color);
-        // @include color_primary($color-primary1);
         font-weight: 500;
         height: 70px;
         font-size: 22px;

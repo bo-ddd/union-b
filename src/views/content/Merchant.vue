@@ -10,7 +10,7 @@
         :header-cell-style="{ background: '#fcfcfc' }"
         size="small"
       >
-        <el-table-column type="selection" width="55" align="center">
+        <el-table-column type="selection" align="center">
         </el-table-column>
         <el-table-column
           label="条码"

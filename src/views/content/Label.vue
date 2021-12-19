@@ -216,14 +216,15 @@
   display: flex;
   justify-content: space-around;
   width: 300px;
-  margin-left: 150px;
-  margin-top: 30px;
+  margin-left: 310px;
+  margin-top: 40px;
 }
 .bu {
   margin-left: 10px;
 }
 .demo-input-suffix {
   margin-top: 20px;
+  margin-left: 205px;
 }
 .input1 {
   width: 200px;

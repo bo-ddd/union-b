@@ -7,16 +7,16 @@
           <span class="description">斗志、奔放</span>
         </div>
         <div class="main-color">
-          <div class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
-          <div class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
-          <div class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
-          <div class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
-          <div class="main-color-item" style="background-color:#ff4d4f"><span class="main-color-text">red-5</span></div>
-          <div class="main-color-item" style="background-color:#f5222d"><span class="main-color-text">red-6</span></div>
-          <div class="main-color-item" style="background-color:#cf1322"><span class="main-color-text">red-7</span></div>
-          <div class="main-color-item" style="background-color:#a8071a"><span class="main-color-text">red-8</span></div>
-          <div class="main-color-item" style="background-color:#820014"><span class="main-color-text">red-9</span></div>
-          <div class="main-color-item" style="background-color:#5c0011"><span class="main-color-text">red-10</span></div>
+          <div @click="changeColor('red1')" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
+          <div @click="changeColor('red2')" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
+          <div @click="changeColor('red3')" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
+          <div @click="changeColor('red4')" class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
+          <div @click="changeColor('red5')" class="main-color-item" style="background-color:#ff4d4f"><span class="main-color-text">red-5</span></div>
+          <div @click="changeColor('red6')" class="main-color-item" style="background-color:#f5222d"><span class="main-color-text">red-6</span></div>
+          <div @click="changeColor('red7')" class="main-color-item" style="background-color:#cf1322"><span class="main-color-text">red-7</span></div>
+          <div @click="changeColor('red8')" class="main-color-item" style="background-color:#a8071a"><span class="main-color-text">red-8</span></div>
+          <div @click="changeColor('red9')" class="main-color-item" style="background-color:#820014"><span class="main-color-text">red-9</span></div>
+          <div @click="changeColor('red10')" class="main-color-item" style="background-color:#5c0011"><span class="main-color-text">red-10</span></div>
         </div>
       </div>
       <div class="palette">
@@ -25,16 +25,16 @@
           <span class="description">醒目、澎湃</span>
         </div>
         <div class="main-color">
-          <div class="main-color-item" style="background-color:#fff2e8"><span class="main-color-text">volcano-1</span></div>
-          <div class="main-color-item" style="background-color:#ffd8bf"><span class="main-color-text">volcano-2</span></div>
-          <div class="main-color-item" style="background-color:#ffbb96"><span class="main-color-text">volcano-3</span></div>
-          <div class="main-color-item" style="background-color:#ff9c6e"><span class="main-color-text">volcano-4</span></div>
-          <div class="main-color-item" style="background-color:#ff7a45"><span class="main-color-text">volcano-5</span></div>
-          <div class="main-color-item" style="background-color:#fa541c"><span class="main-color-text">volcano-6</span></div>
-          <div class="main-color-item" style="background-color:#d4380d"><span class="main-color-text">volcano-7</span></div>
-          <div class="main-color-item" style="background-color:#ad2102"><span class="main-color-text">volcano-8</span></div>
-          <div class="main-color-item" style="background-color:#871400"><span class="main-color-text">volcano-9</span></div>
-          <div class="main-color-item" style="background-color:#610b00"><span class="main-color-text">volcano-10</span></div>
+          <div @click="changeColor('volcano1')"  class="main-color-item" style="background-color:#fff2e8"><span class="main-color-text">volcano-1</span></div>
+          <div @click="changeColor('volcano2')"  class="main-color-item" style="background-color:#ffd8bf"><span class="main-color-text">volcano-2</span></div>
+          <div @click="changeColor('volcano3')"  class="main-color-item" style="background-color:#ffbb96"><span class="main-color-text">volcano-3</span></div>
+          <div @click="changeColor('volcano4')"  class="main-color-item" style="background-color:#ff9c6e"><span class="main-color-text">volcano-4</span></div>
+          <div @click="changeColor('volcano5')"  class="main-color-item" style="background-color:#ff7a45"><span class="main-color-text">volcano-5</span></div>
+          <div @click="changeColor('volcano6')"  class="main-color-item" style="background-color:#fa541c"><span class="main-color-text">volcano-6</span></div>
+          <div @click="changeColor('volcano7')"  class="main-color-item" style="background-color:#d4380d"><span class="main-color-text">volcano-7</span></div>
+          <div @click="changeColor('volcano8')"  class="main-color-item" style="background-color:#ad2102"><span class="main-color-text">volcano-8</span></div>
+          <div @click="changeColor('volcano9')"  class="main-color-item" style="background-color:#871400"><span class="main-color-text">volcano-9</span></div>
+          <div @click="changeColor('volcano10')" class="main-color-item" style="background-color:#610b00"><span class="main-color-text">volcano-10</span></div>
         </div>
       </div>
       <div class="palette">
@@ -43,16 +43,16 @@
           <span class="description">温暖、欢快</span>
         </div>
         <div class="main-color">
-          <div class="main-color-item" style="background-color:#fff7e6"><span class="main-color-text">orange-1</span></div>
-          <div class="main-color-item" style="background-color:#ffe7ba"><span class="main-color-text">orange-2</span></div>
-          <div class="main-color-item" style="background-color:#ffd591"><span class="main-color-text">orange-3</span></div>
-          <div class="main-color-item" style="background-color:#ffc069"><span class="main-color-text">orange-4</span></div>
-          <div class="main-color-item" style="background-color:#ffa940"><span class="main-color-text">orange-5</span></div>
-          <div class="main-color-item" style="background-color:#fa8c16"><span class="main-color-text">orange-6</span></div>
-          <div class="main-color-item" style="background-color:#d46b08"><span class="main-color-text">orange-7</span></div>
-          <div class="main-color-item" style="background-color:#ad4e00"><span class="main-color-text">orange-8</span></div>
-          <div class="main-color-item" style="background-color:#873800"><span class="main-color-text">orange-9</span></div>
-          <div class="main-color-item" style="background-color:#612500"><span class="main-color-text">orange-10</span></div>
+          <div @click="changeColor('orange1')" class="main-color-item" style="background-color:#fff7e6"><span class="main-color-text">orange-1</span></div>
+          <div @click="changeColor('orange2')" class="main-color-item" style="background-color:#ffe7ba"><span class="main-color-text">orange-2</span></div>
+          <div @click="changeColor('orange3')" class="main-color-item" style="background-color:#ffd591"><span class="main-color-text">orange-3</span></div>
+          <div @click="changeColor('orange4')" class="main-color-item" style="background-color:#ffc069"><span class="main-color-text">orange-4</span></div>
+          <div @click="changeColor('orange5')" class="main-color-item" style="background-color:#ffa940"><span class="main-color-text">orange-5</span></div>
+          <div @click="changeColor('orange6')" class="main-color-item" style="background-color:#fa8c16"><span class="main-color-text">orange-6</span></div>
+          <div @click="changeColor('orange7')" class="main-color-item" style="background-color:#d46b08"><span class="main-color-text">orange-7</span></div>
+          <div @click="changeColor('orange8')" class="main-color-item" style="background-color:#ad4e00"><span class="main-color-text">orange-8</span></div>
+          <div @click="changeColor('orange9')" class="main-color-item" style="background-color:#873800"><span class="main-color-text">orange-9</span></div>
+          <div @click="changeColor('orange10')" class="main-color-item" style="background-color:#612500"><span class="main-color-text">orange-10</span></div>
         </div>
       </div>
     </div>
@@ -63,16 +63,16 @@
           <span class="description">活力、积极</span>
         </div>
         <div class="main-color">
-          <div class="main-color-item" style="background-color:#fffbe6"><span class="main-color-text">gold-1</span></div>
-          <div class="main-color-item" style="background-color:#fff1b8"><span class="main-color-text">gold-2</span></div>
-          <div class="main-color-item" style="background-color:#ffe58f"><span class="main-color-text">gold-3</span></div>
-          <div class="main-color-item" style="background-color:#ffd666"><span class="main-color-text">gold-4</span></div>
-          <div class="main-color-item" style="background-color:#ffc53d"><span class="main-color-text">gold-5</span></div>
-          <div class="main-color-item" style="background-color:#faad14"><span class="main-color-text">gold-6</span></div>
-          <div class="main-color-item" style="background-color:#d48806"><span class="main-color-text">gold-7</span></div>
-          <div class="main-color-item" style="background-color:#ad6800"><span class="main-color-text">gold-8</span></div>
-          <div class="main-color-item" style="background-color:#874d00"><span class="main-color-text">gold-9</span></div>
-          <div class="main-color-item" style="background-color:#613400"><span class="main-color-text">gold-10</span></div>
+          <div @click="changeColor('gold1')"  class="main-color-item" style="background-color:#fffbe6"><span class="main-color-text">gold-1</span></div>
+          <div @click="changeColor('gold2')"  class="main-color-item" style="background-color:#fff1b8"><span class="main-color-text">gold-2</span></div>
+          <div @click="changeColor('gold3')"  class="main-color-item" style="background-color:#ffe58f"><span class="main-color-text">gold-3</span></div>
+          <div @click="changeColor('gold4')"  class="main-color-item" style="background-color:#ffd666"><span class="main-color-text">gold-4</span></div>
+          <div @click="changeColor('gold5')"  class="main-color-item" style="background-color:#ffc53d"><span class="main-color-text">gold-5</span></div>
+          <div @click="changeColor('gold6')"  class="main-color-item" style="background-color:#faad14"><span class="main-color-text">gold-6</span></div>
+          <div @click="changeColor('gold7')"  class="main-color-item" style="background-color:#d48806"><span class="main-color-text">gold-7</span></div>
+          <div @click="changeColor('gold8')"  class="main-color-item" style="background-color:#ad6800"><span class="main-color-text">gold-8</span></div>
+          <div @click="changeColor('gold9')"  class="main-color-item" style="background-color:#874d00"><span class="main-color-text">gold-9</span></div>
+          <div @click="changeColor('gold10')" class="main-color-item" style="background-color:#613400"><span class="main-color-text">gold-10</span></div>
         </div>
       </div>
       <div class="palette">
@@ -228,14 +228,144 @@
 </template>
 
 <script>
+import '@/assets/theme.scss'
 export default {
- methods: {
+  data(){
+    return{
 
- }
+    }
+  },
+  methods:{
+       changeColor(num) {
+      let root = document.querySelector(":root");
+      if (num == 'red1') {
+        root.style.setProperty("--color", "rgb(255, 241, 240)");
+        root.style.setProperty("--bck", "rgb(255, 192, 203)");
+      } else if (num == 'red2') {
+        root.style.setProperty("--color", "rgb(255, 204, 199)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'red3') {
+        root.style.setProperty("--color", "rgb(255, 163, 158)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'red4') {
+        root.style.setProperty("--color", "rgb(255, 120, 117)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'red5') {
+        root.style.setProperty("--color", "rgb(255, 77, 79)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'red6') {
+        root.style.setProperty("--color", "rgb(245, 34, 45)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'red7') {
+        root.style.setProperty("--color", "rgb(207, 19, 34)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'red8') {
+        root.style.setProperty("--color", "rgb(207, 19, 34)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'red9') {
+        root.style.setProperty("--color", "rgb(130, 0, 20)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'red10') {
+        root.style.setProperty("--color", "rgb(92, 0, 17)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'volcano1') {
+        root.style.setProperty("--color", "rgb(255, 242, 232)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'volcano2') {
+        root.style.setProperty("--color", "rgb(255, 216, 191)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'volcano3') {
+        root.style.setProperty("--color", "rgb(255, 187, 150)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'volcano4') {
+        root.style.setProperty("--color", "rgb(255, 156, 110)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'volcano5') {
+        root.style.setProperty("--color", "rgb(255, 169, 64)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'volcano6') {
+        root.style.setProperty("--color", "rgb(250, 84, 28)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'volcano7') {
+        root.style.setProperty("--color", "rgb(212, 56, 13)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'volcano8') {
+        root.style.setProperty("--color", "rgb(173, 33, 2)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'volcano9') {
+        root.style.setProperty("--color", "rgb(135, 20, 0)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'volcano10') {
+        root.style.setProperty("--color", "rgb(97, 11, 0)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'orange1') {
+        root.style.setProperty("--color", "rgb(255, 247, 230)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'orange2') {
+        root.style.setProperty("--color", "rgb(255, 231, 186)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'orange3') {
+        root.style.setProperty("--color", "rgb(255, 213, 145)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'orange4') {
+        root.style.setProperty("--color", "rgb(255, 192, 105)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'orange5') {
+        root.style.setProperty("--color", "rgb(255, 169, 64)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'orange6') {
+        root.style.setProperty("--color", "rgb(250, 140, 22)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'orange7') {
+        root.style.setProperty("--color", "rgb(212, 107, 8)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'orange8') {
+        root.style.setProperty("--color", "rgb(173, 78, 0)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'orange9') {
+        root.style.setProperty("--color", "rgb(135, 56, 0)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'orange10') {
+        root.style.setProperty("--color", "rgb(97, 37, 0)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'gold1') {
+        root.style.setProperty("--color", "rgb(255, 251, 230)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'gold2') {
+        root.style.setProperty("--color", "rgb(255, 241, 184)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'gold3') {
+        root.style.setProperty("--color", "rgb(255, 229, 143)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'gold4') {
+        root.style.setProperty("--color", "rgb(255, 214, 102)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'gold5') {
+        root.style.setProperty("--color", "rgb(255, 197, 61)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'gold6') {
+        root.style.setProperty("--color", "rgb(250, 173, 20)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'gold7') {
+        root.style.setProperty("--color", "rgb(212, 136, 6)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'gold8') {
+        root.style.setProperty("--color", "rgb(173, 104, 0)");
+        root.style.setProperty("--bck", "rgb(253, 216, 186)");
+      } else if (num == 'gold9') {
+        root.style.setProperty("--color", "rgb(135, 77, 0)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      } else if (num == 'gold10') {
+        root.style.setProperty("--color", "rgb(97, 52, 0)");
+        root.style.setProperty("--bck", "rgb(196, 192, 255)");
+      }
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/theme.scss"; 
 :root{
   --theme-color_red:#ff4d4f;
   --theme-color_volcano:#ff7a45;
@@ -255,7 +385,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--theme-color_gold);
     & .palette{
       width: 25%;
       height: 536px;
@@ -263,7 +392,7 @@ export default {
       margin-left: 5%;
       & .title{
         margin: 0 0 24px;
-        color: #3f4553;
+        color: var(--color);
         font-weight: 500;
         height: 70px;
         font-size: 22px;

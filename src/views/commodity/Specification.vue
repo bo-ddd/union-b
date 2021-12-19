@@ -3,41 +3,73 @@
     <div class="wrap_interior">
       <div class="tit">商品规格</div>
       <div class="addspebut">
-        <el-button type="primary" size="small" @click="addspecification()"
+        <el-button
+          type="primary"
+          size="small"
+          @click="addspecification, (dialogFormVisible = true)"
           >添加规格</el-button
         >
+        <el-dialog title="添加规格" :visible.sync="dialogFormVisible">
+          <el-form :model="form">
+            <el-form-item label="规格名称" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="备注" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="排列顺序" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false"
+              >确 定</el-button
+            >
+          </div>
+        </el-dialog>
       </div>
       <el-table
         ref="multipleTable"
-        :data="tableData"
         tooltip-effect="dark"
+        :data="tableData"
+        size="small"
         style="width: 97%"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column type="selection" align="center"> </el-table-column>
-        <el-table-column prop="id" label="id" align="center" sortable>
-          <template slot-scope="scope">{{ scope.row.id }}</template>
+        <el-table-column :data="tableData" type="selection" align="center">
         </el-table-column>
         <el-table-column
-          prop="name"
+          :data="tableData"
+          label="id"
+          align="center"
+          prop="id"
+          sortable
+        >
+        </el-table-column>
+        <el-table-column
           label="规格名称"
           align="center"
+          prop="name"
+          :data="tableData"
           show-overflow-tooltip
           sortable
         >
         </el-table-column>
         <el-table-column
-          prop="address"
           label="备注"
+          :data="tableData"
+          prop="remark"
           show-overflow-tooltip
           align="center"
           sortable
         >
         </el-table-column>
         <el-table-column
-          prop="list"
           label="排列顺序"
+          :data="tableData"
+          prop="id"
           show-overflow-tooltip
           align="center"
           sortable
@@ -47,14 +79,14 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="address"
           label="操作"
+          :data="tableData"
           show-overflow-tooltip
           align="center"
           :formatter="formatter"
           sortable
         >
-          <template slot-scope="scope">
+          <template>
             <el-button
               type="primary"
               i
@@ -64,7 +96,7 @@
             <el-button
               i
               class="el-icon-delete cell2"
-              @click.native.prevent="deleteRow(scope.$index, tableData)"
+             
               type="text"
             >
             </el-button>
@@ -86,7 +118,7 @@
           <div class="block">
             <el-pagination
               :current-page="currentPage4"
-              :page-sizes="[6, 10, 15, 20, 30, 50, 100]"
+              :page-sizes="[6, 15, 20, 30, 50, 100]"
               layout="sizes"
             >
             </el-pagination>
@@ -109,7 +141,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+// import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -118,55 +150,70 @@ export default {
       pagination: true,
       pageNum: 10,
       pageSize: 1,
+      // id: "",
+      // title: "",
+      // productCategory: "",
       tableData: [
         {
           id: "1",
           name: "颜色",
-          address: "服装",
+          remark: "服装",
           list: "",
           operation: "",
         },
         {
           id: "2",
           name: "尺寸",
-          address: "服装",
+          remark: "服装",
           list: "",
           operation: "",
         },
         {
           id: "3",
           name: "颜色",
-          address: "手机",
+          remark: "手机",
           list: "",
           operation: "",
         },
         {
           id: "4",
           name: "版本",
-          address: "手机",
+          remark: "手机",
           list: "",
           operation: "",
         },
         {
           id: "5",
           name: "购买方式",
-          address: "手机",
+          remark: "手机",
           list: "",
           operation: "",
         },
         {
           id: "6",
           name: "版本",
-          address: "服装",
+          remark: "服装",
           list: "",
           operation: "",
         },
       ],
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      dialogFormVisible: false,
+      formLabelWidth: "120px",
       multipleSelection: [],
     };
   },
   methods: {
-    ...mapActions(["getSpecificationList"]),
+    // ...mapActions(["getSpecificationList"]),
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -196,18 +243,19 @@ export default {
       console.log("单个修改成功");
     },
     //单个删除
-    deleteRow(index, rows) {
-      rows.splice(index, 1);
-    },
+  
     //保存排序
     formatter(row) {
       return row.address;
     },
   },
-  async created() {
-    let res = await this.getSpecificationList({});
-    console.log(res);
-  },
+  // async created() {
+  //   let res = await this.getSpecificationList({});
+  //   console.log(res);
+  //   this.id = res.data.id;
+  //   this.title = res.data.title;
+  //   this.productCategory = res.data.productCategory;
+  // },
 };
 </script>
 
@@ -217,8 +265,8 @@ export default {
   border: 1px solid #d4dde2;
   overflow: hidden;
   & .wrap_interior {
+    height: calc(100vh - 120px);
     overflow-y: auto;
-    height: 85vh;
   }
   & .tit {
     background-color: rgb(254, 249, 250);
@@ -263,21 +311,6 @@ export default {
     }
   }
 }
-// ::v-deep.el-table th.el-table__cell > .cell {
-//   padding-left: 0px;
-// }
-// ::deep.el-table .cell {
-//   padding-left: 0px!important;
-// }
-// ::deep.el-table-column--selection .cell {
-//   padding-left: 0!important;
-// }
-// ::deep.el-table-column--selection .cell {
-//   padding-left: 0!important;
-// }
-// ::deep.el-table .cell{
-//   padding-left: 0!important;
-// }
 .inp {
   border: 1px solid #d8dce5;
   width: 80px;

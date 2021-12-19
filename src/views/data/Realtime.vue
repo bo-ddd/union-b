@@ -1,5 +1,5 @@
 <template>
-  <div class="warp">
+   <div class="warp">
     <div class="main-t">
       <div class="main-t_left">
         <h3>实时数据</h3>
@@ -99,7 +99,7 @@
           <el-table-column prop="money" label="成交金额"> </el-table-column>
         </el-table>
       </div>
-    </div>
+    </div> 
   </div>
 </template>
 
@@ -151,7 +151,13 @@ export default {
 
       option = {
         title: {
-          subtext: "纯属虚构",
+          left: "center",
+        },
+        tooltip: {
+          trigger: "item",
+        },
+        legend: {
+          orient: "vertical",
           left: "left",
         },
         xAxis: {
@@ -187,21 +193,18 @@ export default {
       var option;
 
       option = {
-        legend: {
-          top: "bottom",
+        title: {
+          left: "center",
         },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: { show: true },
-            dataView: { show: true, readOnly: false },
-            restore: { show: true },
-            saveAsImage: { show: true },
-          },
+        tooltip: {
+          trigger: "item",
+        },
+        legend: {
+          orient: "vertical",
+          left: "left",
         },
         series: [
           {
-            name: "Nightingale Chart",
             type: "pie",
             radius: [50, 100],
             center: ["50%", "50%"],
@@ -210,11 +213,11 @@ export default {
               borderRadius: 8,
             },
             data: [
-              { value: 40, name: "rose 1" },
-              { value: 38, name: "rose 2" },
-              { value: 32, name: "rose 3" },
-              { value: 30, name: "rose 4" },
-              { value: 28, name: "rose 5" },
+              { value: 40, name: "电子产品" },
+              { value: 38, name: "生活用品" },
+              { value: 32, name: "床上用品" },
+              { value: 30, name: "厨房用具" },
+              { value: 28, name: "零食小吃" },
             ],
           },
         ],
@@ -237,7 +240,7 @@ export default {
 <style lang="scss" scoped>
 .warp {
   overflow-y: auto;
-  height: 86vh;
+  height: calc(100vh - 100px);
 }
 .ranking {
   height: 98%;
@@ -252,6 +255,9 @@ export default {
 .main-t_left {
   display: flex;
   align-items: center;
+}
+.main-t_left > span {
+  margin-top: 1%;
 }
 .main-t h3 {
   margin-right: 15px;
@@ -291,7 +297,7 @@ export default {
 img {
   width: 45px;
   height: 45px;
-  margin-right:3%;
+  margin-right: 3%;
   border-radius: 45px;
 }
 .pub {

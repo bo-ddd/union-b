@@ -27,11 +27,105 @@ axios.interceptors.response.use(function(response) {
 
 //接口定义的方式；
 export default {
-    //登录
-    login: (params) => {
+    //用户的接口
+    /**
+     * @description  用户登录接口
+     * @params {
+     * username:[String],   用户名
+     * password:[String],   密码
+     * captcha:[String]     验证码
+     * } 
+     * */
+    userLogin(params) {
         return axios.post('/user/login', params, postConfig)
     },
-    //验证码
-    getCaptcha() { return `/api/captcha?${Math.random()}` }
+    /**
+     * @description  验证码
+     * */
+    getCaptcha() { return `/api/captcha?${Math.random()}` },
+    /**
+     * @description  用户注册接口
+     * @params {
+     * username:[string] 必填 用户名称，
+     * password:[string] 必填 用户密码,
+     * email:[string]    必填 用户邮箱,
+     * phone:[string]  非必填 手机号码,
+     * } 
+     * */
+    userRegister(params) {
+        return axios.post('/user/register', params, postConfig)
+    },
+
+    //商品管理
+    /**
+     * @description 商品类目接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getCategoryList(params) {
+        return axios.post('/category/list', params, postConfig)
+    },
+    /**
+     * @description 类目规格接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getSpecificationList(params) {
+        return axios.post('/specification/list', params, postConfig)
+    },
+    /**
+     * @description 添加类目接口
+     * @params {
+     *  title : [String],   类目昵称
+     *  pid   : [Number]    父id
+     * } 
+     */
+    createCategory(params) {
+        return axios.post('/category/create', params, postConfig)
+    },
+
+
+    //数据中心
+    /**
+     * @description 交易数据接口
+     * @params 无
+     */
+    getTradeData(params) {
+        return axios.post('/data/trade', params, postConfig)
+    },
+
+
+
+    //内容管理
+    /**
+     * @description 快捷入口接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getQuickList(params) {
+        return axios.post('/content/list', params, postConfig)
+    },
+
+    //订单管理
+    /**
+     * @description 订单列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getOrderList(params) {
+        return axios.post('/order/list', params, postConfig)
+    },
 
 }

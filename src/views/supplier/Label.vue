@@ -34,24 +34,24 @@
 <div class="tag-group">
   <span class="tag-group__title">商品管理</span>
   <el-tag class="spans"
-  :key="tag"
-  v-for="tag in classify"
+  :key="tags"
+  v-for="tags in managements"
   closable
   :disable-transitions="false"
-  @close="handleClose(tag)">
-  {{tag}}
+  @close="handleCloses(tags)">
+  {{tags}}
 </el-tag>
 <el-input
   class="input-new-tag"
-  v-if="inputVisible"
-  v-model="inputValue"
+  v-if="inputVisibles"
+  v-model="inputValues"
   ref="saveTagInput"
   size="small"
-  @keyup.enter.native="handleInputConfirm"
-  @blur="handleInputConfirm"
+  @keyup.enter.native="handleInputConfirms"
+  @blur="handleInputConfirms"
 >
 </el-input>
-<el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
+<el-button v-else class="button-new-tag" size="small" @click="showInputs">+ 添加标签</el-button>
 </div>
         </div>
       </div>
@@ -65,17 +65,30 @@ export default {
       return {
         management: ['商品查看', '商品审核'],
         classify: ['商品分类查看', '商品审核'],
+        managements: ['商品分类查看', '商品审核'],
         inputVisible: false,
+        inputVisibles: false,
         inputValue: '',
+        inputValues: '',
       };
     },
     methods: {
       handleClose(tag) {
         this.management.splice(this.management.indexOf(tag), 1);
       },
+      handleCloses(tag) {
+        this.managements.splice(this.managements.indexOf(tag), 1);
+      },
 
       showInput() {
         this.inputVisible = true;
+        this.$nextTick(_ => {
+          this.$refs.saveTagInput.$refs.input.focus();
+          console.log(_);
+        });
+      },
+      showInputs() {
+        this.inputVisibles = true;
         this.$nextTick(_ => {
           this.$refs.saveTagInput.$refs.input.focus();
           console.log(_);
@@ -90,6 +103,15 @@ export default {
         }
         this.inputVisible = false;
         this.inputValue = '';
+      },
+      handleInputConfirms() {
+        let inputValues = this.inputValues;
+        if (inputValues) {
+          this.managements.push(inputValues);
+          // this.classify.push(inputValues);
+        }
+        this.inputVisibles = false;
+        this.inputValues = '';
       },
     }
 }

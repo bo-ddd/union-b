@@ -125,8 +125,11 @@ export default {
 <style lang="scss" scoped>
 .wrap {
   min-width: 1270px;
+  
   & .content {
-    min-height: 500px;
+    // min-height: 500px;
+    min-width: 1000px;
+    height: calc(100vh - 300px);
     background-color: #fff;
     margin-top: 20px;
     padding: 20px;

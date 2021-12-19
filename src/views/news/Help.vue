@@ -7,8 +7,8 @@
           <el-main class="content">Main</el-main>
           <el-footer class="footer"
             ><el-input placeholder="请输入内容" v-model="input4" class="ipt">
-              <el-button slot="suffix">发送</el-button>
             </el-input>
+            <el-button class="btn">发送</el-button>
           </el-footer>
         </el-container>
         <el-aside width="200px" class="aside"
@@ -41,9 +41,12 @@ export default {
       align-items: center;
     }
     & > .main {
+      background-color: #ffffffec;
       & > .main_wrap {
-        & > .content {
-          background-color: #ffffff;
+        & > .footer {
+          padding: 0;
+          display: flex;
+          justify-content: space-between;
         }
       }
       & > .aside {
@@ -53,12 +56,14 @@ export default {
         text-align: center;
         & > span {
           margin-top: 20px;
+          cursor: pointer;
         }
       }
     }
   }
 }
-::v-deep .el-input__inner{
+::v-deep .el-input__inner {
   height: 60px;
+  padding-left: 5px;
 }
 </style>

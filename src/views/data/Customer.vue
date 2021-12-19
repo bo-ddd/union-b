@@ -4,7 +4,7 @@
       <h2>客户概况</h2>
       <div class="block">
         <span class="demonstration">时间筛选</span>
-        <el-date-picker v-model="value1" type="daterange"
+        <el-date-picker v-model="value1" type="daterange" size='small'
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期">
@@ -44,13 +44,13 @@
             <div class="content_header">
               <div class="content-left">
               <span>地区</span>
-              <el-select v-model="value" placeholder="全部地区">
+              <el-select v-model="value" placeholder="全部地区" size='small'>
                 <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left">{{ item.label }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{item.value}}</span>
                 </el-option>
               </el-select>
-              <el-select v-model="value" placeholder="全部">
+              <el-select v-model="value" placeholder="全部" size='small'>
                 <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left">{{ item.label }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{item.value}}</span>
@@ -58,8 +58,8 @@
               </el-select>
               </div>
               <div class="content-right">
-              <el-button>查询</el-button>
-              <el-button>重置</el-button>
+              <el-button size='small'>查询</el-button>
+              <el-button size='small'>重置</el-button>
               </div>
             </div>
             <el-table :data="tableData" stripe size='small'>
@@ -81,13 +81,13 @@
             <div class="content_header">
               <div class="content-left">
               <span>地区</span>
-              <el-select v-model="value" placeholder="全部地区">
+              <el-select v-model="value" placeholder="全部地区" size='small'>
                 <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left">{{ item.label }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{item.value}}</span>
                 </el-option>
               </el-select>
-              <el-select v-model="value" placeholder="全部">
+              <el-select v-model="value" placeholder="全部" size='small'>
                 <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left">{{ item.label }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{item.value}}</span>
@@ -95,8 +95,8 @@
               </el-select>
               </div>
               <div class="content-right">
-              <el-button>查询</el-button>
-              <el-button>重置</el-button>
+              <el-button size='small'>查询</el-button>
+              <el-button size='small'>重置</el-button>
               </div>
             </div>
             <el-table :data="tableData" stripe size='small'>
@@ -116,7 +116,7 @@
       </el-tabs>
       <div class="block">
         <span class="demonstration">时间筛选</span>
-        <el-date-picker
+        <el-date-picker size='small'
           v-model="value2"
           unlink-panels
           type="daterange"

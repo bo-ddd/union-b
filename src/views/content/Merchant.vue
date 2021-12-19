@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="wrap_recommend">
       <div class="preservation">
-        <el-button plain class="issuebtn">发布</el-button>
+        <el-button plain class="issuebtn" size="small">发布</el-button>
       </div>
       <el-table
         :data="tableData"
@@ -10,10 +10,10 @@
         :header-cell-style="{ background: '#fcfcfc' }"
         size="small"
       >
-        <el-table-column type="selection" width="55" align="center">
+        <el-table-column type="selection" align="center">
         </el-table-column>
         <el-table-column
-          label="条码"
+          label="商品编号"
           align="center"
           sortable
           show-overflow-tooltip
@@ -118,8 +118,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",  
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -129,8 +129,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -140,8 +140,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -151,8 +151,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -162,8 +162,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -173,8 +173,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -184,8 +184,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -195,8 +195,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -206,8 +206,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",
@@ -217,8 +217,8 @@ export default {
           name: "十月结晶一次性产妇纸",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
+          money: "159.00元",
+          inventory: "4647件",
           sales: "464",
           state: "销售中",
           date: "2019-08-12",

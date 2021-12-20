@@ -21,7 +21,6 @@
         </el-table-column>
         <el-table-column  label="排序">
           <template slot-scope="scope">
-             <!-- <el-link type="primary" class="link" @click="Topping(scope.row.Serial_number)" size='small'>置顶</el-link> -->
              <el-link type="primary" class="link" @click="Topping(scope.$index)" size='small'>置顶</el-link>
              <el-link type="primary" class="link" @click="raise(scope.row.Serial_number)" size='small'>升序</el-link>
              <el-link type="primary" class="link" @click="Down(scope.row.Serial_number)" size='small'>降序</el-link>
@@ -239,19 +238,6 @@ export default {
           this.table.unshift(arr);
           this.mySort(this.table);
         },
-        // Topping(id){
-        //   if (id == 1) return;
-        //   this.tableData.forEach(item=>{
-        //     if (item.Serial_number == id) {
-        //         item.Serial_number = 1;
-        //         return
-        //     }
-        //     if (item.Serial_number < id) {
-        //         item.Serial_number++;
-        //     }
-        //   })
-        //   this.mySort(this.tableData);
-        // },
         //上调
         raise(id){
           if (id == 1) return;

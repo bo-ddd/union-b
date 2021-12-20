@@ -194,6 +194,26 @@ export default {
     getSuperList(params) {
         return axios.post('/superProduct/list', params, postConfig)
     },
+    /**
+     * @description 标签列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getLableList(params) {
+        return axios.post('/lable/list', params, postConfig)
+    },
+    /**
+     * @description 新增标签接口
+     * @params {
+     * lableName:[string] 必填  '标签的名字'
+     * } 
+     */
+    createLable(params) {
+        return axios.post('/lable/create', params, postConfig)
+    },
 
 
     //订单管理

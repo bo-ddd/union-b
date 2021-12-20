@@ -141,7 +141,7 @@
                   <el-date-picker
                     v-model="value1"
                     type="date"
-                    placeholder="选择或输入生产日期Enter自定义"
+                    placeholder="选择或输入日期Enter自定义"
                   >
                   </el-date-picker>
                 </div>

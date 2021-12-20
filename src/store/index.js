@@ -73,6 +73,10 @@ export default new Vuex.Store({
         getUnitlibraryList(ctx, payload) {
             return Api.getUnitlibraryList(payload);
         },
+        //添加单位接口
+        createUnitlibrary(ctx, payload) {
+            return Api.createUnitlibrary(payload);
+        },
 
 
 

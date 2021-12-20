@@ -141,6 +141,17 @@ export default {
     getUnitlibraryList(params) {
         return axios.post('/unitlibrary/list', params, postConfig)
     },
+    /**
+     * @description 添加单位接口
+     * @params {
+     * title     : [String]     单位名称 例子:衣服单位为件,
+     * cid       : [Number]     类目标识  类目id
+     * storeId   : [Number]     店铺id 这个单位的来源
+     * } 
+     */
+    createUnitlibrary(params) {
+        return axios.post('/unitlibrary/create', params, postConfig)
+    },
 
 
     //数据中心

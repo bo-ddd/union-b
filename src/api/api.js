@@ -55,6 +55,13 @@ export default {
     userRegister(params) {
         return axios.post('/user/register', params, postConfig)
     },
+    /**
+     * @description  用户信息接口
+     * @params 没有参数  必须登录
+     * */
+    getUserInfo(params) {
+        return axios.post('/user/info', params, postConfig)
+    },
 
 
     //商品管理

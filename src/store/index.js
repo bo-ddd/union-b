@@ -38,6 +38,10 @@ export default new Vuex.Store({
         userRegister(ctx, payload) {
             return Api.userRegister(payload);
         },
+        //用户信息
+        getUserInfo(ctx, payload) {
+            return Api.getUserInfo(payload);
+        },
 
 
         //商品管理

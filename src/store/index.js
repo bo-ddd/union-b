@@ -83,6 +83,10 @@ export default new Vuex.Store({
         getOrderList(ctx, payload) {
             return Api.getOrderList(payload);
         },
+        //订单详情接口
+        getOrderDetail(ctx, payload) {
+            return Api.getOrderDetail(payload);
+        },
     },
     modules: {}
 })

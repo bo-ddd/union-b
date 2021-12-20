@@ -34,7 +34,7 @@
           </div>
           <div class="form_item">
             <div class="form_item_input">
-              <el-button class="registrationbtn" type="primary">注 册</el-button>
+              <el-button @click="verification" class="registrationbtn" type="primary">注 册</el-button>
             </div>
           </div>
         </div>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -58,7 +59,9 @@ export default {
 
   },
   methods: {
-    verification(){
+    ...mapActions(["userRegister"]),
+
+    async verification(){
         if (!this.form.username.length) {
         this.$message({
           type: "warning",
@@ -79,18 +82,27 @@ export default {
           type:"warning",
           message:"用户名不符合规范"
         })
-      }else if(this.form.password){
+      }else if(!this.form.password){
         this.$message({
           type:"warning",
           message:"密码不能为空"
         })
       }
-      // else if(/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.form.email)){
-      //   this.$message({
-      //     type:"warning",
-      //     message:"邮箱格式不正确"
-      //   })
-      // }
+      else if(/^([a-zA-Z]|[0-9])(\w|)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.form.email)){
+        this.$message({
+          type:"warning",
+          message:"邮箱格式不正确"
+        })
+      }
+      else{
+        let res = await this.userRegister({
+           username:this.username,
+           password:this.password,
+           email:this.email,
+           phone:this.phone
+        })
+        console.log(res);
+      }
     }
   }
 }

@@ -264,8 +264,8 @@ export default {
   margin-left: 98px;
 }
 .img {
-  width: 160px;
-  height: 95px;
+  /* width: 160px;
+  height: 95px; */
   /* background-color: #ff4070; */
   margin-left: 10px;
 }

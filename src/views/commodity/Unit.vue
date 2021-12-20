@@ -35,7 +35,7 @@
       </el-table>
        <div class="block">
         <el-pagination :current-page="currentPage"  @size-change="handleSizeChange" @current-change="handleCurrentChange"
-          :page-sizes="[20, 30, 40, 50]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+          :page-sizes="[10, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
         </el-pagination>
       </div>
     </div>
@@ -235,11 +235,9 @@ export default {
       methods: {
         //置顶
         Topping(index){
-          var arr = this.table.splice(index,index+1);
-          console.log(arr);
-          this.table.push(arr);
-          // console.log(this.table);
-          // this.mySort(this.tableDate);
+          var arr = this.table.splice(index,1);
+          this.table.unshift(arr);
+          this.mySort(this.table);
         },
         // Topping(id){
         //   if (id == 1) return;
@@ -326,7 +324,7 @@ export default {
         },
       },
       created(){
-        this.handleSizeChange(20);
+        this.handleSizeChange(10);
       }
 }
 </script>

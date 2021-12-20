@@ -212,7 +212,6 @@ export default {
       & .mainpack {
         width: 100%;
         height: 70%;
-
         & .main-top {
           width: 100%;
           height: 30%;

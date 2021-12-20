@@ -56,6 +56,7 @@ export default {
         return axios.post('/user/register', params, postConfig)
     },
 
+
     //商品管理
     /**
      * @description 商品类目接口
@@ -101,7 +102,6 @@ export default {
     },
 
 
-
     //内容管理
     /**
      * @description 快捷入口接口
@@ -137,6 +137,7 @@ export default {
         return axios.post('/superProduct/list', params, postConfig)
     },
 
+
     //订单管理
     /**
      * @description 订单列表接口
@@ -148,6 +149,15 @@ export default {
      */
     getOrderList(params) {
         return axios.post('/order/list', params, postConfig)
+    },
+    /**
+     * @description 订单详情接口
+     * @params {
+     * id:''//必填 订单id  //1639803937171000001
+     * } 
+     */
+    getOrderDetail(params) {
+        return axios.post('/order/detail', params, postConfig)
     },
 
 }

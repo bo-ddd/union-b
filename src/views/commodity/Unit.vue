@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="table">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}" size='small'>
+      <el-table :data="table" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}" size='small'>
         <el-table-column prop="Serial_number" label="序号">
         </el-table-column>
         <el-table-column prop="Unit_name" label="单位名称">
@@ -21,9 +21,10 @@
         </el-table-column>
         <el-table-column  label="排序">
           <template slot-scope="scope">
-            <img src="../../assets/images/icon-Topping_blue.png" class="iconImg" @click="Topping(scope.row.Serial_number)">
-            <img src="../../assets/images/icon-Up_blue.png" class="iconImg" @click="raise(scope.row.Serial_number)">
-            <img src="../../assets/images/icon-down.png" class="iconImg" @click="Down(scope.row.Serial_number)">
+             <!-- <el-link type="primary" class="link" @click="Topping(scope.row.Serial_number)" size='small'>置顶</el-link> -->
+             <el-link type="primary" class="link" @click="Topping(scope.$index)" size='small'>置顶</el-link>
+             <el-link type="primary" class="link" @click="raise(scope.row.Serial_number)" size='small'>升序</el-link>
+             <el-link type="primary" class="link" @click="Down(scope.row.Serial_number)" size='small'>降序</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="operation" label="操作">
@@ -33,8 +34,8 @@
         </el-table-column>
       </el-table>
        <div class="block">
-        <el-pagination :current-page="currentPage4"
-          :page-sizes="[20, 40, 60, 80]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="800">
+        <el-pagination :current-page="currentPage"  @size-change="handleSizeChange" @current-change="handleCurrentChange"
+          :page-sizes="[20, 30, 40, 50]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
         </el-pagination>
       </div>
     </div>
@@ -45,10 +46,10 @@
 export default {
    data() {
         return {
-          currentPage1: 5,
-          currentPage2: 5,
-          currentPage3: 5,
-          currentPage4: 4,
+          currentPage: 1,
+          cacheExport: [],
+          multipleSelection: [],
+          table: [],
           tableData: [{
             Serial_number: '1',
             Unit_name: '1件',
@@ -233,23 +234,29 @@ export default {
       },
       methods: {
         //置顶
-        Topping(id){
-          if (id == 1) return;
-          this.tableData.forEach(item=>{
-            if (item.Serial_number == id) {
-                item.Serial_number = 1;
-                return
-            }
-            // this.mySort(this.tableData);
-            if (item.Serial_number < id) {
-                item.Serial_number++;
-            }
-          })
-          this.mySort(this.tableData);
+        Topping(index){
+          var arr = this.table.splice(index,index+1);
+          console.log(arr);
+          this.table.push(arr);
+          // console.log(this.table);
+          // this.mySort(this.tableDate);
         },
+        // Topping(id){
+        //   if (id == 1) return;
+        //   this.tableData.forEach(item=>{
+        //     if (item.Serial_number == id) {
+        //         item.Serial_number = 1;
+        //         return
+        //     }
+        //     if (item.Serial_number < id) {
+        //         item.Serial_number++;
+        //     }
+        //   })
+        //   this.mySort(this.tableData);
+        // },
         //上调
         raise(id){
-           if (id == 1) return;
+          if (id == 1) return;
           this.tableData.forEach(item=>{
             if(item.Serial_number == id-1){
               item.Serial_number = id;
@@ -259,7 +266,7 @@ export default {
               item.Serial_number = id-1;
             }
           })
-          this.mySort(this.tableData);
+          this.mySort(this.table);
         },
         //下调
         Down(id){
@@ -272,7 +279,7 @@ export default {
                 item.Serial_number = Number(id)+1;
             }
           })
-           this.mySort(this.tableData);
+           this.mySort(this.table);
         },
         //禁用
         Disable(item){
@@ -296,8 +303,31 @@ export default {
             }) 
           }
           this.xmgcqkJsonsData = newListData;
-        },  
+        },
+          handleSizeChange(val) {
+          this.pageSize = val;
+          this.handleCurrentChange(1);
+        },
+
+        /**
+         * @description 分页的当前页有多少条
+         * **/
+        handleCurrentChange(val) {
+          this.cacheExport = this.multipleSelection;
+          let arr = [];
+          for (
+            let i = val * this.pageSize - this.pageSize;
+            i < val * this.pageSize;
+            i++
+          ) {
+            if (this.tableData[i] != undefined) arr.push(this.tableData[i]);
+          }
+          this.table = arr;
+        },
       },
+      created(){
+        this.handleSizeChange(20);
+      }
 }
 </script>
 
@@ -322,9 +352,7 @@ export default {
   }
   & .table{
     width: 100%;
-    & .iconImg{
-      width: 20px;
-      height: 20px;
+    & .link{
       margin: 0 1%;
       cursor: pointer;
     }

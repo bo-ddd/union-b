@@ -11,7 +11,7 @@
           </div>
         </div>
         <el-table
-          :data="renderDynamic"
+          :data="table"
           ref="product"
           border
           row-key="id"
@@ -40,9 +40,9 @@
           </el-table-column>
           <el-table-column
             label="创建日期"
-            sortable
             width="200"
             show-overflow-tooltip
+            sortable
           >
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
@@ -59,7 +59,7 @@
                 @click="sescendingOrder(scope.row.id)"
                 >降序</el-link
               >
-              <el-link class="ml-10" type="danger" @click="deleteData(scope.row.id)"
+              <el-link class="ml-10" type="danger" @click="deleteData(scope.row.id,scope.$index)"
                 >删除</el-link
               >
             </template>
@@ -67,18 +67,19 @@
         </el-table>
       </div>
       <div class="footer">
-        <div class="block">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="40"
-          >
-          </el-pagination>
-        </div>
+           <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage"
+          :page-sizes="[10, 20, 30, 40, 50]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="renderDynamic.length"
+          background
+        >
+        </el-pagination>
+      </div>
       </div>
     </div>
   </div>
@@ -92,7 +93,10 @@ export default {
       checked: true,
       size: "",
       currentPage: 1,
-      articles: [],
+      cacheExport: [],
+      multipleSelection: [],
+      table: [],
+      pageSize: 10,
       renderDynamic: [
         {
           id: 1,
@@ -379,52 +383,58 @@ export default {
       }
       return "";
     },
+     /**
+     * @description 分页每页有多少条
+     * **/
     handleSizeChange(val) {
-      return val;
+      this.pageSize = val;
+      this.handleCurrentChange(1);
+      console.log(`每页 ${val} 条`);
     },
+
+    /**
+     * @description 分页的当前页有多少条
+     * **/
     handleCurrentChange(val) {
-      var pageDown = {
-        //每页多少条
-        pageSize: this.handleSizeChange() || 10,
-        //当前页数
-        pageNum: val || 1,
-        get offSize() {
-          // 2 * (1-1) = 0;
-          // 条数*(页数-1)
-          return this.pageSize * (this.pageNum - 1);
-        },
-        //每一页的内容
-        get Num() {
-          // article是你要分页的数据
-          return this.articles.slice(
-            this.offSize,
-            this.offSize + this.pageSize
-          );
-        },
-        get isShow() {
-          return (
-            Math.ceil(this.articles.length / this.pageSize) == this.pageNum
-          );
-        },
-      };
-      this.renderDynamic = pageDown.Num;
+      this.cacheExport = this.multipleSelection;
+
+      let arr = [];
+      for (
+        let i = val * this.pageSize - this.pageSize;
+        i < val * this.pageSize;
+        i++
+      ) {
+        if (this.renderDynamic[i] != undefined) arr.push(this.renderDynamic[i]);
+      }
+      this.table = arr;
+
+      // console.log(arr);
+      // console.log(this.table)
+      console.log(`当前页: ${val}`);
     },
+
     async commodityInfo() {
       let res = await this.getCategoryList({});
       console.log(res);
     },
+    /**
+     * @description 根据id把数据重新排序
+     */
     mySort(arr){
       arr.sort((a,b)=>{
         let num1 = a.id;
         let num2 = b.id;
         return num1 - num2
       })
-      this.renderDynamic = arr
+      this.table = arr
       console.log(this.renderDynamic)
     },
+    /**
+     * @description 当前行上升一位
+     */
     ascendingOrder(id) {
       if (id == 1) return;
-      this.renderDynamic.forEach((item) => {
+      this.table.forEach((item) => {
         if (item.id == id - 1) {
           item.id = id;
           return;
@@ -433,11 +443,14 @@ export default {
           item.id = id - 1;
         }
       });
-      this.mySort(this.renderDynamic);
+      this.mySort(this.table);
     },
+    /**
+     * @description 当前行下降一位
+     */
     sescendingOrder(id) {
-      if(id == this.renderDynamic.length-1) return;
-        this.renderDynamic.forEach(el=>{
+      if(id == this.table.length-1) return;
+        this.table.forEach(el=>{
           if(el.id == id+1){
               el.id =id
               return;
@@ -446,13 +459,18 @@ export default {
             el.id = id +1
           }
         })
-        this.mySort(this.renderDynamic);
+        this.mySort(this.table);
     },
-    deleteData(val) {
-    let data = this.renderDynamic.slice()
+    /**
+     * @description 删除当前行
+     */
+    deleteData(val,index) {
+    let data = this.table.slice()
+    console.log(val)
+    console.log(index)
      data.forEach(el=>{
        if(el.id == val){
-         data.splice(val-1,1)
+         data.splice(val-1,1);
        }
      })
      this.mySort(data)
@@ -462,9 +480,10 @@ export default {
     this.initData(this.renderDynamic);
   },
   created() {
-    // this.commodityInfo();
-  },
-};
+     this.handleSizeChange(10) 
+ 
+  }
+}
 </script>
 
 <style lang="scss" scoped>

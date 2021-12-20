@@ -21,7 +21,6 @@
         </el-table-column>
         <el-table-column  label="排序">
           <template slot-scope="scope">
-             <!-- <el-link type="primary" class="link" @click="Topping(scope.row.Serial_number)" size='small'>置顶</el-link> -->
              <el-link type="primary" class="link" @click="Topping(scope.$index)" size='small'>置顶</el-link>
              <el-link type="primary" class="link" @click="raise(scope.row.Serial_number)" size='small'>升序</el-link>
              <el-link type="primary" class="link" @click="Down(scope.row.Serial_number)" size='small'>降序</el-link>
@@ -35,7 +34,7 @@
       </el-table>
        <div class="block">
         <el-pagination :current-page="currentPage"  @size-change="handleSizeChange" @current-change="handleCurrentChange"
-          :page-sizes="[20, 30, 40, 50]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+          :page-sizes="[10, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
         </el-pagination>
       </div>
     </div>
@@ -235,25 +234,10 @@ export default {
       methods: {
         //置顶
         Topping(index){
-          var arr = this.table.splice(index,index+1);
-          console.log(arr);
-          this.table.push(arr);
-          // console.log(this.table);
-          // this.mySort(this.tableDate);
+          var arr = this.table.splice(index,1);
+          this.table.unshift(arr);
+          this.mySort(this.table);
         },
-        // Topping(id){
-        //   if (id == 1) return;
-        //   this.tableData.forEach(item=>{
-        //     if (item.Serial_number == id) {
-        //         item.Serial_number = 1;
-        //         return
-        //     }
-        //     if (item.Serial_number < id) {
-        //         item.Serial_number++;
-        //     }
-        //   })
-        //   this.mySort(this.tableData);
-        // },
         //上调
         raise(id){
           if (id == 1) return;
@@ -326,7 +310,7 @@ export default {
         },
       },
       created(){
-        this.handleSizeChange(20);
+        this.handleSizeChange(10);
       }
 }
 </script>

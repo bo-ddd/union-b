@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import '@/assets/theme.scss'
 import {
     mapGetters,
     mapActions

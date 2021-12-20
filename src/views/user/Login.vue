@@ -184,6 +184,7 @@ export default {
   justify-content: center;
   align-items: center;
   min-width: 1300px;
+  min-height: 780px;
 
   & .main {
     width: 55%;

@@ -2,7 +2,6 @@
 <div class="home">
     <el-container>
         <el-aside :width="isCollapse?'60px':'220px'">
-            <el-checkbox v-model="isCollapse" class="switch"></el-checkbox>
             <div class="aside_main">
                 <el-menu class="menu el-menu-vertical-demo" collapse-transition unique-opened :router="true" :default-active="$route.path" @open="handleOpen" @close="handleClose" :collapse="isCollapse" active-text-color="#ff6f93">
                     <div class="logobox">
@@ -15,7 +14,7 @@
                             <span>{{ link.meta.title }}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path" v-show='!children.meta.flag'>
+                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path" v-show='!children.meta.flag' @click="show = !show">
                                 <span>{{ children.meta.title }}</span>
                             </el-menu-item>
                         </el-menu-item-group>
@@ -26,6 +25,7 @@
         <el-container>
             <el-header>
                 <div class="top_left">
+                    <i :class="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'" @click="isCollapse = !isCollapse"></i>
                     <span class="fw-b fs-20">{{ $route.meta.title }}</span>
                 </div>
                 <i class="el-icon-bell"></i>
@@ -51,7 +51,8 @@ import {
 export default {
     data() {
         return {
-            isCollapse: false
+            isCollapse: false,
+            show: true
         };
     },
     methods: {
@@ -70,6 +71,7 @@ export default {
     height: 100vh;
     color: #0a0a0a;
     min-width: 1100px;
+    overflow: hidden;
 
     ::-webkit-scrollbar {
         width: 0px;
@@ -89,16 +91,9 @@ export default {
         color: #333;
         text-align: center;
         height: 100vh;
-        position: relative;
         overflow-x: hidden;
 
-        & .switch {
-            position: absolute;
-            top: 50vh;
-            right: 0px;
-        }
-
-        .el-menu {
+        & .el-menu {
             border: none;
         }
 
@@ -116,7 +111,7 @@ export default {
             padding: 20px 20px 10px 20px;
             display: grid;
             grid-template-columns: 1fr 3fr;
-            width: 150px;
+            width: 180px;
 
             & .logo {
                 width: 25px;
@@ -144,6 +139,14 @@ export default {
         background-color: #ffffff;
         font-size: 16px;
         align-items: center;
+
+        & .top_left {
+            & i {
+                font-size: 20px;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+        }
 
         & .top_right {
             display: flex;

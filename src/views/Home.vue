@@ -109,6 +109,7 @@ export default {
         ::v-deep .el-submenu__title.is-active {
             outline: 0;
             background-color: var(--color) !important;
+            color: var(--textcolor) !important;
         }
 
         & .logobox {

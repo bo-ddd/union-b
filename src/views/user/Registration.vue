@@ -29,7 +29,11 @@
             <div class="form_selectbox">
               <input class="selectbox_input" type="checkbox" name="" id="agreementbtn">
               <label for="agreementbtn">已阅读并同意以下协议淘宝平台服务协议、隐私权政策、法律声明、支付宝及客户端服务协议、支付宝隐私权政策</label>
-              <!-- <el-checkbox v-model="checked">已阅读并同意以下协议淘宝平台服务协议、隐私权政策、法律声明、支付宝及客户端服务协议、支付宝隐私权政策</el-checkbox> -->
+            </div>
+          </div>
+          <div class="form_itemLink">
+            <div class="itemLinkBox" >
+              <el-link href="http://localhost:8080/login" class="linkData" type="primary">直接登录</el-link>
             </div>
           </div>
           <div class="form_item">
@@ -138,7 +142,7 @@ export default {
       height: 430px;
       & .form_item{
         width: 100%;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         display: flex;
         justify-content: center;
         & .form_item_input{
@@ -164,9 +168,25 @@ export default {
           }
         }
       }
+      & .form_itemLink{
+        width: 100%;
+        margin-bottom: 14px;
+        display: flex;
+        justify-content:center;
+        & .itemLinkBox{
+           width: 70%;
+          height: 20px;
+          display: flex;
+          justify-content:right;
+          & .linkData{
+          font-size: 13px !important;
+          margin-right: 7px;
+          }
+        }
+      }
       & .logo{
         width: 100%;
-        height: 80px;
+        height: 60px;
         line-height: 50px;
         color: #087aed;
         font-size: 32px;

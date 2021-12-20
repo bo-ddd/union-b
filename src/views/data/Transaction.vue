@@ -11,7 +11,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>888</h3>
+            <h3>{{allData.storeCount}}</h3>
             <span>平台商家总数</span>
           </div>
         </div>
@@ -24,7 +24,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>8888</h3>
+            <h3>{{allData.goodsCount}}</h3>
             <span>平台商品总数</span>
           </div>
         </div>
@@ -115,6 +115,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      allData:[],
       tableData: [
         {
           date: "家电",
@@ -155,8 +156,8 @@ export default {
   methods: {
     ...mapActions(["getTradeData"]),
     async getTrade() {
-      let res = await this.getTradeData();
-      console.log(res);
+      let res = await this.getTradeData({});
+      this.allData = res.data;
     },
     drawnBar() {
       // 基于准备好的dom，初始化echarts实例
@@ -275,7 +276,7 @@ export default {
           },
         },
         legend: {
-          data: ["收入", "成本", "Income"],
+          data: ["收入", "成本"],
         },
         grid: {
           left: "3%",

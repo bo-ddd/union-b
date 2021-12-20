@@ -4,11 +4,15 @@
       <el-header class="header">客服中心</el-header>
       <el-container class="main">
         <el-container class="main_wrap">
-          <el-main class="content">Main</el-main>
+          <el-main class="content">
+            <div class="msg">
+              <!-- <span class="left"></span><span class="right"></span> -->
+            </div>
+          </el-main>
           <el-footer class="footer"
-            ><el-input placeholder="请输入内容" v-model="input4" class="ipt">
+            ><el-input placeholder="请输入内容" v-model="message" class="ipt">
             </el-input>
-            <el-button class="btn">发送</el-button>
+            <el-button class="btn" @click="submit">发送</el-button>
           </el-footer>
         </el-container>
         <el-aside width="200px" class="aside"
@@ -23,8 +27,24 @@
 export default {
   data() {
     return {
-      input4: "",
+      message: "",
     };
+  },
+  methods: {
+    submit() {
+      this.render();
+    },
+    render() {
+      let oDiv = document.querySelector(".msg");
+      let right = document.createElement("div");
+      right.innerHTML = this.message;
+      right.className = "right_msg";
+      right.style.cssText = `
+        background-color:#e7536b,
+        text-align:right,`;
+      this.message = "";
+      oDiv.appendChild(right);
+    },
   },
 };
 </script>
@@ -43,6 +63,23 @@ export default {
     & > .main {
       background-color: #ffffffec;
       & > .main_wrap {
+        & > .content {
+          & > .msg {
+            font-size: 20px;
+            & > .right_msg {
+              text-align: right;
+              margin-top: 10px;
+              background-color: #e7536b;
+              padding: 10px;
+            }
+            & > .left_msg {
+              text-align: left;
+              margin-top: 10px;
+              background-color: #e7536b;
+              padding: 10px;
+            }
+          }
+        }
         & > .footer {
           padding: 0;
           display: flex;

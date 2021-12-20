@@ -32,7 +32,7 @@
         <el-table
       :data="tableData"
       style="width: 100%">
-      <el-table-column prop="id" label="id" width="100" align="center">
+      <el-table-column type="index" label="id" width="100" align="center">
       </el-table-column>
       <el-table-column
         prop="name"
@@ -70,10 +70,10 @@
         label="操作"
         align="center"
         >
-        <template>
+        <template slot-scope="scope">
           <el-button
           size="mini"
-          type="danger">删除</el-button>
+          type="danger" @click="remove(scope)">{{scope.row.delete}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -96,19 +96,24 @@ export default {
           required: '',
         },
         tableData: [{
-            id: '1',
+            delete:'删除'
           }, {
-            id: '2',
+           
+            delete:'删除'
           }, {
-            id: '3',
+           
+            delete:'删除'
           }, {
-            id: '4',
+            
+            delete:'删除'
           },
           {
-            id: '5',
+           
+            delete:'删除'
           },
           {
-            id: '6',
+            
+            delete:'删除'
           }
           ]
       }
@@ -119,6 +124,10 @@ export default {
       },
       handleDelete(index, row) {
         console.log(index, row);
+      },
+      remove(data){
+        console.log(data.$index);
+       this.tableData.splice(data.$index,1) 
       }
   }
 }

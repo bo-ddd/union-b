@@ -100,6 +100,14 @@ export default new Vuex.Store({
         getSuperList(ctx, payload) {
             return Api.getSuperList(payload);
         },
+        //标签列表接口
+        getLableList(ctx, payload) {
+            return Api.getLableList(payload);
+        },
+        //新增标签接口
+        createLable(ctx, payload) {
+            return Api.createLable(payload);
+        },
 
 
         //订单管理

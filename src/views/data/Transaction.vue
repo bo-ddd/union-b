@@ -167,9 +167,15 @@ export default {
           trigger: "axis",
         },
         legend: {
-          data: ["Rainfall", "Evaporation"],
+          data: ["去年同期", "今年"],
+        },
+        grid:{
+        bottom:'1%',
+        left:'5%',
+        right:'5%',
         },
         toolbox: {
+          center:['20%','50%'],
           show: true,
           feature: {
             dataView: { show: true, readOnly: false },
@@ -269,12 +275,12 @@ export default {
           },
         },
         legend: {
-          data: ["Profit", "Expenses", "Income"],
+          data: ["收入", "成本"],
         },
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
+          bottom:'1%',
           containLabel: true,
         },
         xAxis: [
@@ -298,6 +304,7 @@ export default {
             stack: "Total",
             label: {
               show: true,
+              position: "left",
             },
             emphasis: {
               focus: "series",
@@ -449,6 +456,7 @@ export default {
     & > div {
       background-color: #ffffff;
       min-width: 100px;
+      padding: 10px;
       & > div {
         height: 46vh;
         width: 100%;

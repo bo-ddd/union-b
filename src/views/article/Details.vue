@@ -105,6 +105,5 @@ export default {};
 .read {
   margin-left: 10px;
 }
-.details {
-}
+
 </style>

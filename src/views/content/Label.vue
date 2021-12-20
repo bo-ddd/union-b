@@ -267,6 +267,7 @@
   background-color: #ff4070;
   border: none;
   color: #fff;
+  padding: 10px;
 }
 
 .right {
@@ -303,10 +304,13 @@
 export default {
   data() {
     return {
+      value:'',
       input1: "",
       input2: "",
       input3: "",
+      input4: "",
       select: "",
+      options:'',
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {},

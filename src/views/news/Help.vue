@@ -1,54 +1,116 @@
 <template>
   <div class="wrap">
     <el-container class="home">
-      <el-header>Header</el-header>
-      <el-container>
-        <el-aside width="400px">
-          <el-header
-            ><el-input v-model="input" placeholder="请输入内容"
-              ><i
-                slot="prefix"
-                class="el-input__icon el-icon-search"
-              ></i></el-input
-          ></el-header>
-          <el-aside
-            ><el-tabs v-model="activeName" type="card" @tab-click="handleClick" :stretch="true">
-              <el-tab-pane label="当前对话列表" name="first">用户管理</el-tab-pane>
-              <el-tab-pane label="48小时粉丝对话列表" name="second">配置管理</el-tab-pane>
-            </el-tabs></el-aside
-          >
-        </el-aside>
-        <el-container>
-          <el-main>
-            <el-header>Header</el-header>
-            <el-main>main </el-main>
+      <el-header class="header">客服中心</el-header>
+      <el-container class="main">
+        <el-container class="main_wrap">
+          <el-main class="content">
+            <div class="msg">
+              <!-- <span class="left"></span><span class="right"></span> -->
+            </div>
           </el-main>
-          <el-footer>Footer</el-footer>
+          <el-footer class="footer"
+            ><el-input
+              placeholder="请输入内容"
+              v-model="userMessage"
+              class="ipt"
+            >
+            </el-input>
+            <el-button class="btn" @click="submit">发送</el-button>
+          </el-footer>
         </el-container>
+        <el-aside width="200px" class="aside"
+          ><span>自助服务</span><span>问卷调查</span></el-aside
+        >
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      userMessage: "",
+      flag: true,
+    };
+  },
+  methods: {
+    submit() {
+      this.render();
+    },
+    render() {
+      this.flag = !this.flag;
+      let oDiv = document.querySelector(".msg");
+      let right = document.createElement("div");
+      let oSpan = document.createElement("span");
+      oSpan.innerHTML = this.userMessage;
+      oSpan.style.backgroundColor = "#e7536b";
+      oSpan.style.padding = '10px';
+      oSpan.style.borderRadius = '10px';
+      right.style.marginTop = '20px';
+      right.appendChild(oSpan);
+      right.className = "right_msg";
+      right.style.textAlign = this.flag ? "right" : "left";
+      this.userMessage = "";
+      oDiv.appendChild(right);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-header{
-  padding: 0;
-}
-::v-deep .el-aside{
-  overflow: auto;
-}
-::v-deep .el-tabs{
-  width: 400px;
-}
 .wrap {
+  height: calc(100vh - 100px);
   & > .home {
-    padding: 20px;
-    height: calc(100vh - 100px);
-    width: calc(100vw - 260px);
+    height: 100%;
+    & > .header {
+      background-color: #e7536b;
+      color: white;
+      display: flex;
+      align-items: center;
+    }
+    & > .main {
+      background-color: #ffffffec;
+      & > .main_wrap {
+        & > .content {
+          & > .msg {
+            font-size: 20px;
+            & > .right_msg {
+              text-align: right;
+              margin-top: 10px;
+              background-color: #e7536b;
+              padding: 10px;
+            }
+            & > .left_msg {
+              text-align: left;
+              margin-top: 10px;
+              background-color: #e7536b;
+              padding: 10px;
+            }
+          }
+        }
+        & > .footer {
+          padding: 0;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+      & > .aside {
+        display: flex;
+        flex-flow: column;
+        box-shadow: -2px 0 2px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        & > span {
+          margin-top: 20px;
+          cursor: pointer;
+        }
+      }
+    }
   }
+}
+::v-deep .el-input__inner {
+  height: 60px;
+  padding-left: 5px;
 }
 </style>

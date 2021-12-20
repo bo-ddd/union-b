@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       oldpassword: '',
-      confirmpass: '',
+      confirmpass: '',  
       newpassword: ''
     }
   }
@@ -42,7 +42,8 @@ export default {
   & .box{
     width: 70%;
     height: 400px;
-    box-shadow:5px 4px 10px #cecece;
+    box-shadow:0px 1px 10px #cecece;
+    background-color: #f3f3f3;
     & .top_title{
       font-size: 25px;
       font-weight: 700;

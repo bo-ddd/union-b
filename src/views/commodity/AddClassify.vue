@@ -21,6 +21,7 @@
 <div class="block" style="margin-top:10px">
   <span class="demonstration"></span>
   <el-cascader
+  size="small"
     v-model="value"
     :options="options"
     @change="handleChange"></el-cascader>
@@ -67,7 +68,7 @@
 </el-form>
        </div>
           <div class="minor-classify">
-                  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                  <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <!-- <el-form-item label="分类编码" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item>

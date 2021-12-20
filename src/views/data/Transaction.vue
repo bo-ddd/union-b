@@ -90,11 +90,18 @@
       </div>
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
-          <el-table :data="tableData" stripe style="width: 100%;" size="small">
-            <el-table-column prop="date" label="类目"> </el-table-column>
-            <el-table-column prop="name" label="名称"> </el-table-column>
-            <el-table-column prop="address" label="销售量"> </el-table-column>
-          </el-table>
+        <el-table
+          :data="tableData"
+          stripe
+          style="width: 100%"
+          size="small"
+          id="#out-table"
+        >
+          <el-table-column prop="date" label="类目"> </el-table-column>
+          <el-table-column prop="name" label="名称"> </el-table-column>
+          <el-table-column prop="address" label="销售量"> </el-table-column>
+          <el-table-column slot="scope"> </el-table-column>
+        </el-table>
         <!-- 商家综合排行 -->
         <!-- 商品排行 -->
       </div>
@@ -104,6 +111,7 @@
 
 <script>
 import * as echarts from "echarts";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -141,8 +149,15 @@ export default {
       myTotalChart.resize();
     });
   },
-
+  created() {
+    this.getTrade();
+  },
   methods: {
+    ...mapActions(["getTradeData"]),
+    async getTrade() {
+      let res = await this.getTradeData();
+      console.log(res);
+    },
     drawnBar() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = echarts.init(document.getElementsByClassName("stata")[0]);

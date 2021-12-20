@@ -51,6 +51,11 @@
               登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
             </el-button>
           </div>
+          <div class="glink">
+            <el-link :underline="false" type="primary" @click="submitregist"
+              >还没账号，去注册！</el-link
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -144,6 +149,9 @@ export default {
       console.log(res);
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
+        this.$router.push({
+          path: "/",
+        });
       } else {
         this.generatorCaptcha();
       }
@@ -153,6 +161,12 @@ export default {
           message: res.msg,
         });
       }
+    },
+    // 跳转到注册页面
+    submitregist() {
+      this.$router.push({
+        path: "/registration",
+      });
     },
   },
   created() {
@@ -169,6 +183,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 1300px;
 
   & .main {
     width: 55%;
@@ -276,5 +291,11 @@ export default {
 }
 ::v-deep input::-webkit-input-placeholder {
   color: #717171;
+}
+
+.glink {
+  float: right;
+  position: relative;
+  right: 78px;
 }
 </style>

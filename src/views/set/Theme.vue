@@ -7,7 +7,7 @@
           <span class="description">斗志、奔放</span>
         </div>
         <div class="main-color">
-          <div @click="changeColor('red1')" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
+          <div @click="changeColor('red1'),getThisVal(1)" value="1" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
           <div @click="changeColor('red2')" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
           <div @click="changeColor('red3')" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
           <div @click="changeColor('red4')" class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
@@ -236,6 +236,9 @@ export default {
     }
   },
   methods:{
+    getThisVal(data){
+      console.log(data)
+    },
        changeColor(num) {
       let root = document.querySelector(":root");
       if (num == 'red1') {
@@ -393,13 +396,13 @@ export default {
       }
       else if (num == 'lime1') {
         root.style.setProperty("--color", "rgb(252, 255, 230)");
-        root.style.setProperty("--textcolor", "rgb(250, 219, 20)");
+        root.style.setProperty("--textcolor", "rgb(160, 217, 17)");
       } else if (num == 'lime2') {
         root.style.setProperty("--color", "rgb(244, 255, 184)");
-        root.style.setProperty("--textcolor", "rgb(250, 219, 20)");
+        root.style.setProperty("--textcolor", "rgb(160, 217, 17)");
       } else if (num == 'lime3') {
         root.style.setProperty("--color", "rgb(234, 255, 143)");
-        root.style.setProperty("--textcolor", "rgb(255, 255, 255)");
+        root.style.setProperty("--textcolor", "rgb(160, 217, 17)");
       } else if (num == 'lime4') {
         root.style.setProperty("--color", "rgb(211, 242, 97)");
         root.style.setProperty("--textcolor", "rgb(255, 255, 255)");

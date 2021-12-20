@@ -72,6 +72,10 @@ export default new Vuex.Store({
         getAdvertList(ctx, payload) {
             return Api.getAdvertList(payload);
         },
+        //优品展示接口
+        getSuperList(ctx, payload) {
+            return Api.getSuperList(payload);
+        },
 
 
         //订单管理

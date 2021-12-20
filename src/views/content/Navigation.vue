@@ -28,11 +28,13 @@
                             <!-- 可删除的导航 -->
                             <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.id"  >
                                 <div class="jian mt-5" @click="del(key.id)">
-                                    <div>{{key.delete}}</div>
+                                    <div><div></div></div>
                                 </div>
                                 <div class="img">
                                     <div>
-                                        <img :src="key.img" alt="">
+                                        <!-- <img :src="key.img" alt=""> -->
+                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
+                                        <img src="@/assets/images/icon-order.png" alt="">
                                     </div>
                                 </div>
                                 <div class="text" >
@@ -44,13 +46,17 @@
                             <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.id"  >
                                 <div class="img mt-20">
                                     <div>
-                                        <img :src="key.img" alt="">
+                                        <!-- <img :src="key.img" alt=""> -->
+                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
+                                        <img src="@/assets/images/icon-order.png" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
                                     <span>{{key.text}}</span>
                                 </div>
                             </div>
+
+                            <!-- 上传图片的 -->
                             <div>
                                 <el-upload
                                     action="#"
@@ -97,11 +103,13 @@
                             <span class="wrods">快捷导航&nbsp;&nbsp;</span>
                             <span class="font-color">(数量限制:2-6个)</span>
                         </div>
-                        <div class="nav" ondragover="allowDrop(event)">
+                        <div class="nav">
                             <div class="nav-item flex" v-for="key in quickNav" :key="key.id">
                                 <div class="img mt-20">
                                     <div>
-                                        <img :src="key.img" alt="">
+                                        <!-- <img :src="key.img" alt=""> -->
+                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
+                                        <img src="@/assets/images/icon-order.png" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
@@ -109,6 +117,8 @@
                                 </div>
                             </div>
 
+
+                            <!-- 上传的照片 -->
                             <el-upload
                                 action="#"
                                 list-type="picture-card"
@@ -150,50 +160,76 @@
                     <div class="nav">
                         <div v-for="key in mainNav" :key="key.id">
                             <div class="img">
-                                <img :src="key.img" alt="">
+                                <!-- <img :src="key.img" alt=""> -->
+                                <!-- <img src="@/assets/images/xiangxia.png" alt=""> -->
+                                <img src="@/assets/images/icon-order.png" alt="">
                             </div>
-                            <div class="text">
+                            <div class="text mt-5">
                                 {{key.text}}
                             </div>
                         </div>
                     </div>
-                    <div class="main">
+                    <!-- 秒杀活动 -->
+                    <div class="sec_kill_floor">
                         <div class="title_wrap">
-                            <div class="left-b">
+                            <div class="seckill-left-link">
                                 <span>京东秒杀</span>
-                                <div>
-                                    <span>10</span>
-                                    <i class="el-icon-star-off"></i>
+                                <span>12</span>
+                                <div class="miaosha">
+                                    <span class="red-background fs-color">01</span>
+                                    <span>:</span>
+                                    <span class="red-background fs-color">02</span>
+                                    <span>:</span>
+                                    <span class="red-background fs-color">03</span>
                                 </div>
+                            </div>
+                            <div class="seckill-more-link">
                                 <div>
+                                    <span>更多秒杀</span>
+                                    <div class="miao">
+                                        <!-- <i class="el-icon-arrow-right flex"></i> -->
+                                        <span>></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="floor-container">
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                        </div>
+                    </div>
 
-                                </div>
-                            </div>
-                            <div class="right-b">
-                                更多秒杀
-                            </div>
-                            <div class="center-b">
-                                <div>
-                                    <img src="" alt="">
-                                    <span>￥9.9</span>
-                                </div>
-                                <div>
-                                    <img src="" alt="">
-                                    <span>￥9.9</span>
-                                </div>
-                                <div>
-                                    <img src="" alt="">
-                                    <span>￥9.9</span>
-                                </div>
-                                <div>
-                                    <img src="" alt="">
-                                    <span>￥9.9</span>
-                                </div>
-                                <div>
-                                    <img src="" alt="">
-                                    <span>￥9.9</span>
-                                </div>
-                            </div>
+                    <!-- 主要内容 -->
+                    <div class="waterfall">
+                        <div class="feeds_col_left">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="feeds_col_right">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
                         </div>
                     </div>
                 </div>
@@ -215,7 +251,7 @@ export default{
             mainNav : [
                 {
                     id : '1',
-                    img : '',
+                    img : '@/assets/images/xiangshang.png',
                     text : '消息',
                     delete : '-',
                 },
@@ -388,6 +424,12 @@ export default{
 .text-color{
     color: #ccc;
 }
+.red-background{
+    background-color: #fa2c19;
+}
+.fs-color{
+    color: white;
+}
 .wrap{
     height: calc(100vh - 100px);
     overflow-y:auto;
@@ -458,6 +500,12 @@ export default{
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
+
+                                & div{
+                                    width: 60%;
+                                    height: 5px;
+                                    background-color: white;
+                                }
                             }
                         }
 
@@ -499,8 +547,9 @@ export default{
         & .right{
             float: right;
             width: 375px;
-            height: 500px;
-            background-color: #ccc;
+            height: 520px;
+            overflow:scroll;
+            background-color: #f6f6f6;
 
            & .nav{
                padding: 20px 10px;
@@ -531,53 +580,106 @@ export default{
                }
            }
 
-           & .main{
-               margin: 0 5px;
+           & .sec_kill_floor{
+               margin: 10px;
                background-color: white;
                border-radius: 5px;
-
                & .title_wrap{
-                   width: 100%;
-                   height: 150px;
-
-                   & div{
+                   height: 35px;
+                   & .seckill-left-link{
+                       width: 200px;
+                       height: 35px;
                        float: left;
-                   }
-
-                   & .left-b{
-                       width: 50%;
-                       height: 20%;
                        display: flex;
                        align-items: center;
                        justify-content: space-around;
-                   }
 
-                   & .right-b{
-                       width: 50%;
-                       height: 20%;
-                       
-                   }
-
-                   & .center-b{
-                       width: 100%;
-                       height: 80%;
-                       min-width: 100%;
-
-                       & div{
-                           width: 80px;
+                       & .miaosha{
+                           width: 50px;
                            height: 100%;
                            display: flex;
                            align-items: center;
                            justify-content: center;
-                           flex-wrap: wrap;
-
-                           & img{
-                               width: 80px;
-                               height: 70px;
-                           }
                        }
                    }
 
+                   & .seckill-more-link{
+                    float: right;
+                    width: 100px;
+                    height: 35px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+
+                        & div{
+                            float: right;
+                            color: #fa2c19;
+                            font-size: 12px;
+
+                            & .miao{
+                                width: 15px;
+                                height: 15px;
+                                border-radius: 15px;
+                                background-color: #fa2c19;
+                                color: white;
+                                text-align: center;
+                                line-height: 15px;
+                            }
+                        }
+                   }
+               }
+
+               & .floor-container{
+                   padding: 0 5px;
+                   height: 100px;
+                   
+                   & div{
+                       float: left;
+                       width: 60px;
+                       height: 100px;
+                       color: #fa2c19;
+                       & img{
+                           width: 40px;
+                           height: 50px;
+                       }
+
+                   }
+               }
+           }
+
+           & .waterfall{
+               margin: 10px;
+               display: flex;
+               flex-wrap: wrap;
+               border-radius: 5px;
+
+            //    background-color: violet;
+
+               & div{
+                   width: 50%;
+                   height: 100%;
+               }
+
+               & .feeds_col_left{
+                   border-radius: 5px 0 0 5px;
+
+                   & div{
+                       width: 94%;
+                       margin: 5px;
+                       height: 170px;
+                       background-color: white;
+                   }
+               }
+               & .feeds_col_right{
+                   border-radius: 0 5px 5px 0;
+
+                   & div{
+                       width: 94%;
+                       margin: 5px;
+                       height: 200px;
+                       background-color: white;
+                   }
                }
            }
         }

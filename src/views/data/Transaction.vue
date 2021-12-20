@@ -275,7 +275,7 @@ export default {
           },
         },
         legend: {
-          data: ["收入", "成本", "Income"],
+          data: ["收入", "成本"],
         },
         grid: {
           left: "3%",

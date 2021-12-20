@@ -28,12 +28,15 @@
                     <i :class="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'" @click="isCollapse = !isCollapse"></i>
                     <span class="fw-b fs-20">{{ $route.meta.title }}</span>
                 </div>
-                <i class="el-icon-bell"></i>
+                <i class="el-icon-bell fs-20 fw-b"></i>
                 <div class="top_right">
                     <div class="avatorbox">
-                        <img class="avator" src="../assets/logo.png" alt="">
+                        <div class="imgbox">
+                            <img class="avator" :src="avatorImg" alt="">
+                        </div>
+                        <span>{{userInfo.avatorName}}</span>
                     </div>
-                    <span>苏苏喂苏苏</span>
+                    <el-button type="primary" plain size='small' @click="logout">退出登录</el-button>
                 </div>
             </el-header>
             <el-main>
@@ -45,23 +48,38 @@
 </template>
 
 <script>
+import '@/assets/theme.scss'
 import {
-    mapGetters
+    mapGetters,
+    mapActions
 } from 'vuex';
 export default {
     data() {
         return {
             isCollapse: false,
-            show: true
+            show: true,
+            userInfo: '',
+            avatorImg: '',
         };
     },
     methods: {
+        ...mapActions(["getUserInfo","userLogout"]),
         handleOpen() {},
-        handleClose() {}
+        handleClose() {},
+        async logout(){
+          let res = await this.userLogout()
+          console.log(res)
+        }
     },
     computed: {
         ...mapGetters(['routes'])
     },
+    async created() {
+        let res = await this.getUserInfo();
+        console.log(res)
+        this.userInfo = res.data
+        this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
+    }
 }
 </script>
 
@@ -134,7 +152,7 @@ export default {
 
     & .el-header {
         display: grid;
-        grid-template-columns: 30fr 1fr 5fr;
+        grid-template-columns: 30fr 1fr 6fr;
         box-shadow: 2px 0 2px #e7d0d0;
         background-color: #ffffff;
         font-size: 16px;
@@ -150,18 +168,25 @@ export default {
 
         & .top_right {
             display: flex;
+            justify-content: space-around;
+            align-items: center;
 
             & .avatorbox {
-                width: 25px;
-                height: 25px;
-                border-radius: 25px;
-                overflow: hidden;
-                margin-right: 10px;
+                display: flex;
 
-                & .avator {
+                & .imgbox {
                     width: 25px;
+                    height: 25px;
+                    border-radius: 25px;
+                    overflow: hidden;
+                    margin-right: 10px;
+
+                    & .avator {
+                        width: 25px;
+                    }
                 }
             }
+
         }
 
     }

@@ -63,7 +63,9 @@
           >
           <el-button size="small">批量下架</el-button>
           <el-button size="small">批量上架</el-button>
-          <el-button size="small" @click="toggleSelection()">批量删除</el-button>
+          <el-button size="small" @click="MultipleRemove()"
+            >批量删除</el-button
+          >
         </div>
       </div>
       <div>
@@ -74,6 +76,7 @@
           style="width: 100%"
           stripe
           size="small"
+          @select="checkBoxData"
           :header-cell-style="{ background: '#fcfafb' }"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
@@ -117,7 +120,7 @@
                 type="danger"
                 class="delete"
                 size="small"
-                @click="remove(scope.$index)"
+                @click="remove([scope.$index])"
                 >删除</el-link
               >
             </template>
@@ -187,6 +190,7 @@ export default {
    */
   data() {
     return {
+      checked: false,
       value: "",
       options: [
         {
@@ -286,7 +290,8 @@ export default {
           date: "2019-08-12",
         },
       ],
-
+      deleteDataArr: [],
+      deleteDataArr1: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
@@ -562,7 +567,6 @@ export default {
           },
         ],
       },
-
       formLabelWidth: "120px",
       multipleSelection: [],
       currentPage1: 5,
@@ -578,15 +582,10 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    toggleSelection(rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
-      },
+
+    getState() {
+      console.log(this.checked);
+    },
     skip() {
       this.$router.push({
         name: "AddGoods",
@@ -597,8 +596,18 @@ export default {
       console.log(data);
       this.form = data.row;
     },
-    remove(index) {
-      this.tableData.splice(index,1)
+    remove(indexArr) {
+      indexArr.forEach((item) => {
+        this.tableData.splice(item, 1);
+      });
+    },
+    MultipleRemove() {
+      this.deleteDataArr1.forEach((item) => {
+        this.tableData.splice(this.tableData.indexOf(item), 1);
+      });
+    },
+    checkBoxData: function (selection) {
+      this.deleteDataArr1 = selection;
     },
   },
 };

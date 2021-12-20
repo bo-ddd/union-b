@@ -202,6 +202,7 @@ h3{
 }
 </style>
 <script >
+import { mapActions } from "vuex";
 export default {
     data() {
         return {
@@ -235,6 +236,7 @@ export default {
         };
     },
     methods: {
+        ...mapActions(['getQuickList']),
         // 操作下编辑的点击事件 
         edit(a){
             console.log(a);
@@ -332,8 +334,17 @@ export default {
             if (!isLt2M) {
                 this.$message.error('上传头像图片大小不能超过 2MB!');
             }
-        return isJPG && isLt2M;
-      }
+            return isJPG && isLt2M;
+        },
+        // 获取所有数据
+        // async data(){
+        //     let res = await this.getQuickList({});
+        //     return res;
+        // }
+    },
+    async created(){
+        let res = await this.getQuickList({});
+        console.log(res.data);
     },
     mounted() {
         this.restaurants = this.loadAll();

@@ -1,12 +1,12 @@
 <template>
   <div class="wrap">
     <div class="Company">
-       <el-button type="primary">新增单位</el-button>
+       <el-button type="primary" @click="dialogFormVisible = true">新增单位</el-button>
       <div>
           <el-select v-model="value" filterable placeholder="请选择" size='small'> 
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>  
-          <el-input  size='small' placeholder="请输入内容"  suffix-icon="el-icon-search"></el-input>
+          <el-input v-model="input"  size='small' placeholder="请输入内容"  suffix-icon="el-icon-search"></el-input>
       </div>
     </div>
     <div class="table">
@@ -21,7 +21,6 @@
         </el-table-column>
         <el-table-column  label="排序">
           <template slot-scope="scope">
-             <!-- <el-link type="primary" class="link" @click="Topping(scope.row.Serial_number)" size='small'>置顶</el-link> -->
              <el-link type="primary" class="link" @click="Topping(scope.$index)" size='small'>置顶</el-link>
              <el-link type="primary" class="link" @click="raise(scope.row.Serial_number)" size='small'>升序</el-link>
              <el-link type="primary" class="link" @click="Down(scope.row.Serial_number)" size='small'>降序</el-link>
@@ -39,10 +38,28 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog title="新增单位" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="单位名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="单位类型" :label-width="formLabelWidth">
+          <el-input v-model="form.type" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="单位来源" :label-width="formLabelWidth">
+          <el-input v-model="form.source" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+// import { mapActions } from "vuex";
 export default {
    data() {
         return {
@@ -50,6 +67,14 @@ export default {
           cacheExport: [],
           multipleSelection: [],
           table: [],
+          input:'',
+          dialogFormVisible: false,
+          formLabelWidth: '120px',
+          form: {
+            name: '',
+            type:'',
+            source:''
+          },
           tableData: [{
             Serial_number: '1',
             Unit_name: '1件',
@@ -239,19 +264,6 @@ export default {
           this.table.unshift(arr);
           this.mySort(this.table);
         },
-        // Topping(id){
-        //   if (id == 1) return;
-        //   this.tableData.forEach(item=>{
-        //     if (item.Serial_number == id) {
-        //         item.Serial_number = 1;
-        //         return
-        //     }
-        //     if (item.Serial_number < id) {
-        //         item.Serial_number++;
-        //     }
-        //   })
-        //   this.mySort(this.tableData);
-        // },
         //上调
         raise(id){
           if (id == 1) return;
@@ -283,6 +295,7 @@ export default {
         Disable(item){
           item.Unit_name = '';
         },
+        //排序
         mySort(tableData){
             tableData.sort((a,b)=>{
             var num1 = a.Serial_number;
@@ -290,23 +303,18 @@ export default {
             return num1-num2;
           })
         },
-        search(){
-          let _search = this.jobNo.toLowerCase();
-          let newListData = [];
-          if (_search) {
-            this.xmgcqkJsonsData.filter(item => {
-                if (item.code.toLowerCase().indexOf(_search) !== -1) {
-                  newListData.push(item);
-              }
-            }) 
-          }
-          this.xmgcqkJsonsData = newListData;
+        handleClose(done) {
+          this.$confirm('确认关闭？')
+            .then(_ => {
+              done();
+              console.log(_);
+            })
+            .catch(_ => {console.log(_);});
         },
-          handleSizeChange(val) {
+        handleSizeChange(val) {
           this.pageSize = val;
           this.handleCurrentChange(1);
         },
-
         /**
          * @description 分页的当前页有多少条
          * **/
@@ -322,6 +330,10 @@ export default {
           }
           this.table = arr;
         },
+        submit(){
+          this.dialogFormVisible=false
+          console.log(this.form);
+        }
       },
       created(){
         this.handleSizeChange(10);

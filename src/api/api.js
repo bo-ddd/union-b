@@ -55,6 +55,20 @@ export default {
     userRegister(params) {
         return axios.post('/user/register', params, postConfig)
     },
+    /**
+     * @description  用户信息接口
+     * @params 没有参数  必须登录
+     * */
+    getUserInfo(params) {
+        return axios.post('/user/info', params, postConfig)
+    },
+    /**
+     * @description  退出登录接口
+     * @params 没有参数  必须登录
+     * */
+    userLogout(params) {
+        return axios.post('/uesr/logout', params, postConfig)
+    },
 
 
     //商品管理
@@ -90,6 +104,43 @@ export default {
     createCategory(params) {
         return axios.post('/category/create', params, postConfig)
     },
+    /**
+     * @description 添加商品接口 
+     * @params {
+     * cid           : [Number],     商品类目标识
+     * title         : [String],    商品名称
+     * keywords      : [String],     商品关键字
+     * bannerImg     : [String],     商品banner图 
+     * platformPrice : [Number],     平台价
+     * desc          : [String],     商品描述
+     * realPrice     : [Nmber]      商品售卖价
+     * } 
+     */
+    createProduct(params) {
+        return axios.post('/product/create;', params, postConfig)
+    },
+    /**
+     * @description 商品属性接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getAttributeList(params) {
+        return axios.post('/attribute/list', params, postConfig)
+    },
+    /**
+     * @description 商品单位接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getUnitlibraryList(params) {
+        return axios.post('/unitlibrary/list', params, postConfig)
+    },
 
 
     //数据中心
@@ -99,6 +150,13 @@ export default {
      */
     getTradeData(params) {
         return axios.post('/data/trade', params, postConfig)
+    },
+    /**
+     * @description 数据排行接口
+     * @params 无
+     */
+    getRankingData(params) {
+        return axios.post('/data/ranking', params, postConfig)
     },
 
 

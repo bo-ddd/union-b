@@ -4,7 +4,7 @@
       <div>消息总数:3</div>
       <div>
         <el-link type="primary" :underline="false" @click="markRead">全部标为已读</el-link>
-        <el-button type="text" @click="clearMessage">清空所有消息</el-button>
+        <el-button type="text" @click="clearMessage" size="small">清空所有消息</el-button>
       </div>
     </div>
     <div class="message" v-for="item in message" :key="item">
@@ -73,7 +73,7 @@ export default {
 <style lang="scss" scoped>
 .wrap {
   background-color: #ffffff;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 110px);
   & > .title {
     display: flex;
     justify-content: space-between;

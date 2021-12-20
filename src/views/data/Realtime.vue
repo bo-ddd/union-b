@@ -1,5 +1,5 @@
 <template>
-  <div class="warp">
+   <div class="warp">
     <div class="main-t">
       <div class="main-t_left">
         <h3>实时数据</h3>
@@ -99,7 +99,7 @@
           <el-table-column prop="money" label="成交金额"> </el-table-column>
         </el-table>
       </div>
-    </div>
+    </div> 
   </div>
 </template>
 
@@ -240,7 +240,7 @@ export default {
 <style lang="scss" scoped>
 .warp {
   overflow-y: auto;
-  height: 86vh;
+  height: calc(100vh - 100px);
 }
 .ranking {
   height: 98%;

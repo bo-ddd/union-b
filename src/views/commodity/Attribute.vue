@@ -53,11 +53,17 @@
         label="排序"
         align="center"
         >
-        <template>
-          <img src="../../assets/images/zhiding.png" class="iconimg">
-          <img src="../../assets/images/xiangshang.png" class="iconimg">
-          <img src="../../assets/images/xiangxia.png" class="iconimg">
-        </template>
+        <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">置顶</el-button>
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">向上</el-button>
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">向下</el-button>
+      </template>
       </el-table-column>
       <el-table-column
         prop="operate"
@@ -108,7 +114,12 @@ export default {
       }
     },
     methods: {
-      
+       handleEdit(index, row) {
+        console.log(index, row);
+      },
+      handleDelete(index, row) {
+        console.log(index, row);
+      }
   }
 }
 </script>

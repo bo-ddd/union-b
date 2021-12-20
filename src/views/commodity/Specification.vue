@@ -3,14 +3,37 @@
     <div class="wrap_interior">
       <div class="tit">商品规格</div>
       <div class="addspebut">
-        <el-button type="primary" size="small" @click="addspecification()"
+        <el-button
+          type="primary"
+          size="small"
+          @click="addspecification, (dialogFormVisible = true)"
           >添加规格</el-button
         >
+        <el-dialog title="添加规格" :visible.sync="dialogFormVisible">
+          <el-form :model="form">
+            <el-form-item label="规格名称" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="备注" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="排列顺序" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false"
+              >确 定</el-button
+            >
+          </div>
+        </el-dialog>
       </div>
       <el-table
         ref="multipleTable"
         tooltip-effect="dark"
         :data="tableData"
+        size="small"
         style="width: 97%"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
@@ -68,12 +91,34 @@
               type="primary"
               i
               class="el-icon-edit cell1"
-              @click="editListData"
+              @click="editListData,dialogFormVisible = true"
             ></el-button>
+            <el-dialog title="编辑此行数据" :visible.sync="dialogFormVisible">
+              <el-form :model="form">
+                <el-form-item label="id" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="规格名称" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="备注" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="排列顺序" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false"
+                  >确 定</el-button
+                >
+              </div>
+            </el-dialog>
             <el-button
               i
               class="el-icon-delete cell2"
-              @click.native.prevent="deleteRow(scope.$index)"
+              @click.native.prevent="deleteRow(scope.$index, tableData)"
               type="text"
             >
             </el-button>
@@ -174,6 +219,18 @@ export default {
           operation: "",
         },
       ],
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      dialogFormVisible: false,
+      formLabelWidth: "120px",
       multipleSelection: [],
     };
   },
@@ -202,7 +259,7 @@ export default {
       console.log("添加成功");
     },
     //批量删除
-    batchesDelete() {},
+    // batchesDelete() {},
     //单个修改
     editListData() {
       console.log("单个修改成功");
@@ -293,6 +350,7 @@ export default {
 .cell2 {
   background-color: #ff8b53;
   padding: 10px 10px;
+  margin-left: 10px;
   border: none;
   color: #ffffff;
 }

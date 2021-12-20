@@ -100,7 +100,7 @@
             <el-button
               class="que"
               type="primary"
-              @click="(dialogFormVisible = false), third-left()"
+              @click="(dialogFormVisible = false), third - left()"
               >确 定</el-button
             >
           </div>
@@ -122,7 +122,6 @@
           </el-input>
         </div>
       </div>
-      <div class="center"></div>
     </div>
     <div class="bottom">
       <div class="long">
@@ -144,29 +143,27 @@
             </el-option>
           </el-select>
         </div>
-          <i class="el-icon-arrow-left"></i>
-        <!-- <div class="rrr"></div> -->
-        <el-input class="rrr" v-model="input"></el-input>
-          <i class="el-icon-arrow-right"></i>
-        <div>
-        跳转至
-        <el-input class="i" v-model="input"></el-input>
-        <button class="go">GO</button>
 
+        <div>
+          <el-pagination class="paging" small layout="prev, pager, next" :total="20">
+          </el-pagination>
         </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped lang='scss'>
-.go{
-    width: 40px;
-    height: 40px;
-    border: none;
-    color: #ccc;
+.paging{
+  margin-top: 10px;
 }
-.i{
-    width: 50px;
+.go {
+  width: 40px;
+  height: 40px;
+  border: none;
+  color: #ccc;
+}
+.i {
+  width: 50px;
 }
 .third-left {
   width: 600px;
@@ -189,8 +186,8 @@
   float: left;
   border: none;
 }
-.el-link_inner{
-    border: none;
+.el-link_inner {
+  border: none;
 }
 .kkk {
   width: 30px;
@@ -216,7 +213,7 @@
   display: flex;
   justify-content: space-around;
   width: 300px;
-  margin-left: 310px;
+  margin-left: 200px;
   margin-top: 40px;
 }
 .bu {
@@ -224,7 +221,7 @@
 }
 .demo-input-suffix {
   margin-top: 20px;
-  margin-left: 205px;
+  margin-left: 112px;
 }
 .input1 {
   width: 200px;
@@ -240,13 +237,12 @@
   color: #ff4070;
 }
 .wen {
-  width: 600px;
   height: 100px;
-  margin-left: 55px;
+  position: relative;
+  right: 40px;
   text-align: left;
   font-size: 16px;
   padding-left: 150px;
-  background-color: aliceblue;
 }
 .el-select .el-input {
   width: 130px;
@@ -269,7 +265,6 @@
 }
 .query {
   background-color: #ff4070;
-  font-size: 18px;
   border: none;
   color: #fff;
 }
@@ -277,7 +272,7 @@
 .right {
   width: 500px;
   height: 40px;
-  margin-left: 1150px;
+  // margin-left: 1150px;
 }
 .center {
   width: 30px;
@@ -290,7 +285,6 @@
 }
 .long {
   height: 70px;
-  border: 1px solid rgb(185, 183, 183);
   text-align: left;
   line-height: 70px;
   padding-left: 20px;

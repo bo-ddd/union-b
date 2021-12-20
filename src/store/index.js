@@ -38,6 +38,10 @@ export default new Vuex.Store({
         userRegister(ctx, payload) {
             return Api.userRegister(payload);
         },
+        //用户信息
+        getUserInfo(ctx, payload) {
+            return Api.getUserInfo(payload);
+        },
 
 
         //商品管理
@@ -82,6 +86,10 @@ export default new Vuex.Store({
         //订单列表接口
         getOrderList(ctx, payload) {
             return Api.getOrderList(payload);
+        },
+        //订单详情接口
+        getOrderDetail(ctx, payload) {
+            return Api.getOrderDetail(payload);
         },
     },
     modules: {}

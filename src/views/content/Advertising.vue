@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="wrap">
     <div class="header">
-      <div>
-        <el-button class="query" icon="el-icon-plus" @click="openFormDialog"
+      <div class="header-left">
+         <el-button  icon="el-icon-plus" size="small" @click="openFormDialog"
           >新增商品</el-button
         >
-        <el-dialog :visible.sync="dialogFormVisible">
+            <el-dialog :visible.sync="dialogFormVisible">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="文字" name="first">
               <div class="texttab">
@@ -101,12 +101,12 @@
                         <div class="imagede">
                           <span>宽度</span>
                           <el-input v-model="input1"></el-input>
-                          <span>px</span>
+                          <span class="ml-10">px</span>
                         </div>
                         <div class="imagede">
                           <span>高度</span>
                           <el-input v-model="input1"></el-input>
-                          <span>px</span>
+                          <span class="ml-10">px</span>
                         </div>
                       </div>
                     </el-form-item>
@@ -155,56 +155,55 @@
         </el-dialog>
       </div>
       <div class="header-right">
-        <div class="header-choice">
-          <el-button class="queryAt">删除</el-button>
-          <el-button class="queryAt" @click="changeDisplay"
-            > <span v-if="isDisplay==false">筛选(点击展开)</span>
-            <span v-else>筛选(点击隐藏)</span></el-button>
+        <div class="selectBox">
+        <div class="select">
+          <span class="mr-10">类型</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="全部">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
         </div>
-        <el-input
+         <div class="select">
+          <span class="mr-10">尺寸</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="全部">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
+         
+        </div>
+         <div class="select">
+          <span class="mr-10">广告</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="请选择广告">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
+        </div>
+        </div>
+            <el-input
           placeholder="请输入物料ID 物料名称或物料内容"
           prefix-icon="el-icon-search"
           v-model="input2"
           class="ipt"
         >
         </el-input>
-      </div>
-    </div>
-   <div class="screen" v-show="isDisplay">
-      <div class="screeen_top">
-        <div class="screen_top-r">
-          <label for="" class="lab">类型</label>
-          <el-select v-model="value" placeholder="全部">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </div>
-        <div class="screen_top-r">
-          <label for="" class="lab">尺寸</label>
-          <el-select v-model="value" placeholder="全部">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </div>
-      </div>
-      <div class="screen_top-r">
-        <label for="" class="lab">广告</label>
-        <el-select v-model="value" placeholder="请选择广告" class="labwidth">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
       </div>
     </div>
     <div class="main">
@@ -245,11 +244,11 @@
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
               >修改</el-button
             >
-            <el-button
-              size="mini"
-              @click="handleDelete(scope.$index, scope.row)"
+            <el-button size="mini" @click="deleteRow(scope.$index, tableData)"
               >删除</el-button
             >
+
+    
           </template>
         </el-table-column>
       </el-table>
@@ -352,9 +351,9 @@ export default {
     handleEdit(index, row) {
       console.log(index, row);
     },
-    handleDelete(index, row) {
-      console.log(index, row);
-    },
+   deleteRow(index, rows) {
+        rows.splice(index, 1);
+      },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -392,29 +391,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-  & .query {
-    background-color: #ff4070;
-    color: #fff3f6;
-    width: 250px;
-  }
-  & .header-right {
-    width: 78%;
-    background: #eceff6;
-    display: flex;
-    justify-content: space-between;
-    min-width: 580px;
-    & .ipt {
-      width: 350px;
-      margin-right: 50px;
-    }
-    & .queryAt {
-      background-color: #eceff6;
-    }
-  }
+.wrap{
+  height: calc(100vh - 100px);
+  overflow-y:auto;
+  background: #fff;
 }
+.header {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  padding: 10px;
+  & .header-right{
+    display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & .selectBox{
+    display: flex;
+  & .select{
+          margin-right: 15px;
+    display: flex;
+    align-items: center;
+   ::v-deep .el-input__inner{
+      width: 120px;
+    }
+    & .mr-10{
+      margin-right: 10px;
+    }
+    & .select-suf{
+          display: inline-block;
+    position: relative;
+    }
+    }
+  }
+    & .ipt{
+      width: 350px;
+      margin-right: 35px;
+    }
+  }
+  }
+  
 ::v-deep .el-button {
   border-radius: 0px;
 }
@@ -425,25 +439,6 @@ export default {
 }
 ::v-deep .el-input__icon {
   height: 30px;
-}
-.screen {
-  min-height: 20vh;
-  border: 1px solid #ccc;
-  margin-top: 15px;
-  & .lab {
-    margin-right: 25px;
-    color: #aeb1b6;
-  }
-  & .screeen_top {
-    display: flex;
-  }
-}
-.screen_top-r {
-  margin-left: 50px;
-  margin-top: 30px;
-}
-.labwidth {
-  width: 545px;
 }
 .main {
   margin-top: 15px;
@@ -465,7 +460,6 @@ export default {
   width: 60%;
 }
 }
-
 .preview {
   height: 320px;
   width: 280px;
@@ -477,16 +471,6 @@ export default {
     padding-left: 10px;
   }
 }
-.logistics {
-  display: flex;
-  & > span {
-    width: 210px;
-  }
-& ::v-deep .el-input__inner {
-  width: 80%;
-}
-}
-
 .imagedeBox{
   display:flex;
     & .imagede {
@@ -494,6 +478,9 @@ export default {
   & > .el-input {
     width: 30% !important;
     margin-left: 5px;
+  }
+  &> .ml-10{
+    margin-left: 10px;
   }
 }
 }

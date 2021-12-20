@@ -36,23 +36,23 @@
             <span></span>
             <div class="top_left">
               <span class="font-15">80%</span>
-              <span class="font-12">日均销售量</span>
+              <span class="font-12">用户总数</span>
             </div>
             <div class="top_center">
               <span class="font-20">80%</span>
-              <span class="font-16">月销售量</span>
+              <span class="font-16">日均访问量</span>
             </div>
             <span></span>
             <div class="top_right">
               <span class="font-15">80%</span>
-              <span class="font-12">商品成交率</span>
+              <span class="font-12">成交率</span>
             </div>
           </div>
           <div class="bottom">
             <span></span>
             <div class="bottom_left">
               <span class="font-20">80%</span>
-              <span class="font-16">商家活跃度</span>
+              <span class="font-16">总访问量</span>
             </div>
             <span></span>
             <div class="bottom_center">
@@ -237,14 +237,15 @@ export default {
           trigger: "item",
         },
         legend: {
-          top: "30%",
-          left: "70%",
+          top: "40%",
+          left: "50%",
         },
         series: [
           {
             name: "品类分布",
             type: "pie",
             radius: ["40%", "70%"],
+            center:['30%','60%'],
             avoidLabelOverlap: true,
             data: [
               { value: 1048, name: "电器" },
@@ -447,11 +448,10 @@ export default {
     gap: 20px;
     & > div {
       background-color: #ffffff;
-      padding: 10px;
       min-width: 100px;
       & > div {
         height: 46vh;
-        width: 96%;
+        width: 100%;
       }
     }
   }

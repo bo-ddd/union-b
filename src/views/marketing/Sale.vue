@@ -31,8 +31,8 @@
           </el-form-item>
           <el-form-item label="类目">
             <el-select placeholder="请选择类目" size='small'>
-              <el-option label="区域一" value="shanghai" size='small'></el-option>
-              <el-option label="区域二" value="beijing" size='small'></el-option>
+              <el-option label="区域一"  size='small'></el-option>
+              <el-option label="区域二"  size='small'></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -60,8 +60,8 @@
           </el-form-item>
           <el-form-item label="类目">
             <el-select placeholder="请选择类目" size='small'>
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+              <el-option label="区域一" ></el-option>
+              <el-option label="区域二" ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>

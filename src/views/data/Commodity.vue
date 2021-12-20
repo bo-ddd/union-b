@@ -48,32 +48,32 @@
       </div>
       <div class="bottom-b">
         <div>
-          <h6>销量最高的某某商品的前10名</h6>
-          <el-table border :data="tableData" stripe>
+          <h6>商品类目销量前10名</h6>
+          <el-table border :data="tableData" stripe size="small">
             <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
         <div>
-          <h6>销量最高的某某商品的前10名</h6>
-          <el-table border :data="tableData" stripe>
+          <h6>商品数量销量前10名</h6>
+          <el-table border :data="tableData" stripe size="small">
             <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
         <div>
-          <h6>销量最高的某某商品的前10名</h6>
-          <el-table border :data="tableData" stripe>
+          <h6>商品店铺销量前10名</h6>
+          <el-table border :data="tableData" stripe size="small">
             <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
         <div>
-          <h6>销量最高的某某商品的前10名</h6>
-          <el-table border :data="tableData" stripe>
+          <h6>快递小哥配送前10名</h6>
+          <el-table border :data="tableData" stripe size="small">
             <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
@@ -151,6 +151,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
+            center: ["40%","50%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -186,6 +187,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
+            center: ["40%","50%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -222,6 +224,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
+            center: ["40%","50%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -246,6 +249,9 @@ export default {
         ],
       }
       let option3 = {
+        grid:{
+          height:'50%',
+        },
         tooltip: {
           trigger: "axis",
         },
@@ -256,7 +262,6 @@ export default {
         xAxis: [
           {
             type: "category",
-            // prettier-ignore
             data: ['Jan', 'Feb', 'Mar'],
           },
         ],
@@ -417,9 +422,6 @@ export default {
   margin-top: 3% !important;
 }
 ::v-deep .el-table .cell{
-  line-height: 5vh;
+  line-height: 4vh;
 }
-// .el-cascader{
-//   height: 40px;
-// }
 </style>

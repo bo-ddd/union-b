@@ -28,12 +28,12 @@
                     <i :class="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'" @click="isCollapse = !isCollapse"></i>
                     <span class="fw-b fs-20">{{ $route.meta.title }}</span>
                 </div>
-                <i class="el-icon-bell"></i>
+                <i class="el-icon-bell fs-20 fw-b"></i>
                 <div class="top_right">
                     <div class="avatorbox">
-                        <img class="avator" src="../assets/logo.png" alt="">
+                        <img class="avator" :src="avatorImg" alt="">
                     </div>
-                    <span>苏苏喂苏苏</span>
+                    <span>{{userInfo.avatorName}}</span>
                 </div>
             </el-header>
             <el-main>
@@ -45,23 +45,34 @@
 </template>
 
 <script>
+import '@/assets/theme.scss'
 import {
-    mapGetters
+    mapGetters,
+    mapActions
 } from 'vuex';
 export default {
     data() {
         return {
             isCollapse: false,
-            show: true
+            show: true,
+            userInfo:'',
+            avatorImg:'',
         };
     },
     methods: {
+        ...mapActions(["getUserInfo"]),
         handleOpen() {},
-        handleClose() {}
+        handleClose() {},
     },
     computed: {
         ...mapGetters(['routes'])
     },
+    async created() {
+        let res = await this.getUserInfo();
+        console.log(res)
+        this.userInfo = res.data
+        this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
+    }
 }
 </script>
 

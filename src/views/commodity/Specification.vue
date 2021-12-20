@@ -259,7 +259,7 @@ export default {
       console.log("添加成功");
     },
     //批量删除
-    // batchesDelete() {},
+    batchesDelete() {},
     //单个修改
     editListData() {
       console.log("单个修改成功");

@@ -478,7 +478,7 @@ export default {
       display: flex;
       align-items: center;
       & .add-classification {
-        padding: 5px 10px;
+        padding: 9px 10px;
         background-color: #ff4070;
         color: #ffccd8;
         margin-top: 15px;
@@ -490,7 +490,7 @@ export default {
         cursor: pointer;
       }
       & .batch-association {
-        padding: 5px 10px;
+        padding: 9px 10px;
         background-color: #ffffff;
         color: #686868;
         margin-top: 15px;

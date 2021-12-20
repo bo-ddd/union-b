@@ -314,11 +314,11 @@ export default {
 .warp {
   display: flex;
   justify-content: space-between;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 275px);
   height: calc(100vh - 100px);
 }
 .main-l {
-  width: 58%;
+  width: 59%;
   margin-right: 2.5%;
 }
 .main-r {

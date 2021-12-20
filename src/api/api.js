@@ -125,6 +125,17 @@ export default {
     getAdvertList(params) {
         return axios.post('/advert/list', params, postConfig)
     },
+    /**
+     * @description 优品展示接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getSuperList(params) {
+        return axios.post('/superProduct/list', params, postConfig)
+    },
 
     //订单管理
     /**

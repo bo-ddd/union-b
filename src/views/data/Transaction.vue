@@ -356,10 +356,11 @@ export default {
       background-color: #ffffff;
       & > .main {
         display: grid;
-        grid-template-rows: repeat(2, 50%);
+        grid-template-rows: repeat(1, 1fr 1fr);
         --size: 60px;
         font-size: 12px;
-        min-height: 90%;
+        height: 80%;
+        padding: 10px;
         & > .top,
         .bottom {
           width: 100%;

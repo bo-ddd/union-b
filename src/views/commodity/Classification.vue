@@ -427,7 +427,7 @@ export default {
         return num1 - num2
       })
       this.table = arr
-      console.log(this.renderDynamic)
+      console.log(this.table)
     },
     /**
      * @description 当前行上升一位
@@ -480,7 +480,8 @@ export default {
     this.initData(this.renderDynamic);
   },
   created() {
-     this.handleSizeChange(10) 
+     this.handleSizeChange(10);
+     this.commodityInfo() 
  
   }
 }

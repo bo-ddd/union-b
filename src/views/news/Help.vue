@@ -10,7 +10,11 @@
             </div>
           </el-main>
           <el-footer class="footer"
-            ><el-input placeholder="请输入内容" v-model="message" class="ipt">
+            ><el-input
+              placeholder="请输入内容"
+              v-model="userMessage"
+              class="ipt"
+            >
             </el-input>
             <el-button class="btn" @click="submit">发送</el-button>
           </el-footer>
@@ -27,7 +31,8 @@
 export default {
   data() {
     return {
-      message: "",
+      userMessage: "",
+      flag: true,
     };
   },
   methods: {
@@ -35,14 +40,19 @@ export default {
       this.render();
     },
     render() {
+      this.flag = !this.flag;
       let oDiv = document.querySelector(".msg");
       let right = document.createElement("div");
-      right.innerHTML = this.message;
+      let oSpan = document.createElement("span");
+      oSpan.innerHTML = this.userMessage;
+      oSpan.style.backgroundColor = "#e7536b";
+      oSpan.style.padding = '10px';
+      oSpan.style.borderRadius = '10px';
+      right.style.marginTop = '20px';
+      right.appendChild(oSpan);
       right.className = "right_msg";
-      right.style.cssText = `
-        background-color:#e7536b,
-        text-align:right,`;
-      this.message = "";
+      right.style.textAlign = this.flag ? "right" : "left";
+      this.userMessage = "";
       oDiv.appendChild(right);
     },
   },

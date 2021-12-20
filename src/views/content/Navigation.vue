@@ -5,7 +5,7 @@
                 <div class="right-block"></div>
                 <h3>桌面端导航</h3>
             </div>
-            <div class="mr-180">
+            <div>
                 <el-button>取消</el-button>
                 <el-button class="pink">保存</el-button>
             </div>
@@ -26,13 +26,15 @@
                         </div>
                         <div class="nav">
                             <!-- 可删除的导航 -->
-                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.id">
+                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.id"  >
                                 <div class="jian mt-5" @click="del(key.id)">
-                                    <div>{{key.delete}}</div>
+                                    <div><div></div></div>
                                 </div>
                                 <div class="img">
                                     <div>
-                                        <img :src="key.img" alt="">
+                                        <!-- <img :src="key.img" alt=""> -->
+                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
+                                        <img src="@/assets/images/icon-order.png" alt="">
                                     </div>
                                 </div>
                                 <div class="text" >
@@ -41,10 +43,12 @@
                             </div>
 
                             <!-- 不可删除的导航 -->
-                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.id">
+                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.id"  >
                                 <div class="img mt-20">
                                     <div>
-                                        <img :src="key.img" alt="">
+                                        <!-- <img :src="key.img" alt=""> -->
+                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
+                                        <img src="@/assets/images/icon-order.png" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
@@ -52,8 +56,7 @@
                                 </div>
                             </div>
 
-
-
+                            <!-- 上传图片的 -->
                             <div>
                                 <el-upload
                                     action="#"
@@ -101,13 +104,12 @@
                             <span class="font-color">(数量限制:2-6个)</span>
                         </div>
                         <div class="nav">
-                            <div class="nav-item flex" v-for="key in mainNav" :key="key.id">
-                                <!-- <div class="jian mt-5">
-                                    <div>{{key.delete}}</div>
-                                </div> -->
+                            <div class="nav-item flex" v-for="key in quickNav" :key="key.id">
                                 <div class="img mt-20">
                                     <div>
-                                        <img :src="key.img" alt="">
+                                        <!-- <img :src="key.img" alt=""> -->
+                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
+                                        <img src="@/assets/images/icon-order.png" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
@@ -115,6 +117,8 @@
                                 </div>
                             </div>
 
+
+                            <!-- 上传的照片 -->
                             <el-upload
                                 action="#"
                                 list-type="picture-card"
@@ -154,49 +158,79 @@
                 </div>
                 <div class="right">
                     <div class="nav">
-                        <!-- 上边三个点 -->
-                        <div class="qiuqiu">
-                            <div></div>
-                            <div></div>
-                            <div></div>
+                        <div v-for="key in mainNav" :key="key.id">
+                            <div class="img">
+                                <!-- <img :src="key.img" alt=""> -->
+                                <!-- <img src="@/assets/images/xiangxia.png" alt=""> -->
+                                <img src="@/assets/images/icon-order.png" alt="">
+                            </div>
+                            <div class="text mt-5">
+                                {{key.text}}
+                            </div>
                         </div>
-
-
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
+                    </div>
+                    <!-- 秒杀活动 -->
+                    <div class="sec_kill_floor">
+                        <div class="title_wrap">
+                            <div class="seckill-left-link">
+                                <span>京东秒杀</span>
+                                <span>12</span>
+                                <div class="miaosha">
+                                    <span class="red-background fs-color">01</span>
+                                    <span>:</span>
+                                    <span class="red-background fs-color">02</span>
+                                    <span>:</span>
+                                    <span class="red-background fs-color">03</span>
+                                </div>
+                            </div>
+                            <div class="seckill-more-link">
+                                <div>
+                                    <span>更多秒杀</span>
+                                    <div class="miao">
+                                        <!-- <i class="el-icon-arrow-right flex"></i> -->
+                                        <span>></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-
-
-                        <!-- 下边三个点 -->
-                        <div class="diandian" >
-                            <div></div>
-                            <div></div>
-                            <div></div>
+                        <div class="floor-container">
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
+                            <div class="flex" >
+                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                                <span>￥99.9</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="main">
+                    <!-- 主要内容 -->
+                    <div class="waterfall">
+                        <div class="feeds_col_left">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="feeds_col_right">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
                     </div>
                 </div>
             </div>      
@@ -217,7 +251,7 @@ export default{
             mainNav : [
                 {
                     id : '1',
-                    img : '',
+                    img : '@/assets/images/xiangshang.png',
                     text : '消息',
                     delete : '-',
                 },
@@ -279,6 +313,7 @@ export default{
         }
     },
     methods: {
+        
         // 主导航可删除的数据的数组
         deletebtn(arr){
             var newarr = [];
@@ -379,12 +414,6 @@ export default{
 .mr-300{
     margin-right: 300px;
 }
-.rightborder{
-    border-right: 1px dashed #ccc;
-}
-.mt-50{
-    margin-top: 50px;
-}
 .mt-20{
     margin-top: 20px;
 }
@@ -395,8 +424,16 @@ export default{
 .text-color{
     color: #ccc;
 }
+.red-background{
+    background-color: #fa2c19;
+}
+.fs-color{
+    color: white;
+}
 .wrap{
-    min-width: 1200px;
+    height: calc(100vh - 100px);
+    overflow-y:auto;
+    margin-right: 100px;
      .head{
          display: flex;
          justify-content: space-between;
@@ -417,16 +454,11 @@ export default{
         justify-content: space-between;
     }
     .content{
-        height: 667px;
         & .left{
             float: left;
-            width: 50%;
-            height: 100%;
             // background-color: blue;
 
             & .mainNav , & .quickNav{
-                width: 100%;
-                height: 50%;
 
                 & .wrods{
                     font-size: 18px;
@@ -444,7 +476,7 @@ export default{
 
                 & .nav{
                     width: 100%;
-
+                    
                     & .nav-item{
                         float: left;
                         width: 120px;
@@ -468,6 +500,12 @@ export default{
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
+
+                                & div{
+                                    width: 60%;
+                                    height: 5px;
+                                    background-color: white;
+                                }
                             }
                         }
 
@@ -506,82 +544,144 @@ export default{
             
 
         }
-
-
-
-
         & .right{
             float: right;
             width: 375px;
-            height: 667px; 
-            & div{
-                float: left;
-            }
+            height: 520px;
+            overflow:scroll;
+            background-color: #f6f6f6;
 
-            & .nav{
-                width: 80px;
-                height: 100%;
+           & .nav{
+               padding: 20px 10px;
+               display: grid;
+               grid-template-columns: repeat(5,1fr);
+               gap:20px 20px;
 
-                & div{
-                    width: 100%;
-                }
+               & div{
+                   height: 50px;
 
-                & .qiuqiu{
-                    padding: 10px 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-around;
+                   & div{
+                       display: flex;
+                       align-items: center;
+                       justify-content: center;
+                   }
 
-                    & div{
-                        width: 13px;
-                        height: 13px;
-                        border-radius: 13px;
-                    }
-                }
+                   & .img{
+                       height: 30px;
+                       
+                       & img{
+                           width: 30px;
+                           height: 30px;
+                       }
+                   }
+                   & .text{
+                       height: 20px;
+                   }
+               }
+           }
 
-                & .xinxi{
-                    height: 70px;
-                    margin-bottom: 10px;
+           & .sec_kill_floor{
+               margin: 10px;
+               background-color: white;
+               border-radius: 5px;
+               & .title_wrap{
+                   height: 35px;
+                   & .seckill-left-link{
+                       width: 200px;
+                       height: 35px;
+                       float: left;
+                       display: flex;
+                       align-items: center;
+                       justify-content: space-around;
+
+                       & .miaosha{
+                           width: 50px;
+                           height: 100%;
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                       }
+                   }
+
+                   & .seckill-more-link{
+                    float: right;
+                    width: 100px;
+                    height: 35px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    flex-wrap: wrap;
 
-                    & img{
-                        width: 50px;
-                        height: 30px;
-                    }
-                }
 
-                & .mt-20{
-                    margin-top: 20px;
-                }
+                        & div{
+                            float: right;
+                            color: #fa2c19;
+                            font-size: 12px;
 
-                & .mb-55{
-                    margin-bottom: 55px;
-                }
+                            & .miao{
+                                width: 15px;
+                                height: 15px;
+                                border-radius: 15px;
+                                background-color: #fa2c19;
+                                color: white;
+                                text-align: center;
+                                line-height: 15px;
+                            }
+                        }
+                   }
+               }
 
-                & .diandian{
-                    height: 30px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-around;
+               & .floor-container{
+                   padding: 0 5px;
+                   height: 100px;
+                   
+                   & div{
+                       float: left;
+                       width: 60px;
+                       height: 100px;
+                       color: #fa2c19;
+                       & img{
+                           width: 40px;
+                           height: 50px;
+                       }
 
-                    & div{
-                        width: 3px;
-                        height: 3px;
-                        border-radius: 3px;
-                        background-color: white;
-                    }
-                }
-            }
+                   }
+               }
+           }
 
-            & .main{
-                width: 295px;
-                height: 100%;
-                background-color: blueviolet;
-            }
-            
+           & .waterfall{
+               margin: 10px;
+               display: flex;
+               flex-wrap: wrap;
+               border-radius: 5px;
+
+            //    background-color: violet;
+
+               & div{
+                   width: 50%;
+                   height: 100%;
+               }
+
+               & .feeds_col_left{
+                   border-radius: 5px 0 0 5px;
+
+                   & div{
+                       width: 94%;
+                       margin: 5px;
+                       height: 170px;
+                       background-color: white;
+                   }
+               }
+               & .feeds_col_right{
+                   border-radius: 0 5px 5px 0;
+
+                   & div{
+                       width: 94%;
+                       margin: 5px;
+                       height: 200px;
+                       background-color: white;
+                   }
+               }
+           }
         }
         
     }

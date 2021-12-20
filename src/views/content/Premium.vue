@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrap">
      <div class="header">
          <div class="header-title">
          <div class="block">
@@ -60,11 +60,11 @@
 
     <el-dialog title="编辑炫萌优品" :visible.sync="dialogFormVisible">
   <el-form :model="form">
-    <el-form-item label="视频名称" :label-width="formLabelWidth">
+    <el-form-item label="视频名称" :label-width="formLabelWidth" class="asterisk">
         <el-input type="text" placeholder="填写视频名称(不超过60个字符)" v-model="text" maxlength="60" show-word-limit>
         </el-input>
     </el-form-item>
-    <el-form-item label="视频链接" :label-width="formLabelWidth">
+    <el-form-item label="视频链接" :label-width="formLabelWidth" class="asterisk">
     <el-select v-model="value"  placeholder="请填写完整的视频链接">
         <el-option
             v-for="item in options"
@@ -74,25 +74,53 @@
         </el-option>
   </el-select>
     </el-form-item>
-    <el-form-item label="排序" :label-width="formLabelWidth">
+    <el-form-item label="排序" :label-width="formLabelWidth" >
       <el-input v-model="form.name" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="上传封面" :label-width="formLabelWidth">
-   <el-upload
-        class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :show-file-list="false"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-    </el-upload>
+    <el-form-item label="上传封面" :label-width="formLabelWidth" class="asterisk">
+      <el-upload
+  action="#"
+  list-type="picture-card"
+  :auto-upload="false">
+    <i slot="default" class="el-icon-plus"></i>
+    <div slot="file" slot-scope="{file}">
+      <img
+        class="el-upload-list__item-thumbnail"
+        :src="file.url" alt=""
+      >
+      <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreview(file)"
+        >
+          <i class="el-icon-zoom-in"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleDownload(file)"
+        >
+          <i class="el-icon-download"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleRemove(file)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
+    </div>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
     </el-form-item>
-    <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5">
+    <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5 asterisk">
         <el-button  @click="dialogFormVisible1 = true">添加省区</el-button>
     </el-form-item>
-    <span class="pattern">已选省区:山西 临汾</span>
-    <el-form-item label="关联商品" :label-width="formLabelWidth">
+    <span class="pattern">已选省区:{{checkedlist}}</span>
+    <el-form-item label="关联商品" :label-width="formLabelWidth" class="asterisk">
          <el-button>选择商品</el-button>
     </el-form-item>
   </el-form>
@@ -102,13 +130,10 @@
   </div>
 </el-dialog>
 <el-dialog title="请选择省区" :visible.sync="dialogFormVisible1" >
-  <el-form :model="form">
-        <el-checkbox class="mb-20" :v-model="key.model" v-for="key in arr" :key="key.model">{{key.text}}</el-checkbox>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible1= false">取 消</el-button>
-    <el-button  class="query"  @click="addProvince">确 定</el-button>
-  </div>
+  <el-checkbox-group  v-model="checkedlist" @change='gettext'>
+    <el-checkbox v-for="key in arr" :key="key.model" :label="key.label">{{key.text}}</el-checkbox>
+  </el-checkbox-group>
+  
 </el-dialog>
   </div>
 </template>
@@ -116,6 +141,7 @@
 export default {
     data() {
       return {
+        checkedlist : [],
         value: [],
         options: [{
             value: '选项1',
@@ -171,42 +197,63 @@ export default {
         imageUrl: '',
         checked: true,
         arr : [],
+        dialogImageUrl: '',
+        dialogVisible: false,
+        disabled: false
       };
     },
     created () {
-        for(var i = 0 ;i<50;i++){
-            this.arr.push({
-                text : '山西省',
-                model : i,
-            })
-        }
+        this.arr.push(
+          {
+            text : '山西省',
+            label : '山西省',
+          },
+          {
+            text : '山东省',
+            label : '山东省',
+          }
+        )
     },
     methods: {
+        gettext(value){
+          console.log(typeof value);
+          this.checkedlist.push(value.shift());
+          // this.checkedlist.push()
+        },
         handleChange(value) {
             console.log(value);
         },
-        handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
-        },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-            }
-            if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
-            }
-        return isJPG && isLt2M;
+      
+     handleRemove(file) {
+        console.log(file);
       },
-      addProvince (){
-        this.dialogFormVisible1 = false;
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      handleDownload(file) {
+        console.log(file);
       }
+      
     }
   }
 </script>
 
 <style lang="scss" scoped>
+.wrap{
+  height: calc(100vh - 100px);
+  overflow-y:auto;
+}
+.asterisk{
+  position: relative;
+}
+.asterisk::before{
+  position: absolute;
+  content: '*';
+  color: #f56c6c;
+  left: 40px;
+  top: 15px;
+}
 .mb-5{
     margin-bottom: 5px;
 }
@@ -259,30 +306,7 @@ export default {
  ::v-deep .el-table__footer-wrapper, .el-table__header-wrapper {
       background-color: #fcf9fa;
      }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-     }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-  }
-  .avatar {
-    width: 100px;
-    height: 100px;
-    display: block;
-  }
-
+ 
 ::v-deep .el-upload{
     border: 1px dashed #d9d9d9;
 }

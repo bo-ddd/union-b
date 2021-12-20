@@ -36,23 +36,23 @@
             <span></span>
             <div class="top_left">
               <span class="font-15">80%</span>
-              <span class="font-12">日均销售量</span>
+              <span class="font-12">用户总数</span>
             </div>
             <div class="top_center">
               <span class="font-20">80%</span>
-              <span class="font-16">月销售量</span>
+              <span class="font-16">日均访问量</span>
             </div>
             <span></span>
             <div class="top_right">
               <span class="font-15">80%</span>
-              <span class="font-12">商品成交率</span>
+              <span class="font-12">成交率</span>
             </div>
           </div>
           <div class="bottom">
             <span></span>
             <div class="bottom_left">
               <span class="font-20">80%</span>
-              <span class="font-16">商家活跃度</span>
+              <span class="font-16">总访问量</span>
             </div>
             <span></span>
             <div class="bottom_center">
@@ -90,11 +90,18 @@
       </div>
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
-          <el-table :data="tableData" stripe style="width: 100%;" size="small">
-            <el-table-column prop="date" label="类目"> </el-table-column>
-            <el-table-column prop="name" label="名称"> </el-table-column>
-            <el-table-column prop="address" label="销售量"> </el-table-column>
-          </el-table>
+        <el-table
+          :data="tableData"
+          stripe
+          style="width: 100%"
+          size="small"
+          id="#out-table"
+        >
+          <el-table-column prop="date" label="类目"> </el-table-column>
+          <el-table-column prop="name" label="名称"> </el-table-column>
+          <el-table-column prop="address" label="销售量"> </el-table-column>
+          <el-table-column slot="scope"> </el-table-column>
+        </el-table>
         <!-- 商家综合排行 -->
         <!-- 商品排行 -->
       </div>
@@ -104,6 +111,7 @@
 
 <script>
 import * as echarts from "echarts";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -141,8 +149,15 @@ export default {
       myTotalChart.resize();
     });
   },
-
+  created() {
+    this.getTrade();
+  },
   methods: {
+    ...mapActions(["getTradeData"]),
+    async getTrade() {
+      let res = await this.getTradeData();
+      console.log(res);
+    },
     drawnBar() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = echarts.init(document.getElementsByClassName("stata")[0]);
@@ -222,14 +237,15 @@ export default {
           trigger: "item",
         },
         legend: {
-          top: "30%",
-          left: "70%",
+          top: "40%",
+          left: "50%",
         },
         series: [
           {
             name: "品类分布",
             type: "pie",
             radius: ["40%", "70%"],
+            center:['30%','60%'],
             avoidLabelOverlap: true,
             data: [
               { value: 1048, name: "电器" },
@@ -432,11 +448,10 @@ export default {
     gap: 20px;
     & > div {
       background-color: #ffffff;
-      padding: 10px;
       min-width: 100px;
       & > div {
         height: 46vh;
-        width: 96%;
+        width: 100%;
       }
     }
   }

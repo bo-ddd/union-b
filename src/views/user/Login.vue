@@ -36,7 +36,13 @@
                 ></el-input>
               </div>
               <div class="captcha">
-                <img :src="captchaSrc" alt="" />
+                <img
+                  style="height: 43px"
+                  :src="captchaSrc"
+                  @click="generatorCaptcha"
+                  alt=""
+                  srcset=""
+                />
               </div>
             </div>
           </div>
@@ -137,20 +143,21 @@ export default {
       });
       console.log(res);
       if (res.status == 1) {
-        console.log("success");
         sessionStorage.setItem("token", res.data);
       } else {
+        this.generatorCaptcha();
+      }
+      if (res.status == 0) {
         this.$message({
           type: "warning",
           message: res.msg,
         });
-        this.generatorCaptcha();
       }
     },
   },
   created() {
     // 进页面直接调用验证码
-    // this.generatorCaptcha();
+    this.generatorCaptcha();
   },
 };
 </script>

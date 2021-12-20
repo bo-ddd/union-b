@@ -87,8 +87,8 @@ export default {
           type:"warning",
           message:"密码不能为空"
         })
-      }
-      else if(/^([a-zA-Z]|[0-9])(\w|)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.form.email)){
+      }       
+      else if(!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(this.form.email)){
         this.$message({
           type:"warning",
           message:"邮箱格式不正确"
@@ -96,10 +96,10 @@ export default {
       }
       else{
         let res = await this.userRegister({
-           username:this.username,
-           password:this.password,
-           email:this.email,
-           phone:this.phone
+           username:this.form.username,
+           password:this.form.password,
+           email:this.form.email,
+           phone:this.form.phone
         })
         console.log(res);
       }

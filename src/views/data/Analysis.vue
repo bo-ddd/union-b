@@ -194,6 +194,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
+          top:'center'
         },
         series: [
           {
@@ -239,6 +240,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
+          top:'center'
         },
         series: [
           {
@@ -280,6 +282,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
+          top:'center'
         },
         series: [
           {

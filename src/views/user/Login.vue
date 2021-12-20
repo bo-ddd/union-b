@@ -36,7 +36,13 @@
                 ></el-input>
               </div>
               <div class="captcha">
-                <img :src="captchaSrc" alt="" />
+                <img
+                  style="height: 43px"
+                  :src="captchaSrc"
+                  @click="generatorCaptcha"
+                  alt=""
+                  srcset=""
+                />
               </div>
             </div>
           </div>
@@ -44,6 +50,11 @@
             <el-button type="primary" @click="submit" round>
               登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
             </el-button>
+          </div>
+          <div class="glink">
+            <el-link :underline="false" type="primary" @click="submitregist"
+              >还没账号，去注册！</el-link
+            >
           </div>
         </div>
       </div>
@@ -137,20 +148,30 @@ export default {
       });
       console.log(res);
       if (res.status == 1) {
-        console.log("success");
         sessionStorage.setItem("token", res.data);
+        this.$router.push({
+          path: "/",
+        });
       } else {
+        this.generatorCaptcha();
+      }
+      if (res.status == 0) {
         this.$message({
           type: "warning",
           message: res.msg,
         });
-        this.generatorCaptcha();
       }
+    },
+    // 跳转到注册页面
+    submitregist() {
+      this.$router.push({
+        path: "/registration",
+      });
     },
   },
   created() {
     // 进页面直接调用验证码
-    // this.generatorCaptcha();
+    this.generatorCaptcha();
   },
 };
 </script>
@@ -162,6 +183,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 1300px;
+  min-height: 780px;
 
   & .main {
     width: 55%;
@@ -189,7 +212,6 @@ export default {
       & .mainpack {
         width: 100%;
         height: 70%;
-
         & .main-top {
           width: 100%;
           height: 30%;
@@ -269,5 +291,11 @@ export default {
 }
 ::v-deep input::-webkit-input-placeholder {
   color: #717171;
+}
+
+.glink {
+  float: right;
+  position: relative;
+  right: 78px;
 }
 </style>

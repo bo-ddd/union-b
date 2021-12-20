@@ -44,7 +44,7 @@
         <el-button size='small'>批量删除</el-button>
       </div>
       <div class="table">
-          <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" size='small' style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" size='small' style="width: 100%">
             <el-table-column type="selection" >
             </el-table-column>
             <el-table-column label="名称" >
@@ -77,6 +77,23 @@
 export default {
   data() {
     return {
+      options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: '',
       value1: "",
       tableData: [{
           name: '手机秒杀专场',
@@ -129,7 +146,7 @@ export default {
   & .content {
     // min-height: 500px;
     min-width: 1000px;
-    height: calc(100vh - 300px);
+    height: calc(100vh - 260px);
     background-color: #fff;
     margin-top: 20px;
     padding: 20px;

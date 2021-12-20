@@ -155,7 +155,7 @@ export default {
   methods: {
     ...mapActions(["getTradeData"]),
     async getTrade() {
-      let res = await this.getTradeData();
+      let res = await this.getTradeData({});
       console.log(res);
     },
     drawnBar() {

@@ -396,7 +396,6 @@ export default{
     color: #ccc;
 }
 .wrap{
-    padding: 0 200px;
     min-width: 1200px;
      .head{
          display: flex;

@@ -1,13 +1,17 @@
 <template>
   <div class="wrap">
     <div class="title">
-      <div>消息总数:3</div>
+      <div>消息总数:{{message.length}}</div>
       <div>
-        <el-link type="primary" :underline="false" @click="markRead">全部标为已读</el-link>
-        <el-button type="text" @click="clearMessage" size="small">清空所有消息</el-button>
+        <el-link type="primary" :underline="false" @click="markRead"
+          >全部标为已读</el-link
+        >
+        <el-button type="text" @click="clearMessage" size="small"
+          >清空所有消息</el-button
+        >
       </div>
     </div>
-    <div class="message" v-for="item in message" :key="item">
+    <div class="message" v-for="(item,index) in message" :key="index">
       <div class="message_title">
         <div><el-tag type="danger">系统</el-tag>{{ item.title }}</div>
         <div class="time">
@@ -20,6 +24,7 @@
         </div>
       </div>
       <div class="message_content">{{ item.detail }}</div>
+      <div class="msg_footer"> <el-button :type="buttonType" round size="small">{{articleStatus}}</el-button></div>
     </div>
   </div>
 </template>
@@ -28,6 +33,8 @@
 export default {
   data() {
     return {
+      buttonType:'danger',
+      articleStatus:'未读',
       message: [
         {
           title: "这是一条测试消息的title",
@@ -55,17 +62,19 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.message = '';
-          this.$message.success('删除成功')
+          this.message = "";
+          this.$message.success("删除成功");
           //调用接口返回删除的数据;
         })
         .catch(() => {
-          this.$message.info('已取消')
+          this.$message.info("已取消");
         });
     },
-    markRead(){
-      console.log('标记已读');
-    }
+    markRead() {
+      this.buttonType = 'info';
+      this.articleStatus = '已读';
+      console.log("标记已读");
+    },
   },
 };
 </script>
@@ -77,17 +86,22 @@ export default {
   & > .title {
     display: flex;
     justify-content: space-between;
-    padding:10px;
+    padding: 10px;
+    border-bottom: 1px solid #f0f2f7;
   }
   & > .message {
+    background-color: #ffffff;
+    border-bottom: 1px solid #f0f2f7;
     margin-top: 10px;
     & > div {
-      margin: 10px 0;
       padding: 20px;
     }
     & > .message_title {
       display: flex;
       justify-content: space-between;
+      cursor: pointer;
+      font-weight: bolder;
+      font-size:20px;
       & > .time {
         color: #66b1ff;
         font-size: 14px;
@@ -97,9 +111,6 @@ export default {
           vertical-align: middle;
         }
       }
-    }
-    & > .message_content {
-      background-color: #f7f7f7;
     }
   }
 }

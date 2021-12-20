@@ -7,8 +7,7 @@
           type="primary"
           size="small"
           @click="addspecification, (dialogFormVisible = true)"
-          >添加规格</el-button
-        >
+          >添加规格</el-button>
         <el-dialog title="添加规格" :visible.sync="dialogFormVisible">
           <el-form :model="form">
             <el-form-item label="规格名称" :label-width="formLabelWidth">
@@ -93,10 +92,11 @@
               class="el-icon-edit cell1"
               @click="editListData"
             ></el-button>
+
             <el-button
               i
               class="el-icon-delete cell2"
-             
+              @click.native.prevent="deleteRow(scope.$index, tableData)"
               type="text"
             >
             </el-button>
@@ -243,7 +243,9 @@ export default {
       console.log("单个修改成功");
     },
     //单个删除
-  
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
+    },
     //保存排序
     formatter(row) {
       return row.address;

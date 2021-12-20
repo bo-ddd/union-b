@@ -208,9 +208,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-body{
-  min-width: 1000px;
-}
 ::v-deep .el-main {
   background-color: #a71e4c !important;
 }
@@ -275,7 +272,9 @@ body{
     }
     & .content {
       background-color: #fff;
-      min-height: 320px;
+      // min-height: 320px;
+       height: calc(100vh - 400px);
+      overflow-y: auto;
       padding: 10px 20px;
       overflow-y: auto;
       & .content_header{

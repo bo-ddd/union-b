@@ -194,8 +194,7 @@ export default {
           width: 100%;
           height: 30%;
           display: flex;
-          align-items: flex-start;
-          justify-content: start;
+          // justify-content: start;
           flex-direction: column;
 
           & .login {
@@ -218,7 +217,6 @@ export default {
           display: flex;
           justify-content: center;
           flex-direction: column;
-          align-items: flex-start;
 
           & .el-input {
             width: 80%;
@@ -254,7 +252,6 @@ export default {
           width: 100%;
           height: 20%;
           display: flex;
-          justify-content: start;
           align-items: center;
 
           & .el-button {

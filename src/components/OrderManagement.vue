@@ -4,8 +4,13 @@
       <div class="top-l">
         <div class="select">
           <span class="mr-10" @click="updateOrderStatus">订单状态</span>
-          <el-select v-model="orderStatusSelect" placeholder="请选择">
+          <el-select
+            size="small"
+            v-model="orderStatusSelect"
+            placeholder="请选择"
+          >
             <el-option
+              size="small"
               v-for="item in orderStatus"
               :key="item.value"
               :label="item.label"
@@ -17,8 +22,13 @@
         </div>
         <div class="select">
           <span class="mr-10">支付状态</span>
-          <el-select v-model="paymentStatusSelect" placeholder="请选择">
+          <el-select
+            size="small"
+            v-model="paymentStatusSelect"
+            placeholder="请选择"
+          >
             <el-option
+              size="small"
               v-for="item in paymentStatus"
               :key="item.value"
               :label="item.label"
@@ -29,8 +39,13 @@
         </div>
         <div class="select">
           <span class="mr-10">订单类型</span>
-          <el-select v-model="orderTypeSelect" placeholder="请选择">
+          <el-select
+            size="small"
+            v-model="orderTypeSelect"
+            placeholder="请选择"
+          >
             <el-option
+              size="small"
               v-for="item in orderType"
               :key="item.value"
               :label="item.label"
@@ -40,7 +55,12 @@
           </el-select>
         </div>
         <div class="select">
-          <el-select v-model="orderNoSelect" class="order" placeholder="请选择">
+          <el-select
+            size="small"
+            v-model="orderNoSelect"
+            class="order"
+            placeholder="请选择"
+          >
             <el-option
               v-for="item in orderNo"
               :key="item.value"
@@ -49,20 +69,15 @@
             >
             </el-option>
           </el-select>
-          <input
-            class="input"
-            v-model="input"
-            type="text"
-            placeholder="请输入"
-          />
+          <el-input v-model="input" placeholder="请输入"></el-input>
         </div>
       </div>
       <div class="top-r">
-        <el-button type="danger" @click="querySelectOrderStatus"
+        <el-button type="primary" @click="querySelectOrderStatus"
           >查询</el-button
         >
-        <el-button @click="resetOrderStatus">重置</el-button>
-        <el-button>导出</el-button>
+        <el-button type="primary" @click="resetOrderStatus">重置</el-button>
+        <el-button type="primary" @click="exportExcel">导出</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -72,32 +87,28 @@
         stripe
         style="width: 100%"
         @selection-change="handleSelectionChange"
+        id="out-table"
       >
         <el-table-column type="selection" width="45"> </el-table-column>
-        <el-table-column fixed prop="num" label="订单编号" align="center"  >
+        <el-table-column fixed prop="orderId" label="订单编号" align="center">
         </el-table-column>
-        <el-table-column prop="price" label="实付金额" align="center" >
+        <el-table-column prop="totalPrice" label="实付金额" align="center">
         </el-table-column>
-        <el-table-column prop="kdprice" label="快递费" align="center" >
+        <el-table-column prop="expressName" label="快递公司" align="center">
         </el-table-column>
-        <el-table-column prop="gys" label="供应商"  align="center" >
+        <el-table-column prop="storeTitle" label="供应商" align="center">
         </el-table-column>
-        <el-table-column prop="cgs" label="采购商"  align="center" >
+        <el-table-column prop="avatorName" label="采购商" align="center">
         </el-table-column>
-        <el-table-column prop="shr" label="收货人"  align="center" >
+        <el-table-column prop="consignee" label="收货人" align="center">
         </el-table-column>
-        <el-table-column prop="zffs" label="支付方式" align="center" >
+        <el-table-column prop="paymentName" label="支付方式" align="center">
         </el-table-column>
-        <el-table-column prop="ddzt" label="订单状态" align="center" >
+        <el-table-column prop="orderStatus" label="订单状态" align="center">
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" >
+        <el-table-column fixed="right" label="操作" align="center">
           <template>
-            <el-button
-              type="text"
-              @click="seeDetails"
-            >
-              查看
-            </el-button>
+            <el-button type="text" @click="seeDetails"> 查看 </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -109,7 +120,11 @@
           :page-sizes="[10, 20, 30, 40, 50]"
           :page-size="100"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="tableData.length"
+          :total="
+            $route.meta.title == '全部订单'
+              ? tableData.length
+              : tableData1.length
+          "
           background
         >
         </el-pagination>
@@ -119,6 +134,8 @@
 </template>
 <script>
 // import { mapActions } from 'vuex';
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
   updated() {
     this.$nextTick(() => {
@@ -137,11 +154,37 @@ export default {
     // ...mapActions(["getOrderList"]),
     // /**
     //  * @description 获取所有订单数据
-    //  * **/ 
+    //  * **/
     // async getOrderListData(){
     //   let res = await this.getOrderList({});
     //   console.log(res);
     // },
+
+    exportExcel() {
+      /* 从表生成工作簿对象 */
+      let wb = XLSX.utils.table_to_book(document.querySelector("#out-table"));
+      console.log(wb);
+      /* 获取二进制字符串作为输出 */
+      var wbout = XLSX.write(wb, {
+        bookType: "xlsx",
+        bookSST: true,
+        type: "array",
+      });
+      try {
+        FileSaver.saveAs(
+          //Blob 对象表示一个不可变、原始数据的类文件对象。
+          //Blob 表示的不一定是JavaScript原生格式的数据。
+          //File 接口基于Blob，继承了 blob 的功能并将其扩展使其支持用户系统上的文件。
+          //返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+          new Blob([wbout], { type: "application/octet-stream" }),
+          //设置导出文件名称
+          "sheet.xlsx"
+        );
+      } catch (e) {
+        if (typeof console !== "undefined") console.log(e, wbout);
+      }
+      return wbout;
+    },
 
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -175,19 +218,23 @@ export default {
      * **/
     updateOrderStatus() {
       console.log(this.orderStatus);
+      let val = "";
       for (let i = 0; i < this.orderStatus.length; i++) {
         if (this.$route.meta.title != "全部订单") {
           if (this.$route.meta.title != this.orderStatus[i].label) {
             this.orderStatus[i].disabled = true;
           } else {
             this.orderStatusSelect = this.orderStatus[i].label;
+            val = this.orderStatus[i].value;
           }
         }
       }
-      console.log(this.orderStatus);
-      // if (this.$route.meta.title != "全部订单") this.orderStatusFlag = false;
+      this.tableData.forEach((item) => {
+        if (item.orderStatus == val) {
+          this.tableData1.push(item);
+        } else if (val == "全部订单") this.tableData1.push(item);
+      });
     },
-
 
     /**
      * @description 分页每页有多少条
@@ -205,17 +252,18 @@ export default {
       this.cacheExport = this.multipleSelection;
 
       let arr = [];
+      let arr1 = [];
       for (
         let i = val * this.pageSize - this.pageSize;
         i < val * this.pageSize;
         i++
       ) {
-        if (this.tableData[i] != undefined) arr.push(this.tableData[i]);
+        if (this.tableData1[i] != undefined) arr.push(this.tableData1[i]);
+        if (this.tableData[i] != undefined) arr1.push(this.tableData[i]);
       }
-      this.table = arr;
 
-      // console.log(arr);
-      // console.log(this.table)
+      this.table = this.$route.meta.title == "全部订单" ? arr1 : arr;
+      console.log(this.table);
       console.log(`当前页: ${val}`);
     },
 
@@ -229,15 +277,15 @@ export default {
         }
       });
     },
-    
-      /**
-       * @description 跳转查看详情
-       * **/ 
-      seeDetails(){
-        this.$router.push({
-          name:'OrderDetails'
-        })
-      },
+
+    /**
+     * @description 跳转查看详情
+     * **/
+    seeDetails() {
+      this.$router.push({
+        name: "OrderDetails",
+      });
+    },
   },
   data() {
     return {
@@ -363,148 +411,171 @@ export default {
       tableData: [
         {
           id: 1,
-          num: "1111111111111",
-          price: "100",
-          kdprice: "10",
-          gys: "老王",
-          cgs: "老李",
-          shr: "小王",
-          zffs: "支付宝",
-          ddzt: "待审核",
+          orderId: "11111111111112",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待发货",
         },
         {
-          id: 2,
-          num: "1111111111112",
-          price: "1002",
-          kdprice: "102",
-          gys: "老王2",
-          cgs: "老李2",
-          shr: "小王2",
-          zffs: "微信支付",
-          ddzt: "待支付",
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
         {
-          id: 3,
-          num: "11111111111113",
-          price: "1003",
-          kdprice: "103",
-          gys: "老王3",
-          cgs: "老李3",
-          shr: "小王3",
-          zffs: "银行转账",
-          ddzt: "待发货",
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
         {
-          id: 4,
-          num: "11111111111114",
-          price: "1004",
-          kdprice: "104",
-          gys: "老王4",
-          cgs: "老李4",
-          shr: "小王4",
-          zffs: "支付宝",
-          ddzt: "待收货",
+          id: 1,
+          orderId: "11111111111112",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待发货",
         },
         {
-          id: 5,
-          num: "11111111111115",
-          price: "1005",
-          kdprice: "105",
-          gys: "老王5",
-          cgs: "老李5",
-          shr: "小王5",
-          zffs: "微信支付",
-          ddzt: "已完成",
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
         {
-          id: 6,
-          num: "11111111111116",
-          price: "1006",
-          kdprice: "106",
-          gys: "老王6",
-          cgs: "老李6",
-          shr: "小王6",
-          zffs: "支付宝",
-          ddzt: "已取消",
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
         {
-          id: 7,
-          num: "11111111111117",
-          price: "100",
-          kdprice: "10",
-          gys: "老王",
-          cgs: "老李",
-          shr: "小王",
-          zffs: "支付宝",
-          ddzt: "发货",
+          id: 1,
+          orderId: "11111111111112",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待发货",
         },
         {
-          id: 8,
-          num: "11111111111118",
-          price: "100",
-          kdprice: "10",
-          gys: "老王",
-          cgs: "老李",
-          shr: "小王",
-          zffs: "支付宝",
-          ddzt: "异常",
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
         {
-          id: 9,
-          num: "11111111111119",
-          price: "100",
-          kdprice: "10",
-          gys: "老王",
-          cgs: "老李",
-          shr: "小王",
-          zffs: "支付宝",
-          ddzt: "已支付",
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
         {
-          id: 10,
-          num: "11111111111110",
-          price: "100",
-          kdprice: "10",
-          gys: "老王",
-          cgs: "老李",
-          shr: "小王",
-          zffs: "支付宝",
-          ddzt: "未支付",
+          id: 1,
+          orderId: "11111111111112",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待发货",
         },
         {
-          id: 11,
-          num: "111111111111101",
-          price: "100",
-          kdprice: "10",
-          gys: "老王",
-          cgs: "老李",
-          shr: "小王",
-          zffs: "微信支付",
-          ddzt: "待支付",
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
         {
-          id: 12,
-          num: "111111111111102",
-          price: "100",
-          kdprice: "10",
-          gys: "老王",
-          cgs: "老李",
-          shr: "小王",
-          zffs: "微信支付",
-          ddzt: "已完成",
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
         {
-          id: 13,
-          num: "111111111111103",
-          price: "100",
-          kdprice: "10",
-          gys: "老王",
-          cgs: "老李",
-          shr: "小王",
-          zffs: "微信支付",
-          ddzt: "待发货",
+          id: 1,
+          orderId: "11111111111112",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待发货",
+        },
+        {
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
+        },
+        {
+          id: 1,
+          orderId: "1111111111111",
+          totalPrice: "100",
+          expressName: "韵达",
+          storeTitle: "老王",
+          avatorName: "老李",
+          consignee: "小王",
+          paymentName: "支付宝",
+          orderStatus: "待审核",
         },
       ],
+      tableData1: [],
     };
   },
 };
@@ -513,7 +584,7 @@ export default {
 .wrap {
   height: calc(100vh - 100px);
   background: #fff;
-  overflow-y:auto;
+  overflow-y: auto;
 
   & .mr-10 {
     margin-right: 10px;
@@ -529,9 +600,9 @@ export default {
 
     & ::v-deep .el-input__inner {
       font-size: 13px;
-      height: 25px !important;
-      width:6vw;
-      padding: 3px;
+      // height: 25px !important;
+      width: 8vw;
+      padding: 6px;
     }
 
     & ::v-deep .el-input__icon {
@@ -545,15 +616,6 @@ export default {
         border-right: none !important;
         border-top-right-radius: 0px !important;
         border-bottom-right-radius: 0px !important;
-      }
-
-      & .input {
-        outline: none;
-        border: 1px solid #dcdfe6;
-        width: 150px;
-        height: 22.8px;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
       }
 
       & .select {
@@ -582,8 +644,8 @@ export default {
       justify-content: flex-end;
 
       & ::v-deep .el-button {
-        width: 50px;
-        height: 24.8px;
+        width: 8vw;
+        // height: 24.8px;
         text-align: center;
         line-height: 3px;
         padding: 3px;

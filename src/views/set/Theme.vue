@@ -240,11 +240,7 @@ export default {
       let root = document.querySelector(":root");
       if (num == 'red1') {
         root.style.setProperty("--color", "rgb(255, 241, 240)");
-<<<<<<< HEAD
         root.style.setProperty("--textcolor", "rgb(255, 77, 79)");
-=======
-        root.style.setProperty("--bck", "rgb(255, 192, 203)");
->>>>>>> 29f7d53ef9d9fa2a74d9e4df34ecfd709521040c
       } else if (num == 'red2') {
         root.style.setProperty("--color", "rgb(255, 204, 199)");
         root.style.setProperty("--textcolor", "rgb(255, 77, 79)");
@@ -645,11 +641,7 @@ export default {
       margin-left: 5%;
       & .title{
         margin: 0 0 24px;
-<<<<<<< HEAD
         color: #777;
-=======
-        color: var(--color);
->>>>>>> 29f7d53ef9d9fa2a74d9e4df34ecfd709521040c
         font-weight: 500;
         height: 70px;
         font-size: 22px;

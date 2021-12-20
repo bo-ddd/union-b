@@ -82,17 +82,19 @@ export default {
           type:"warning",
           message:"用户名不符合规范"
         })
-      }else if(this.form.password){
+      }else if(!this.form.password){
         this.$message({
           type:"warning",
           message:"密码不能为空"
         })
-      }else if(/^([a-zA-Z]|[0-9])(\w|)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.form.email)){
+      }
+      else if(/^([a-zA-Z]|[0-9])(\w|)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.form.email)){
         this.$message({
           type:"warning",
           message:"邮箱格式不正确"
         })
-      }else{
+      }
+      else{
         let res = await this.userRegister({
            username:this.username,
            password:this.password,

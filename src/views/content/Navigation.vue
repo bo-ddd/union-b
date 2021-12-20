@@ -5,7 +5,7 @@
                 <div class="right-block"></div>
                 <h3>桌面端导航</h3>
             </div>
-            <div class="mr-180">
+            <div>
                 <el-button>取消</el-button>
                 <el-button class="pink">保存</el-button>
             </div>
@@ -26,7 +26,7 @@
                         </div>
                         <div class="nav">
                             <!-- 可删除的导航 -->
-                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.id">
+                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.id"  >
                                 <div class="jian mt-5" @click="del(key.id)">
                                     <div>{{key.delete}}</div>
                                 </div>
@@ -41,7 +41,7 @@
                             </div>
 
                             <!-- 不可删除的导航 -->
-                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.id">
+                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.id"  >
                                 <div class="img mt-20">
                                     <div>
                                         <img :src="key.img" alt="">
@@ -51,9 +51,6 @@
                                     <span>{{key.text}}</span>
                                 </div>
                             </div>
-
-
-
                             <div>
                                 <el-upload
                                     action="#"
@@ -100,11 +97,8 @@
                             <span class="wrods">快捷导航&nbsp;&nbsp;</span>
                             <span class="font-color">(数量限制:2-6个)</span>
                         </div>
-                        <div class="nav">
-                            <div class="nav-item flex" v-for="key in mainNav" :key="key.id">
-                                <!-- <div class="jian mt-5">
-                                    <div>{{key.delete}}</div>
-                                </div> -->
+                        <div class="nav" ondragover="allowDrop(event)">
+                            <div class="nav-item flex" v-for="key in quickNav" :key="key.id">
                                 <div class="img mt-20">
                                     <div>
                                         <img :src="key.img" alt="">
@@ -154,49 +148,53 @@
                 </div>
                 <div class="right">
                     <div class="nav">
-                        <!-- 上边三个点 -->
-                        <div class="qiuqiu">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-
-
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-
-
-                        <!-- 下边三个点 -->
-                        <div class="diandian" >
-                            <div></div>
-                            <div></div>
-                            <div></div>
+                        <div v-for="key in mainNav" :key="key.id">
+                            <div class="img">
+                                <img :src="key.img" alt="">
+                            </div>
+                            <div class="text">
+                                {{key.text}}
+                            </div>
                         </div>
                     </div>
-
                     <div class="main">
+                        <div class="title_wrap">
+                            <div class="left-b">
+                                <span>京东秒杀</span>
+                                <div>
+                                    <span>10</span>
+                                    <i class="el-icon-star-off"></i>
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+                            <div class="right-b">
+                                更多秒杀
+                            </div>
+                            <div class="center-b">
+                                <div>
+                                    <img src="" alt="">
+                                    <span>￥9.9</span>
+                                </div>
+                                <div>
+                                    <img src="" alt="">
+                                    <span>￥9.9</span>
+                                </div>
+                                <div>
+                                    <img src="" alt="">
+                                    <span>￥9.9</span>
+                                </div>
+                                <div>
+                                    <img src="" alt="">
+                                    <span>￥9.9</span>
+                                </div>
+                                <div>
+                                    <img src="" alt="">
+                                    <span>￥9.9</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>      
@@ -279,6 +277,7 @@ export default{
         }
     },
     methods: {
+        
         // 主导航可删除的数据的数组
         deletebtn(arr){
             var newarr = [];
@@ -379,12 +378,6 @@ export default{
 .mr-300{
     margin-right: 300px;
 }
-.rightborder{
-    border-right: 1px dashed #ccc;
-}
-.mt-50{
-    margin-top: 50px;
-}
 .mt-20{
     margin-top: 20px;
 }
@@ -396,7 +389,9 @@ export default{
     color: #ccc;
 }
 .wrap{
-    min-width: 1200px;
+    height: calc(100vh - 100px);
+    overflow-y:auto;
+    margin-right: 100px;
      .head{
          display: flex;
          justify-content: space-between;
@@ -417,16 +412,11 @@ export default{
         justify-content: space-between;
     }
     .content{
-        height: 667px;
         & .left{
             float: left;
-            width: 50%;
-            height: 100%;
             // background-color: blue;
 
             & .mainNav , & .quickNav{
-                width: 100%;
-                height: 50%;
 
                 & .wrods{
                     font-size: 18px;
@@ -444,7 +434,7 @@ export default{
 
                 & .nav{
                     width: 100%;
-
+                    
                     & .nav-item{
                         float: left;
                         width: 120px;
@@ -506,82 +496,90 @@ export default{
             
 
         }
-
-
-
-
         & .right{
             float: right;
             width: 375px;
-            height: 667px; 
-            & div{
-                float: left;
-            }
+            height: 500px;
+            background-color: #ccc;
 
-            & .nav{
-                width: 80px;
-                height: 100%;
+           & .nav{
+               padding: 20px 10px;
+               display: grid;
+               grid-template-columns: repeat(5,1fr);
+               gap:20px 20px;
 
-                & div{
-                    width: 100%;
-                }
+               & div{
+                   height: 50px;
 
-                & .qiuqiu{
-                    padding: 10px 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-around;
+                   & div{
+                       display: flex;
+                       align-items: center;
+                       justify-content: center;
+                   }
 
-                    & div{
-                        width: 13px;
-                        height: 13px;
-                        border-radius: 13px;
-                    }
-                }
+                   & .img{
+                       height: 30px;
+                       
+                       & img{
+                           width: 30px;
+                           height: 30px;
+                       }
+                   }
+                   & .text{
+                       height: 20px;
+                   }
+               }
+           }
 
-                & .xinxi{
-                    height: 70px;
-                    margin-bottom: 10px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-wrap: wrap;
+           & .main{
+               margin: 0 5px;
+               background-color: white;
+               border-radius: 5px;
 
-                    & img{
-                        width: 50px;
-                        height: 30px;
-                    }
-                }
+               & .title_wrap{
+                   width: 100%;
+                   height: 150px;
 
-                & .mt-20{
-                    margin-top: 20px;
-                }
+                   & div{
+                       float: left;
+                   }
 
-                & .mb-55{
-                    margin-bottom: 55px;
-                }
+                   & .left-b{
+                       width: 50%;
+                       height: 20%;
+                       display: flex;
+                       align-items: center;
+                       justify-content: space-around;
+                   }
 
-                & .diandian{
-                    height: 30px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-around;
+                   & .right-b{
+                       width: 50%;
+                       height: 20%;
+                       
+                   }
 
-                    & div{
-                        width: 3px;
-                        height: 3px;
-                        border-radius: 3px;
-                        background-color: white;
-                    }
-                }
-            }
+                   & .center-b{
+                       width: 100%;
+                       height: 80%;
+                       min-width: 100%;
 
-            & .main{
-                width: 295px;
-                height: 100%;
-                background-color: blueviolet;
-            }
-            
+                       & div{
+                           width: 80px;
+                           height: 100%;
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           flex-wrap: wrap;
+
+                           & img{
+                               width: 80px;
+                               height: 70px;
+                           }
+                       }
+                   }
+
+               }
+           }
         }
         
     }

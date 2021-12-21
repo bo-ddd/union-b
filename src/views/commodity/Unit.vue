@@ -11,13 +11,13 @@
     </div>
     <div class="table">
       <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}" size='small'>
-        <el-table-column prop="ord" label="序号">
+        <el-table-column prop="id" label="序号">
         </el-table-column>
         <el-table-column prop="title" label="单位名称">
         </el-table-column>
-        <el-table-column prop="cid" label="类目">
+        <el-table-column prop="categoryTitle" label="类目">
         </el-table-column>
-        <el-table-column prop="storeId" label="店铺">
+        <el-table-column prop="storeTitle" label="店铺">
         </el-table-column>
         <el-table-column  label="排序">
           <template slot-scope="scope">
@@ -33,7 +33,7 @@
         </el-table-column>
       </el-table>
        <div class="block">
-        <el-pagination :current-page="currentPage"  @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        <el-pagination :current-page="currentPage" 
           :page-sizes="[10, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
         </el-pagination>
       </div>
@@ -43,10 +43,10 @@
         <el-form-item label="单位名称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="单位类型" :label-width="formLabelWidth">
+        <el-form-item label="类目" :label-width="formLabelWidth">
           <el-input v-model="form.type" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="单位来源" :label-width="formLabelWidth">
+        <el-form-item label="店铺" :label-width="formLabelWidth">
           <el-input v-model="form.source" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -144,25 +144,6 @@ export default {
             })
             .catch(_ => {console.log(_);});
         },
-        handleSizeChange(val) {
-          this.pageSize = val;
-          this.handleCurrentChange(1);
-        },
-        /**
-         * @description 分页的当前页有多少条
-         * **/
-        handleCurrentChange(val) {
-          this.cacheExport = this.multipleSelection;
-          let arr = [];
-          for (
-            let i = val * this.pageSize - this.pageSize;
-            i < val * this.pageSize;
-            i++
-          ) {
-            if (this.tableData[i] != undefined) arr.push(this.tableData[i]);
-          }
-          this.table = arr;
-        },
         async submit(){
           this.dialogFormVisible = false;
           let res = await this.createUnitlibrary({
@@ -171,6 +152,7 @@ export default {
             storeId:Number(this.form.source)
           });
           console.log(res);
+          this.form = [];
           this.List();
         },
         async List(){
@@ -178,12 +160,10 @@ export default {
             pagination:true,
           })
           console.log(res);
-          this.tableData = res.data.rows;
-          console.log(this.tableData);
+        this.tableData = res.data.rows;
         }
       },
       created(){
-        this.handleSizeChange(10);
         this.List();
       }
 }

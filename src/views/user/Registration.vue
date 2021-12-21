@@ -114,6 +114,10 @@ export default {
            phone:this.form.phone
         })
         console.log(res);
+        this.$message({
+          type:"warning",
+          message:`${res.msg}`
+        })
       }
     }
   }

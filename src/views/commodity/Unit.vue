@@ -10,14 +10,14 @@
       </div>
     </div>
     <div class="table">
-      <el-table :data="table" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}" size='small'>
-        <el-table-column prop="Serial_number" label="序号">
+      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}" size='small'>
+        <el-table-column prop="ord" label="序号">
         </el-table-column>
-        <el-table-column prop="Unit_name" label="单位名称">
+        <el-table-column prop="title" label="单位名称">
         </el-table-column>
-        <el-table-column prop="Unit_type" label="单位类型">
+        <el-table-column prop="cid" label="类目">
         </el-table-column>
-        <el-table-column prop="Unit_source" label="单位来源">
+        <el-table-column prop="storeId" label="店铺">
         </el-table-column>
         <el-table-column  label="排序">
           <template slot-scope="scope">
@@ -75,14 +75,7 @@ export default {
             type:'',
             source:''
           },
-          tableData: [{
-            Serial_number: '1',
-            Unit_name: '1件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用' 
-          }],
+          tableData: [],
            options: [{
           value: '选项1',
           label: '序号'
@@ -105,28 +98,28 @@ export default {
           this.mySort(this.table);
         },
         //上调
-        raise(id){
-          if (id == 1) return;
+        raise(Serial_number){
+          if (Serial_number == 1) return;
           this.tableData.forEach(item=>{
-            if(item.Serial_number == id-1){
-              item.Serial_number = id;
+            if(item.id == Serial_number-1){
+              item.id = Serial_number;
               return;
             }
-            if(item.Serial_number == id){
-              item.Serial_number = id-1;
+            if(item.id == Serial_number){
+              item.id = Serial_number-1;
             }
           })
           this.mySort(this.table);
         },
         //下调
-        Down(id){
+        Down(Serial_number){
           this.tableData.forEach(item=>{
-            if (item.Serial_number == Number(id)+1) {
-                item.Serial_number = id;
+            if (item.id == Number(Serial_number)+1) {
+                item.id = Serial_number;
                 return;
             }
-            if (item.Serial_number == id) {
-                item.Serial_number = Number(id)+1;
+            if (item.id == Serial_number) {
+                item.id = Number(Serial_number)+1;
             }
           })
            this.mySort(this.table);
@@ -138,8 +131,8 @@ export default {
         //排序
         mySort(tableData){
             tableData.sort((a,b)=>{
-            var num1 = a.Serial_number;
-            var num2 = b.Serial_number;
+            var num1 = a.id;
+            var num2 = b.id;
             return num1-num2;
           })
         },
@@ -183,12 +176,10 @@ export default {
         async List(){
           let res = await this.getUnitlibraryList({
             pagination:true,
-          //  * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
-          //  * pageNum   [number]    每页多少条数据  默认是10条
-          //  * pageSize  [number]    这是第几页      默认是第1页
           })
-         let list = res.data.rows;
-         this.tableData.push(list);
+          console.log(res);
+          this.tableData = res.data.rows;
+          console.log(this.tableData);
         }
       },
       created(){

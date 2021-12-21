@@ -1,14 +1,13 @@
 <template>
   <div class="wrap">
-       <el-table
+ <el-table
     :data="tableData"
     style="width: 100%"
-    max-height="450">
+   >
     <el-table-column
-      fixed
       prop="date"
-      label="阅读/点赞数"
-      width="150">
+      label="创建日期"
+      width="300">
     </el-table-column>
     <el-table-column
       prop="name"
@@ -16,34 +15,13 @@
       width="300">
     </el-table-column>
     <el-table-column
-      prop="province"
-      label="类别名称"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="city"
-      label="付费模式"
-      width="120">
-    </el-table-column>
-    <el-table-column
       prop="address"
-      label="创建时间"
-      width="300">
+      label="文章内容">
     </el-table-column>
-    <el-table-column
-      prop="zip"
-      label="版权内容"
-      width="300">
-    </el-table-column>
-    <el-table-column
-      prop="zip"
-      label="排序"
-      width="120">
-    </el-table-column>
-    <el-table-column
+     <el-table-column
       fixed="right"
       label="操作"
-      width="300">
+      width="200">
       <template slot-scope="scope">
         <el-button class="button"
           @click.native.prevent="deleteRow(scope.$index, tableData)"
@@ -60,71 +38,30 @@
       </template>
     </el-table-column>
   </el-table>
-
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
   export default {
+   created(){
+     this.list();
+    },
     methods: {
-      deleteRow(index, rows) {
+      ...mapActions(["getArticleList"]),
+      async list(){
+        let allList = await this.getArticleList();
+        console.log(allList);
+      },
+        deleteRow(index, rows) {
         rows.splice(index, 1);
       }
     },
     data() {
       return {
-        tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }]
+        tableData:[]
       }
-    }
+    },
   }
 </script>
 
@@ -132,11 +69,6 @@
 .wrap{
     padding: 20px;
 }
-.button{
-    color: #ff4070;
 
-}
-.button:hover{
-    color: #ff4070;
-}
+
 </style>

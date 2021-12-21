@@ -20,11 +20,14 @@
   </el-input>
 <div class="block" style="margin-top:10px">
   <span class="demonstration"></span>
-  <el-cascader
-  size="small"
-    v-model="value"
-    :options="options"
-    @change="handleChange"></el-cascader>
+ <el-cascader ref="cascader" v-model="addrCode" :options="options" :props="{ checkStrictly: true, expandTrigger: 'hover', emitPath: false }">
+      <template slot-scope="{ node, data }">
+        <div @click="cascaderClick(data)">
+          <span>{{ data.title }}</span>
+          <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+        </div>
+      </template>
+    </el-cascader>
 </div>
   </div>
    <el-select slot="reference" v-model="value"  size="small" style="width:100%">
@@ -133,7 +136,7 @@
 </el-form>
         </div>
         <div class="footer">
-            <el-button type="danger" class="submit" size="small" @click="submit">确定</el-button>
+            <el-button type="primary" class="submit" size="small" @click="submit">确定</el-button>
         </div>
      </div>
   </div>
@@ -144,6 +147,8 @@ import {mapActions} from "vuex"
 export default {
  data() {
       return {
+        pid:'',
+        addrCode: undefined,
          dialogImageUrl: '',
         dialogVisible: false,
         radio1:'1',
@@ -151,16 +156,16 @@ export default {
         radio3:'1',
           radio4:'1',
         radio5:'1',
-        value:'',
         ruleForm: {
           name:'',
           pid:''
         },
+        value:'',
          options: []
       };
     },
     methods: {
-      ...mapActions(["createCategory"]),
+      ...mapActions(["createCategory","getCategoryList"]),
         handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -169,12 +174,38 @@ export default {
         this.dialogVisible = true;
       },
      async submit(){
-       let res = await this.createCategory({
-         title:this.ruleForm.name,
-         pid:null
-       })
-       console.log(res)
+       console.log(this.ruleForm.name)
+       console.log(this.ruleForm.pid)
+      //  let res = await this.createCategory({
+      //    title:this.ruleForm.name,
+      //    pid:null
+      //  })
+      //  console.log(res)
       },
+      async getClassifyInfo(){
+        let res = await this.getCategoryList({});
+       let data =res.data.rows;
+       let target = this.format(data)
+       this.options = target
+      },
+        format(target){
+       let childrenIndex = 1;
+       let parentIndex = 1;
+     let res = target.slice();
+     res.forEach(item=>{
+       item.children = [];
+           let p = res.find((el) => el.id == item.pid);
+           if(item.pid){
+             item.childIndex = childrenIndex++ 
+             item.association = '规格' 
+             p.children.push(item)
+           }else{
+             item.pIndex = parentIndex++
+           }
+            item.category = p ? p.category + "=>" + item.title : item.title;
+     })
+     return res.filter(el => el.pid === null)
+  },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -185,16 +216,32 @@ export default {
           }
         });
       },
-      handleChange(){
-        console.log('a')
+      handleChange(val){
+        console.log(val)
       },
       handleChanges(){
         console.log('b')
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      }
-    }
+      },
+        cascaderClick (nodeData) {
+      this.addrCode = nodeData.title;
+      this.ruleForm.pid = nodeData.id || nodeData.pid
+      this.$refs.cascader.checkedValue = nodeData.title;
+      this.$refs.cascader.computePresentText();
+      this.$refs.cascader.toggleDropDownVisible(false);
+       this.$message({
+        message: '已选择：' + nodeData.title,
+        type: 'success',
+        duration: 1000
+      });
+     
+    },
+  },
+    created(){
+      this.getClassifyInfo()
+    },
 }
 </script>
 
@@ -229,4 +276,5 @@ export default {
 .classify-img,.poster-classify{
   margin-bottom: 0 !important;
 }
+
 </style>

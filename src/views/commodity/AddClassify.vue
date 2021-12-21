@@ -20,11 +20,14 @@
   </el-input>
 <div class="block" style="margin-top:10px">
   <span class="demonstration"></span>
-  <el-cascader
-  size="small"
-    v-model="value"
-    :options="options"
-    @change="handleChange"></el-cascader>
+ <el-cascader ref="cascader" v-model="addrCode" :options="options" :props="{ checkStrictly: true, expandTrigger: 'hover', emitPath: false }">
+      <template slot-scope="{ node, data }">
+        <div @click="cascaderClick(data)">
+          <span>{{ data.title }}</span>
+          <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+        </div>
+      </template>
+    </el-cascader>
 </div>
   </div>
    <el-select slot="reference" v-model="value"  size="small" style="width:100%">
@@ -53,16 +56,13 @@
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
-      <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
-  list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
-  <i class="el-icon-plus"></i>
-</el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
-</el-dialog>
+     <div>
+       <input type="file" name="file" id="file" ref="file">
+       <div class="img">
+         <img :src="src" alt="">
+       </div>
+       <el-button @click="upImg">上传</el-button>
+     </div>
   </el-form-item>
 
 </el-form>
@@ -133,7 +133,7 @@
 </el-form>
         </div>
         <div class="footer">
-            <el-button type="danger" class="submit" size="small" @click="submit">确定</el-button>
+            <el-button type="primary" class="submit" size="small" @click="submit">确定</el-button>
         </div>
      </div>
   </div>
@@ -144,6 +144,9 @@ import {mapActions} from "vuex"
 export default {
  data() {
       return {
+        src:'',
+        pid:'',
+        addrCode: undefined,
          dialogImageUrl: '',
         dialogVisible: false,
         radio1:'1',
@@ -151,17 +154,17 @@ export default {
         radio3:'1',
           radio4:'1',
         radio5:'1',
-        value:'',
         ruleForm: {
           name:'',
           pid:''
         },
+        value:'',
          options: []
       };
     },
     methods: {
-      ...mapActions(["createCategory"]),
-        handleRemove(file, fileList) {
+      ...mapActions(["createCategory","getCategoryList","uploadImage"]),
+      handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
@@ -169,11 +172,21 @@ export default {
         this.dialogVisible = true;
       },
      async submit(){
+      //  console.log(this.ruleForm.name)
+      //  console.log()
+      //  console.log(this.src)
        let res = await this.createCategory({
          title:this.ruleForm.name,
-         pid:null
+         pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+         category:this.src
+
        })
        console.log(res)
+      },
+      async getClassifyInfo(){
+        let res = await this.getCategoryList({});
+       let data =res.data.rows.slice();
+       this.options = data
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -185,16 +198,40 @@ export default {
           }
         });
       },
-      handleChange(){
-        console.log('a')
+      handleChange(val){
+        console.log(val)
       },
       handleChanges(){
         console.log('b')
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      }
+      },
+      cascaderClick (nodeData) {
+      this.addrCode = nodeData.title;
+      this.ruleForm.pid = nodeData.id || nodeData.pid
+      this.$refs.cascader.checkedValue = nodeData.title;
+      this.$refs.cascader.computePresentText();
+      this.$refs.cascader.toggleDropDownVisible(false);
+       this.$message({
+        message: '已选择：' + nodeData.title,
+        type: 'success',
+        duration: 1000
+      });
+     
+    },
+   async upImg(){
+       let formData = new FormData();
+       formData.append('file',document.getElementById('file').files[0]);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
+        console.log(res.data)
+        this.src=res.data
     }
+  },
+    created(){
+      this.getClassifyInfo();
+    },
 }
 </script>
 
@@ -228,5 +265,24 @@ export default {
 }
 .classify-img,.poster-classify{
   margin-bottom: 0 !important;
+}
+::v-deep .file{
+  & .el-input__inner{
+    border: none;
+  }
+}
+.img{
+  width: 150px;
+  height: 150px;
+  border: 1px dashed #c0ccda;
+  border-radius:6px ;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > img{
+    width: 90%;
+    height: 90%;
+  }
 }
 </style>

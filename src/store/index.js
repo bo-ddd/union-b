@@ -46,20 +46,36 @@ export default new Vuex.Store({
         userLogout(ctx, payload) {
             return Api.userLogout(payload);
         },
+        //修改密码
+        userUpdatePwd(ctx, payload) {
+            return Api.userUpdatePwd(payload);
+        },
+        //上传图片接口
+        uploadImage(ctx, payload) {
+            return Api.uploadImage(payload);
+        },
 
 
         //商品管理
+        //商品管理列表接口
+        getProductList(ctx, payload) {
+            return Api.getProductList(payload);
+        },
         //商品类目接口
         getCategoryList(ctx, payload) {
             return Api.getCategoryList(payload);
+        },
+        //添加类目接口
+        createCategory(ctx, payload) {
+            return Api.createCategory(payload);
         },
         //类目规格接口
         getSpecificationList(ctx, payload) {
             return Api.getSpecificationList(payload);
         },
-        //添加类目接口
-        createCategory(ctx, payload) {
-            return Api.createCategory(payload);
+        //添加规格接口
+        createSpecification(ctx, payload) {
+            return Api.createSpecification(payload);
         },
         //添加商品接口
         createProduct(ctx, payload) {
@@ -68,6 +84,10 @@ export default new Vuex.Store({
         //商品属性接口
         getAttributeList(ctx, payload) {
             return Api.getAttributeList(payload);
+        },
+        //商品属性接口
+        createAttribute(ctx, payload) {
+            return Api.createAttribute(payload);
         },
         //商品单位接口
         getUnitlibraryList(ctx, payload) {
@@ -120,6 +140,18 @@ export default new Vuex.Store({
         createArticle(ctx, payload) {
             return Api.createArticle(payload);
         },
+        //导航列表接口
+        getNavList(ctx, payload) {
+            return Api.getNavList(payload);
+        },
+        //新增导航展示
+        createNav(ctx, payload) {
+            return Api.createNav(payload);
+        },
+        //删除导航展示
+        deleteNav(ctx, payload) {
+            return Api.deleteNav(payload);
+        },
 
 
         //订单管理
@@ -131,6 +163,43 @@ export default new Vuex.Store({
         getOrderDetail(ctx, payload) {
             return Api.getOrderDetail(payload);
         },
+        //订单状态接口
+        getOrderStatusList(ctx, payload) {
+            return Api.getOrderStatusList(payload);
+        },
+        //支付方式接口
+        getPaymentList(ctx, payload) {
+            return Api.getPaymentList(payload);
+        },
+
+        //系统设置
+        //意见反馈接口
+        getOpinionList(ctx, payload) {
+            return Api.getOpinionList(payload);
+        },
+        //新增文章接口
+        createOpinion(ctx, payload) {
+            return Api.createOpinion(payload);
+        },
+
+        //商户管理
+        //商户入驻接口
+        createSettled(ctx, payload) {
+            return Api.createSettled(payload);
+        },
+        //同意申请接口
+        settledAdopt(ctx, payload) {
+            return Api.settledAdopt(payload);
+        },
+        //拒绝申请接口
+        settledRefuse(ctx, payload) {
+            return Api.settledRefuse(payload);
+        },
+        //商户申请列表接口
+        getSettledList(ctx, payload) {
+            return Api.getSettledList(payload);
+        },
+
     },
     modules: {}
 })

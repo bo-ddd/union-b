@@ -24,7 +24,7 @@
           @change="handleChange"></el-cascader>
       </div>
       <div class="chaxun">
-        <el-button type="primary">查询</el-button>
+        <el-button type="primary" @click="filter">查询</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -50,22 +50,22 @@
         <div>
           <h6>商品类目销量前10名</h6>
           <el-table border :data="tableData" stripe size="small">
-            <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
-            <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
+            <el-table-column prop="categoryTitle" label="商品名称" align="center"> </el-table-column>
+            <el-table-column prop="count" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
         <div>
           <h6>商品数量销量前10名</h6>
-          <el-table border :data="tableData" stripe size="small">
-            <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
-            <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
+          <el-table border :data="tableData1" stripe size="small">
+            <el-table-column prop="categoryTitle" label="商品名称" align="center"> </el-table-column>
+            <el-table-column prop="price" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
         <div>
           <h6>商品店铺销量前10名</h6>
-          <el-table border :data="tableData" stripe size="small">
+          <el-table border :data="tableData2" stripe size="small">
             <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
@@ -73,7 +73,7 @@
         </div>
         <div>
           <h6>快递小哥配送前10名</h6>
-          <el-table border :data="tableData" stripe size="small">
+          <el-table border :data="tableData3" stripe size="small">
             <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
@@ -86,9 +86,11 @@
 
 <script>
 import * as echarts from "echarts";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      ...mapActions(["getRankingData"]),
       options: [{
           value: 'zhinan',
           label: '指南',
@@ -123,17 +125,20 @@ export default {
       value:"",
       value1:"",
       tableData: [
-        { name: "牛奶", date: "100", address: "1" },
-        { name: "啤酒", date: "98", address: "2" },
-        { name: "手机", date: "95", address: "3" },
-        { name: "电视机", date: "89", address: "4" },
-        { name: "洗衣机", date: "86", address: "5" },
-        { name: "冰箱", date: "83", address: "6" },
-        { name: "空调", date: "80", address: "7" },
-        { name: "自行车", date: "50", address: "8" },
-        { name: "窗帘", date: "30", address: "9" },
-        { name: "毛衣", date: "29", address: "10" },
+        // { name: "牛奶", date: "100", address: "1" },
+        // { name: "啤酒", date: "98", address: "2" },
+        // { name: "手机", date: "95", address: "3" },
+        // { name: "电视机", date: "89", address: "4" },
+        // { name: "洗衣机", date: "86", address: "5" },
+        // { name: "冰箱", date: "83", address: "6" },
+        // { name: "空调", date: "80", address: "7" },
+        // { name: "自行车", date: "50", address: "8" },
+        // { name: "窗帘", date: "30", address: "9" },
+        // { name: "毛衣", date: "29", address: "10" },
       ],
+      tableData1:[],
+      tableData2:[],
+      tableData3:[],
     };
   },
   methods: {
@@ -151,7 +156,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
-            center: ["40%","50%"],
+            center: ["40%","60%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -187,7 +192,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
-            center: ["40%","50%"],
+            center: ["40%","60%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -224,7 +229,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
-            center: ["40%","50%"],
+            center: ["40%","60%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -318,35 +323,53 @@ export default {
     },
     handleChange(){
 
+    },
+    filter(){
+      console.log(this.value1);
+      console.log(1);
+      console.log(this.value);
+    },
+    async fn(){
+      let res = await this.getRankingData();
+      if(res.status == 1){
+        console.log(res.data);
+        this.tableData = res.data.categoryRanking;
+        this.tableData1 = res.data.productRanking;
+        console.log(this.tableData);
+        console.log(this.tableData1);
+      }else{
+        console.log("获取失败!");
+      }
     }
   },
-  mounted() {
+  async mounted() {
     this.drawnBar();
+    console.log(await this.fn());
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .warp {
-  min-width: 90%;
+  min-width: 1100px;
   height: 80vh;
 }
-::v-deep .el-input__inner,
-.filter .el-input{
-  height: 55%;
-}
-::v-deep .el-date-editor .el-range__icon,::v-deep .el-date-editor .el-range-separator{
-  line-height: 150%;
-}
-::v-deep .el-cascader .el-input .el-input__inner{
-  padding: 1.24% 5% 1.24% 3%;
-}
+// ::v-deep .el-input__inner,
+// .filter .el-input{
+//   height: 55%;
+// }
+// ::v-deep .el-date-editor .el-range__icon,::v-deep .el-date-editor .el-range-separator{
+//   line-height: 150%;
+// }
+// ::v-deep .el-cascader .el-input .el-input__inner{
+//   padding: 1.24% 5% 1.24% 3%;
+// }
 .class {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1%;
   & .fen {
-    background: #e7536b;
+    background: #409EFF;
     padding: 5% 3.5%;
     border-radius: 5px;
     color: white;
@@ -356,11 +379,7 @@ export default {
     align-items: center;
   }
 }
-.el-button--primary{
-    color: #FFF;
-    background-color: #e7536b;
-    border-color: #e7536b;
-}
+
 .type {
   height: 25vh;
 }
@@ -386,9 +405,9 @@ export default {
     height: 100%;
   }
 }
-::v-deep .el-cascader,::v-deep .el-cascader>.el-input{
-  height: 100%;
-}
+// ::v-deep .el-cascader,::v-deep .el-cascader>.el-input{
+//   height: 100%;
+// }
 ::v-deep .el-cascader>.el-input{
   display: flex;
   align-items: center;

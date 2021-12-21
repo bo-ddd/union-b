@@ -36,7 +36,7 @@
                         </div>
                         <span>{{userInfo.avatorName}}</span>
                     </div>
-                    <el-button type="primary" plain size='small' @click="logout">退出登录</el-button>
+                    <el-link type="primary" plain size='small' @click="logout" :underline="false">退出登录</el-link>
                 </div>
             </el-header>
             <el-main>

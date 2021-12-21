@@ -63,9 +63,7 @@
           >
           <el-button size="small">批量下架</el-button>
           <el-button size="small">批量上架</el-button>
-          <el-button size="small" @click="MultipleRemove()"
-            >批量删除</el-button
-          >
+          <el-button size="small" @click="MultipleRemove()">批量删除</el-button>
         </div>
       </div>
       <div>
@@ -77,6 +75,7 @@
           stripe
           size="small"
           @select="checkBoxData"
+          @selection-change="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
@@ -291,7 +290,7 @@ export default {
         },
       ],
       deleteDataArr: [],
-      deleteDataArr1: [],
+      
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
@@ -602,12 +601,20 @@ export default {
       });
     },
     MultipleRemove() {
-      this.deleteDataArr1.forEach((item) => {
+      this.deleteDataArr.forEach((item) => {
         this.tableData.splice(this.tableData.indexOf(item), 1);
       });
     },
     checkBoxData: function (selection) {
-      this.deleteDataArr1 = selection;
+      this.deleteDataArr = selection;
+    },
+    handleSelectionChange(val) {
+      console.log(val);
+      if (val) {
+        this.deleteDataArr = val;
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
     },
   },
 };

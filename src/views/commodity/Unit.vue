@@ -258,6 +258,7 @@ export default {
         }
       },
       methods: {
+        //  ...mapActions(["delete"]),
         //置顶
         Topping(index){
           var arr = this.table.splice(index,1);
@@ -330,10 +331,11 @@ export default {
           }
           this.table = arr;
         },
-        submit(){
-          this.dialogFormVisible=false
-          console.log(this.form);
-        }
+        // async submit(){
+        //   this.dialogFormVisible=false;
+        //   let res = await this. 
+        //   console.log(this.form);
+        // }
       },
       created(){
         this.handleSizeChange(10);

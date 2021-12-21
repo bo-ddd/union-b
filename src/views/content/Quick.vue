@@ -156,7 +156,7 @@ h3{
     text-align: center;
 }
 ::v-deep .el-dialog{
-    width: 25%;
+    width: 30%;
     padding: 20px;
 }
 // 模态框中的标题样式
@@ -176,7 +176,7 @@ h3{
         display: flex;
         align-items: center;
         & .aaa{
-            width: 70px;
+            width: 30%;
             & div{
                 float: right;
             }
@@ -187,6 +187,7 @@ h3{
             }
         }
         & .bbb{
+            width: 70%;
             margin-left: 20px;
         }
         & .ddd{
@@ -238,10 +239,13 @@ export default {
             address: "上海市普陀区金沙江路 1516 弄",
             },
             ],
+            // 模态框显示的状态
             dialogFormVisible: false,
             name : '',
             restaurants: [],
-            state: ''
+            state: '',
+            dialogVisible : true,
+            dialogImageUrl : '',
         };
     },
     methods: {
@@ -250,6 +254,7 @@ export default {
             console.log(file, fileList);
         },
         handlePictureCardPreview(file) {
+            console.log(file.url);
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
         },

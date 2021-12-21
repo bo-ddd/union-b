@@ -398,6 +398,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
       return {
@@ -452,6 +453,7 @@ export default {
       };
     },
     methods: {
+      ...mapActions(["createLable"]),
       handleClose(tag) {
         this.management.splice(this.management.indexOf(tag), 1);
       },
@@ -742,6 +744,10 @@ export default {
         this.inputVisibles14 = false;
         this.inputValues14 = '';
       },
+    },
+    async created() {
+      // let res = await this.createLable();
+      // console.log(res);
     }
 }
 </script>

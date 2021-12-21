@@ -50,6 +50,10 @@ export default new Vuex.Store({
         userUpdatePwd(ctx, payload) {
             return Api.userUpdatePwd(payload);
         },
+        //上传图片接口
+        uploadImage(ctx, payload) {
+            return Api.uploadImage(payload);
+        },
 
 
         //商品管理
@@ -143,6 +147,26 @@ export default new Vuex.Store({
         getOrderDetail(ctx, payload) {
             return Api.getOrderDetail(payload);
         },
+        //订单状态接口
+        getOrderStatusList(ctx, payload) {
+            return Api.getOrderStatusList(payload);
+        },
+        //支付方式接口
+        getPaymentList(ctx, payload) {
+            return Api.getPaymentList(payload);
+        },
+
+        //系统设置
+        //意见反馈接口
+        getOpinionList(ctx, payload) {
+            return Api.getOpinionList(payload);
+        },
+        //新增文章接口
+        createOpinion(ctx, payload) {
+            return Api.createOpinion(payload);
+        },
+
+
     },
     modules: {}
 })

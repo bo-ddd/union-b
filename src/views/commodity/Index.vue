@@ -8,7 +8,7 @@
               :inline="true"
               :model="formInline"
               class="demo-form-inline"
-              size="small"
+            
             >
               <el-form-item label="商品状态">
                 <el-select v-model="value" filterable placeholder="请选择">
@@ -53,17 +53,17 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="primary" size="small">查询</el-button>
-            <el-button size="small" type="primary">重置</el-button>
+            <el-button type="primary">查询</el-button>
+            <el-button type="primary">重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
-          <el-button type="primary" size="small" @click="skip"
+          <el-button type="primary"  @click="skip"
             >+ 新增商品</el-button
           >
-          <el-button size="small" type="primary">批量下架</el-button>
-          <el-button size="small" type="primary">批量上架</el-button>
-          <el-button size="small" @click="MultipleRemove()" type="primary"
+          <el-button type="primary">批量下架</el-button>
+          <el-button  type="primary">批量上架</el-button>
+          <el-button  @click="MultipleRemove()" type="primary"
             >批量删除</el-button
           >
         </div>
@@ -75,7 +75,7 @@
           tooltip-effect="dark"
           style="width: 100%"
           stripe
-          size="small"
+         
           @select="checkBoxData"
           @selection-change="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
@@ -110,17 +110,17 @@
               <el-link
                 type="primary"
                 class="edit"
-                size="small"
+              
                 @click="getCommodityDat(scope)"
                 >编辑</el-link
               >
-              <el-link type="warning" class="off_the_shelf" size="small"
+              <el-link type="warning" class="off_the_shelf" 
                 >下架</el-link
               >
               <el-link
                 type="danger"
                 class="delete"
-                size="small"
+             
                 @click="remove([scope.$index])"
                 >删除</el-link
               >
@@ -145,10 +145,10 @@
       </div>
       <el-dialog
         title="编辑商品"
-        :visible.sync="dialogFormVisible"
+        :visible.sync="dialogFormVisible" 
         class="modify_information"
       >
-        <el-form :model="form" size="small">
+        <el-form :model="form">
           <el-form-item label="商品名称" :label-width="formLabelWidth">
             <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-form-item>
@@ -172,14 +172,14 @@
         <div slot="footer" class="dialog-footer">
           <el-button
             @click="dialogFormVisible = false"
-            size="small"
+        
             type="primary"
             >取 消</el-button
           >
           <el-button
             type="primary"
             @click="dialogFormVisible = false"
-            size="small"
+         
             >确 定</el-button
           >
         </div>
@@ -188,7 +188,6 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
 export default {
   /**
    * author: syh
@@ -657,14 +656,29 @@ export default {
       num: "",
     };
   },
+  watch:{
+    table:{
+      handler(newVal,oldVal){
+       console.log('我是新值');
+       console.log(newVal);
+       console.log('我是老值');
+       console.log(oldVal);
+        if(newVal !=oldVal){
+          console.log('值已经改变');
+          this.table = newVal;
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
   methods: {
-    ...mapActions(["createProduct"]),
     handleSizeChange(val) {
       this.pageSize = val;
       this.handleCurrentChange(1);
     },
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`);
       this.pageNum = val;
       this.offSize();
     },
@@ -699,8 +713,9 @@ export default {
     MultipleRemove() {
       this.deleteDataArr.forEach((item) => {
         this.table.splice(this.table.indexOf(item), 1);
-        // this.tableData.splice(this.tableData.indexOf(item),1)
+        this.tableData.splice(this.tableData.indexOf(item),1)
       });
+      console.log(this.tableData);
     },
     checkBoxData: function (selection) {
       this.deleteDataArr = selection;
@@ -715,7 +730,7 @@ export default {
     },
   },
   created() {
-    this.handleSizeChange(10);
+    this.table = this.tableData;
   },
 };
 </script>

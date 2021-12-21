@@ -35,15 +35,18 @@
         <el-dialog title="添加规格" :visible.sync="dialogaddFormVisible">
           <el-form :model="form1">
             <el-form-item label="规格名称" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="form1.title" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="备注" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="form1.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="类目id" :label-width="formLabelWidth">
+              <el-input v-model="form1.cid" autocomplete="off"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogaddFormVisible = false"
+            <el-button type="primary" @click="addspecification(),dialogaddFormVisible=false"
               >确 定</el-button
             >
           </div>
@@ -61,16 +64,11 @@
       >
         <el-table-column :data="arr" type="selection" align="center">
         </el-table-column>
-        <el-table-column       
-          label="id"
-          align="center"
-          prop="id"
-          sortable
-        >
+        <el-table-column label="id" align="center" prop="id" sortable>
         </el-table-column>
         <el-table-column
           label="规格名称"
-          align="center"          
+          align="center"
           prop="title"
           show-overflow-tooltip
           sortable
@@ -209,7 +207,11 @@ export default {
         resource: "",
         desc: "",
       },
-      form1:{},
+      form1: {
+        title: "",
+        cid: "",
+        name: "",
+      },
       dialogFormVisible: false,
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
@@ -217,7 +219,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getSpecificationList"]),
+    ...mapActions(["getSpecificationList", "createSpecification"]),
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -237,8 +239,10 @@ export default {
       console.log(`当前页: ${val}`);
     },
     //添加规格
-    addspecification() {
-      console.log("添加成功");
+    async addspecification() {
+      let createspe = await this.createSpecification();
+      createspe.data = this.form1;
+      console.log(createspe);
     },
     //批量删除
     MultipleRemove() {
@@ -263,7 +267,7 @@ export default {
     },
   },
   async created() {
-    let res = await this.getSpecificationList({});
+    let res = await this.getSpecificationList();
     console.log(res);
     this.count = res.data.count;
     this.pageCount = res.data.pageCount;
@@ -336,7 +340,7 @@ export default {
   text-indent: 16px;
   border-radius: 5px;
 }
-.sel{
+.sel {
   width: 120px;
 }
 .cell1 {

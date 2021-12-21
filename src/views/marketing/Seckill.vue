@@ -34,14 +34,14 @@
           </div>
         </div>
         <div class="content_header-right">
-          <el-button size='small'>查询</el-button>
-          <el-button size='small'>重置</el-button>
+          <el-button type="primary" size='small'>查询</el-button>
+          <el-button type="primary" size='small'>重置</el-button>
         </div>
       </div>
       <div class="content_center">
-        <el-button size='small'>+新增秒杀</el-button>
-        <el-button size='small'>批量终止</el-button>
-        <el-button size='small'>批量删除</el-button>
+        <el-button type="primary" size='small'>+新增秒杀</el-button>
+        <el-button type="primary" size='small'>批量终止</el-button>
+        <el-button type="primary" size='small'>批量删除</el-button>
       </div>
       <div class="table">
           <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" size='small' style="width: 100%">

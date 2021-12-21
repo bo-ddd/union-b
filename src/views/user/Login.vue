@@ -149,10 +149,12 @@ export default {
       console.log(res);
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
+        this.$message.success(res.msg);
         this.$router.push({
           path: "/",
         });
       } else {
+        this.$message.error(res.msg);
         this.generatorCaptcha();
       }
       if (res.status == 0) {
@@ -183,12 +185,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 1300px;
-  min-height: 780px;
+  min-width: 1200px;
+  min-height: 500px;
 
   & .main {
     width: 55%;
-    height: 65%;
+    height: 550px;
     background-color: #fff;
     border-radius: 5px;
     display: flex;
@@ -215,7 +217,7 @@ export default {
 
         & .main-top {
           width: 100%;
-          height: 30%;
+          height: 110px;
           display: flex;
           // justify-content: start;
           flex-direction: column;
@@ -236,7 +238,7 @@ export default {
 
         & .main-con {
           width: 100%;
-          height: 50%;
+          height: 195px;
           display: flex;
           justify-content: center;
           flex-direction: column;
@@ -273,7 +275,7 @@ export default {
 
         & .main-foot {
           width: 100%;
-          height: 20%;
+          height: 90px;
           display: flex;
           align-items: center;
 

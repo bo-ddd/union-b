@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <div class="Company">
-       <el-button type="primary" @click="dialogFormVisible = true">新增单位</el-button>
+       <el-button class="testbtn" type="primary" @click="dialogFormVisible = true">新增单位</el-button>
       <div>
           <el-select v-model="value" filterable placeholder="请选择" size='small'> 
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -204,6 +204,11 @@ export default {
 }
 ::v-deep .cell{
   text-align: center;
+}
+.testbtn{
+  border-color: var(--textcolor) !important;
+  background-color: var(--color) !important;
+  color: var(--textcolor) !important;
 }
 .wrap{
   height: calc(100vh - 100px);

@@ -138,6 +138,7 @@
   </div>
 </template>
 <script>
+import {mapActions} from "vuex"
 export default {
     data() {
       return {
@@ -212,9 +213,15 @@ export default {
             text : '山东省',
             label : '山东省',
           }
-        )
+        ),
+        this.getproducts()
     },
     methods: {
+      ...mapActions(["getSuperList"]),
+    async getproducts(){
+      let product=await this.getSuperList();
+      console.log(product);
+     },
         gettext(value){
           console.log(typeof value);
           this.checkedlist.push(value.shift());

@@ -4,13 +4,13 @@
       <div class="palette">
         <div class="title">
           <div class="main-title">Dust Red / 薄暮</div>
-          <span class="description">斗志、奔放</span>
+          <span @click="controlColor" class="description">斗志、奔放</span>
         </div>
         <div class="main-color">
-          <div @click="changeColor('red1')" value="1" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
-          <div @click="changeColor('red2')" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
-          <div @click="changeColor('red3')" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
-          <div @click="changeColor('red4')" class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
+          <div @click="changeColor('red1'),controlColor(1)" value="1" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
+          <div @click="changeColor('red2'),controlColor(2)" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
+          <div @click="changeColor('red3'),controlColor(3)" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
+          <div @click="changeColor('red4'),controlColor(4)" class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
           <div @click="changeColor('red5')" class="main-color-item" style="background-color:#ff4d4f"><span class="main-color-text">red-5</span></div>
           <div @click="changeColor('red6')" class="main-color-item" style="background-color:#f5222d"><span class="main-color-text">red-6</span></div>
           <div @click="changeColor('red7')" class="main-color-item" style="background-color:#cf1322"><span class="main-color-text">red-7</span></div>
@@ -239,7 +239,7 @@ export default {
     getThisVal(data){
       console.log(data)
     },
-       changeColor(num) {
+    changeColor(num) {
       let root = document.querySelector(":root");
       if (num == 'red1') {
         root.style.setProperty("--color", "rgb(255, 241, 240)");
@@ -611,6 +611,10 @@ export default {
         root.style.setProperty("--color", "rgb(82, 3, 57)");
         root.style.setProperty("--textcolor", "rgb(255, 255, 255)");
       }
+    },
+    controlColor(data){
+      window.document.documentElement.setAttribute('data-theme', `primary${data}`);
+      console.log(data)
     }
   }
 }
@@ -618,14 +622,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/theme.scss"; 
-:root{
-  --theme-color_red:#ff4d4f;
-  --theme-color_volcano:#ff7a45;
-  --theme-color_orange:#ffa940;
-  --theme-color_gold:#ffc53d;
-  --theme-color_yellow:#ffec3d;
-  --theme-color_lime:#bae637;
-}
 .warp{
   width: 100%;
   height: calc(100vh - 100px);
@@ -644,11 +640,13 @@ export default {
       margin-left: 5%;
       & .title{
         margin: 0 0 24px;
-        color: #777;
+        // color: #777;
+        @include color_primary($color-primary1);
         font-weight: 500;
         height: 70px;
         font-size: 22px;
         text-align: center;
+        cursor: pointer;
         & .main-title{
           height: 50px;
           line-height: 50px;

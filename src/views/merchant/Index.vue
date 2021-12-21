@@ -13,12 +13,12 @@
             </el-select>
         </div>
         <div>
-            <el-button size='small' type="danger">查询</el-button>
+            <el-button size='small' type="primary">查询</el-button>
             <el-button size='small' plain>重置</el-button>
         </div>
     </div>
     <div class="btnbox">
-        <el-button size='small' icon="el-icon-plus" type="danger" @click="jump">商户入驻</el-button>
+        <el-button size='small' icon="el-icon-plus" type="primary" @click="jump">商户入驻</el-button>
         <el-button size='small' plain>批量删除</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe>

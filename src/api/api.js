@@ -141,6 +141,17 @@ export default {
     getUnitlibraryList(params) {
         return axios.post('/unitlibrary/list', params, postConfig)
     },
+    /**
+     * @description 添加单位接口
+     * @params {
+     * title     : [String]     单位名称 例子:衣服单位为件,
+     * cid       : [Number]     类目标识  类目id
+     * storeId   : [Number]     店铺id 这个单位的来源
+     * } 
+     */
+    createUnitlibrary(params) {
+        return axios.post('/unitlibrary/create', params, postConfig)
+    },
 
 
     //数据中心
@@ -193,6 +204,26 @@ export default {
      */
     getSuperList(params) {
         return axios.post('/superProduct/list', params, postConfig)
+    },
+    /**
+     * @description 标签列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getLableList(params) {
+        return axios.post('/lable/list', params, postConfig)
+    },
+    /**
+     * @description 新增标签接口
+     * @params {
+     * lableName:[string] 必填  '标签的名字'
+     * } 
+     */
+    createLable(params) {
+        return axios.post('/lable/create', params, postConfig)
     },
 
 

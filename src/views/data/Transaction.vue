@@ -276,7 +276,7 @@ export default {
           },
         },
         legend: {
-          data: ["收入", "成本"],
+          data: ["收入", "支出"],
         },
         grid: {
           left: "3%",
@@ -313,7 +313,7 @@ export default {
             data: [320, 302, 341, 374, 390, 450, 420],
           },
           {
-            name: "成本",
+            name: "支出",
             type: "bar",
             stack: "Total",
             label: {

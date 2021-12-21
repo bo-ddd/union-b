@@ -34,7 +34,7 @@
           </div>
           <div class="form_itemLink">
             <div class="itemLinkBox" >
-              <el-link href="http://localhost:8080/login" class="linkData" type="primary">直接登录</el-link>
+              <el-link href="http://localhost:8080/login" class="linkData" type="primary">已有账号，直接登录</el-link>
             </div>
           </div>
           <div class="form_item">

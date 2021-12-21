@@ -50,7 +50,7 @@
             <el-button
               type="primary"
               @click="submit"
-              v-on:keyup.enter="submit"
+              @keyup.enter="submit"
               round
             >
               登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
@@ -82,7 +82,6 @@ export default {
   },
   methods: {
     ...mapActions(["userLogin", "getCaptcha"]),
-
     async generatorCaptcha() {
       // 验证码接口
       this.captchaSrc = await this.getCaptcha();
@@ -169,6 +168,15 @@ export default {
         });
       }
     },
+
+    // 按回车键登录
+    keyDown(e) {
+      // 回车则执行登录方法 enter键的ASCII是13
+      if (e.keyCode === 13) {
+        this.submit(); //登录方法
+      }
+    },
+
     // 跳转到注册页面
     submitregist() {
       this.$router.push({
@@ -176,9 +184,20 @@ export default {
       });
     },
   },
+
   created() {
     // 进页面直接调用验证码
     this.generatorCaptcha();
+  },
+
+  mounted() {
+    // 绑定监听事件
+    window.addEventListener("keydown", this.keyDown);
+  },
+
+  destroyed() {
+    // 销毁事件
+    window.removeEventListener("keydown", this.keyDown, false);
   },
 };
 </script>

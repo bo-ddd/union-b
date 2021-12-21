@@ -8,7 +8,7 @@
           <span class="content">文章标题</span>
           <el-input
             class="input"
-            
+            v-model="articleTitle"
             placeholder="请输入文章标题"
           ></el-input>
           <i type="primary" class="el-icon-warning-outline"></i>
@@ -44,10 +44,9 @@
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            
+            v-model="articleContent"
           >
           </el-input>
-
           <i type="primary" class="el-icon-warning-outline charactar"></i>
           <span class="tipes">请输入文章内容</span>
         </div>
@@ -65,19 +64,39 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      
-       dialogImageUrl: '',
-        dialogVisible: false,
-      radio: "1",
-      redio: "1",
+      authorId:'',
+      articleTitle:'',
+      articleImg:'',
+      articleContent:'',
+      dialogImageUrl: '',
+      dialogVisible: false,
       options:'',
       item:{},
     };
   },
+  async created(){
+    let id =  await this.getUserInfo();
+      this.authorId = id.data.id; 
+  },
    methods: {
+      ...mapActions(["createArticle","getUserInfo"]),
+      async addArticle(){
+        let add = await this.createArticle({
+          articleTitle:this.articleTitle,
+          articleImg:this.articleImg,
+          articleContent:this.articleContent,
+          authorId:this.authorId
+        })
+        console.log(add);
+        // console.log(this.articleTitle);
+        // console.log(this.articleImg);
+        // console.log(this.articleContent);
+        // console.log(this.authorId);
+      },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },

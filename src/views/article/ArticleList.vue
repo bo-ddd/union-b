@@ -3,16 +3,16 @@
  <el-table
     :data="tableData"
     style="width: 100%"
-    :row-class-name="tableRowClassName">
+   >
     <el-table-column
       prop="date"
       label="创建日期"
-      width="450">
+      width="300">
     </el-table-column>
     <el-table-column
       prop="name"
       label="文章标题"
-      width="450">
+      width="300">
     </el-table-column>
     <el-table-column
       prop="address"
@@ -21,7 +21,7 @@
      <el-table-column
       fixed="right"
       label="操作"
-      width="300">
+      width="200">
       <template slot-scope="scope">
         <el-button class="button"
           @click.native.prevent="deleteRow(scope.$index, tableData)"
@@ -42,66 +42,26 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
   export default {
+   created(){
+     this.list();
+    },
     methods: {
-      deleteRow(index, rows) {
+      ...mapActions(["getArticleList"]),
+      async list(){
+        let allList = await this.getArticleList();
+        console.log(allList);
+      },
+        deleteRow(index, rows) {
         rows.splice(index, 1);
       }
     },
     data() {
       return {
-        tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }]
+        tableData:[]
       }
-    }
+    },
   }
 </script>
 

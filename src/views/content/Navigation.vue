@@ -54,8 +54,8 @@
 
                             <!-- 上传图片的 -->
                             <div>
-                                  <input type="file" name="file"  ref="file">
-                                 <button @click="upload1">上传</button>
+                                <input type="file" name="file"  ref="file">
+                                <button @click="upload1">上传</button>
                                 <!-- <el-upload list-type="picture-card">
                                     <i class="el-icon-plus"></i>
                                     </el-upload>
@@ -88,8 +88,8 @@
 
                             <!-- 上传的照片 -->
                             <div>
-                                  <input type="file" name="file"  ref="file">
-                                 <button @click="upload2">上传</button>
+                                <input type="file" name="file"  ref="file">
+                                <button @click="upload2">上传</button>
                                 <!-- <el-upload list-type="picture-card">
                                     <i class="el-icon-plus"></i>
                                     </el-upload>
@@ -140,19 +140,21 @@
                         <div class="floor-container">
                             <div class="flex" v-for="key in quickNav" :key="key.id">
                                 <img :src="key.img" alt="">
-                                <span>￥99.9</span>
+                                <span>{{key.text}}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- 主要内容 -->
                     <div class="waterfall">
+                        <!-- 手机端除导航以外的左侧 -->
                         <div class="feeds_col_left">
                             <div></div>
                             <div></div>
                             <div></div>
                             <div></div>
                         </div>
+                        <!-- 手机端除导航以外的右侧 -->
                         <div class="feeds_col_right">
                             <div></div>
                             <div></div>
@@ -172,7 +174,6 @@
 <script>
 
 import { mapActions } from "vuex";
-
 export default{
     data() {
         return{
@@ -248,19 +249,19 @@ export default{
     methods: {
         ...mapActions(["uploadImage"]),
         // 主导航上传的点击事件
-        async  upload1(){
+        async  upload1(){   
             let formData = new FormData();
             formData.append('file',this.$refs.file.files[0]);
             formData.append('type',2) 
-            let res    =  await this.uploadImage(formData);
+            let res =  await this.uploadImage(formData);
             console.log(res);                                
         },
         // 快捷导航的点击事件
         async  upload2(){
             let formData = new FormData();
             formData.append('file',this.$refs.file.files[0]);
-            formData.append('type',2) 
-            let res    =  await this.uploadImage(formData);
+            formData.append('type',2); 
+            let res  =  await this.uploadImage(formData);
             console.log(res);                                
         },
 

@@ -212,9 +212,6 @@ export default {
                 { type: "min", name: "Min" },
               ],
             },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
-            },
           },
           {
             name: "今年",
@@ -226,11 +223,8 @@ export default {
             markPoint: {
               data: [
                 { name: "Max", value: 182.2, xAxis: 7, yAxis: 183 },
-                { name: "Min", value: 2.3, xAxis: 11, yAxis: 3 },
+                { name: "Min", value: 2.3, xAxis: 10, yAxis: 3 },
               ],
-            },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
             },
           },
         ],
@@ -305,7 +299,7 @@ export default {
             stack: "Total",
             label: {
               show: true,
-              position: "left",
+              position: "right",
             },
             emphasis: {
               focus: "series",

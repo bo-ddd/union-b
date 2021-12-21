@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <div class="title">
-      <div>消息总数:{{message.length}}</div>
+      <div>消息总数:{{ message.length }}</div>
       <div>
         <el-link type="primary" :underline="false" @click="markRead"
           >全部标为已读</el-link
@@ -11,9 +11,12 @@
         >
       </div>
     </div>
-    <div class="message" v-for="(item,index) in message" :key="index">
+    <div class="message" v-for="(item, index) in message" :key="index">
       <div class="message_title">
-        <div><el-tag type="danger">系统</el-tag>{{ item.title }}</div>
+        <div>
+          <el-tag type="danger">系统</el-tag
+          ><span class="title_text">{{ item.title }}</span>
+        </div>
         <div class="time">
           <span>{{ item.time }}</span
           ><img
@@ -24,7 +27,11 @@
         </div>
       </div>
       <div class="message_content">{{ item.detail }}</div>
-      <div class="msg_footer"> <el-button :type="buttonType" round size="small">{{articleStatus}}</el-button></div>
+      <div class="msg_footer">
+        <el-button :type="buttonType" round size="small">{{
+          articleStatus
+        }}</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -33,8 +40,8 @@
 export default {
   data() {
     return {
-      buttonType:'danger',
-      articleStatus:'未读',
+      buttonType: "primary",
+      articleStatus: "未读",
       message: [
         {
           title: "这是一条测试消息的title",
@@ -71,8 +78,8 @@ export default {
         });
     },
     markRead() {
-      this.buttonType = 'info';
-      this.articleStatus = '已读';
+      this.buttonType = "info";
+      this.articleStatus = "已读";
       console.log("标记已读");
     },
   },
@@ -100,8 +107,15 @@ export default {
       display: flex;
       justify-content: space-between;
       cursor: pointer;
-      font-weight: bolder;
-      font-size:20px;
+      & > div{
+        display: flex;
+        align-items: center;
+        & > .title_text {
+        font-weight: bolder;
+        font-size: 20px;
+        margin-left: 5px;
+      }
+      }
       & > .time {
         color: #66b1ff;
         font-size: 14px;

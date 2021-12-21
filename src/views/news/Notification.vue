@@ -6,7 +6,7 @@
         <el-link type="primary" :underline="false" @click="markRead"
           >全部标为已读</el-link
         >
-        <el-button type="text" @click="clearMessage" size="small"
+        <el-button type="text" @click="clearMessage" 
           >清空所有消息</el-button
         >
       </div>
@@ -28,7 +28,7 @@
       </div>
       <div class="message_content">{{ item.detail }}</div>
       <div class="msg_footer">
-        <el-button :type="buttonType" round size="small">{{
+        <el-button :type="buttonType" round>{{
           articleStatus
         }}</el-button>
       </div>

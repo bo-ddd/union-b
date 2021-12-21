@@ -126,7 +126,16 @@
     </div>
     <div class="third">
       <div class="third-top">
-
+        <el-table
+    :data="tableData"
+    style="width: 100%"
+   >
+    <el-table-column
+      prop="date"
+      label="标签列表"
+      width="250">
+    </el-table-column>
+  </el-table>
       </div>
       <div class="third-left">
         <div class="t-f">
@@ -151,10 +160,7 @@
   </div>
 </template>
 <style scoped lang='scss'>
-.third-top{
-  height: 300px;
 
-}
 .paging{
   margin-top: 10px;
 }
@@ -299,9 +305,11 @@
 }
 </style>
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      tableData:[],
       value:'',
       input1: "",
       input2: "",
@@ -315,5 +323,15 @@ export default {
       formLabelWidth: "200px",
     };
   },
+  async created(){
+    this.list();
+  },
+  methods:{
+    ...mapActions(["getLableList","createLable"]),
+      async list(){
+        let listAll = await this.getLableList();
+        console.log(listAll);
+      }
+  }
 };
 </script>

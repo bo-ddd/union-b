@@ -7,10 +7,10 @@
           <span @click="controlColor" class="description">斗志、奔放</span>
         </div>
         <div class="main-color">
-          <div @click="changeColor('red1'),controlColor(1)" value="1" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
-          <div @click="changeColor('red2'),controlColor(2)" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
-          <div @click="changeColor('red3'),controlColor(3)" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
-          <div @click="changeColor('red4'),controlColor(4)" class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
+          <div @click="changeColor('red1')" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
+          <div @click="changeColor('red2')" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
+          <div @click="changeColor('red3')" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
+          <div @click="changeColor('red4')" class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
           <div @click="changeColor('red5')" class="main-color-item" style="background-color:#ff4d4f"><span class="main-color-text">red-5</span></div>
           <div @click="changeColor('red6')" class="main-color-item" style="background-color:#f5222d"><span class="main-color-text">red-6</span></div>
           <div @click="changeColor('red7')" class="main-color-item" style="background-color:#cf1322"><span class="main-color-text">red-7</span></div>

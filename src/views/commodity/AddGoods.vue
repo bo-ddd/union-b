@@ -6,7 +6,7 @@
       <div class="essential_information">
         <div>
           <div>
-            <el-form :label-position="labelPosition" label-width="80px" size='small'>
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="商品类型" class="commodity_type">
                 <el-select
                   v-model="commodityType"
@@ -77,7 +77,7 @@
           </div>
           <div class="commodity_specifications">
             <div>
-              <el-form :label-position="labelPosition" label-width="80px" size='small'>
+              <el-form :label-position="labelPosition" label-width="80px">
                 <el-form-item label="品牌">
                   <el-select
                     v-model="brand"
@@ -102,7 +102,7 @@
               </el-form>
             </div>
             <div>
-              <el-form :label-position="labelPosition" label-width="80px" size='small'>
+              <el-form :label-position="labelPosition" label-width="80px">
                 <el-form-item label="销售单位">
                   <el-select
                     v-model="company"
@@ -135,7 +135,7 @@
       <div class="m_c_center">
         <div>
           <div>
-            <el-form :label-position="labelPosition" label-width="80px" size='small'>
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="生产日期" class="date_of_manufacture">
                 <div>
                   <el-date-picker
@@ -204,10 +204,12 @@
                 </el-table>
               </el-form-item>
               <el-form-item label="销售区域" class="sales_area">
-                <el-button @click="dialogFormVisible = true" plain
+                <el-button
+                  @click="dialogFormVisible = true"
+                  plain
+                  type="primary"
                   >添加省区</el-button
                 >
-                <!-- <el-button plain>添加省区</el-button> -->
                 <div><span>已选省区:</span> 山东省，河南省,</div>
               </el-form-item>
             </el-form>
@@ -220,7 +222,7 @@
       <div class="m_f_center">
         <div>
           <div class="commodity_rotation">
-            <el-form :label-position="labelPosition" label-width="80px" size='small'>
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="商品轮播">
                 <span class="font"
                   >图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片</span
@@ -283,16 +285,22 @@
       </div>
     </div>
     <div class="preservation">
-      <el-button plain>保存</el-button>
-      <el-button plain>预览</el-button>
-      <el-button plain>发布</el-button>
+      <el-button plain type="primary">保存</el-button>
+      <el-button plain type="primary">预览</el-button>
+      <el-button plain type="primary">发布</el-button>
     </div>
-    <el-dialog title="" :visible.sync="dialogFormVisible" align="center" class="provincial_elastic_layer">
+    <el-dialog
+      title=""
+      :visible.sync="dialogFormVisible"
+      align="center"
+      class="provincial_elastic_layer"
+    >
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
         @change="handleCheckAllChange"
-        ><div>全选</div> </el-checkbox>
+        ><div>全选</div>
+      </el-checkbox>
       <div style="margin: 15px 0"></div>
       <el-checkbox-group
         v-model="checkedCities"
@@ -303,7 +311,9 @@
         }}</el-checkbox>
       </el-checkbox-group>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="dialogFormVisible = false" type="primary"
+          >取 消</el-button
+        >
         <el-button type="primary" @click="dialogFormVisible = false"
           >确 定</el-button
         >
@@ -313,7 +323,8 @@
 </template>
 
 <script>
-const cityOptions = ["上海", "北京", "广州", "深圳","成都"];
+import { mapActions } from "vuex";
+const cityOptions = ["上海", "北京", "广州", "深圳", "成都"];
 export default {
   data() {
     return {
@@ -460,6 +471,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["createProduct"]),
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
@@ -476,7 +488,6 @@ export default {
         }
       }
     },
-
     objectSpanMethod({ rowIndex, columnIndex }) {
       if (columnIndex === 0) {
         if (rowIndex % 2 === 0) {
@@ -503,6 +514,18 @@ export default {
         checkedCount > 0 && checkedCount < this.cities.length;
     },
   },
+ async created(){
+    let res = await this.createProduct({
+      cid:1,
+      title:'暖宝宝',
+      keywords:'日用类',
+      bannerImg:'',
+      platformPrice:10,
+      desc:'这是一个暖宝宝',
+      realPrice: 12,
+    })
+    console.log(res);
+  }
 };
 </script>
 
@@ -593,17 +616,16 @@ export default {
   padding: 20px 0px;
 }
 
-::v-deep .provincial_elastic_layer{
+::v-deep .provincial_elastic_layer {
   display: flex;
   align-items: center;
   justify-content: center;
-  & >.el-dialog{
+  & > .el-dialog {
     width: 40%;
-    & .el-dialog__body div:nth-of-type(2){
+    & .el-dialog__body div:nth-of-type(2) {
       display: flex;
       justify-content: space-between;
     }
-
   }
 }
 ::v-deep .sales_information .cell {

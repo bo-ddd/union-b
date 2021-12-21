@@ -112,6 +112,14 @@ export default new Vuex.Store({
         createLable(ctx, payload) {
             return Api.createLable(payload);
         },
+        //文章列表接口
+        getArticleList(ctx, payload) {
+            return Api.getArticleList(payload);
+        },
+        //新增文章接口
+        createArticle(ctx, payload) {
+            return Api.createArticle(payload);
+        },
 
 
         //订单管理

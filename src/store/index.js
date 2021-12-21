@@ -46,6 +46,10 @@ export default new Vuex.Store({
         userLogout(ctx, payload) {
             return Api.userLogout(payload);
         },
+        //修改密码
+        userUpdatePwd(ctx, payload) {
+            return Api.userUpdatePwd(payload);
+        },
 
 
         //商品管理
@@ -53,13 +57,17 @@ export default new Vuex.Store({
         getCategoryList(ctx, payload) {
             return Api.getCategoryList(payload);
         },
+        //添加类目接口
+        createCategory(ctx, payload) {
+            return Api.createCategory(payload);
+        },
         //类目规格接口
         getSpecificationList(ctx, payload) {
             return Api.getSpecificationList(payload);
         },
-        //添加类目接口
-        createCategory(ctx, payload) {
-            return Api.createCategory(payload);
+        //添加规格接口
+        createSpecification(ctx, payload) {
+            return Api.createSpecification(payload);
         },
         //添加商品接口
         createProduct(ctx, payload) {
@@ -69,9 +77,17 @@ export default new Vuex.Store({
         getAttributeList(ctx, payload) {
             return Api.getAttributeList(payload);
         },
+        //商品属性接口
+        createAttribute(ctx, payload) {
+            return Api.createAttribute(payload);
+        },
         //商品单位接口
         getUnitlibraryList(ctx, payload) {
             return Api.getUnitlibraryList(payload);
+        },
+        //添加单位接口
+        createUnitlibrary(ctx, payload) {
+            return Api.createUnitlibrary(payload);
         },
 
 
@@ -107,6 +123,14 @@ export default new Vuex.Store({
         //新增标签接口
         createLable(ctx, payload) {
             return Api.createLable(payload);
+        },
+        //文章列表接口
+        getArticleList(ctx, payload) {
+            return Api.getArticleList(payload);
+        },
+        //新增文章接口
+        createArticle(ctx, payload) {
+            return Api.createArticle(payload);
         },
 
 

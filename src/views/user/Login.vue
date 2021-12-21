@@ -47,7 +47,12 @@
             </div>
           </div>
           <div class="main-foot">
-            <el-button type="primary" @click="submit" round>
+            <el-button
+              type="primary"
+              @click="submit"
+              @keyup.enter="submit"
+              round
+            >
               登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
             </el-button>
           </div>
@@ -77,7 +82,6 @@ export default {
   },
   methods: {
     ...mapActions(["userLogin", "getCaptcha"]),
-
     async generatorCaptcha() {
       // 验证码接口
       this.captchaSrc = await this.getCaptcha();
@@ -149,10 +153,12 @@ export default {
       console.log(res);
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
+        this.$message.success(res.msg);
         this.$router.push({
           path: "/",
         });
       } else {
+        this.$message.error(res.msg);
         this.generatorCaptcha();
       }
       if (res.status == 0) {
@@ -162,6 +168,15 @@ export default {
         });
       }
     },
+
+    // 按回车键登录
+    keyDown(e) {
+      // 回车则执行登录方法 enter键的ASCII是13
+      if (e.keyCode === 13) {
+        this.submit(); //登录方法
+      }
+    },
+
     // 跳转到注册页面
     submitregist() {
       this.$router.push({
@@ -169,9 +184,20 @@ export default {
       });
     },
   },
+
   created() {
     // 进页面直接调用验证码
     this.generatorCaptcha();
+  },
+
+  mounted() {
+    // 绑定监听事件
+    window.addEventListener("keydown", this.keyDown);
+  },
+
+  destroyed() {
+    // 销毁事件
+    window.removeEventListener("keydown", this.keyDown, false);
   },
 };
 </script>
@@ -183,12 +209,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 1300px;
-  min-height: 780px;
+  min-width: 1200px;
+  min-height: 500px;
 
   & .main {
     width: 55%;
-    height: 65%;
+    height: 550px;
     background-color: #fff;
     border-radius: 5px;
     display: flex;
@@ -214,7 +240,7 @@ export default {
         height: 70%;
         & .main-top {
           width: 100%;
-          height: 30%;
+          height: 110px;
           display: flex;
           // justify-content: start;
           flex-direction: column;
@@ -235,7 +261,7 @@ export default {
 
         & .main-con {
           width: 100%;
-          height: 50%;
+          height: 195px;
           display: flex;
           justify-content: center;
           flex-direction: column;
@@ -272,7 +298,7 @@ export default {
 
         & .main-foot {
           width: 100%;
-          height: 20%;
+          height: 90px;
           display: flex;
           align-items: center;
 

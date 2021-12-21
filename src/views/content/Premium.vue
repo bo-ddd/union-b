@@ -14,12 +14,12 @@
   </el-select>
 </div>
     <div class="block">
-         <el-button class="query">查询</el-button>
-         <el-button>重置</el-button>
+         <el-button type="primary">查询</el-button>
+         <el-button type="primary">重置</el-button>
     </div>
          </div>
          <div class="header-center">
-             <el-button class="query" icon="el-icon-plus">新增商品</el-button>
+             <el-button type="primary" icon="el-icon-plus">新增商品</el-button>
          </div>
      </div>
     <div class="main">
@@ -53,7 +53,7 @@
     <el-table-column
       label="操作"
       width="120">
-         <el-button type="text" size="small" @click="dialogFormVisible = true">编辑</el-button>
+         <el-button type="primary" size="small" @click="dialogFormVisible = true">编辑</el-button>
     </el-table-column>
   </el-table>
     </div>
@@ -117,16 +117,16 @@
 </el-dialog>
     </el-form-item>
     <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5 asterisk">
-        <el-button  @click="dialogFormVisible1 = true">添加省区</el-button>
+        <el-button  @click="dialogFormVisible1 = true" type="primary">添加省区</el-button>
     </el-form-item>
     <span class="pattern">已选省区:{{checkedlist}}</span>
     <el-form-item label="关联商品" :label-width="formLabelWidth" class="asterisk">
-         <el-button>选择商品</el-button>
+         <el-button type="primary">选择商品</el-button>
     </el-form-item>
   </el-form>
   <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">取 消</el-button>
-    <el-button class="query" @click="dialogFormVisible = false">确 定</el-button>
+    <el-button @click="dialogFormVisible = false" type="primary">取 消</el-button>
+    <el-button  @click="dialogFormVisible = false" type="primary">确 定</el-button>
   </div>
 </el-dialog>
 <el-dialog title="请选择省区" :visible.sync="dialogFormVisible1" >
@@ -138,6 +138,7 @@
   </div>
 </template>
 <script>
+import {mapActions} from "vuex"
 export default {
     data() {
       return {
@@ -212,9 +213,15 @@ export default {
             text : '山东省',
             label : '山东省',
           }
-        )
+        ),
+        this.getproducts()
     },
     methods: {
+      ...mapActions(["getSuperList"]),
+    async getproducts(){
+      let product=await this.getSuperList();
+      console.log(product);
+     },
         gettext(value){
           console.log(typeof value);
           this.checkedlist.push(value.shift());
@@ -263,10 +270,7 @@ export default {
 ::v-deep .el-dialog__title{
     font-weight: 700;
 }
-.query{ 
-         background-color: #ff4070;
-         color: #fff3f6;
-      }
+
 .header{
     min-height:15vh;
     padding: 20px 15px;

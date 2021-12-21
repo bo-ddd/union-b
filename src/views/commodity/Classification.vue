@@ -4,10 +4,10 @@
       <div class="content">
         <div class="new-module">
           <div @click="jump" class="add-classification">
-            <span>+ 新增分类</span>
+            <el-button type="primary">+ 新增分类</el-button>
           </div>
           <div class="batch-association">
-            <span>批量关联</span>
+            <el-button type="primary">批量关联</el-button>
           </div>
         </div>
         <el-table
@@ -44,22 +44,22 @@
             show-overflow-tooltip
             sortable
           >
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+            <template slot-scope="scope">{{ scope.row.createdAt }}</template>
           </el-table-column>
           <el-table-column prop="num" label="数量" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-link type="primary" @click="ascendingOrder(scope,scope.row.pIndex? scope.row.pIndex : scope.row.childIndex)"
+              <el-link type="primary" @click="ascendingOrder(scope,scope.row.pIndex||scope.row.childIndex)"
                 >升序</el-link
               >
               <el-link
                 class="ml-10"
                 type="primary"
-                @click="sescendingOrder(scope,scope.row.pIndex? scope.row.pIndex : scope.row.childIndex)"
+                @click="sescendingOrder(scope,scope.row.pIndex||scope.row.childIndex)"
                 >降序</el-link
               >
-              <el-link class="ml-10" type="danger" @click="deleteData(scope.$index)"
+              <el-link class="ml-10" type="danger" @click="deleteData(scope.row.ord)"
                 >删除</el-link
               >
             </template>
@@ -275,6 +275,7 @@ export default {
     },
     async commodityInfo() {
       let res = await this.getCategoryList({});
+      console.log(res)
       let  target = res.data.rows.slice();
       let data = this.format(target);
       this.renderDynamic = data;
@@ -294,12 +295,12 @@ export default {
      * @description 当前行上升一位
      */
     ascendingOrder(val,id) {
-      console.log(id)
-      if(val.row.pIndex==0||val.row.childIndex==0) return;
+      console.log(val.row.ord)
+      if(val.row.pIndex==1||val.row.childIndex==1) return;
       this.renderDynamic.forEach(el=>{
         if(el.pIndex == id ||el.childIndex ==id){
        let res =  el.pIndex? el.pIndex = id*1 -1 : el.childIndex = id*1 -1
-          console.log(res)
+          console.log(this.renderDynamic[res-1].ord)
         }
       })
     },
@@ -307,12 +308,12 @@ export default {
      * @description 当前行下降一位
      */
     sescendingOrder(val,id) {
-      console.log(val)
+      console.log(id)
         if(val.row.pIndex==this.renderDynamic.length-1||val.row.childIndex==this.renderDynamic.length-1) return;
       this.renderDynamic.forEach(el=>{
         if(el.pIndex == id ||el.childIndex ==id){
        let res =el.pIndex? el.pIndex = id*1 +1 : el.childIndex = id*1 +1
-          console.log(res)
+          console.log(this.renderDynamic[res-1].id)
         }
       })
     },
@@ -326,11 +327,25 @@ export default {
          data.splice(val-1,1);
        }
      })
-     this.mySort(data)
     },
+    getTime(time){
+    let d = new Date(time);
+    let year = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let date = d.getDate();
+    date = date > 9 ? date : "0" + date;
+    let hours = d.getHours();
+    hours = hours > 9 ? hours : "0" + hours;
+    let day = ["七", "一", "二", "三", "四", "五", "六"][d.getDay()];
+    let minutes = d.getMinutes();
+    minutes = minutes > 9 ? minutes : "0" + minutes;
+    let seconds = d.getSeconds();
+    seconds = seconds > 9 ? seconds : "0" + seconds;
+    return ( year + "年" +   month +   "月" +   date +   "日" +   "  星期" +   day +   "  " +   hours +   ":" +   minutes +   ":" +   seconds )
+  },
      format(target){
-       let childrenIndex = 0;
-       let parentIndex = 0;
+       let childrenIndex = 1;
+       let parentIndex = 1;
      let res = target.slice();
      res.forEach(item=>{
        item.child = [];
@@ -342,6 +357,7 @@ export default {
            }else{
              item.pIndex = parentIndex++
            }
+           item.createdAt = this.getTime(item.createdAt)
             item.category = p ? p.category + "=>" + item.title : item.title;
      })
      return res.filter(el => el.pid === null)
@@ -369,28 +385,29 @@ export default {
       display: flex;
       align-items: center;
       & .add-classification {
-        padding: 9px 10px;
-        background-color: #ff4070;
+   
         color: #ffccd8;
         margin-top: 15px;
         margin-left: 15px;
         margin-bottom: 30px;
-        border: 1px solid #ffc7d5;
         border-radius: 5px;
         font-size: 12px;
         cursor: pointer;
+        & .el-button{
+              padding: 9px 10px;
+        }
       }
-      & .batch-association {
-        padding: 9px 10px;
-        background-color: #ffffff;
+      & .batch-association {   
         color: #686868;
         margin-top: 15px;
-        border: 1px solid #f2f2f2;
         border-radius: 5px;
         margin-left: 10px;
         font-size: 12px;
         margin-bottom: 30px;
         cursor: pointer;
+        & .el-button{
+            padding: 9px 10px;
+        }
       }
     }
     & .el-table{

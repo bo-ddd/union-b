@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="header">
       <div class="header-left">
-         <el-button  icon="el-icon-plus" size="small" @click="openFormDialog"
+         <el-button  icon="el-icon-plus" size="small" @click="openFormDialog" type="primary"
           >新增商品</el-button
         >
             <el-dialog :visible.sync="dialogFormVisible">
@@ -241,14 +241,12 @@
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="240">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary"
               >修改</el-button
             >
-            <el-button size="mini" @click="deleteRow(scope.$index, tableData)"
+            <el-button size="mini" @click="deleteRow(scope.$index, tableData)" type="primary"
               >删除</el-button
             >
-
-    
           </template>
         </el-table-column>
       </el-table>
@@ -258,51 +256,55 @@
 
 <script>
 import E from "wangeditor";
+import {mapActions} from "vuex";
 export default {
   data() {
     return {
-        isDisplay:false,
+      isDisplay:false,
       input2: "",
       input1: "",
       radio: "1",
       activeName: "first",
       cont:0,
+      count:"",
+      pageCount:"",
+      rows:[],
       tableData: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
+        // {
+        //   date: "2016-05-03",
+        //   name: "王小虎",
+        //   address: "上海市普陀区金沙江路 1518 弄",
+        // },
+        // {
+        //   date: "2016-05-02",
+        //   name: "王小虎",
+        //   address: "上海市普陀区金沙江路 1518 弄",
+        // },
+        // {
+        //   date: "2016-05-04",
+        //   name: "王小虎",
+        //   address: "上海市普陀区金沙江路 1518 弄",
+        // },
+        // {
+        //   date: "2016-05-01",
+        //   name: "王小虎",
+        //   address: "上海市普陀区金沙江路 1518 弄",
+        // },
+        // {
+        //   date: "2016-05-08",
+        //   name: "王小虎",
+        //   address: "上海市普陀区金沙江路 1518 弄",
+        // },
+        // {
+        //   date: "2016-05-06",
+        //   name: "王小虎",
+        //   address: "上海市普陀区金沙江路 1518 弄",
+        // },
+        // {
+        //   date: "2016-05-07",
+        //   name: "王小虎",
+        //   address: "上海市普陀区金沙江路 1518 弄",
+        // },
       ],
       multipleSelection: [],
       options: [
@@ -346,8 +348,16 @@ export default {
     };
   },
 
-  created() {},
+  created() {
+    this.getAds()
+  },
   methods: {
+    ...mapActions(["getAdvertList"]),
+   async getAds(){
+    let res=await this.getAdvertList();
+    this.rows=res.data.rows;
+    // console.log(this.rows);
+    },
     handleEdit(index, row) {
       console.log(index, row);
     },
@@ -400,6 +410,7 @@ export default {
   display: grid;
   grid-template-columns: 20% 80%;
   padding: 10px;
+  align-items: center;
   & .header-right{
     display: flex;
   justify-content: space-between;

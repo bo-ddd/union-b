@@ -11,7 +11,7 @@
           </div>
         </div>
         <el-table
-          :data="table"
+          :data="renderDynamic"
           ref="product"
           border
           row-key="id"
@@ -21,13 +21,13 @@
           style="width: 97%"
           @select="selectFun"
           @select-all="selectAllFun"
-          :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+          :tree-props="{ children: 'child', hasChildren: 'hasChildren' }"
           :header-cell-style="{ background: '#fafafa' }"
         >
-          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column type="selection" width="55" > </el-table-column>
           <el-table-column
             label="分类名称"
-            prop="classificationName"
+            prop="title"
             width="200"
           ></el-table-column>
           <el-table-column label="关联" width="200">
@@ -50,16 +50,16 @@
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-link type="primary" @click="ascendingOrder(scope.row.id)"
+              <el-link type="primary" @click="ascendingOrder(scope,scope.row.pIndex? scope.row.pIndex : scope.row.childIndex)"
                 >升序</el-link
               >
               <el-link
                 class="ml-10"
                 type="primary"
-                @click="sescendingOrder(scope.row.id)"
+                @click="sescendingOrder(scope,scope.row.pIndex? scope.row.pIndex : scope.row.childIndex)"
                 >降序</el-link
               >
-              <el-link class="ml-10" type="danger" @click="deleteData(scope.row.id,scope.$index)"
+              <el-link class="ml-10" type="danger" @click="deleteData(scope.$index)"
                 >删除</el-link
               >
             </template>
@@ -97,140 +97,7 @@ export default {
       multipleSelection: [],
       table: [],
       pageSize: 10,
-      renderDynamic: [
-        {
-          id: 1,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-        {
-          id: 2,
-          parentId: 0,
-          date: "2016-05-01",
-          classificationName: "奶粉1",
-          num: 88,
-          children: [
-            {
-              id: 12,
-              parentId: 2,
-              date: "2016-05-01",
-              association: "规格",
-              classificationName: "成人奶粉",
-              num: 88,
-              children: [
-                {
-                  id: 15,
-                  parentId: 12,
-                  date: "2016-05-01",
-                  association: "规格",
-                  classificationName: "蒙牛成人奶粉",
-                  num: 88,
-                },
-                {
-                  id: 16,
-                  parentId: 12,
-                  date: "2016-05-01",
-                  association: "规格",
-                  classificationName: "蒙牛成人奶粉",
-                  num: 88,
-                },
-              ],
-            },
-            {
-              id: 13,
-              parentId: 2,
-              date: "2016-05-01",
-              association: "规格",
-              classificationName: "成人奶粉",
-              num: 88,
-            },
-          ],
-        },
-        {
-          id: 3,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-          children: [
-            {
-              id: 14,
-              parentId: 3,
-              date: "2016-05-02",
-              classificationName: "婴儿奶粉",
-              association: "规格",
-              children: [
-                {
-                  id: 17,
-                  parentId: 14,
-                  date: "2016-05-02",
-                  classificationName: "蒙牛婴儿奶粉",
-                  association: "规格",
-                },
-              ],
-              num: 88,
-            },
-          ],
-        },
-        {
-          id: 4,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-        {
-          id: 5,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-        {
-          id: 6,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-        {
-          id: 7,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-        {
-          id: 8,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-        {
-          id: 9,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-        {
-          id: 10,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-        {
-          id: 11,
-          parentId: 0,
-          date: "2016-05-02",
-          classificationName: "奶粉",
-          num: 88,
-        },
-      ],
+      renderDynamic: []
     };
   },
   methods: {
@@ -389,7 +256,6 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.handleCurrentChange(1);
-      console.log(`每页 ${val} 条`);
     },
 
     /**
@@ -397,7 +263,6 @@ export default {
      * **/
     handleCurrentChange(val) {
       this.cacheExport = this.multipleSelection;
-
       let arr = [];
       for (
         let i = val * this.pageSize - this.pageSize;
@@ -407,67 +272,55 @@ export default {
         if (this.renderDynamic[i] != undefined) arr.push(this.renderDynamic[i]);
       }
       this.table = arr;
-
-      // console.log(arr);
-      // console.log(this.table)
-      console.log(`当前页: ${val}`);
     },
-
     async commodityInfo() {
       let res = await this.getCategoryList({});
-      console.log(res);
+      let  target = res.data.rows.slice();
+      let data = this.format(target);
+      this.renderDynamic = data;
     },
     /**
      * @description 根据id把数据重新排序
      */
     mySort(arr){
       arr.sort((a,b)=>{
-        let num1 = a.id;
-        let num2 = b.id;
+        let num1 = a.ord;
+        let num2 = b.ord;
         return num1 - num2
       })
-      this.table = arr
-      console.log(this.table)
+      this.renderDynamic = arr
     },
     /**
      * @description 当前行上升一位
      */
-    ascendingOrder(id) {
-      if (id == 1) return;
-      this.table.forEach((item) => {
-        if (item.id == id - 1) {
-          item.id = id;
-          return;
+    ascendingOrder(val,id) {
+      console.log(id)
+      if(val.row.pIndex==0||val.row.childIndex==0) return;
+      this.renderDynamic.forEach(el=>{
+        if(el.pIndex == id ||el.childIndex ==id){
+       let res =  el.pIndex? el.pIndex = id*1 -1 : el.childIndex = id*1 -1
+          console.log(res)
         }
-        if (item.id == id) {
-          item.id = id - 1;
-        }
-      });
-      this.mySort(this.table);
+      })
     },
     /**
      * @description 当前行下降一位
      */
-    sescendingOrder(id) {
-      if(id == this.table.length-1) return;
-        this.table.forEach(el=>{
-          if(el.id == id+1){
-              el.id =id
-              return;
-          }
-          if(el.id ==id){
-            el.id = id +1
-          }
-        })
-        this.mySort(this.table);
+    sescendingOrder(val,id) {
+      console.log(val)
+        if(val.row.pIndex==this.renderDynamic.length-1||val.row.childIndex==this.renderDynamic.length-1) return;
+      this.renderDynamic.forEach(el=>{
+        if(el.pIndex == id ||el.childIndex ==id){
+       let res =el.pIndex? el.pIndex = id*1 +1 : el.childIndex = id*1 +1
+          console.log(res)
+        }
+      })
     },
     /**
      * @description 删除当前行
      */
-    deleteData(val,index) {
-    let data = this.table.slice()
-    console.log(val)
-    console.log(index)
+    deleteData(val) {
+    let data = this.renderDynamic.slice()
      data.forEach(el=>{
        if(el.id == val){
          data.splice(val-1,1);
@@ -475,13 +328,31 @@ export default {
      })
      this.mySort(data)
     },
+     format(target){
+       let childrenIndex = 0;
+       let parentIndex = 0;
+     let res = target.slice();
+     res.forEach(item=>{
+       item.child = [];
+           let p = res.find((el) => el.id == item.pid);
+           if(item.pid){
+             item.childIndex = childrenIndex++ 
+             item.association = '规格' 
+             p.child.push(item)
+           }else{
+             item.pIndex = parentIndex++
+           }
+            item.category = p ? p.category + "=>" + item.title : item.title;
+     })
+     return res.filter(el => el.pid === null)
+  }
   },
   mounted() {
     this.initData(this.renderDynamic);
   },
   created() {
+    this.commodityInfo() 
      this.handleSizeChange(10);
-     this.commodityInfo() 
  
   }
 }

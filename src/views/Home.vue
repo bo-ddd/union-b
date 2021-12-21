@@ -31,9 +31,12 @@
                 <i class="el-icon-bell fs-20 fw-b"></i>
                 <div class="top_right">
                     <div class="avatorbox">
-                        <img class="avator" :src="avatorImg" alt="">
+                        <div class="imgbox">
+                            <img class="avator" :src="avatorImg" alt="">
+                        </div>
+                        <span>{{userInfo.avatorName}}</span>
                     </div>
-                    <span>{{userInfo.avatorName}}</span>
+                    <el-button type="primary" plain size='small' @click="logout">退出登录</el-button>
                 </div>
             </el-header>
             <el-main>
@@ -55,22 +58,26 @@ export default {
         return {
             isCollapse: false,
             show: true,
-            userInfo:'',
-            avatorImg:'',
+            userInfo: '',
+            avatorImg: '',
         };
     },
     methods: {
-        ...mapActions(["getUserInfo"]),
+        ...mapActions(["getUserInfo","userLogout"]),
         handleOpen() {},
         handleClose() {},
+        async logout(){
+          let res = await this.userLogout()
+          console.log(res)
+        }
     },
     computed: {
         ...mapGetters(['routes'])
     },
     async created() {
         let res = await this.getUserInfo();
-        console.log(res)
-        this.userInfo = res.data
+        console.log(res.data)
+        this.userInfo = res.data[0]
         this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
     }
 }
@@ -145,7 +152,7 @@ export default {
 
     & .el-header {
         display: grid;
-        grid-template-columns: 30fr 1fr 5fr;
+        grid-template-columns: 30fr 1fr 6fr;
         box-shadow: 2px 0 2px #e7d0d0;
         background-color: #ffffff;
         font-size: 16px;
@@ -161,18 +168,25 @@ export default {
 
         & .top_right {
             display: flex;
+            justify-content: space-around;
+            align-items: center;
 
             & .avatorbox {
-                width: 25px;
-                height: 25px;
-                border-radius: 25px;
-                overflow: hidden;
-                margin-right: 10px;
+                display: flex;
 
-                & .avator {
+                & .imgbox {
                     width: 25px;
+                    height: 25px;
+                    border-radius: 25px;
+                    overflow: hidden;
+                    margin-right: 10px;
+
+                    & .avator {
+                        width: 25px;
+                    }
                 }
             }
+
         }
 
     }

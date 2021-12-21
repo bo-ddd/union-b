@@ -42,6 +42,10 @@ export default new Vuex.Store({
         getUserInfo(ctx, payload) {
             return Api.getUserInfo(payload);
         },
+        //退出登录
+        userLogout(ctx, payload) {
+            return Api.userLogout(payload);
+        },
 
 
         //商品管理
@@ -57,6 +61,22 @@ export default new Vuex.Store({
         createCategory(ctx, payload) {
             return Api.createCategory(payload);
         },
+        //添加商品接口
+        createProduct(ctx, payload) {
+            return Api.createProduct(payload);
+        },
+        //商品属性接口
+        getAttributeList(ctx, payload) {
+            return Api.getAttributeList(payload);
+        },
+        //商品单位接口
+        getUnitlibraryList(ctx, payload) {
+            return Api.getUnitlibraryList(payload);
+        },
+        //添加单位接口
+        createUnitlibrary(ctx, payload) {
+            return Api.createUnitlibrary(payload);
+        },
 
 
 
@@ -64,6 +84,10 @@ export default new Vuex.Store({
         //交易数据接口
         getTradeData(ctx, payload) {
             return Api.getTradeData(payload);
+        },
+        //数据排行接口
+        getRankingData(ctx, payload) {
+            return Api.getRankingData(payload);
         },
 
 
@@ -79,6 +103,14 @@ export default new Vuex.Store({
         //优品展示接口
         getSuperList(ctx, payload) {
             return Api.getSuperList(payload);
+        },
+        //标签列表接口
+        getLableList(ctx, payload) {
+            return Api.getLableList(payload);
+        },
+        //新增标签接口
+        createLable(ctx, payload) {
+            return Api.createLable(payload);
         },
 
 

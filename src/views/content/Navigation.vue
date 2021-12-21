@@ -6,8 +6,8 @@
                 <h3>桌面端导航</h3>
             </div>
             <div>
-                <el-button>取消</el-button>
-                <el-button class="pink">保存</el-button>
+                <el-button type="primary">取消</el-button>
+                <el-button type="primary" >保存</el-button>
             </div>
         </div>
 
@@ -684,9 +684,6 @@ export default{
            }
         }
         
-    }
-    .pink{
-        background-color: #ff4070;
     }
     .ccc{
         color: #ccc;

@@ -11,7 +11,7 @@
             
             placeholder="请输入文章标题"
           ></el-input>
-          <i class="el-icon-warning-outline"></i>
+          <i type="primary" class="el-icon-warning-outline"></i>
           <span class="tips">请输入15个字以内的中文字符</span>
         </div>
       </div>
@@ -24,7 +24,7 @@
   list-type="picture-card"
   :on-preview="handlePictureCardPreview"
   :on-remove="handleRemove">
-  <i class="el-icon-plus"></i>
+  <i type="primary" class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
   <img width="100%" :src="dialogImageUrl" alt="">
@@ -48,7 +48,7 @@
           >
           </el-input>
 
-          <i class="el-icon-warning-outline charactar"></i>
+          <i type="primary" class="el-icon-warning-outline charactar"></i>
           <span class="tipes">请输入文章内容</span>
         </div>
       </div>
@@ -57,7 +57,7 @@
         <div class="bottom-content">
 
           <el-button>返回</el-button>
-          <el-button class="addArticle">添加</el-button>
+          <el-button type="primary" class="addArticle">添加</el-button>
         </div>
       </div>
     </div>
@@ -159,7 +159,7 @@ export default {
 .el-icon-warning-outline {
   margin-left: 10px;
   margin-top: 10px;
-  color: #ff4070;
+ 
 }
 .character {
   margin-left: 14px;
@@ -210,7 +210,6 @@ export default {
   margin-top: 20px;
 }
 .addArticle{
-  background-color: #ff4070;
   color: #fff;
 }
 </style>

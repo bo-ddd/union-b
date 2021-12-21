@@ -67,7 +67,14 @@ export default {
      * @params 没有参数  必须登录
      * */
     userLogout(params) {
-        return axios.post('/uesr/logout', params, postConfig)
+        return axios.post('/user/logout', params, postConfig)
+    },
+    /**
+     * @description  修改密码接口
+     * @params password :[string] 新密码  必须登录
+     * */
+    userUpdatePwd(params) {
+        return axios.post('user/updatePwd', params, postConfig)
     },
 
 
@@ -84,6 +91,16 @@ export default {
         return axios.post('/category/list', params, postConfig)
     },
     /**
+     * @description 添加类目接口
+     * @params {
+     *  title : [String],   类目昵称
+     *  pid   : [Number]    父id
+     * } 
+     */
+    createCategory(params) {
+        return axios.post('/category/create', params, postConfig)
+    },
+    /**
      * @description 类目规格接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
@@ -95,14 +112,14 @@ export default {
         return axios.post('/specification/list', params, postConfig)
     },
     /**
-     * @description 添加类目接口
+     * @description 添加规格接口
      * @params {
-     *  title : [String],   类目昵称
-     *  pid   : [Number]    父id
+     * title : [String]     规格名称
+     * cid   : [Number]     类目id
      * } 
      */
-    createCategory(params) {
-        return axios.post('/category/create', params, postConfig)
+    createSpecification(params) {
+        return axios.post('/specification/create', params, postConfig)
     },
     /**
      * @description 添加商品接口 
@@ -129,6 +146,17 @@ export default {
      */
     getAttributeList(params) {
         return axios.post('/attribute/list', params, postConfig)
+    },
+    /**
+     * @description 添加属性接口
+     * @params {
+     * value     : [String]     商品的属性或者是参数
+     * type      : [Number]     类型 1 属性  2参数
+     * productId : [Number]     商品id
+     * } 
+     */
+    createAttribute(params) {
+        return axios.post('/attribute/create', params, postConfig)
     },
     /**
      * @description 商品单位接口
@@ -224,6 +252,29 @@ export default {
      */
     createLable(params) {
         return axios.post('/lable/create', params, postConfig)
+    },
+    /**
+     * @description 文章列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getArticleList(params) {
+        return axios.post('/article/list', params, postConfig)
+    },
+    /**
+     * @description 新增文章接口
+     * @params {
+     * articleTitle:[string]    '标题',
+     * articleImg:[string]      '文章的图片',
+     * authorId:[number]        '作者id',
+     * articleContent:[string] '文章内容'
+     * } 
+     */
+    createArticle(params) {
+        return axios.post('/article/create', params, postConfig)
     },
 
 

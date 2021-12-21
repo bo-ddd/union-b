@@ -27,13 +27,14 @@
           </div>
           <div class="form_item">
             <div class="form_selectbox">
-              <input class="selectbox_input" type="checkbox" name="" id="agreementbtn">
+              <el-checkbox class="agreementbtn" v-model="checked"  id="agreementbtn"></el-checkbox>
+              <!-- <input class="selectbox_input" type="checkbox" name="" id="agreementbtn"> -->
               <label for="agreementbtn">已阅读并同意以下协议淘宝平台服务协议、隐私权政策、法律声明、支付宝及客户端服务协议、支付宝隐私权政策</label>
             </div>
           </div>
           <div class="form_itemLink">
             <div class="itemLinkBox" >
-              <el-link href="http://localhost:8080/login" class="linkData" type="primary">直接登录</el-link>
+              <el-link href="http://localhost:8080/login" class="linkData" type="primary">已有账号，直接登录</el-link>
             </div>
           </div>
           <div class="form_item">
@@ -51,6 +52,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      checked:false,
       form:{
         username:"",
         email:"",
@@ -98,6 +100,12 @@ export default {
           message:"邮箱格式不正确"
         })
       }
+      else if(this.checked==false){
+        this.$message({
+          type:"warning",
+          message:"请阅读并同意协议"
+        })
+      }
       else{
         let res = await this.userRegister({
            username:this.form.username,
@@ -106,6 +114,10 @@ export default {
            phone:this.form.phone
         })
         console.log(res);
+        this.$message({
+          type:"warning",
+          message:`${res.msg}`
+        })
       }
     }
   }
@@ -115,6 +127,7 @@ export default {
 <style lang="scss" scoped>
 .wrap{
   height: 100vh;
+  min-width:700px;
   background-color: royalblue;
   display: flex;
   justify-content: center;
@@ -162,6 +175,10 @@ export default {
           display: flex;
           margin-top: 10px;
           color: #666;
+          & .agreementbtn{
+                margin-left: 33px;
+                margin-right: 6px;
+          }
           & .selectbox_input{
             width: 60px;
             margin-top: 2px;

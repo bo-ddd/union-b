@@ -258,15 +258,19 @@
 
 <script>
 import E from "wangeditor";
+import {mapActions} from "vuex";
 export default {
   data() {
     return {
-        isDisplay:false,
+      isDisplay:false,
       input2: "",
       input1: "",
       radio: "1",
       activeName: "first",
       cont:0,
+      count:"",
+      pageCount:"",
+      rows:[],
       tableData: [
         {
           date: "2016-05-03",
@@ -346,8 +350,16 @@ export default {
     };
   },
 
-  created() {},
+  created() {
+    this.getAds()
+  },
   methods: {
+    ...mapActions(["getAdvertList"]),
+   async getAds(){
+    let res=await this.getAdvertList();
+    this.rows=res.data.rows;
+    console.log(this.rows);
+    },
     handleEdit(index, row) {
       console.log(index, row);
     },
@@ -400,6 +412,7 @@ export default {
   display: grid;
   grid-template-columns: 20% 80%;
   padding: 10px;
+  align-items: center;
   & .header-right{
     display: flex;
   justify-content: space-between;

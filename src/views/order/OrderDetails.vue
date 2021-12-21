@@ -1,31 +1,56 @@
 <template>
   <div class="box">
     <el-form label-position="left" inline class="demo-table-expand">
-      <el-form-item label="商品名称">
-        <span>{{ tableData.name }}</span>
-        <span>{{ tableData.name }}</span>
-        <span>{{ tableData.name }}</span>
+      <el-form-item label="订单id">
+        <span>{{ tableData.orderId  }}</span>
       </el-form-item>
-      <el-form-item label="所属店铺">
-        <span>{{ tableData.shop }}</span>
+      <el-form-item label="订单总价">
+        <span>{{ tableData.totalPrice  }}</span>
       </el-form-item>
-      <el-form-item label="商品 ID">
-        <span>{{ tableData.id }}</span>
+      <el-form-item label="快递公司名称">
+        <span>{{ tableData.expressName  }}</span>
       </el-form-item>
-      <el-form-item label="店铺 ID">
-        <span>{{ tableData.shopId }}</span>
+      <el-form-item label="店铺名称">
+        <span>{{ tableData.storeTitle }}</span>
       </el-form-item>
-      <el-form-item label="商品分类">
-        <span>{{ tableData.category }}</span>
+      <el-form-item label="用户名称">
+        <span>{{ tableData.avatorName  }}</span>
       </el-form-item>
-      <el-form-item label="店铺地址">
+      <el-form-item label="用户电话">
+        <span>{{ tableData.userPhone }}</span>
+      </el-form-item>
+      <el-form-item label="支付方式">
+        <span>{{ tableData.paymentName }}</span>
+      </el-form-item>
+      <el-form-item label="下单时间">
+        <span>{{ tableData.createdAt }}</span>
+      </el-form-item>
+      <el-form-item label="收货人">
+        <span>{{ tableData.consignee }}</span>
+      </el-form-item>
+      <el-form-item label="国家">
+        <span>{{ tableData.country }}</span>
+      </el-form-item>
+      <el-form-item label="省份">
+        <span>{{ tableData.province }}</span>
+      </el-form-item>
+      <el-form-item label="市">
+        <span>{{ tableData.city }}</span>
+      </el-form-item>
+      <el-form-item label="县/区">
+        <span>{{ tableData.area }}</span>
+      </el-form-item>
+      <el-form-item label="详情地址">
         <span>{{ tableData.address }}</span>
       </el-form-item>
-      <el-form-item label="商品描述">
-        <span>{{ tableData.desc }}</span>
+      <el-form-item label="邮政编码">
+        <span>{{ tableData.zipcode }}</span>
+      </el-form-item>
+      <el-form-item label="状态">
+        <span>{{ tableData.orderStatus }}</span>
       </el-form-item>
     </el-form>
-    <h3>确认订单详情</h3>
+    <h3 class="pl-15">确认订单详情</h3>
     <div class="productdetails">
       <div class="details-title">
         <span>商品名称</span>
@@ -36,47 +61,38 @@
       <div class="details-data" v-for="(item,index) in productdetails" :key="index">
         <span>
           <img src="" alt="">
-          {{item.name}}</span>
-        <span class="te-r"> {{item.price}}</span>
-        <span class="te-r"> {{item.num}}</span>
-        <span class="te-r"> {{item.price*item.num}}</span>
+          {{item.productTitle}}</span>
+        <span class="te-r"> {{item.singlePrice}}</span>
+        <span class="te-r"> {{item.count}}</span>
+        <span class="te-r"> {{item.singlePrice*100*item.count/100}}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
+  created(){
+    this.getOrderDetailData();
+  },
+  methods:{
+    ...mapActions(["getOrderDetail"]),
+    /**
+     * @description 订单详情页
+     * **/ 
+    async getOrderDetailData(){
+      let id = this.$route.query.id;
+      let res = await this.getOrderDetail({id});
+      this.tableData = res.data[0];
+      this.productdetails = res.data[0].detail;
+      console.log(res)
+    },
+  },
   data() {
     return {
-      tableData: {
-        id: "12987122",
-        name: "好滋好味鸡蛋仔",
-        category: "江浙小吃、小吃零食",
-        desc: "荷兰优质淡奶，奶香浓而不腻",
-        address: "上海市普陀区真北路",
-        shop: "王小虎夫妻店",
-        shopId: "10333",
-      },
+      tableData:{},
       productdetails:[
-        {
-          name:'小米T恤',
-          price:39,
-          num:5,
-          subtotal:0,
-        },
-        {
-          name:'小米T恤',
-          price:39,
-          num:5,
-          subtotal:0,
-        },
-        {
-          name:'小米T恤',
-          price:39,
-          num:5,
-          subtotal:0,
-        },
       ]
     };
   },
@@ -89,6 +105,18 @@ export default {
   overflow-y: auto;
   // padding: 15px;
   background: #fff;
+
+  & .pl-15{
+    padding-left: 15px;
+  }
+
+  & ::v-deep .el-form--inline .el-form-item__label{
+    font-size: 14px !important;
+  }
+
+  & ::v-deep .el-form-item__content{
+    font-size:13px !important;
+  }
 
   & .el-form {
     padding:15px;

@@ -53,23 +53,25 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="danger" size="small">查询</el-button>
-            <el-button size="small">重置</el-button>
+            <el-button type="primary" size="small">查询</el-button>
+            <el-button size="small" type="primary">重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
-          <el-button type="danger" size="small" @click="skip"
+          <el-button type="primary" size="small" @click="skip"
             >+ 新增商品</el-button
           >
-          <el-button size="small">批量下架</el-button>
-          <el-button size="small">批量上架</el-button>
-          <el-button size="small" @click="MultipleRemove()">批量删除</el-button>
+          <el-button size="small" type="primary">批量下架</el-button>
+          <el-button size="small" type="primary">批量上架</el-button>
+          <el-button size="small" @click="MultipleRemove()" type="primary"
+            >批量删除</el-button
+          >
         </div>
       </div>
       <div>
         <el-table
           ref="multipleTable"
-          :data="tableData"
+          :data="table"
           tooltip-effect="dark"
           style="width: 100%"
           stripe
@@ -131,11 +133,11 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
+            :current-page.sync="currentPage"
+            :page-sizes="[10, 20, 30]"
+            :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
+            :total="tableData.length"
             class="page"
           >
           </el-pagination>
@@ -168,7 +170,10 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false" size="small"
+          <el-button
+            @click="dialogFormVisible = false"
+            size="small"
+            type="primary"
             >取 消</el-button
           >
           <el-button
@@ -183,6 +188,7 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
   /**
    * author: syh
@@ -288,9 +294,86 @@ export default {
           state: "销售中",
           date: "2019-08-12",
         },
+        {
+          code: "20160503",
+          name: "南极人袜子",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
+        },
+        {
+          code: "20160503",
+          name: "乡巴佬鹌鹑蛋",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
+        },
+        {
+          code: "20160503",
+          name: "书箱收纳箱",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
+        },
+        {
+          code: "20160503",
+          name: "桂花奶茶瓜子",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
+        },
+        {
+          code: "20160503",
+          name: "男女加绒加厚裤子",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
+        },
+        {
+          code: "20160503",
+          name: "米创网红同款口罩",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
+        },
+        {
+          code: "20160503",
+          name: "正宗藏红花茶",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "销售中",
+          date: "2019-08-12",
+        },
       ],
       deleteDataArr: [],
-      
+
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
@@ -567,23 +650,34 @@ export default {
         ],
       },
       formLabelWidth: "120px",
-      multipleSelection: [],
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      currentPage: 1,
+      pageSize: 10,
+      table: [],
+      pageNum: "",
+      num: "",
     };
   },
   methods: {
+    ...mapActions(["createProduct"]),
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+      this.handleCurrentChange(1);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
+      this.pageNum = val;
+      this.offSize();
     },
-
-    getState() {
-      console.log(this.checked);
+    offSize() {
+      this.num = this.pageSize * (this.pageNum - 1);
+      this.Num();
+    },
+    Num() {
+      this.table = this.tableData.slice(
+        this.num,
+        this.num + this.pageSize
+      );
+      // console.log(this.table);
     },
     skip() {
       this.$router.push({
@@ -592,30 +686,36 @@ export default {
     },
     getCommodityDat(data) {
       this.dialogFormVisible = true;
-      console.log(data);
+      // console.log(data);
       this.form = data.row;
     },
     remove(indexArr) {
       indexArr.forEach((item) => {
-        this.tableData.splice(item, 1);
+        this.table.splice(item, 1);
+        this.tableData.splice(item,1)
       });
+    //  this.handleSizeChange()
     },
     MultipleRemove() {
       this.deleteDataArr.forEach((item) => {
-        this.tableData.splice(this.tableData.indexOf(item), 1);
+        this.table.splice(this.table.indexOf(item), 1);
+        // this.tableData.splice(this.tableData.indexOf(item),1)
       });
     },
     checkBoxData: function (selection) {
       this.deleteDataArr = selection;
     },
     handleSelectionChange(val) {
-      console.log(val);
+      // console.log(val);
       if (val) {
         this.deleteDataArr = val;
       } else {
         this.$refs.multipleTable.clearSelection();
       }
     },
+  },
+  created() {
+    this.handleSizeChange(10);
   },
 };
 </script>

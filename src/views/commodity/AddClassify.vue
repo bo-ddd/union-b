@@ -57,6 +57,7 @@
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
       <el-upload
+      ref="file"
   action="https://jsonplaceholder.typicode.com/posts/"
   list-type="picture-card"
   :on-preview="handlePictureCardPreview"
@@ -166,7 +167,7 @@ export default {
     },
     methods: {
       ...mapActions(["createCategory","getCategoryList"]),
-        handleRemove(file, fileList) {
+      handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
@@ -184,28 +185,9 @@ export default {
       },
       async getClassifyInfo(){
         let res = await this.getCategoryList({});
-       let data =res.data.rows;
-       let target = this.format(data)
-       this.options = target
+       let data =res.data.rows.slice();
+       this.options = data
       },
-        format(target){
-       let childrenIndex = 1;
-       let parentIndex = 1;
-     let res = target.slice();
-     res.forEach(item=>{
-       item.children = [];
-           let p = res.find((el) => el.id == item.pid);
-           if(item.pid){
-             item.childIndex = childrenIndex++ 
-             item.association = '规格' 
-             p.children.push(item)
-           }else{
-             item.pIndex = parentIndex++
-           }
-            item.category = p ? p.category + "=>" + item.title : item.title;
-     })
-     return res.filter(el => el.pid === null)
-  },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -225,7 +207,7 @@ export default {
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-        cascaderClick (nodeData) {
+      cascaderClick (nodeData) {
       this.addrCode = nodeData.title;
       this.ruleForm.pid = nodeData.id || nodeData.pid
       this.$refs.cascader.checkedValue = nodeData.title;
@@ -240,7 +222,21 @@ export default {
     },
   },
     created(){
-      this.getClassifyInfo()
+      this.getClassifyInfo();
+      // let formData = new FormData();
+      //   let file = this.$refs.file.files[0];  //this.$refs.file.files[0] 获取到上传的文件
+      //   console.log(file);
+      //   formData.append('file',this.$refs.file.files[0])  //把获取到的文件append到formData里面
+      //   formData.append('type',1)                                         //把type append到formData里面
+      //   console.log(formData.get('file'));    //拿到formData里面的file并打印
+      //   console.log(formData.get('type'));    //拿到formData里面的type并打印
+      //   axios.post('/upload/avator',formData,{
+      //       headers:{
+      //           "Content-Type":"multipart/form-data"
+      //       }
+      //   }).then(res=>{
+      //       console.log(res);
+      //   })
     },
 }
 </script>

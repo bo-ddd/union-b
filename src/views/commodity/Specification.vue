@@ -5,7 +5,6 @@
       <div class="addspebut">
         <el-button
           type="primary"
-          size="small"
           @click="addspecification, (dialogaddFormVisible = true)"
           >添加规格</el-button
         >
@@ -35,15 +34,20 @@
         <el-dialog title="添加规格" :visible.sync="dialogaddFormVisible">
           <el-form :model="form1">
             <el-form-item label="规格名称" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="form1.title" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="备注" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+            <!-- <el-form-item label="备注" :label-width="formLabelWidth">
+              <el-input v-model="form1.name" autocomplete="off"></el-input>
+            </el-form-item> -->
+            <el-form-item label="类目id" :label-width="formLabelWidth">
+              <el-input v-model="form1.cid" autocomplete="off"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogaddFormVisible = false"
+            <el-button
+              type="primary"
+              @click="addspecification(), (dialogaddFormVisible = false)"
               >确 定</el-button
             >
           </div>
@@ -53,7 +57,7 @@
         ref="multipleTable"
         tooltip-effect="dark"
         :data="arr"
-        size="small"
+
         style="width: 97%"
         @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
@@ -61,16 +65,11 @@
       >
         <el-table-column :data="arr" type="selection" align="center">
         </el-table-column>
-        <el-table-column       
-          label="id"
-          align="center"
-          prop="id"
-          sortable
-        >
+        <el-table-column label="id" align="center" prop="id" sortable>
         </el-table-column>
         <el-table-column
           label="规格名称"
-          align="center"          
+          align="center"
           prop="title"
           show-overflow-tooltip
           sortable
@@ -101,16 +100,25 @@
             <el-dialog title="修改此行数据" :visible.sync="dialogFormVisible">
               <el-form :model="form">
                 <el-form-item label="id" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                  <el-input
+                    v-model="form.serialId"
+                    autocomplete="off"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="规格名称" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                  <el-input
+                    v-model="form.speName"
+                    autocomplete="off"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="备注" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                  <el-input v-model="form.remark" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="排列顺序" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                  <el-input
+                    v-model="form.sortOrder"
+                    autocomplete="off"
+                  ></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
@@ -132,10 +140,9 @@
       </el-table>
       <div class="footer">
         <div class="footer_left">
-          <el-button type="primary" size="small">保存排序</el-button>
+          <el-button type="primary">保存排序</el-button>
           <el-button
             type="primary"
-            size="small"
             class="batch_del_btn"
             @click="MultipleRemove()"
             >批量删除</el-button
@@ -155,9 +162,9 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :page-size="pageCount"
+              :page-count=pageCount
               :total="count"
-              layout=" prev, pager, next"
+              layout="prev, pager, next"
             >
             </el-pagination>
           </div>
@@ -200,16 +207,16 @@ export default {
       arr: [],
       deleteDataArr1: [],
       form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+        serialId: "",
+        speName: "",
+        remark: "",
+        sortOrder: "",
       },
-      form1:{},
+      form1: {
+        title: "",
+        cid: "",
+        name: "",
+      },
       dialogFormVisible: false,
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
@@ -217,7 +224,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getSpecificationList"]),
+    /**
+     * getSpecificationList获取所有的类目接口
+     * createSpecification 添加规格接口
+     */
+    ...mapActions(["getSpecificationList", "createSpecification"]),
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -237,8 +248,14 @@ export default {
       console.log(`当前页: ${val}`);
     },
     //添加规格
-    addspecification() {
-      console.log("添加成功");
+
+    async addspecification() {
+      let res = await this.createSpecification({
+        title: this.form1.title,
+        cid: Number(this.form1.cid),
+      });
+      console.log(res);
+      this.spelist()
     },
     //批量删除
     MultipleRemove() {
@@ -261,18 +278,22 @@ export default {
     formatter(row) {
       return row.address;
     },
+    //获取所有类目规格
+    async spelist() {
+      let res = await this.getSpecificationList();
+      console.log(res);
+      this.count = res.data.count;
+      this.pageCount = res.data.pageCount;
+      res.data.rows.forEach((item) => {
+        this.id = item.id;
+        this.title = item.title;
+        this.productCategory = item.productCategory;
+        this.arr.push(item);
+      });
+    },
   },
   async created() {
-    let res = await this.getSpecificationList({});
-    console.log(res);
-    this.count = res.data.count;
-    this.pageCount = res.data.pageCount;
-    res.data.rows.forEach((item) => {
-      this.id = item.id;
-      this.title = item.title;
-      this.productCategory = item.productCategory;
-      this.arr.push(item);
-    });
+    this.spelist();
   },
 };
 </script>
@@ -336,7 +357,7 @@ export default {
   text-indent: 16px;
   border-radius: 5px;
 }
-.sel{
+.sel {
   width: 120px;
 }
 .cell1 {

@@ -57,6 +57,10 @@ export default new Vuex.Store({
 
 
         //商品管理
+        //商品管理列表接口
+        getProductList(ctx, payload) {
+            return Api.getProductList(payload);
+        },
         //商品类目接口
         getCategoryList(ctx, payload) {
             return Api.getCategoryList(payload);
@@ -136,6 +140,18 @@ export default new Vuex.Store({
         createArticle(ctx, payload) {
             return Api.createArticle(payload);
         },
+        //导航列表接口
+        getNavList(ctx, payload) {
+            return Api.getNavList(payload);
+        },
+        //新增导航展示
+        createNav(ctx, payload) {
+            return Api.createNav(payload);
+        },
+        //删除导航展示
+        deleteNav(ctx, payload) {
+            return Api.deleteNav(payload);
+        },
 
 
         //订单管理
@@ -166,6 +182,23 @@ export default new Vuex.Store({
             return Api.createOpinion(payload);
         },
 
+        //商户管理
+        //商户入驻接口
+        createSettled(ctx, payload) {
+            return Api.createSettled(payload);
+        },
+        //同意申请接口
+        settledAdopt(ctx, payload) {
+            return Api.settledAdopt(payload);
+        },
+        //拒绝申请接口
+        settledRefuse(ctx, payload) {
+            return Api.settledRefuse(payload);
+        },
+        //商户申请列表接口
+        getSettledList(ctx, payload) {
+            return Api.getSettledList(payload);
+        },
 
     },
     modules: {}

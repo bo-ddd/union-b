@@ -370,15 +370,6 @@ export const routes = [{
                     import ( /* webpackChunkName: "homepage" */ '../views/content/HomePage')
             },
             {
-                path: '/content/local',
-                name: 'Local',
-                meta: {
-                    title: '本地推荐',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "local" */ '../views/content/Local')
-            },
-            {
                 path: '/content/premium',
                 name: 'Premium',
                 meta: {

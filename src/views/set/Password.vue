@@ -10,7 +10,7 @@
           <el-input class="main_input" v-model="confirmpass" placeholder="请确认新密码"></el-input>
        </div>
        <div class="main_inputbox">
-         <el-button class="confirmbtn" type="primary">确认修改</el-button>
+         <el-button class="confirmbtn" @click="verifyPassword" type="primary">确认修改</el-button>
        </div>
 
        </div>
@@ -19,12 +19,43 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      oldpassword: '',
+      newpassword: '',
       confirmpass: '',  
-      newpassword: ''
+    }
+  },
+  methods:{
+    ...mapActions(["userUpdatePwd"]),
+
+    async verifyPassword(){
+      if(!this.newpassword.length){
+        this.$message({
+          type: "warning",
+          message: "请输入要修改的新密码",
+        });
+      }else if(this.newpassword.length < 6 || this.newpassword.length > 15){
+        this.$message({
+          type:"warning",
+          message:"密码长度为6-15位"
+        })
+      }else if(!this.newpassword==this.confirmpass){
+        this.$message({
+          type:"warning",
+          message:"两次输入密码不一致"
+        })
+      }else{
+        let res = await this.userUpdatePwd({
+          password:this.newpassword
+        })
+        console.log(res)
+        this.$message({
+          type:"warning",
+          message:`${res.msg}`
+        })
+      }
     }
   }
 }

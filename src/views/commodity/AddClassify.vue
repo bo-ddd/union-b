@@ -56,16 +56,13 @@
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
-      <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
-  list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
-  <i class="el-icon-plus"></i>
-</el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
-</el-dialog>
+     <div>
+       <input type="file" name="file" id="file" ref="file">
+       <div class="img">
+         <img :src="src" alt="">
+       </div>
+       <el-button @click="upImg">上传</el-button>
+     </div>
   </el-form-item>
 
 </el-form>
@@ -147,6 +144,7 @@ import {mapActions} from "vuex"
 export default {
  data() {
       return {
+        src:'',
         pid:'',
         addrCode: undefined,
          dialogImageUrl: '',
@@ -165,8 +163,8 @@ export default {
       };
     },
     methods: {
-      ...mapActions(["createCategory","getCategoryList"]),
-        handleRemove(file, fileList) {
+      ...mapActions(["createCategory","getCategoryList","uploadImage"]),
+      handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
@@ -174,38 +172,22 @@ export default {
         this.dialogVisible = true;
       },
      async submit(){
-       console.log(this.ruleForm.name)
-       console.log(this.ruleForm.pid)
-      //  let res = await this.createCategory({
-      //    title:this.ruleForm.name,
-      //    pid:null
-      //  })
-      //  console.log(res)
+      //  console.log(this.ruleForm.name)
+      //  console.log()
+      //  console.log(this.src)
+       let res = await this.createCategory({
+         title:this.ruleForm.name,
+         pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+         category:this.src
+
+       })
+       console.log(res)
       },
       async getClassifyInfo(){
         let res = await this.getCategoryList({});
-       let data =res.data.rows;
-       let target = this.format(data)
-       this.options = target
+       let data =res.data.rows.slice();
+       this.options = data
       },
-        format(target){
-       let childrenIndex = 1;
-       let parentIndex = 1;
-     let res = target.slice();
-     res.forEach(item=>{
-       item.children = [];
-           let p = res.find((el) => el.id == item.pid);
-           if(item.pid){
-             item.childIndex = childrenIndex++ 
-             item.association = '规格' 
-             p.children.push(item)
-           }else{
-             item.pIndex = parentIndex++
-           }
-            item.category = p ? p.category + "=>" + item.title : item.title;
-     })
-     return res.filter(el => el.pid === null)
-  },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -225,7 +207,7 @@ export default {
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-        cascaderClick (nodeData) {
+      cascaderClick (nodeData) {
       this.addrCode = nodeData.title;
       this.ruleForm.pid = nodeData.id || nodeData.pid
       this.$refs.cascader.checkedValue = nodeData.title;
@@ -238,9 +220,17 @@ export default {
       });
      
     },
+   async upImg(){
+       let formData = new FormData();
+       formData.append('file',document.getElementById('file').files[0]);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
+        console.log(res.data)
+        this.src=res.data
+    }
   },
     created(){
-      this.getClassifyInfo()
+      this.getClassifyInfo();
     },
 }
 </script>
@@ -276,5 +266,23 @@ export default {
 .classify-img,.poster-classify{
   margin-bottom: 0 !important;
 }
-
+::v-deep .file{
+  & .el-input__inner{
+    border: none;
+  }
+}
+.img{
+  width: 150px;
+  height: 150px;
+  border: 1px dashed #c0ccda;
+  border-radius:6px ;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > img{
+    width: 90%;
+    height: 90%;
+  }
+}
 </style>

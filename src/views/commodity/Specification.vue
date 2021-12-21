@@ -9,6 +9,28 @@
           @click="addspecification, (dialogFormVisible = true)"
           >添加规格</el-button
         >
+        <div>
+          <el-input
+            placeholder="请输入内容"
+            v-model="input3"
+            class="input-with-select"
+          >
+            <el-select
+              v-model="value"
+              filterable
+              placeholder="请选择"
+              slot="prepend"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </div>
         <el-dialog title="添加规格" :visible.sync="dialogFormVisible">
           <el-form :model="form">
             <el-form-item label="规格名称" :label-width="formLabelWidth">
@@ -35,6 +57,7 @@
         :data="tableData"
         size="small"
         style="width: 97%"
+        @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
@@ -51,32 +74,17 @@
         <el-table-column
           label="规格名称"
           align="center"
-          prop="name"
-          :data="tableData"
+          :title="title"
           show-overflow-tooltip
           sortable
         >
         </el-table-column>
         <el-table-column
           label="备注"
-          :data="tableData"
-          prop="remark"
           show-overflow-tooltip
           align="center"
           sortable
         >
-        </el-table-column>
-        <el-table-column
-          label="排列顺序"
-          :data="tableData"
-          prop="id"
-          show-overflow-tooltip
-          align="center"
-          sortable
-        >
-          <template>
-            <input type="text" class="inp" v-model="input" />
-          </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -91,7 +99,7 @@
               type="primary"
               i
               class="el-icon-edit cell1"
-              @click="editListData,dialogFormVisible = true"
+              @click="editListData, (dialogFormVisible = true)"
             ></el-button>
             <el-dialog title="编辑此行数据" :visible.sync="dialogFormVisible">
               <el-form :model="form">
@@ -129,10 +137,9 @@
         <div class="footer_left">
           <el-button type="primary" size="small">保存排序</el-button>
           <el-button
-            plain
-            class="batch_del_btn"
             size="small"
-            @click="batchesDelete"
+            class="batch_del_btn"
+            @click="MultipleRemove()"
             >批量删除</el-button
           >
         </div>
@@ -150,8 +157,8 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :page-size="100"
-              :total="6"
+              :page-size="pageCount"
+              :total="count"
               layout="total, prev, pager, next"
             >
             </el-pagination>
@@ -163,18 +170,35 @@
 </template>
 
 <script>
-// import { mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      input: 10,
+      checked: false,
+      value: "",
+      input: "",
+      input1: "",
+      input2: "",
+      input3: "",
+      select: "",
+      options: [
+        {
+          value: "选项1",
+          label: "规格名称",
+        },
+        {
+          value: "选项2",
+          label: "备注",
+        },
+      ],
       currentPage4: 4,
       pagination: true,
       pageNum: 10,
-      pageSize: 1,
-      // id: "",
-      // title: "",
-      // productCategory: "",
+      id: "",
+      title: "",
+      productCategory: "",
+      count: "",
+      pageCount: "",
       tableData: [
         {
           id: "1",
@@ -219,6 +243,7 @@ export default {
           operation: "",
         },
       ],
+      deleteDataArr1: [],
       form: {
         name: "",
         region: "",
@@ -235,7 +260,7 @@ export default {
     };
   },
   methods: {
-    // ...mapActions(["getSpecificationList"]),
+    ...mapActions(["getSpecificationList"]),
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -259,7 +284,14 @@ export default {
       console.log("添加成功");
     },
     //批量删除
-    batchesDelete() {},
+    MultipleRemove() {
+      this.deleteDataArr1.forEach((item) => {
+        this.tableData.splice(this.tableData.indexOf(item), 1);
+      });
+    },
+    checkBoxData: function (selection) {
+      this.deleteDataArr1 = selection;
+    },
     //单个修改
     editListData() {
       console.log("单个修改成功");
@@ -273,13 +305,23 @@ export default {
       return row.address;
     },
   },
-  // async created() {
-  //   let res = await this.getSpecificationList({});
-  //   console.log(res);
-  //   this.id = res.data.id;
-  //   this.title = res.data.title;
-  //   this.productCategory = res.data.productCategory;
-  // },
+  async created() {
+    let res = await this.getSpecificationList({});
+    console.log(res);
+    this.count = res.data.count;
+    this.pageCount = res.data.pageCount;
+    console.log(res.data.pageCount);
+    let arr = [];
+    res.data.rows.forEach((item) => {
+      console.log(item);
+      this.id = item.id;
+      console.log(item.id);
+      this.title = item.title;
+      this.productCategory = item.productCategory;
+      arr.push(item);
+    });
+    console.log(arr);
+  },
 };
 </script>
 
@@ -301,6 +343,11 @@ export default {
     padding: 20px;
     background-color: #ffffff;
     border-bottom: 1px solid #d4dde2;
+    display: flex;
+    justify-content: space-between;
+    & .findshop {
+      width: 300px;
+    }
   }
   & .el-table {
     // margin: 0px 20px 0px 20px;
@@ -353,5 +400,11 @@ export default {
   margin-left: 10px;
   border: none;
   color: #ffffff;
+}
+.el-select .el-input {
+  width: 130px;
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
 }
 </style>

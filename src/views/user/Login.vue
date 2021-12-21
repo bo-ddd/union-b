@@ -47,7 +47,12 @@
             </div>
           </div>
           <div class="main-foot">
-            <el-button type="primary" @click="submit" round>
+            <el-button
+              type="primary"
+              @click="submit"
+              v-on:keyup.enter="submit"
+              round
+            >
               登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
             </el-button>
           </div>

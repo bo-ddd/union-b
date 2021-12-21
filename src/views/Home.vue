@@ -63,12 +63,17 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["getUserInfo","userLogout"]),
+        ...mapActions(["getUserInfo", "userLogout"]),
         handleOpen() {},
         handleClose() {},
-        async logout(){
-          let res = await this.userLogout()
-          console.log(res)
+        async logout() {
+            let res = await this.userLogout()
+            if (res.status == 1) {
+                sessionStorage.clear('token');
+                this.$router.push({
+                    name: 'Login'
+                })
+            }
         }
     },
     computed: {

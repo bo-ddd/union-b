@@ -2,17 +2,7 @@
   <div class="body">
     <div class="wrap">
       
-      <div class="center">
-        <div class="center-content">
-          <span class="content">文章标识</span>
-          <el-input
-            class="input"
-            placeholder="请输入文章标识"
-          ></el-input>
-          <i class="el-icon-warning-outline"></i>
-          <span class="tips">请输入8个字以内的英文字符</span>
-        </div>
-      </div>
+     
       <div class="center">
         <div class="center-content">
           <span class="content">文章标题</span>
@@ -23,16 +13,6 @@
           ></el-input>
           <i class="el-icon-warning-outline"></i>
           <span class="tips">请输入15个字以内的中文字符</span>
-        </div>
-      </div>
-      <div class="center">
-        <div class="center-content">
-          <span class="content">文章类型</span>
-          <el-radio class="option" v-model="radio" label="1">内容</el-radio>
-          <el-radio class="option" v-model="radio" label="2">科普</el-radio>
-          <!-- <el-input class="input" v-model="input" placeholder="请输入内容"></el-input> -->
-          <i class="el-icon-warning-outline icon"></i>
-          <span class="tips">请选择文章所属知识范围</span>
         </div>
       </div>
       <div class="center">
@@ -57,59 +37,6 @@
         </div>
       </div>
       <div class="center">
-        <div class="center-contents">
-          <span class="content">类别名称</span>
-          <el-select class="input" placeholder="请选择">
-            <el-option
-             
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-          <i class="el-icon-warning-outline icon-i"></i>
-          <span class="tips">请选择一个广告所属</span>
-        </div>
-      </div>
-      <div class="center">
-        <div class="center-content">
-          <span class="content">付费模式</span>
-          <el-radio class="option" v-model="redio" label="1">付费</el-radio>
-          <el-radio class="option" v-model="redio" label="2">免费</el-radio>
-          <i class="el-icon-warning-outline pay"></i>
-          <span class="tips">请选择文章是否需要支付费用</span>
-        </div>
-      </div>
-      <div class="center">
-        <div class="center-content">
-          <span class="content">版权设置</span>
-          <el-select class="input"  placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-          <i class="el-icon-warning-outline copyright"></i>
-          <span class="tips">请选择文章版权</span>
-        </div>
-      </div>
-      <div class="center">
-        <div class="center-content">
-          <span class="content">文章作者</span>
-          <el-input
-            class="input"
-            
-            placeholder="请输入文章作者"
-          ></el-input>
-          <i class="el-icon-warning-outline character"></i>
-          <span class="tips">请输入15个字以内的中文字符</span>
-        </div>
-      </div>
-      <div class="center">
         <div class="center-content">
           <span class="content-imges">文章内容</span>
           <el-input
@@ -125,19 +52,7 @@
           <span class="tipes">请输入文章内容</span>
         </div>
       </div>
-      <div class="center">
-        <div class="center-content">
-          <span class="content">排序数字</span>
-          <el-input
-            class="input"
-            
-            placeholder="请输入排序数字"
-          ></el-input>
-          <i class="el-icon-warning-outline"></i>
-          <span class="tips">请输入排序数字</span>
-        </div>
-      </div>
-
+     
       <div class="bottom">
         <div class="bottom-content">
 
@@ -153,6 +68,7 @@
 export default {
   data() {
     return {
+      
        dialogImageUrl: '',
         dialogVisible: false,
       radio: "1",
@@ -173,7 +89,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang='scss'>
 .body{
   height: calc(100vh - 100px);
   overflow-y:auto;

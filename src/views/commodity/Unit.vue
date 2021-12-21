@@ -59,7 +59,7 @@
 </template>
 
 <script>
-// import { mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
    data() {
         return {
@@ -81,169 +81,8 @@ export default {
             Unit_type: '计数',
             Unit_source:'商家创建',
             sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '2',
-            Unit_name: '2件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '3',
-            Unit_name: '3件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '4',
-            Unit_name: '4件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '5',
-            Unit_name: '5件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '6',
-            Unit_name: '6件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '7',
-            Unit_name: '7件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '8',
-            Unit_name: '8件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '9',
-            Unit_name: '9件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '10',
-            Unit_name: '10件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '11',
-            Unit_name: '11件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '12',
-            Unit_name: '12件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '13',
-            Unit_name: '13件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '14',
-            Unit_name: '14件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '15',
-            Unit_name: '15件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '16',
-            Unit_name: '16件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '17',
-            Unit_name: '17件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '18',
-            Unit_name: '18件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '19',
-            Unit_name: '19件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '20',
-            Unit_name: '20件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'  
-          }, 
-          {
-            Serial_number: '21',
-            Unit_name: '21件',
-            Unit_type: '计数',
-            Unit_source:'商家创建',
-            sort:'',
-            operation:'禁用'
-          }, 
-          ],
+            operation:'禁用' 
+          }],
            options: [{
           value: '选项1',
           label: '序号'
@@ -258,7 +97,7 @@ export default {
         }
       },
       methods: {
-        //  ...mapActions(["delete"]),
+         ...mapActions(["createUnitlibrary","getUnitlibraryList"]),
         //置顶
         Topping(index){
           var arr = this.table.splice(index,1);
@@ -331,14 +170,30 @@ export default {
           }
           this.table = arr;
         },
-        // async submit(){
-        //   this.dialogFormVisible=false;
-        //   let res = await this. 
-        //   console.log(this.form);
-        // }
+        async submit(){
+          this.dialogFormVisible = false;
+          let res = await this.createUnitlibrary({
+            title:this.form.name,
+            cid:Number(this.form.type),
+            storeId:Number(this.form.source)
+          });
+          console.log(res);
+          this.List();
+        },
+        async List(){
+          let res = await this.getUnitlibraryList({
+            pagination:true,
+          //  * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+          //  * pageNum   [number]    每页多少条数据  默认是10条
+          //  * pageSize  [number]    这是第几页      默认是第1页
+          })
+         let list = res.data.rows;
+         this.tableData.push(list);
+        }
       },
       created(){
         this.handleSizeChange(10);
+        this.List();
       }
 }
 </script>

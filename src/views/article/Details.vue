@@ -8,7 +8,7 @@
           <div class="nickName">
             <div class="top">
               <span class="name">神仙儿</span>
-              <button class="button">关注</button>
+              <button type="primary" class="button">关注</button>
             </div>
             <div class="bottom">
               <span>日期：2021.12.20 9:14</span>
@@ -69,8 +69,8 @@ export default {
   width: 60px;
   height: 30px;
   border: none;
-  border: 1px solid #ff4070;
-  color: #ff4070;
+  border: 1px solid #fff;
+  color: #406dff;
   border-radius: 50px;
   margin-left: 10px;
 }

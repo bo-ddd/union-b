@@ -6,7 +6,7 @@
           <el-button
             class="query"
             icon="el-icon-plus"
-            type="text"
+            type="primary"
             @click="dialogFormVisible = true"
             >创建标签</el-button
           >
@@ -86,7 +86,7 @@
                 <el-button
                   class="query1"
                   icon="el-icon-plus"
-                  type="text"
+                  type="primary"
                   @click="dialogFormVisible = true"
                   >添加标签</el-button
                 >
@@ -113,11 +113,6 @@
             v-model="input3"
             class="input-with-select"
           >
-            <el-select v-model="select" slot="prepend" placeholder="标签值">
-              <el-option label="餐厅名" value="1"></el-option>
-              <el-option label="订单号" value="2"></el-option>
-              <el-option label="用户电话" value="3"></el-option>
-            </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
@@ -125,11 +120,14 @@
     </div>
     <div class="bottom">
       <div class="long">
-        <span class="jian">></span>
+        <span>></span>
         <b class="s">标签建：默认项目</b>
       </div>
     </div>
     <div class="third">
+      <div class="third-top">
+
+      </div>
       <div class="third-left">
         <div class="t-f">
           每页展示 &nbsp;
@@ -153,6 +151,10 @@
   </div>
 </template>
 <style scoped lang='scss'>
+.third-top{
+  height: 300px;
+
+}
 .paging{
   margin-top: 10px;
 }
@@ -168,7 +170,7 @@
 .third-left {
   width: 600px;
   height: 50px;
-  float: right;
+  float: left;
   margin-top: 20px;
 }
 .el-icon-arrow-left {
@@ -202,11 +204,10 @@
   text-align: left;
 }
 .que {
-  background-color: #ff4070;
   border: none;
 }
 .query1 {
-  background-color: #ff4070;
+  padding: 10px;
   color: #fff;
 }
 .se {
@@ -234,7 +235,7 @@
 }
 .p2 {
   margin-left: 80px;
-  color: #ff4070;
+
 }
 .wen {
   height: 100px;
@@ -264,7 +265,6 @@
   height: 50px;
 }
 .query {
-  background-color: #ff4070;
   border: none;
   color: #fff;
   padding: 10px;
@@ -290,9 +290,7 @@
   line-height: 70px;
   padding-left: 20px;
 }
-.jian {
-  color: #ff4070;
-}
+
 .s {
   margin-left: 5px;
 }

@@ -2,13 +2,12 @@
   <div class="wrap">
     <div class="wrap_recommend">
       <div class="preservation">
-        <el-button plain class="issuebtn" size="small">发布</el-button>
+        <el-button plain class="issuebtn">发布</el-button>
       </div>
       <el-table
         :data="tableData"
         stripe
         :header-cell-style="{ background: '#fcfcfc' }"
-        size="small"
       >
         <el-table-column type="selection" align="center" width="50">
         </el-table-column>

@@ -36,14 +36,30 @@
                 ></el-input>
               </div>
               <div class="captcha">
-                <img :src="captchaSrc" alt="" />
+                <img
+                  style="height: 43px"
+                  :src="captchaSrc"
+                  @click="generatorCaptcha"
+                  alt=""
+                  srcset=""
+                />
               </div>
             </div>
           </div>
           <div class="main-foot">
-            <el-button type="primary" @click="submit" round>
+            <el-button
+              type="primary"
+              @click="submit"
+              @keyup.enter="submit"
+              round
+            >
               登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
             </el-button>
+          </div>
+          <div class="glink">
+            <el-link :underline="false" type="primary" @click="submitregist"
+              >还没账号，去注册！</el-link
+            >
           </div>
         </div>
       </div>
@@ -66,7 +82,6 @@ export default {
   },
   methods: {
     ...mapActions(["userLogin", "getCaptcha"]),
-
     async generatorCaptcha() {
       // 验证码接口
       this.captchaSrc = await this.getCaptcha();
@@ -137,20 +152,52 @@ export default {
       });
       console.log(res);
       if (res.status == 1) {
-        console.log("success");
         sessionStorage.setItem("token", res.data);
+        this.$message.success(res.msg);
+        this.$router.push({
+          path: "/",
+        });
       } else {
+        this.$message.error(res.msg);
+        this.generatorCaptcha();
+      }
+      if (res.status == 0) {
         this.$message({
           type: "warning",
           message: res.msg,
         });
-        this.generatorCaptcha();
       }
     },
+
+    // 按回车键登录
+    keyDown(e) {
+      // 回车则执行登录方法 enter键的ASCII是13
+      if (e.keyCode === 13) {
+        this.submit(); //登录方法
+      }
+    },
+
+    // 跳转到注册页面
+    submitregist() {
+      this.$router.push({
+        path: "/registration",
+      });
+    },
   },
+
   created() {
     // 进页面直接调用验证码
-    // this.generatorCaptcha();
+    this.generatorCaptcha();
+  },
+
+  mounted() {
+    // 绑定监听事件
+    window.addEventListener("keydown", this.keyDown);
+  },
+
+  destroyed() {
+    // 销毁事件
+    window.removeEventListener("keydown", this.keyDown, false);
   },
 };
 </script>
@@ -162,10 +209,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 1200px;
+  min-height: 500px;
 
   & .main {
     width: 55%;
-    height: 65%;
+    height: 550px;
     background-color: #fff;
     border-radius: 5px;
     display: flex;
@@ -189,10 +238,9 @@ export default {
       & .mainpack {
         width: 100%;
         height: 70%;
-
         & .main-top {
           width: 100%;
-          height: 30%;
+          height: 110px;
           display: flex;
           // justify-content: start;
           flex-direction: column;
@@ -213,7 +261,7 @@ export default {
 
         & .main-con {
           width: 100%;
-          height: 50%;
+          height: 195px;
           display: flex;
           justify-content: center;
           flex-direction: column;
@@ -250,7 +298,7 @@ export default {
 
         & .main-foot {
           width: 100%;
-          height: 20%;
+          height: 90px;
           display: flex;
           align-items: center;
 
@@ -269,5 +317,11 @@ export default {
 }
 ::v-deep input::-webkit-input-placeholder {
   color: #717171;
+}
+
+.glink {
+  float: right;
+  position: relative;
+  right: 78px;
 }
 </style>

@@ -81,7 +81,10 @@
             <div class="entrance_input">
                 <div class="aaa"> <div>上传图标</div> </div>
                 <div class="ddd">
-                    <el-upload
+
+
+
+                    <!-- <el-upload
                         class="avatar-uploader"
                         action="https://jsonplaceholder.typicode.com/posts/"
                         :show-file-list="false"
@@ -89,8 +92,22 @@
                         :before-upload="beforeAvatarUpload">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon fff"></i>
-                    </el-upload>
-                    <span>选择文件</span>
+                    </el-upload> -->
+
+                    <el-upload
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        list-type="picture-card"
+                        :on-preview="handlePictureCardPreview"
+                        :on-remove="handleRemove">
+                        <i class="el-icon-plus"></i>
+                        </el-upload>
+                        <el-dialog :visible.sync="dialogVisible">
+                        <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+
+
+
+
                 </div>
             </div>
             <div slot="footer" class="dialog-footer">
@@ -103,24 +120,10 @@
 </template>
 <style lang="scss" scoped>
 // 编辑中的上传头像的加号
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    text-align: center;
-  }
-  .avatar {
-    display: block;
-  }
+::v-deep .el-upload-list__item{
+    width: 100px;
+    height: 80px;
+}
 .addBorder{
     padding: 5px;
     border: 1px dashed #ccc;
@@ -153,7 +156,7 @@ h3{
     text-align: center;
 }
 ::v-deep .el-dialog{
-    width: 25%;
+    width: 30%;
     padding: 20px;
 }
 // 模态框中的标题样式
@@ -173,7 +176,7 @@ h3{
         display: flex;
         align-items: center;
         & .aaa{
-            width: 70px;
+            width: 30%;
             & div{
                 float: right;
             }
@@ -184,28 +187,36 @@ h3{
             }
         }
         & .bbb{
+            width: 70%;
             margin-left: 20px;
         }
         & .ddd{
             margin-left: 20px;
-            width: 68px;
-            height: 68px;
-            border: 1px dashed #ccc;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
             padding: 3;
             color: #ccc;
+
+            & ::v-deep .el-upload{
+                width: 100px;
+                height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
         }
     } 
 }
 </style>
 <script >
+import { mapActions } from "vuex";
 export default {
     data() {
         return {
             imageUrl: '',
+            data : [],
             tableData: [
             {
             date: "2016-05-02",
@@ -228,13 +239,25 @@ export default {
             address: "上海市普陀区金沙江路 1516 弄",
             },
             ],
+            // 模态框显示的状态
             dialogFormVisible: false,
             name : '',
             restaurants: [],
-            state: ''
+            state: '',
+            dialogVisible : true,
+            dialogImageUrl : '',
         };
     },
     methods: {
+        ...mapActions(['getQuickList']),
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePictureCardPreview(file) {
+            console.log(file.url);
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        },
         // 操作下编辑的点击事件 
         edit(a){
             console.log(a);
@@ -319,21 +342,16 @@ export default {
             this.restaurants = this.loadAll();
             this.dialogFormVisible = false;
         },
-        handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
-        },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
-            const isLt2M = file.size / 1024 / 1024 < 2;
-
-            if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-            }
-            if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
-            }
-        return isJPG && isLt2M;
-      }
+        
+        // 获取所有数据
+        async getData(){
+            let res = await this.getQuickList({});
+            this.data = res;
+        }
+    },
+    async created(){
+        this.getData();
+        console.log(this.data);
     },
     mounted() {
         this.restaurants = this.loadAll();

@@ -19,7 +19,6 @@
   <el-form-item label="属性项必选:">
     <el-checkbox-group v-model="form.required">
       <el-checkbox label="启用" name="type"></el-checkbox>
-      <!-- <p class="span">该属性支持选择多个属性值，比如对一杯奶茶添加布丁，珍珠等多种配料。</p> -->
     </el-checkbox-group>
   </el-form-item>
 </el-form>
@@ -27,12 +26,31 @@
       </div>
       <h1 class="h1">属性值列表</h1>
       <div class="list">
-        <el-button type="primary" class="button">新增属性值</el-button>
-        <!-- <el-button type="danger" class="button">新增属性值</el-button> -->
+        <el-button type="primary" @click="dialogFormVisible = true" class="button">新增属性值</el-button>
+        <el-dialog title="新增属性值" :visible.sync="dialogFormVisible">
+  <el-form :model="forms">
+    <el-form-item label="属性值" :label-width="formLabelWidth">
+      <el-input v-model="forms.name" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="加价(元)" :label-width="formLabelWidth" class="form-money">
+      <el-select v-model="forms.region" placeholder="请选择加价价格">
+        <el-option label="10元" value="10"></el-option>
+        <el-option label="20元" value="20"></el-option>
+        <el-option label="30元" value="30"></el-option>
+        <el-option label="40元" value="40"></el-option>
+        <el-option label="50元" value="50"></el-option>
+      </el-select>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+  </div>
+</el-dialog>
         <el-table
       :data="tableData"
       style="width: 100%">
-      <el-table-column prop="id" label="id" width="100" align="center">
+      <el-table-column type="index" label="id" width="100" align="center">
       </el-table-column>
       <el-table-column
         prop="name"
@@ -53,21 +71,27 @@
         label="排序"
         align="center"
         >
-        <template>
-          <img src="../../assets/images/zhiding.png" class="iconimg">
-          <img src="../../assets/images/xiangshang.png" class="iconimg">
-          <img src="../../assets/images/xiangxia.png" class="iconimg">
-        </template>
+        <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">置顶</el-button>
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">向上</el-button>
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">向下</el-button>
+      </template>
       </el-table-column>
       <el-table-column
         prop="operate"
         label="操作"
         align="center"
         >
-        <template>
+        <template slot-scope="scope">
           <el-button
           size="mini"
-          type="danger">删除</el-button>
+          type="danger" @click="remove(scope)">{{scope.row.delete}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,9 +103,22 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
       return {
+        dialogFormVisible: false,
+        formLabelWidth: '120px',
+        forms: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
         input:10,
         name:'微辣',
         form: {
@@ -90,26 +127,45 @@ export default {
           required: '',
         },
         tableData: [{
-            id: '1',
+            delete:'删除'
           }, {
-            id: '2',
+           
+            delete:'删除'
           }, {
-            id: '3',
+           
+            delete:'删除'
           }, {
-            id: '4',
+            
+            delete:'删除'
           },
           {
-            id: '5',
+           
+            delete:'删除'
           },
           {
-            id: '6',
+            
+            delete:'删除'
           }
           ]
       }
     },
     methods: {
-      
-  }
+      ...mapActions(["getAttributeList"]),
+       handleEdit(index, row) {
+        console.log(index, row);
+      },
+      handleDelete(index, row) {
+        console.log(index, row);
+      },
+      remove(data){
+        console.log(data.$index);
+       this.tableData.splice(data.$index,1) 
+      }
+  },
+  async created(){
+    let getAttributeList = await this.getAttributeList();
+    console.log(getAttributeList);
+  } 
 }
 </script>
 
@@ -129,8 +185,6 @@ export default {
 }
 .h1{
   margin: 20px 0;
-  // display: flex;
-  // align-items: center;
 }
 .top{
   margin-top: 20px;
@@ -171,7 +225,6 @@ export default {
     line-height: 60px;
   }
   .el-form-item {
-    // margin-top: 20px;
     margin-bottom: 0px;
 }
 .middle{
@@ -179,5 +232,8 @@ export default {
 }
 ::v-deep .el-table__header-wrapper{
   font-size: 17px;
+}
+.form-money{
+  margin:20px 0;
 }
 </style>

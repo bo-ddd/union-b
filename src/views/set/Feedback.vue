@@ -44,7 +44,7 @@
       </div>
       <div class="footer">
         <el-button round>取消</el-button>
-        <el-button type="warning" @click="onSubmit" round>提交</el-button>
+        <el-button type="primary" @click="onSubmit" round>提交</el-button>
       </div>
     </div>
   </div>

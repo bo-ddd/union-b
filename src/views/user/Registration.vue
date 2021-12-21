@@ -27,9 +27,14 @@
           </div>
           <div class="form_item">
             <div class="form_selectbox">
-              <input class="selectbox_input" type="checkbox" name="" id="agreementbtn">
+              <el-checkbox class="agreementbtn" v-model="checked"  id="agreementbtn"></el-checkbox>
+              <!-- <input class="selectbox_input" type="checkbox" name="" id="agreementbtn"> -->
               <label for="agreementbtn">已阅读并同意以下协议淘宝平台服务协议、隐私权政策、法律声明、支付宝及客户端服务协议、支付宝隐私权政策</label>
-              <!-- <el-checkbox v-model="checked">已阅读并同意以下协议淘宝平台服务协议、隐私权政策、法律声明、支付宝及客户端服务协议、支付宝隐私权政策</el-checkbox> -->
+            </div>
+          </div>
+          <div class="form_itemLink">
+            <div class="itemLinkBox" >
+              <el-link href="http://localhost:8080/login" class="linkData" type="primary">已有账号，直接登录</el-link>
             </div>
           </div>
           <div class="form_item">
@@ -47,6 +52,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      checked:false,
       form:{
         username:"",
         email:"",
@@ -87,21 +93,31 @@ export default {
           type:"warning",
           message:"密码不能为空"
         })
-      }
-      else if(/^([a-zA-Z]|[0-9])(\w|)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.form.email)){
+      }       
+      else if(!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(this.form.email)){
         this.$message({
           type:"warning",
           message:"邮箱格式不正确"
         })
       }
+      else if(this.checked==false){
+        this.$message({
+          type:"warning",
+          message:"请阅读并同意协议"
+        })
+      }
       else{
         let res = await this.userRegister({
-           username:this.username,
-           password:this.password,
-           email:this.email,
-           phone:this.phone
+           username:this.form.username,
+           password:this.form.password,
+           email:this.form.email,
+           phone:this.form.phone
         })
         console.log(res);
+        this.$message({
+          type:"warning",
+          message:`${res.msg}`
+        })
       }
     }
   }
@@ -111,6 +127,7 @@ export default {
 <style lang="scss" scoped>
 .wrap{
   height: 100vh;
+  min-width:700px;
   background-color: royalblue;
   display: flex;
   justify-content: center;
@@ -138,7 +155,7 @@ export default {
       height: 430px;
       & .form_item{
         width: 100%;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         display: flex;
         justify-content: center;
         & .form_item_input{
@@ -158,15 +175,35 @@ export default {
           display: flex;
           margin-top: 10px;
           color: #666;
+          & .agreementbtn{
+                margin-left: 33px;
+                margin-right: 6px;
+          }
           & .selectbox_input{
             width: 60px;
             margin-top: 2px;
           }
         }
       }
+      & .form_itemLink{
+        width: 100%;
+        margin-bottom: 14px;
+        display: flex;
+        justify-content:center;
+        & .itemLinkBox{
+           width: 70%;
+          height: 20px;
+          display: flex;
+          justify-content:right;
+          & .linkData{
+          font-size: 13px !important;
+          margin-right: 7px;
+          }
+        }
+      }
       & .logo{
         width: 100%;
-        height: 80px;
+        height: 60px;
         line-height: 50px;
         color: #087aed;
         font-size: 32px;

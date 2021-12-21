@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { postConfig } from './config'
-
+import { postConfig, uploadConfig } from './config'
 
 // 添加请求拦截器  概念：每次调用接口之前都会走到此方法中；走完此方法才会去请求服务端；
 axios.interceptors.request.use(function(config) {
@@ -55,6 +54,40 @@ export default {
     userRegister(params) {
         return axios.post('/user/register', params, postConfig)
     },
+    /**
+     * @description  用户信息接口
+     * @params 没有参数  必须登录
+     * */
+    getUserInfo(params) {
+        return axios.post('/user/info', params, postConfig)
+    },
+    /**
+     * @description  退出登录接口
+     * @params 没有参数  必须登录
+     * */
+    userLogout(params) {
+        return axios.post('/user/logout', params, postConfig)
+    },
+    /**
+     * @description  修改密码接口
+     * @params password :[string] 新密码  必须登录
+     * */
+    userUpdatePwd(params) {
+        return axios.post('user/updatePwd', params, postConfig)
+    },
+    /**
+     * @description 上传图片
+     * @params {
+     * file:  <stream>  上传的流 
+     * type:[Number]   1：banner   
+     * } 
+     */
+    uploadImage(params) {
+        // params   FormDate()
+        // params.append('type',1);
+        return axios.post('/upload/image', params, uploadConfig)
+    },
+
 
     //商品管理
     /**
@@ -69,6 +102,16 @@ export default {
         return axios.post('/category/list', params, postConfig)
     },
     /**
+     * @description 添加类目接口
+     * @params {
+     *  title : [String],   类目昵称
+     *  pid   : [Number]    父id
+     * } 
+     */
+    createCategory(params) {
+        return axios.post('/category/create', params, postConfig)
+    },
+    /**
      * @description 类目规格接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
@@ -80,14 +123,73 @@ export default {
         return axios.post('/specification/list', params, postConfig)
     },
     /**
-     * @description 添加类目接口
+     * @description 添加规格接口
      * @params {
-     *  title : [String],   类目昵称
-     *  pid   : [Number]    父id
+     * title : [String]     规格名称
+     * cid   : [Number]     类目id
      * } 
      */
-    createCategory(params) {
-        return axios.post('/category/create', params, postConfig)
+    createSpecification(params) {
+        return axios.post('/specification/create', params, postConfig)
+    },
+    /**
+     * @description 添加商品接口 
+     * @params {
+     * cid           : [Number],     商品类目标识
+     * title         : [String],    商品名称
+     * keywords      : [String],     商品关键字
+     * bannerImg     : [String],     商品banner图 
+     * platformPrice : [Number],     平台价
+     * desc          : [String],     商品描述
+     * realPrice     : [Nmber]      商品售卖价
+     * } 
+     */
+    createProduct(params) {
+        return axios.post('/product/create;', params, postConfig)
+    },
+    /**
+     * @description 商品属性接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getAttributeList(params) {
+        return axios.post('/attribute/list', params, postConfig)
+    },
+    /**
+     * @description 添加属性接口
+     * @params {
+     * value     : [String]     商品的属性或者是参数
+     * type      : [Number]     类型 1 属性  2参数
+     * productId : [Number]     商品id
+     * } 
+     */
+    createAttribute(params) {
+        return axios.post('/attribute/create', params, postConfig)
+    },
+    /**
+     * @description 商品单位接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getUnitlibraryList(params) {
+        return axios.post('/unitlibrary/list', params, postConfig)
+    },
+    /**
+     * @description 添加单位接口
+     * @params {
+     * title     : [String]     单位名称 例子:衣服单位为件,
+     * cid       : [Number]     类目标识  类目id
+     * storeId   : [Number]     店铺id 这个单位的来源
+     * } 
+     */
+    createUnitlibrary(params) {
+        return axios.post('/unitlibrary/create', params, postConfig)
     },
 
 
@@ -99,7 +201,13 @@ export default {
     getTradeData(params) {
         return axios.post('/data/trade', params, postConfig)
     },
-
+    /**
+     * @description 数据排行接口
+     * @params 无
+     */
+    getRankingData(params) {
+        return axios.post('/data/ranking', params, postConfig)
+    },
 
 
     //内容管理
@@ -136,6 +244,50 @@ export default {
     getSuperList(params) {
         return axios.post('/superProduct/list', params, postConfig)
     },
+    /**
+     * @description 标签列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getLableList(params) {
+        return axios.post('/lable/list', params, postConfig)
+    },
+    /**
+     * @description 新增标签接口
+     * @params {
+     * lableName:[string] 必填  '标签的名字'
+     * } 
+     */
+    createLable(params) {
+        return axios.post('/lable/create', params, postConfig)
+    },
+    /**
+     * @description 文章列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getArticleList(params) {
+        return axios.post('/article/list', params, postConfig)
+    },
+    /**
+     * @description 新增文章接口
+     * @params {
+     * articleTitle:[string]    '标题',
+     * articleImg:[string]      '文章的图片',
+     * authorId:[number]        '作者id',
+     * articleContent:[string] '文章内容'
+     * } 
+     */
+    createArticle(params) {
+        return axios.post('/article/create', params, postConfig)
+    },
+
 
     //订单管理
     /**
@@ -149,5 +301,61 @@ export default {
     getOrderList(params) {
         return axios.post('/order/list', params, postConfig)
     },
+    /**
+     * @description 订单详情接口
+     * @params {
+     * id:''//必填 订单id  //1639803937171000001
+     * } 
+     */
+    getOrderDetail(params) {
+        return axios.post('/order/detail', params, postConfig)
+    },
+    /**
+     * @description 订单状态接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getOrderStatusList(params) {
+        return axios.post('/orderStatus/list', params, postConfig)
+    },
+    /**
+     * @description 支付方式接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getPaymentList(params) {
+        return axios.post('/payment/list', params, postConfig)
+    },
+
+    //系统设置
+    /**
+     * @description 意见反馈接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getOpinionList(params) {
+        return axios.post('/opinion/list', params, postConfig)
+    },
+    /**
+     * @description 新增文章接口
+     * @params {
+     * title:[String] ,//意见的标题  
+     * content:[String],//意见的内容 
+     * img_url:[String]//意见图  非必填  
+     * } 
+     */
+    createOpinion(params) {
+        return axios.post('/opinion/create', params, postConfig)
+    },
+
 
 }

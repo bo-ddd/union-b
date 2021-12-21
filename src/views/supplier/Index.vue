@@ -53,9 +53,11 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="danger" size="small">查询</el-button>
-            <el-button size="small">重置</el-button>
-            <el-button size="small" @click="exportExcel">导出全部</el-button>
+            <el-button type="primary" size="small">查询</el-button>
+            <el-button type="primary" size="small">重置</el-button>
+            <el-button type="primary" size="small" @click="exportExcel"
+              >导出全部</el-button
+            >
           </div>
         </div>
         <div class="commodity_operation">
@@ -340,6 +342,7 @@ export default {
         & > div:nth-of-type(2) {
           display: flex;
           align-items: center;
+          margin-left: -45px;
           & > div {
             height: 32px;
             width: 60px;

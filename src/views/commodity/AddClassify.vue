@@ -20,11 +20,14 @@
   </el-input>
 <div class="block" style="margin-top:10px">
   <span class="demonstration"></span>
-  <el-cascader
-  size="small"
-    v-model="value"
-    :options="options"
-    @change="handleChange"></el-cascader>
+ <el-cascader ref="cascader" v-model="addrCode" :options="options" :props="{ checkStrictly: true, expandTrigger: 'hover', emitPath: false }">
+      <template slot-scope="{ node, data }">
+        <div @click="cascaderClick(data)">
+          <span>{{ data.title }}</span>
+          <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+        </div>
+      </template>
+    </el-cascader>
 </div>
   </div>
    <el-select slot="reference" v-model="value"  size="small" style="width:100%">
@@ -54,6 +57,7 @@
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
       <el-upload
+      ref="file"
   action="https://jsonplaceholder.typicode.com/posts/"
   list-type="picture-card"
   :on-preview="handlePictureCardPreview"
@@ -133,7 +137,7 @@
 </el-form>
         </div>
         <div class="footer">
-            <el-button type="danger" class="submit" size="small" @click="submit">确定</el-button>
+            <el-button type="primary" class="submit" size="small" @click="submit">确定</el-button>
         </div>
      </div>
   </div>
@@ -144,6 +148,8 @@ import {mapActions} from "vuex"
 export default {
  data() {
       return {
+        pid:'',
+        addrCode: undefined,
          dialogImageUrl: '',
         dialogVisible: false,
         radio1:'1',
@@ -151,17 +157,17 @@ export default {
         radio3:'1',
           radio4:'1',
         radio5:'1',
-        value:'',
         ruleForm: {
           name:'',
           pid:''
         },
+        value:'',
          options: []
       };
     },
     methods: {
-      ...mapActions(["createCategory"]),
-        handleRemove(file, fileList) {
+      ...mapActions(["createCategory","getCategoryList"]),
+      handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
@@ -169,11 +175,18 @@ export default {
         this.dialogVisible = true;
       },
      async submit(){
-       let res = await this.createCategory({
-         title:this.ruleForm.name,
-         pid:null
-       })
-       console.log(res)
+       console.log(this.ruleForm.name)
+       console.log(this.ruleForm.pid)
+      //  let res = await this.createCategory({
+      //    title:this.ruleForm.name,
+      //    pid:null
+      //  })
+      //  console.log(res)
+      },
+      async getClassifyInfo(){
+        let res = await this.getCategoryList({});
+       let data =res.data.rows.slice();
+       this.options = data
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -185,16 +198,46 @@ export default {
           }
         });
       },
-      handleChange(){
-        console.log('a')
+      handleChange(val){
+        console.log(val)
       },
       handleChanges(){
         console.log('b')
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      }
-    }
+      },
+      cascaderClick (nodeData) {
+      this.addrCode = nodeData.title;
+      this.ruleForm.pid = nodeData.id || nodeData.pid
+      this.$refs.cascader.checkedValue = nodeData.title;
+      this.$refs.cascader.computePresentText();
+      this.$refs.cascader.toggleDropDownVisible(false);
+       this.$message({
+        message: '已选择：' + nodeData.title,
+        type: 'success',
+        duration: 1000
+      });
+     
+    },
+  },
+    created(){
+      this.getClassifyInfo();
+      // let formData = new FormData();
+      //   let file = this.$refs.file.files[0];  //this.$refs.file.files[0] 获取到上传的文件
+      //   console.log(file);
+      //   formData.append('file',this.$refs.file.files[0])  //把获取到的文件append到formData里面
+      //   formData.append('type',1)                                         //把type append到formData里面
+      //   console.log(formData.get('file'));    //拿到formData里面的file并打印
+      //   console.log(formData.get('type'));    //拿到formData里面的type并打印
+      //   axios.post('/upload/avator',formData,{
+      //       headers:{
+      //           "Content-Type":"multipart/form-data"
+      //       }
+      //   }).then(res=>{
+      //       console.log(res);
+      //   })
+    },
 }
 </script>
 
@@ -229,4 +272,5 @@ export default {
 .classify-img,.poster-classify{
   margin-bottom: 0 !important;
 }
+
 </style>

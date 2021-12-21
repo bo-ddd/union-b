@@ -8,10 +8,10 @@
           <span class="content">文章标题</span>
           <el-input
             class="input"
-            
+            v-model="articleTitle"
             placeholder="请输入文章标题"
           ></el-input>
-          <i class="el-icon-warning-outline"></i>
+          <i type="primary" class="el-icon-warning-outline"></i>
           <span class="tips">请输入15个字以内的中文字符</span>
         </div>
       </div>
@@ -24,7 +24,7 @@
   list-type="picture-card"
   :on-preview="handlePictureCardPreview"
   :on-remove="handleRemove">
-  <i class="el-icon-plus"></i>
+  <i type="primary" class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
   <img width="100%" :src="dialogImageUrl" alt="">
@@ -44,11 +44,10 @@
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            
+            v-model="articleContent"
           >
           </el-input>
-
-          <i class="el-icon-warning-outline charactar"></i>
+          <i type="primary" class="el-icon-warning-outline charactar"></i>
           <span class="tipes">请输入文章内容</span>
         </div>
       </div>
@@ -57,7 +56,7 @@
         <div class="bottom-content">
 
           <el-button>返回</el-button>
-          <el-button class="addArticle">添加</el-button>
+          <el-button type="primary" class="addArticle">添加</el-button>
         </div>
       </div>
     </div>
@@ -65,19 +64,39 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      
-       dialogImageUrl: '',
-        dialogVisible: false,
-      radio: "1",
-      redio: "1",
+      authorId:'',
+      articleTitle:'',
+      articleImg:'',
+      articleContent:'',
+      dialogImageUrl: '',
+      dialogVisible: false,
       options:'',
       item:{},
     };
   },
+  async created(){
+    let id =  await this.getUserInfo();
+      this.authorId = id.data.id; 
+  },
    methods: {
+      ...mapActions(["createArticle","getUserInfo"]),
+      async addArticle(){
+        let add = await this.createArticle({
+          articleTitle:this.articleTitle,
+          articleImg:this.articleImg,
+          articleContent:this.articleContent,
+          authorId:this.authorId
+        })
+        console.log(add);
+        // console.log(this.articleTitle);
+        // console.log(this.articleImg);
+        // console.log(this.articleContent);
+        // console.log(this.authorId);
+      },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -159,7 +178,7 @@ export default {
 .el-icon-warning-outline {
   margin-left: 10px;
   margin-top: 10px;
-  color: #ff4070;
+ 
 }
 .character {
   margin-left: 14px;
@@ -210,7 +229,6 @@ export default {
   margin-top: 20px;
 }
 .addArticle{
-  background-color: #ff4070;
   color: #fff;
 }
 </style>

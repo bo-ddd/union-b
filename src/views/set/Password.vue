@@ -1,10 +1,8 @@
 <template>
   <div class="wrap">
      <div class="box">
+       <div class="formbox">
        <div class="top_title">修改登录密码</div>
-       <div class="main_inputbox">
-          <el-input class="main_input" v-model="oldpassword" placeholder="请输入旧密码"></el-input>
-       </div>
        <div class="main_inputbox">
           <el-input class="main_input" v-model="newpassword" placeholder="请输入新密码"></el-input>
        </div>
@@ -12,7 +10,9 @@
           <el-input class="main_input" v-model="confirmpass" placeholder="请确认新密码"></el-input>
        </div>
        <div class="main_inputbox">
-         <el-button class="confirmbtn" type="danger">确认修改</el-button>
+         <el-button class="confirmbtn" type="primary">确认修改</el-button>
+       </div>
+
        </div>
      </div>
   </div>
@@ -44,13 +44,18 @@ export default {
     height: 400px;
     box-shadow:0px 1px 10px #cecece;
     background-color: #f3f3f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & .formbox{
+      width: 100%;
+    }
     & .top_title{
       font-size: 25px;
       font-weight: 700;
       height: 70px;
       line-height: 70px;
       text-align: center;
-      margin-top: 2%;
     }
     & .main_inputbox{
       width: 40%;
@@ -63,7 +68,7 @@ export default {
         margin-bottom: 10px;
       }
       & .confirmbtn{
-        width: 80%;
+        width: 60%;
       }
     }
   }

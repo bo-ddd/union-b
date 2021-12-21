@@ -27,7 +27,11 @@
       </div>
       <div class="main-right">
         <h3>交易趋势占比</h3>
+        <div class="center">
         <div class="trend"></div>
+        <div class="trend"></div>
+        <div class="trend"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,6 +39,7 @@
 
 <script>
 import * as echarts from "echarts";
+import "echarts-liquidfill";
 export default {
   data() {
     return {};
@@ -46,6 +51,8 @@ export default {
     this.sex();
     this.age();
     this.trend();
+    this.tren();
+    this.trends();
   },
   methods: {
     buy() {
@@ -194,7 +201,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
-          top:'center'
+          top: "center",
         },
         series: [
           {
@@ -240,7 +247,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
-          top:'center'
+          top: "center",
         },
         series: [
           {
@@ -273,35 +280,77 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
-      var option;
-
-      option = {
-        tooltip: {
-          trigger: "item",
-        },
-        legend: {
-          orient: "vertical",
-          left: "left",
-          top:'center'
+      const option = {
+        title:{
+          text:"生活类"
         },
         series: [
           {
-            // name: "Access From",
-            type: "pie",
-            radius: "50%",
-            data: [
-              { value: 1048, name: "教育类" },
-              { value: 735, name: "电子类" },
-              { value: 580, name: "生活类" },
-              { value: 484, name: "日常用品类" },
-              { value: 300, name: "衣服类" },
-            ],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)",
-              },
+            radius: "70%",
+            type: "liquidFill",
+            data: [0.2],
+            center:['50%',"50%"],
+            label: {
+              fontSize: 30,
+            },
+            outline:{
+              show:false,
+            },
+          },
+        ],
+      };
+
+      option && myChart.setOption(option);
+    },
+    tren() {
+      var chartDom = document.getElementsByClassName("trend")[1];
+      var myChart = echarts.init(chartDom);
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
+      const option = {
+        title:{
+          text:"生活类"
+        },
+        series: [
+          {
+            radius: "70%",
+            type: "liquidFill",
+            data: [0.5],
+            center:['50%',"50%"],
+            label: {
+              fontSize: 30,
+            },
+            outline:{
+              show:false,
+            },
+          },
+        ],
+      };
+
+      option && myChart.setOption(option);
+    },
+    trends() {
+      var chartDom = document.getElementsByClassName("trend")[2];
+      var myChart = echarts.init(chartDom);
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
+      const option = {
+        title:{
+          text:"生活类"
+        },
+        series: [
+          {
+            radius: "70%",
+            type: "liquidFill",
+            data: [0.7],
+            center:['50%',"50%"],
+            label: {
+              fontSize: 30,
+            },
+            outline:{
+              show:false,
             },
           },
         ],
@@ -352,8 +401,7 @@ export default {
 .region,
 .visitor,
 .sex,
-.age,
-.trend {
+.age {
   width: 100%;
   height: 98%;
 }
@@ -362,5 +410,13 @@ export default {
   width: 100%;
   height: 36.5vh;
   background-color: #fff;
+}
+.center{
+  display: flex;
+  height: 98%;
+}
+.trend{
+  width: 33%;
+  height: 98%;
 }
 </style>

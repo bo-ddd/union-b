@@ -46,6 +46,14 @@ export default new Vuex.Store({
         userLogout(ctx, payload) {
             return Api.userLogout(payload);
         },
+        //修改密码
+        userUpdatePwd(ctx, payload) {
+            return Api.userUpdatePwd(payload);
+        },
+        //上传图片接口
+        uploadImage(ctx, payload) {
+            return Api.uploadImage(payload);
+        },
 
 
         //商品管理
@@ -53,13 +61,17 @@ export default new Vuex.Store({
         getCategoryList(ctx, payload) {
             return Api.getCategoryList(payload);
         },
+        //添加类目接口
+        createCategory(ctx, payload) {
+            return Api.createCategory(payload);
+        },
         //类目规格接口
         getSpecificationList(ctx, payload) {
             return Api.getSpecificationList(payload);
         },
-        //添加类目接口
-        createCategory(ctx, payload) {
-            return Api.createCategory(payload);
+        //添加规格接口
+        createSpecification(ctx, payload) {
+            return Api.createSpecification(payload);
         },
         //添加商品接口
         createProduct(ctx, payload) {
@@ -68,6 +80,10 @@ export default new Vuex.Store({
         //商品属性接口
         getAttributeList(ctx, payload) {
             return Api.getAttributeList(payload);
+        },
+        //商品属性接口
+        createAttribute(ctx, payload) {
+            return Api.createAttribute(payload);
         },
         //商品单位接口
         getUnitlibraryList(ctx, payload) {
@@ -131,6 +147,26 @@ export default new Vuex.Store({
         getOrderDetail(ctx, payload) {
             return Api.getOrderDetail(payload);
         },
+        //订单状态接口
+        getOrderStatusList(ctx, payload) {
+            return Api.getOrderStatusList(payload);
+        },
+        //支付方式接口
+        getPaymentList(ctx, payload) {
+            return Api.getPaymentList(payload);
+        },
+
+        //系统设置
+        //意见反馈接口
+        getOpinionList(ctx, payload) {
+            return Api.getOpinionList(payload);
+        },
+        //新增文章接口
+        createOpinion(ctx, payload) {
+            return Api.createOpinion(payload);
+        },
+
+
     },
     modules: {}
 })

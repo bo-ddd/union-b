@@ -94,7 +94,6 @@
           :data="tableData"
           stripe
           style="width: 100%"
-          size="small"
           id="#out-table"
         >
           <el-table-column prop="date" label="类目"> </el-table-column>

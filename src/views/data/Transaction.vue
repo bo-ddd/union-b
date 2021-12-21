@@ -212,9 +212,6 @@ export default {
                 { type: "min", name: "Min" },
               ],
             },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
-            },
           },
           {
             name: "今年",
@@ -226,11 +223,8 @@ export default {
             markPoint: {
               data: [
                 { name: "Max", value: 182.2, xAxis: 7, yAxis: 183 },
-                { name: "Min", value: 2.3, xAxis: 11, yAxis: 3 },
+                { name: "Min", value: 2.3, xAxis: 10, yAxis: 3 },
               ],
-            },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
             },
           },
         ],
@@ -276,7 +270,7 @@ export default {
           },
         },
         legend: {
-          data: ["收入", "成本"],
+          data: ["收入", "支出"],
         },
         grid: {
           left: "3%",
@@ -305,7 +299,7 @@ export default {
             stack: "Total",
             label: {
               show: true,
-              position: "left",
+              position: "right",
             },
             emphasis: {
               focus: "series",
@@ -313,7 +307,7 @@ export default {
             data: [320, 302, 341, 374, 390, 450, 420],
           },
           {
-            name: "成本",
+            name: "支出",
             type: "bar",
             stack: "Total",
             label: {

@@ -87,10 +87,9 @@
         stripe
         style="width: 100%"
         @selection-change="handleSelectionChange"
-        id="out-table"
       >
         <el-table-column type="selection" width="45"> </el-table-column>
-        <el-table-column fixed prop="orderId" label="订单编号" align="center">
+        <el-table-column  prop="orderId" label="订单编号" align="center">
         </el-table-column>
         <el-table-column prop="totalPrice" label="实付金额" align="center">
         </el-table-column>
@@ -106,7 +105,38 @@
         </el-table-column>
         <el-table-column prop="orderStatus" label="订单状态" align="center">
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="seeDetails(scope.row.orderId),getOrderDetailData(scope.row.orderId)"> 查看 </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        :data="cacheExport"
+        ref="checkTable"
+        stripe
+        style="width: 100%"
+        id="out-table"
+        class="hide"
+      >
+        <el-table-column type="selection" width="45"> </el-table-column>
+        <el-table-column  prop="orderId" label="订单编号" align="center">
+        </el-table-column>
+        <el-table-column prop="totalPrice" label="实付金额" align="center">
+        </el-table-column>
+        <el-table-column prop="expressName" label="快递公司" align="center">
+        </el-table-column>
+        <el-table-column prop="storeTitle" label="供应商" align="center">
+        </el-table-column>
+        <el-table-column prop="avatorName" label="采购商" align="center">
+        </el-table-column>
+        <el-table-column prop="consignee" label="收货人" align="center">
+        </el-table-column>
+        <el-table-column prop="paymentName" label="支付方式" align="center">
+        </el-table-column>
+        <el-table-column prop="orderStatus" label="订单状态" align="center">
+        </el-table-column>
+        <el-table-column label="操作" align="center">
           <template>
             <el-button type="text" @click="seeDetails"> 查看 </el-button>
           </template>
@@ -133,7 +163,7 @@
   </div>
 </template>
 <script>
-// import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
 export default {
@@ -146,30 +176,46 @@ export default {
       }
     });
   },
-  created() {
+  async created() {
+    await this.getOrderListData();
     this.updateOrderStatus();
     this.handleCurrentChange(1);
   },
   methods: {
-    // ...mapActions(["getOrderList"]),
-    // /**
-    //  * @description 获取所有订单数据
-    //  * **/
-    // async getOrderListData(){
-    //   let res = await this.getOrderList({});
-    //   console.log(res);
-    // },
+    ...mapActions(["getOrderList","getOrderDetail"]),
+
+    /**
+     * @description 订单详情页
+     * **/ 
+    async getOrderDetailData(id){
+      let res = await this.getOrderDetail({id});
+      console.log(res)
+    },
+
+    /**
+     * @description 获取所有订单数据
+     * **/
+    async getOrderListData() {
+      let res = await this.getOrderList();
+      if (res.status == 1) {
+        this.tableData = res.data.rows;
+        console.log(this.tableData);
+        console.log(res);
+      }
+    },
 
     exportExcel() {
       /* 从表生成工作簿对象 */
-      let wb = XLSX.utils.table_to_book(document.querySelector("#out-table"));
-      console.log(wb);
+      console.log(this.cacheExport);
+      var xlsxParam = { raw: true }
+      let wb = XLSX.utils.table_to_book(document.querySelector("#out-table"),xlsxParam);
       /* 获取二进制字符串作为输出 */
       var wbout = XLSX.write(wb, {
         bookType: "xlsx",
         bookSST: true,
         type: "array",
       });
+      console.log(wbout)
       try {
         FileSaver.saveAs(
           //Blob 对象表示一个不可变、原始数据的类文件对象。
@@ -178,7 +224,7 @@ export default {
           //返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
           new Blob([wbout], { type: "application/octet-stream" }),
           //设置导出文件名称
-          "sheet.xlsx"
+          "订单列表.xlsx"
         );
       } catch (e) {
         if (typeof console !== "undefined") console.log(e, wbout);
@@ -188,6 +234,7 @@ export default {
 
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      this.cacheExport =this.multipleSelection;
     },
 
     /**
@@ -261,28 +308,16 @@ export default {
         if (this.tableData1[i] != undefined) arr.push(this.tableData1[i]);
         if (this.tableData[i] != undefined) arr1.push(this.tableData[i]);
       }
-
       this.table = this.$route.meta.title == "全部订单" ? arr1 : arr;
-      console.log(this.table);
       console.log(`当前页: ${val}`);
-    },
-
-    /**
-     * @description 移除当前行的数据
-     * **/
-    removeOrder(row) {
-      this.tableData.forEach((item, index) => {
-        if (item == row) {
-          this.tableData.splice(index, 1);
-        }
-      });
     },
 
     /**
      * @description 跳转查看详情
      * **/
-    seeDetails() {
+    seeDetails(id) {
       this.$router.push({
+        query:{id:id},
         name: "OrderDetails",
       });
     },
@@ -408,173 +443,7 @@ export default {
       paymentStatusSelect: "全部",
       orderTypeSelect: "全部",
       orderNoSelect: "订单编号",
-      tableData: [
-        {
-          id: 1,
-          orderId: "11111111111112",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待发货",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "11111111111112",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待发货",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "11111111111112",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待发货",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "11111111111112",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待发货",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "11111111111112",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待发货",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-        {
-          id: 1,
-          orderId: "1111111111111",
-          totalPrice: "100",
-          expressName: "韵达",
-          storeTitle: "老王",
-          avatorName: "老李",
-          consignee: "小王",
-          paymentName: "支付宝",
-          orderStatus: "待审核",
-        },
-      ],
+      tableData: [],
       tableData1: [],
     };
   },
@@ -656,6 +525,11 @@ export default {
   & .bottom {
     // margin: 15px;
     padding: 15px;
+
+    & ::v-deep .hide{
+      display:none;
+    }
+
     & ::v-deep .el-table .cell {
       font-size: 13px !important;
     }

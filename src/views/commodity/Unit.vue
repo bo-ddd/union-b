@@ -11,7 +11,7 @@
     </div>
     <div class="table">
       <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}" size='small'>
-        <el-table-column prop="id" label="序号">
+        <el-table-column prop="ord" label="序号">
         </el-table-column>
         <el-table-column prop="title" label="单位名称">
         </el-table-column>
@@ -21,20 +21,20 @@
         </el-table-column>
         <el-table-column  label="排序">
           <template slot-scope="scope">
-             <el-link type="primary" class="link" @click="Topping(scope.$index)" size='small'>置顶</el-link>
-             <el-link type="primary" class="link" @click="raise(scope.row.Serial_number)" size='small'>升序</el-link>
-             <el-link type="primary" class="link" @click="Down(scope.row.Serial_number)" size='small'>降序</el-link>
+             <el-link type="primary" class="link" @click="Topping(scope.row.ord)" size='small'>置顶</el-link>
+             <el-link type="primary" class="link" @click="raise(scope.row.ord)" size='small'>升序</el-link>
+             <el-link type="primary" class="link" @click="Down(scope.row.ord)" size='small'>降序</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-link type="primary" @click="Disable(scope.row)">禁用</el-link>
+            <el-link type="primary" @click="Disable(scope.row.ord)">禁用</el-link>
           </template>
         </el-table-column>
       </el-table>
        <div class="block">
         <el-pagination :current-page="currentPage" 
-          :page-sizes="[10, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+          :page-sizes="[20, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
         </el-pagination>
       </div>
     </div>
@@ -91,44 +91,39 @@ export default {
       },
       methods: {
          ...mapActions(["createUnitlibrary","getUnitlibraryList"]),
-        //置顶
-        Topping(index){
-          var arr = this.table.splice(index,1);
-          this.table.unshift(arr);
-          this.mySort(this.table);
+        /**
+         * @description 置顶的方法
+         */
+        Topping(ord){
+          if(ord == 1) return;
+          console.log(ord);
+          console.log(ord-1);
         },
-        //上调
-        raise(Serial_number){
-          if (Serial_number == 1) return;
-          this.tableData.forEach(item=>{
-            if(item.id == Serial_number-1){
-              item.id = Serial_number;
-              return;
-            }
-            if(item.id == Serial_number){
-              item.id = Serial_number-1;
-            }
-          })
-          this.mySort(this.table);
+        /**
+         * @description 升序的方法
+         */
+        raise(ord){
+          if(ord == 1) return;
+          console.log(ord);
+          console.log(ord-1);
         },
-        //下调
-        Down(Serial_number){
-          this.tableData.forEach(item=>{
-            if (item.id == Number(Serial_number)+1) {
-                item.id = Serial_number;
-                return;
-            }
-            if (item.id == Serial_number) {
-                item.id = Number(Serial_number)+1;
-            }
-          })
-           this.mySort(this.table);
+        /**
+         * @description 降序的方法
+         */
+        Down(ord){
+          if(ord == 10) return;
+          console.log(ord);
+          console.log(ord+1);
         },
-        //禁用
-        Disable(item){
-          item.Unit_name = '';
+        /**
+         * @description 禁用的方法
+         */
+        Disable(ord){
+          console.log(ord);
         },
-        //排序
+        /**
+         * @description 排序的方法
+         */
         mySort(tableData){
             tableData.sort((a,b)=>{
             var num1 = a.id;

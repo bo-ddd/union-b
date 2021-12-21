@@ -21,10 +21,15 @@
 <div class="block" style="margin-top:10px">
   <span class="demonstration"></span>
   <el-cascader
-  size="small"
+    size="small"
     v-model="value"
     :options="options"
-    @change="handleChange"></el-cascader>
+    clearable
+    @change="handleChange">
+      <template slot-scope="{  data }">
+    <span>{{ data.title }}</span>
+  </template>
+    </el-cascader>
 </div>
   </div>
    <el-select slot="reference" v-model="value"  size="small" style="width:100%">
@@ -133,7 +138,7 @@
 </el-form>
         </div>
         <div class="footer">
-            <el-button type="danger" class="submit" size="small" @click="submit">确定</el-button>
+            <el-button type="primary" class="submit" size="small" @click="submit">确定</el-button>
         </div>
      </div>
   </div>
@@ -160,7 +165,7 @@ export default {
       };
     },
     methods: {
-      ...mapActions(["createCategory"]),
+      ...mapActions(["createCategory","getCategoryList"]),
         handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -175,6 +180,31 @@ export default {
        })
        console.log(res)
       },
+      async getClassifyInfo(){
+        let res = await this.getCategoryList({});
+        console.log(res)
+       let data =res.data.rows;
+       let target = this.format(data)
+       this.options = target
+      },
+        format(target){
+       let childrenIndex = 1;
+       let parentIndex = 1;
+     let res = target.slice();
+     res.forEach(item=>{
+       item.children = [];
+           let p = res.find((el) => el.id == item.pid);
+           if(item.pid){
+             item.childIndex = childrenIndex++ 
+             item.association = '规格' 
+             p.children.push(item)
+           }else{
+             item.pIndex = parentIndex++
+           }
+            item.category = p ? p.category + "=>" + item.title : item.title;
+     })
+     return res.filter(el => el.pid === null)
+  },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -194,6 +224,9 @@ export default {
       resetForm(formName) {
         this.$refs[formName].resetFields();
       }
+    },
+    created(){
+      this.getClassifyInfo()
     }
 }
 </script>

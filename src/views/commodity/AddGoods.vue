@@ -204,10 +204,9 @@
                 </el-table>
               </el-form-item>
               <el-form-item label="销售区域" class="sales_area">
-                <el-button @click="dialogFormVisible = true" plain
+                <el-button @click="dialogFormVisible = true" plain type="primary"
                   >添加省区</el-button
                 >
-                <!-- <el-button plain>添加省区</el-button> -->
                 <div><span>已选省区:</span> 山东省，河南省,</div>
               </el-form-item>
             </el-form>
@@ -283,9 +282,9 @@
       </div>
     </div>
     <div class="preservation">
-      <el-button plain>保存</el-button>
-      <el-button plain>预览</el-button>
-      <el-button plain>发布</el-button>
+      <el-button plain type="primary">保存</el-button>
+      <el-button plain type="primary">预览</el-button>
+      <el-button plain type="primary">发布</el-button>
     </div>
     <el-dialog title="" :visible.sync="dialogFormVisible" align="center" class="provincial_elastic_layer">
       <el-checkbox
@@ -303,7 +302,7 @@
         }}</el-checkbox>
       </el-checkbox-group>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="dialogFormVisible = false" type="primary">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false"
           >确 定</el-button
         >

@@ -26,15 +26,13 @@
                         </div>
                         <div class="nav">
                             <!-- 可删除的导航 -->
-                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.id"  >
+                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.text"  >
                                 <div class="jian mt-5" @click="del(key.id)">
                                     <div><div></div></div>
                                 </div>
                                 <div class="img">
                                     <div>
-                                        <!-- <img :src="key.img" alt=""> -->
-                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
-                                        <img src="@/assets/images/icon-order.png" alt="">
+                                        <img :src="key.img" alt="">
                                     </div>
                                 </div>
                                 <div class="text" >
@@ -43,12 +41,10 @@
                             </div>
 
                             <!-- 不可删除的导航 -->
-                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.id"  >
+                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.text"  >
                                 <div class="img mt-20">
                                     <div>
-                                        <!-- <img :src="key.img" alt=""> -->
-                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
-                                        <img src="@/assets/images/icon-order.png" alt="">
+                                        <img :src="key.img" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
@@ -58,40 +54,14 @@
 
                             <!-- 上传图片的 -->
                             <div>
-                                <el-upload
-                                    action="#"
-                                    list-type="picture-card"
-                                    :auto-upload="false">
-                                        <i slot="default" class="el-icon-plus"></i>
-                                        <div slot="file" slot-scope="{file}">
-                                        <img
-                                            class="el-upload-list__item-thumbnail"
-                                            :src="file.url" alt=""
-                                        >
-                                        <span class="el-upload-list__item-actions">
-                                            <span
-                                            class="el-upload-list__item-preview"
-                                            @click="handlePictureCardPreview(file)"
-                                            >
-                                            <i class="el-icon-zoom-in"></i>
-                                            </span>
-                                            <span
-                                            v-if="!disabled"
-                                            class="el-upload-list__item-delete"
-                                            @click="handleDownload(file)"
-                                            >
-                                            <i class="el-icon-download"></i>
-                                            </span>
-                                            <span
-                                            v-if="!disabled"
-                                            class="el-upload-list__item-delete"
-                                            @click="handleRemove(file)"
-                                            >
-                                            <i class="el-icon-delete"></i>
-                                            </span>
-                                        </span>
-                                        </div>
-                                </el-upload>
+                                  <input type="file" name="file"  ref="file">
+                                 <button @click="upload1">上传</button>
+                                <!-- <el-upload list-type="picture-card">
+                                    <i class="el-icon-plus"></i>
+                                    </el-upload>
+                                    <el-dialog :visible.sync="dialogVisible">
+                                    <img width="100%" :src="dialogImageUrl" alt="">
+                                </el-dialog> -->
                             </div>
                         </div>
                     </div>
@@ -104,12 +74,10 @@
                             <span class="font-color">(数量限制:2-6个)</span>
                         </div>
                         <div class="nav">
-                            <div class="nav-item flex" v-for="key in quickNav" :key="key.id">
+                            <div class="nav-item flex" v-for="key in quickNav" :key="key.text">
                                 <div class="img mt-20">
                                     <div>
-                                        <!-- <img :src="key.img" alt=""> -->
-                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
-                                        <img src="@/assets/images/icon-order.png" alt="">
+                                        <img :src="key.img" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
@@ -119,50 +87,26 @@
 
 
                             <!-- 上传的照片 -->
-                            <el-upload
-                                action="#"
-                                list-type="picture-card"
-                                :auto-upload="false">
-                                    <i slot="default" class="el-icon-plus"></i>
-                                    <div slot="file" slot-scope="{file}">
-                                    <img
-                                        class="el-upload-list__item-thumbnail"
-                                        :src="file.url" alt=""
-                                    >
-                                    <span class="el-upload-list__item-actions">
-                                        <span
-                                        class="el-upload-list__item-preview"
-                                        @click="handlePictureCardPreview(file)"
-                                        >
-                                        <i class="el-icon-zoom-in"></i>
-                                        </span>
-                                        <span
-                                        v-if="!disabled"
-                                        class="el-upload-list__item-delete"
-                                        @click="handleDownload(file)"
-                                        >
-                                        <i class="el-icon-download"></i>
-                                        </span>
-                                        <span
-                                        v-if="!disabled"
-                                        class="el-upload-list__item-delete"
-                                        @click="handleRemove(file)"
-                                        >
-                                        <i class="el-icon-delete"></i>
-                                        </span>
-                                    </span>
-                                    </div>
-                            </el-upload>
+                            <div>
+                                  <input type="file" name="file"  ref="file">
+                                 <button @click="upload2">上传</button>
+                                <!-- <el-upload list-type="picture-card">
+                                    <i class="el-icon-plus"></i>
+                                    </el-upload>
+                                    <el-dialog :visible.sync="dialogVisible">
+                                    <img width="100%" :src="dialogImageUrl" alt="">
+                                </el-dialog> -->
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="right">
                     <div class="nav">
-                        <div v-for="key in mainNav" :key="key.id">
+                        <div v-for="key in mainNav" :key="key.text">
                             <div class="img">
                                 <!-- <img :src="key.img" alt=""> -->
                                 <!-- <img src="@/assets/images/xiangxia.png" alt=""> -->
-                                <img src="@/assets/images/icon-order.png" alt="">
+                                <img :src="key.img" alt="">
                             </div>
                             <div class="text mt-5">
                                 {{key.text}}
@@ -194,24 +138,8 @@
                             </div>
                         </div>
                         <div class="floor-container">
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
-                            </div>
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
-                            </div>
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
-                            </div>
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
-                            </div>
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
+                            <div class="flex" v-for="key in quickNav" :key="key.id">
+                                <img :src="key.img" alt="">
                                 <span>￥99.9</span>
                             </div>
                         </div>
@@ -243,6 +171,7 @@
 
 <script>
 
+import { mapActions } from "vuex";
 
 export default{
     data() {
@@ -251,69 +180,90 @@ export default{
             mainNav : [
                 {
                     id : '1',
-                    img : '@/assets/images/xiangshang.png',
-                    text : '消息',
-                    delete : '-',
+                    img : require('@/assets/images/icon-order.png'),
+                    text : '消息1',
+                    delete : true,
                 },
                 {
                     id : '2',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
+                    img : require('@/assets/images/icon-order.png'),
+                    text : '消息2',
+                    delete : true,
                 },
                 {
                     id : '3',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
+                    img : require('@/assets/images/icon-order.png'),
+                    text : '消息3',
+                    delete : true,
                 },
                 {
                     id : '4',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
+                    img : require('@/assets/images/icon-order.png'),
+                    text : '消息4',
+                    delete : true,
                 },
                 {
                     id : '5',
-                    img : '',
-                    text : '消息'
+                    img : require('@/assets/images/icon-order.png'),
+                    text : '消息5'
                 },
                 {
                     id : '6',
-                    img : '',
-                    text : '消息'
+                    img : require('@/assets/images/icon-order.png'),
+                    text : '消息6'
                 },
                 
             ],
             quickNav : [
                 {
                     id : '1',
-                    img : '',
-                    text : '消息',
+                    img : require('@/assets/images/iconfont-merchant.png'),
+                    text : '消息1',
+                    money : '￥99.9',
                 },
                 {
                     id : '2',
-                    img : '',
-                    text : '消息',
+                    img : require('@/assets/images/iconfont-merchant.png'),
+                    text : '消息2',
+                    money : '￥99.9',
                 },
                 {
                     id : '3',
-                    img : '',
-                    text : '消息',
+                    img : require('@/assets/images/iconfont-merchant.png'),
+                    text : '消息3',
+                    money : '￥99.9',
                 },
                 {
                     id : '4',
-                    img : '',
-                    text : '消息',
+                    img : require('@/assets/images/iconfont-merchant.png'),
+                    text : '消息4',
+                    money : '￥99.9',
                 },
             ],
+
             dialogImageUrl: '',
             dialogVisible: false,
-            disabled: false
         }
     },
     methods: {
-        
+        ...mapActions(["uploadImage"]),
+        // 主导航上传的点击事件
+        async  upload1(){
+            let formData = new FormData();
+            formData.append('file',this.$refs.file.files[0]);
+            formData.append('type',2) 
+            let res    =  await this.uploadImage(formData);
+            console.log(res);                                
+        },
+        // 快捷导航的点击事件
+        async  upload2(){
+            let formData = new FormData();
+            formData.append('file',this.$refs.file.files[0]);
+            formData.append('type',2) 
+            let res    =  await this.uploadImage(formData);
+            console.log(res);                                
+        },
+
         // 主导航可删除的数据的数组
         deletebtn(arr){
             var newarr = [];
@@ -334,9 +284,20 @@ export default{
             })
             return newarr;
         },
+        // 主导航和快捷导航的删除
         handleRemove(file) {
-            console.log(file);
+            this.quickNav.forEach((fs,index)=>{
+                if(fs.text == file.name){
+                    this.quickNav.splice(index,1)
+                }
+            })
+            this.mainNav.forEach((fs,index)=>{
+                if(fs.text == file.name){
+                    this.mainNav.splice(index,1)
+                }
+            })
         },
+
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
@@ -344,14 +305,14 @@ export default{
         handleDownload(file) {
             console.log(file);
         },
-        // 主导航的删除的点击事件
+        // 主导航右上角删除的点击事件
         del(a){
-            console.log(a);
             this.mainNav.forEach((nav,index)=>{
                 if(nav.id == a){
                     this.mainNav.splice(index,1)
                 }
             })
+
         }
     },   
 }
@@ -361,6 +322,10 @@ export default{
 
 
 <style scoped lang="scss">
+::v-deep .el-upload-list__item{
+    width: 132px;
+    height: 112px;
+}
 .flex{
     display: flex;
     align-items: center;
@@ -553,13 +518,15 @@ export default{
 
            & .nav{
                padding: 20px 10px;
-               display: grid;
-               grid-template-columns: repeat(5,1fr);
-               gap:20px 20px;
-
+               display: flex;
+            //    grid-template-columns: repeat(5,1fr);
+            //    gap:20px 20px;
+            //    align-items: center;
+            //    justify-content: center;
+               align-items: center;
+               justify-content: space-around;
                & div{
                    height: 50px;
-
                    & div{
                        display: flex;
                        align-items: center;
@@ -633,6 +600,9 @@ export default{
                & .floor-container{
                    padding: 0 5px;
                    height: 100px;
+                   display: flex;
+                   align-items: center;
+                   justify-content: space-around;
                    
                    & div{
                        float: left;

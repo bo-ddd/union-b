@@ -54,17 +54,16 @@
       <el-table
         ref="multipleTable"
         tooltip-effect="dark"
-        :data="tableData"
+        :data="arr"
         size="small"
         style="width: 97%"
         @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column :data="tableData" type="selection" align="center">
+        <el-table-column :data="arr" type="selection" align="center">
         </el-table-column>
-        <el-table-column
-          :data="tableData"
+        <el-table-column       
           label="id"
           align="center"
           prop="id"
@@ -73,14 +72,15 @@
         </el-table-column>
         <el-table-column
           label="规格名称"
-          align="center"
-          :title="title"
+          align="center"          
+          prop="title"
           show-overflow-tooltip
           sortable
         >
         </el-table-column>
         <el-table-column
           label="备注"
+          prop="productCategory"
           show-overflow-tooltip
           align="center"
           sortable
@@ -88,7 +88,6 @@
         </el-table-column>
         <el-table-column
           label="操作"
-          :data="tableData"
           show-overflow-tooltip
           align="center"
           :formatter="formatter"
@@ -126,7 +125,7 @@
             <el-button
               i
               class="el-icon-delete cell2"
-              @click.native.prevent="deleteRow(scope.$index, tableData)"
+              @click.native.prevent="deleteRow(scope.$index, arr)"
               type="text"
             >
             </el-button>
@@ -137,6 +136,7 @@
         <div class="footer_left">
           <el-button type="primary" size="small">保存排序</el-button>
           <el-button
+            type="primary"
             size="small"
             class="batch_del_btn"
             @click="MultipleRemove()"
@@ -159,7 +159,7 @@
               @current-change="handleCurrentChange"
               :page-size="pageCount"
               :total="count"
-              layout="total, prev, pager, next"
+              layout=" prev, pager, next"
             >
             </el-pagination>
           </div>
@@ -199,50 +199,7 @@ export default {
       productCategory: "",
       count: "",
       pageCount: "",
-      tableData: [
-        {
-          id: "1",
-          name: "颜色",
-          remark: "服装",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "2",
-          name: "尺寸",
-          remark: "服装",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "3",
-          name: "颜色",
-          remark: "手机",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "4",
-          name: "版本",
-          remark: "手机",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "5",
-          name: "购买方式",
-          remark: "手机",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "6",
-          name: "版本",
-          remark: "服装",
-          list: "",
-          operation: "",
-        },
-      ],
+      arr: [],
       deleteDataArr1: [],
       form: {
         name: "",
@@ -286,7 +243,7 @@ export default {
     //批量删除
     MultipleRemove() {
       this.deleteDataArr1.forEach((item) => {
-        this.tableData.splice(this.tableData.indexOf(item), 1);
+        this.arr.splice(this.arr.indexOf(item), 1);
       });
     },
     checkBoxData: function (selection) {
@@ -310,17 +267,12 @@ export default {
     console.log(res);
     this.count = res.data.count;
     this.pageCount = res.data.pageCount;
-    console.log(res.data.pageCount);
-    let arr = [];
     res.data.rows.forEach((item) => {
-      console.log(item);
       this.id = item.id;
-      console.log(item.id);
       this.title = item.title;
       this.productCategory = item.productCategory;
-      arr.push(item);
+      this.arr.push(item);
     });
-    console.log(arr);
   },
 };
 </script>
@@ -359,11 +311,6 @@ export default {
     display: flex;
     align-items: center;
     background-color: #ffffff;
-    & .footer_left {
-      & .batch_del_btn {
-        color: #c0c4cc;
-      }
-    }
     & .footer_right {
       margin-left: 25px;
       display: flex;

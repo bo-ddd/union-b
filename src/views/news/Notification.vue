@@ -40,7 +40,7 @@
 export default {
   data() {
     return {
-      buttonType: "danger",
+      buttonType: "primary",
       articleStatus: "未读",
       message: [
         {

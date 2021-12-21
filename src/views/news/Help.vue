@@ -16,7 +16,7 @@
               class="ipt"
             >
             </el-input>
-            <el-button class="btn" @click="submit">发送</el-button>
+            <el-button class="btn" @click="submit" type="primary">发送</el-button>
           </el-footer>
         </el-container>
         <el-aside width="200px" class="aside"

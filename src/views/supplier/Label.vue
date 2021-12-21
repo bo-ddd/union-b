@@ -746,8 +746,8 @@ export default {
       },
     },
     async created() {
-      let res = await this.createLable();
-      console.log(res);
+      // let res = await this.createLable();
+      // console.log(res);
     }
 }
 </script>

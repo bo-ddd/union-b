@@ -63,12 +63,17 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["getUserInfo","userLogout"]),
+        ...mapActions(["getUserInfo", "userLogout"]),
         handleOpen() {},
         handleClose() {},
-        async logout(){
-          let res = await this.userLogout()
-          console.log(res)
+        async logout() {
+            let res = await this.userLogout()
+            if (res.status == 1) {
+                sessionStorage.clear('token');
+                this.$router.push({
+                    name: 'Login'
+                })
+            }
         }
     },
     computed: {
@@ -76,8 +81,8 @@ export default {
     },
     async created() {
         let res = await this.getUserInfo();
-        console.log(res)
-        this.userInfo = res.data
+        console.log(res.data)
+        this.userInfo = res.data[0]
         this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
     }
 }

@@ -73,6 +73,10 @@ export default new Vuex.Store({
         getUnitlibraryList(ctx, payload) {
             return Api.getUnitlibraryList(payload);
         },
+        //添加单位接口
+        createUnitlibrary(ctx, payload) {
+            return Api.createUnitlibrary(payload);
+        },
 
 
 
@@ -99,6 +103,22 @@ export default new Vuex.Store({
         //优品展示接口
         getSuperList(ctx, payload) {
             return Api.getSuperList(payload);
+        },
+        //标签列表接口
+        getLableList(ctx, payload) {
+            return Api.getLableList(payload);
+        },
+        //新增标签接口
+        createLable(ctx, payload) {
+            return Api.createLable(payload);
+        },
+        //文章列表接口
+        getArticleList(ctx, payload) {
+            return Api.getArticleList(payload);
+        },
+        //新增文章接口
+        createArticle(ctx, payload) {
+            return Api.createArticle(payload);
         },
 
 

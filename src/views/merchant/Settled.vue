@@ -158,7 +158,7 @@
       </div>
       <div class="bottom">
          <el-button>保存</el-button>
-         <button class="submit">提交</button>
+        <el-button type="primary">提交</el-button>
       </div>
     </div>
   </div>

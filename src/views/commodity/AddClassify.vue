@@ -4,7 +4,7 @@
        <div class="main-classify">
        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="分类名称" prop="name">
-    <el-input  size="small" v-model="ruleForm.name"></el-input>
+    <el-input  v-model="ruleForm.name"></el-input>
   </el-form-item>
   <el-form-item label="上级分类" prop="pid">
 <el-popover
@@ -14,7 +14,7 @@
   <div class="superior-classify" style="height:200px">
  <el-input
     placeholder="请输入内容"
-     size="small"
+  
     style="width:80%">
     <i slot="prefix" class="el-input__icon el-icon-search"></i>
   </el-input>
@@ -30,7 +30,7 @@
     </el-cascader>
 </div>
   </div>
-   <el-select slot="reference" v-model="value"  size="small" style="width:100%">
+   <el-select slot="reference" v-model="value"   style="width:100%">
      
    </el-select>
 </el-popover>
@@ -141,7 +141,7 @@
 </el-form>
         </div>
         <div class="footer">
-            <el-button type="primary" class="submit" size="small" @click="submit">确定</el-button>
+            <el-button type="primary" class="submit"  @click="submit">确定</el-button>
         </div>
      </div>
   </div>
@@ -244,6 +244,7 @@ export default {
        formData.append('file',val.file);
        formData.append('type',3); 
         let res = await this.uploadImage(formData)
+         console.log(res)
         this.src=res.data
     },
     async uploadSectionFile(val){
@@ -251,9 +252,9 @@ export default {
        formData.append('file',val.file);
        formData.append('type',3); 
         let res = await this.uploadImage(formData)
+       
         this.src=res.data
     }
-
   },
     created(){
       this.getClassifyInfo();

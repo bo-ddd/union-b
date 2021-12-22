@@ -76,6 +76,13 @@ export default {
         return axios.post('user/updatePwd', params, postConfig)
     },
     /**
+     * @description  获取token接口
+     * @params 无
+     * */
+    userGetToken(params) {
+        return axios.post('user/getToken', params, postConfig)
+    },
+    /**
      * @description 上传图片
      * @params {
      * file:  <stream>  上传的流 
@@ -121,6 +128,16 @@ export default {
      */
     createCategory(params) {
         return axios.post('/category/create', params, postConfig)
+    },
+    /**
+     * @description 商品类目排序接口
+     * @params {
+     * currentDataord     [nmber] 当前的类目
+     * preDataord         [number]要跟交换的类目
+     * } 
+     */
+    CategoryOrders(params) {
+        return axios.post('/category/orders', params, postConfig)
     },
     /**
      * @description 类目规格接口
@@ -374,6 +391,18 @@ export default {
     getPaymentList(params) {
         return axios.post('/payment/list', params, postConfig)
     },
+    /**
+     * @description 获取快递接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getExpressList(params) {
+        return axios.post('/express/list', params, postConfig)
+    },
+
 
     //系统设置
     /**
@@ -406,7 +435,6 @@ export default {
      * role:[int],//申请的身份id
      * qualificationsUrl:[String], //资格证书的图片 非必填
      * businessUrl:[String], //营业执照的图片 必填
-     * type:[Number],//入驻状态 0:拒绝申请 1:同意申请
      * } 
      */
     createSettled(params) {

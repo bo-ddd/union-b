@@ -41,21 +41,26 @@
                             </div>
 
                             <!-- 不可删除的导航 -->
-                            <!-- <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.text"  >
-                                <div class="img mt-20">
-                                    <div>
-                                        <img :src="key.img" alt="">
-                                    </div>
-                                </div>
-                                <div class="text">
-                                    <span>{{key.text}}</span>
-                                </div>
-                            </div> -->
 
                             <!-- 上传图片的 -->
                             <div>
-                                <input type="file" name="file"  ref="file1" >
-                                <button @click="upload1">上传</button>
+                                <!-- <input type="file" name="file"  ref="file1" >
+                                <button @click="upload1">上传</button> -->
+
+                                <el-upload
+                                    action=""
+                                    list-type="picture-card"
+                                    :http-request='uploadNav1'
+                                    >
+                                    <i class="el-icon-plus"></i>
+                                </el-upload>
+                                <el-dialog :visible.sync="dialogVisible">
+                                <img width="100%" :src="dialogImageUrl" alt="">
+                                </el-dialog>
+
+
+
+
                             </div>
                         </div>
                     </div>
@@ -69,12 +74,15 @@
                         </div>
                         <div class="nav">
                             <div class="nav-item flex" v-for="key in quickNav" :key="key.id">
-                                <div class="img mt-20">
+                                <div class="jian mt-5" @click="del(key.id)">
+                                    <div><div></div></div>
+                                </div>
+                                <div class="img">
                                     <div>
                                         <img :src="key.pictureUrl" alt="">
                                     </div>
                                 </div>
-                                <div class="text">
+                                <div class="text" >
                                     <span>{{key.pictureName}}</span>
                                 </div>
                             </div>
@@ -82,8 +90,19 @@
 
                             <!-- 上传的照片 -->
                             <div>
-                                <input type="file" name="file"  ref="file2">
-                                <button @click="upload2">上传</button>
+                                <!-- <input type="file" name="file"  ref="file2">
+                                <button @click="upload2">上传</button> -->
+
+                                <el-upload
+                                    action=""
+                                    list-type="picture-card"
+                                    :http-request='uploadNav2'
+                                    >
+                                    <i class="el-icon-plus"></i>
+                                </el-upload>
+                                <el-dialog :visible.sync="dialogVisible">
+                                <img width="100%" :src="dialogImageUrl" alt="">
+                                </el-dialog>
                             </div>
                         </div>
                     </div>
@@ -160,6 +179,7 @@
 <script>
 
 import { mapActions } from "vuex";
+import upload from '../../../public/lib/uploud';
 export default{
     data() {
         return{
@@ -253,25 +273,24 @@ export default{
             }
         },
         // 主导航上传的点击事件
-        async  upload1(a){
-            let formData = new FormData();
-            formData.append('file',this.$refs.file1.files[0]);
-            formData.append('type',2); 
-            // let res = await this.uploadImage(formData);
-            // await this.addNav(1,res.data,'微信');     
-            // this.navList();   
-            let res = await this.uploadImage(formData);
-            console.log(res,a);             
-        },
+        // async  upload1(){
+        //     let formData = new FormData();
+        //     formData.append('file',this.$refs.file1.files[0]);
+        //     formData.append('type',2); 
+        //     let res = await this.uploadImage(formData);
+        //     await this.addNav(1,res.data,'微信');     
+        //     this.navList();  
+        //     console.log(this.mainNav);            
+        // },
         // 快捷导航上传的点击事件
-        async  upload2(){
-            let formData = new FormData();
-            formData.append('file',this.$refs.file2.files[0]);
-            formData.append('type',2); 
-            let res  =  await this.uploadImage(formData); 
-            await this.addNav(2,res.data,'QQ');
-            this.navList();                
-        },
+        // async  upload2(){
+        //     let formData = new FormData();
+        //     formData.append('file',this.$refs.file2.files[0]);
+        //     formData.append('type',2); 
+        //     let res  =  await this.uploadImage(formData); 
+        //     await this.addNav(2,res.data,'QQ');
+        //     this.navList();                
+        // },
 
         // 新增导航的接口   pid 1/2  主导航/快捷导航   route  路径    contenr  内容
         async addNav(pid,route,content){
@@ -292,36 +311,45 @@ export default{
         },
         
 
-        // 主导航可删除的数据的数组
-        deletebtn(arr){
-            var newarr = [];
-            arr.forEach(fs=>{
-                if(fs.delete){
-                    newarr.push(fs);
-                }
-            })
-            return newarr;
-        },
-        // 主导航不可删除的数据的数组
-        notDeletebtn(arr){
-            var newarr = [];
-            arr.forEach(fs=>{
-                if(!fs.delete){
-                    newarr.push(fs);
-                }
-            })
-            return newarr;
-        },  
-
-        // 主导航右上角删除的点击事件
-        del(a){
-            this.removeNav(a);
+        // 导航删除的点击事件
+        async del(a){
+            await this.removeNav(a);
             this.navList();
         },
+        // 主导航的上传事件
+        async uploadNav1(val){
+            var name = val.file.name;
+            name = name.substring(name,name.indexOf('.'));
+            let a = upload(val.file,1);
+            let res = await this.uploadImage(a);
+            this.createNav({
+                pictureName : name,
+                pictureUrl : res.data,
+                pid : 1
+            });
+            this.navList();
+        },
+
+        // 快捷导航的上传事件
+        async uploadNav2(val){
+            var name = val.file.name;
+            name = name.substring(name,name.indexOf('.'));
+            let a = upload(val.file,1);
+            let res = await this.uploadImage(a);
+            this.createNav({
+                pictureName : name,
+                pictureUrl : res.data,
+                pid : 2
+            });
+            this.navList();
+        },
+
+
         
     },   
     created(){
         this.navList();
+        console.log(this.mainNav);
     }
 }
 </script>

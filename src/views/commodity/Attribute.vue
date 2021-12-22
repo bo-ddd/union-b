@@ -32,6 +32,17 @@
     <el-form-item label="属性名称" :label-width="formLabelWidth">
       <el-input v-model="forms.name" autocomplete="off"></el-input>
     </el-form-item>
+
+    <el-form-item label="类型" :label-width="formLabelWidth" class="form-money">
+      <el-select v-model="value" placeholder="请选择">
+    <el-option
+      v-for="item in option"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+    </el-form-item>
     <el-form-item label="类目" :label-width="formLabelWidth" class="form-money">
       <el-select v-model="value" filterable placeholder="请选择">
     <el-option
@@ -89,10 +100,21 @@
         label="操作"
         align="center"
         >
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <el-button size="mini">{{scope.row.redact}}</el-button>
           <el-button size="mini" type="danger" @click="remove(scope)">{{scope.row.delete}}</el-button>
-        </template>
+        </template> -->
+        <template slot-scope="scope">
+        <el-button
+          size="mini">编辑</el-button>
+        <!-- <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">向上</el-button> -->
+        <el-button
+          size="mini"
+          type="danger"
+          @click="remove(scope)">删除</el-button>
+      </template>
       </el-table-column>
     </el-table>
       </div>
@@ -107,6 +129,13 @@ import { mapActions } from "vuex";
 export default {
   data() {
       return {
+        option: [{
+          value: '选项1',
+          label: '属性'
+        }, {
+          value: '选项2',
+          label: '参数'
+        }],
         options: [{
           value: '选项1',
           label: '电子'
@@ -134,56 +163,41 @@ export default {
           resource: '',
           desc: ''
         },
-        // input:10,
-        // name:'微辣',
         form: {
           name: '',
           choice: '',
           required: '',
         },
         tableData: [{
-            delete:'删除',
-            redact:'编辑',
             name:'型号',
             input:'FX86'
           }, {
-           
-            delete:'删除',
-            redact:'编辑',
             name:'分辨率',
             input:'1920*1080'
           }, {
-           
-            delete:'删除',
-            redact:'编辑',
             name:'尺寸',
             input:'15.6英寸'
           }, {
-            
-            delete:'删除',
-            redact:'编辑',
             name:'刷新率',
             input:'60HZ (1/秒)'
           },
           {
-           
-            delete:'删除',
-            redact:'编辑',
             name:'显卡',
             input:'独立显卡'
           },
           {
-            
-            delete:'删除',
-            redact:'编辑',
             name:'运行内存',
             input:'8G'
+          },
+          {
+            name:'硬盘容量',
+            input:'256G'
           }
           ]
       }
     },
     methods: {
-      ...mapActions(["getAttributeList"]),
+      ...mapActions(["createAttribute"]),
        handleEdit(index, row) {
         console.log(index, row);
       },
@@ -196,8 +210,8 @@ export default {
       }
   },
   async created(){
-    let getAttributeList = await this.getAttributeList();
-    console.log(getAttributeList);
+    let res = await this.createAttribute();
+    console.log(res);
   } 
 }
 </script>

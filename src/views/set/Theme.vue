@@ -235,12 +235,6 @@ export default {
 
     }
   },
-  created(){
-      let theme=localStorage.getItem("theme");
-      if(theme){
-          this.changeColor(theme);
-      }
-  },
   methods:{
     changeColor(num) {
       let root = document.querySelector(":root");

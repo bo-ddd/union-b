@@ -55,17 +55,17 @@
       </el-table-column>
       <el-table-column
         prop="name"
-        label="属性值"
+        label="属性"
         align="center"
         >
-        <template>
+        <!-- <template>
           <input type="text" class="property" v-model="name">
-        </template>
+        </template> -->
       </el-table-column>
-      <el-table-column label="加价(元)"  align="center">
-        <template>
+      <el-table-column prop="input" label="属性值"  align="center">
+        <!-- <template>
           <input type="text" class="inp" v-model="input">
-        </template>
+        </template> -->
       </el-table-column>
       <el-table-column
         prop="sort"
@@ -119,10 +119,8 @@ export default {
         }, {
           value: '选项4',
           label: '食品'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
+        },
+        ],
         value: '',
         dialogFormVisible: false,
         formLabelWidth: '120px',
@@ -136,8 +134,8 @@ export default {
           resource: '',
           desc: ''
         },
-        input:10,
-        name:'微辣',
+        // input:10,
+        // name:'微辣',
         form: {
           name: '',
           choice: '',
@@ -145,29 +143,41 @@ export default {
         },
         tableData: [{
             delete:'删除',
-            redact:'编辑'
+            redact:'编辑',
+            name:'型号',
+            input:'FX86'
           }, {
            
             delete:'删除',
-            redact:'编辑'
+            redact:'编辑',
+            name:'分辨率',
+            input:'1920*1080'
           }, {
            
             delete:'删除',
-            redact:'编辑'
+            redact:'编辑',
+            name:'尺寸',
+            input:'15.6英寸'
           }, {
             
             delete:'删除',
-            redact:'编辑'
+            redact:'编辑',
+            name:'刷新率',
+            input:'60HZ (1/秒)'
           },
           {
            
             delete:'删除',
-            redact:'编辑'
+            redact:'编辑',
+            name:'显卡',
+            input:'独立显卡'
           },
           {
             
             delete:'删除',
-            redact:'编辑'
+            redact:'编辑',
+            name:'运行内存',
+            input:'8G'
           }
           ]
       }

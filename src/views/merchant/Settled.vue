@@ -16,8 +16,8 @@
                 <el-form-item label="描述" :rules="[{required: true}]">
                     <el-input class="el-input"></el-input>
                 </el-form-item>
-                <el-form-item label="上传营业执照" :rules="[{required: true}]">
-                    <el-upload action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+                <el-form-item label="上传营业执照" :rules="[{required: true}]" class="img">
+                    <el-upload action="" list-type="picture-card" :http-request="upload" :before-upload="text">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                     <el-dialog :visible.sync="dialogVisible">
@@ -172,6 +172,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
     data() {
         return {
@@ -189,13 +190,25 @@ export default {
         }
     },
     methods: {
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        }
+       ...mapActions(["uploadImage"]),
+       text(val){
+         const isJPG = val.type === "image/jpeg" || "image/png";
+         const isLt2M = val.size /1024 /1024 < 2;
+         if(!isJPG){
+           this.$message.error("上传头像图片只能是 JPG 格式!")
+         }
+         if(!isLt2M){
+           this.$message.error("上传头像大小不能超过 2MB!")
+         }
+         return isJPG && isLt2M;
+       },
+      async upload(val){
+        let formData = new FormData();
+        formData.append('file',val.file);
+        formData.append('type',4);
+        let res = await this.uploadImage(formData);
+        console.log(res);
+      }
     }
 }
 </script>
@@ -207,6 +220,7 @@ export default {
 
 ::v-deep .el-form-item {
     margin-bottom: 10px;
+    width: 35%;
 }
 
 .el-checkbox {
@@ -228,7 +242,9 @@ export default {
         }
 
         & .information-content {
-            width: 35%;
+          & .img{
+            width: 100%;
+          }
         }
     }
 
@@ -258,10 +274,6 @@ export default {
                     width: 9%;
                 }
             }
-
-            // & .commodity-select {
-            //     width: 60%;
-            // }
         }
 
         & .bottom {

@@ -600,6 +600,10 @@ export const routes = [{
         meta: {
             title: '',
         },
+        beforeEnter: (to, from, next) => {
+            localStorage.setItem('from', from.path)
+            next()
+        }
     },
     {
         path: '/registration',

@@ -49,6 +49,7 @@
 
 <script>
 import '@/assets/theme.scss'
+import changeColor from "../assets/js/changeColor.js"
 import {
     mapGetters,
     mapActions
@@ -80,6 +81,10 @@ export default {
         ...mapGetters(['routes'])
     },
     async created() {
+        let theme=localStorage.getItem("theme");
+        if(theme){
+          changeColor(theme);
+        }
         let res = await this.getUserInfo();
         console.log(res.data)
         this.userInfo = res.data[0]

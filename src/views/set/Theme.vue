@@ -7,7 +7,7 @@
           <span @click="controlColor" class="description">斗志、奔放</span>
         </div>
         <div class="main-color">
-          <div @click="changeColor('red1')" value="1" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
+          <div @click="changeColor('red1')" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
           <div @click="changeColor('red2')" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
           <div @click="changeColor('red3')" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
           <div @click="changeColor('red4')" class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
@@ -236,9 +236,6 @@ export default {
     }
   },
   methods:{
-    getThisVal(data){
-      console.log(data)
-    },
     changeColor(num) {
       let root = document.querySelector(":root");
       if (num == 'red1') {
@@ -612,10 +609,6 @@ export default {
         root.style.setProperty("--textcolor", "rgb(255, 255, 255)");
       }
     },
-    controlColor(data){
-      window.document.documentElement.setAttribute('data-theme', `primary${data}`);
-      console.log(data)
-    }
   }
 }
 </script>

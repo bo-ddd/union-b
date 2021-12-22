@@ -57,7 +57,6 @@
         ref="multipleTable"
         tooltip-effect="dark"
         :data="arr"
-
         style="width: 97%"
         @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
@@ -149,22 +148,25 @@
           >
         </div>
         <div class="footer_right">
-          <div class="block">
+          <!-- <div class="block">
             <el-pagination
               :current-page="currentPage4"
-              :page-sizes="[6, 15, 20, 30, 50, 100]"
+              :page-sizes="[6, 10, 15, 20]"
               layout="sizes"
             >
             </el-pagination>
             <div>输入按回车</div>
-          </div>
+          </div> -->
           <div class="block2">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :page-count=pageCount
-              :total="count"
-              layout="prev, pager, next"
+              :current-page.sync="currentPage"
+              :page-sizes="[6, 10, 20, 30]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="arr.length"
+              class="page"
             >
             </el-pagination>
           </div>
@@ -196,9 +198,7 @@ export default {
           label: "备注",
         },
       ],
-      currentPage4: 4,
       pagination: true,
-      pageNum: 10,
       id: "",
       title: "",
       productCategory: "",
@@ -221,6 +221,11 @@ export default {
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
       multipleSelection: [],
+      currentPage: 1,
+      pageSize: 10,
+      table: [],
+      pageNum: "",
+      num: "",
     };
   },
   methods: {
@@ -241,12 +246,6 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
     //添加规格
 
     async addspecification() {
@@ -255,7 +254,7 @@ export default {
         cid: Number(this.form1.cid),
       });
       console.log(res);
-      this.spelist()
+      this.spelist();
     },
     //批量删除
     MultipleRemove() {
@@ -290,6 +289,24 @@ export default {
         this.productCategory = item.productCategory;
         this.arr.push(item);
       });
+    },
+    //分页
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.handleCurrentChange(1);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.pageNum = val;
+      this.offSize();
+    },
+    offSize() {
+      this.num = this.pageSize * (this.pageNum - 1);
+      this.Num();
+    },
+    Num() {
+      this.table = this.tableData.slice(this.num, this.num + this.pageSize);
+      // console.log(this.table);
     },
   },
   async created() {

@@ -381,6 +381,18 @@ export default {
     getPaymentList(params) {
         return axios.post('/payment/list', params, postConfig)
     },
+    /**
+     * @description 获取快递接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getExpressList(params) {
+        return axios.post('/express/list', params, postConfig)
+    },
+
 
     //系统设置
     /**

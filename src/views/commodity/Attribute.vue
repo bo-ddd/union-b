@@ -3,7 +3,7 @@
     <!-- ProductParameters商品属性 -->
     <div class="main">
       <div class="mains">
-      <h1 class="h1">属性项信息</h1>
+      <!-- <h1 class="h1">属性项信息</h1>
       <div class="message">
         <div class="main-top">
           <el-form ref="form" :model="form" label-width="90px">
@@ -23,23 +23,24 @@
   </el-form-item>
 </el-form>
         </div>
-      </div>
+      </div> -->
       <h1 class="h1">属性值列表</h1>
       <div class="list">
-        <el-button type="primary" @click="dialogFormVisible = true" class="button">新增属性值</el-button>
-        <el-dialog title="新增属性值" :visible.sync="dialogFormVisible">
+        <el-button type="primary" @click="dialogFormVisible = true" class="button">新增属性</el-button>
+        <el-dialog title="新增属性" :visible.sync="dialogFormVisible">
   <el-form :model="forms">
-    <el-form-item label="属性值" :label-width="formLabelWidth">
+    <el-form-item label="属性名称" :label-width="formLabelWidth">
       <el-input v-model="forms.name" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="加价(元)" :label-width="formLabelWidth" class="form-money">
-      <el-select v-model="forms.region" placeholder="请选择加价价格">
-        <el-option label="10元" value="10"></el-option>
-        <el-option label="20元" value="20"></el-option>
-        <el-option label="30元" value="30"></el-option>
-        <el-option label="40元" value="40"></el-option>
-        <el-option label="50元" value="50"></el-option>
-      </el-select>
+    <el-form-item label="类目" :label-width="formLabelWidth" class="form-money">
+      <el-select v-model="value" filterable placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
     </el-form-item>
   </el-form>
   <div slot="footer" class="dialog-footer">
@@ -89,9 +90,8 @@
         align="center"
         >
         <template slot-scope="scope">
-          <el-button
-          size="mini"
-          type="danger" @click="remove(scope)">{{scope.row.delete}}</el-button>
+          <el-button size="mini">{{scope.row.redact}}</el-button>
+          <el-button size="mini" type="danger" @click="remove(scope)">{{scope.row.delete}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -107,6 +107,23 @@ import { mapActions } from "vuex";
 export default {
   data() {
       return {
+        options: [{
+          value: '选项1',
+          label: '电子'
+        }, {
+          value: '选项2',
+          label: '电器'
+        }, {
+          value: '选项3',
+          label: '服装'
+        }, {
+          value: '选项4',
+          label: '食品'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: '',
         dialogFormVisible: false,
         formLabelWidth: '120px',
         forms: {
@@ -127,24 +144,30 @@ export default {
           required: '',
         },
         tableData: [{
-            delete:'删除'
+            delete:'删除',
+            redact:'编辑'
           }, {
            
-            delete:'删除'
+            delete:'删除',
+            redact:'编辑'
           }, {
            
-            delete:'删除'
+            delete:'删除',
+            redact:'编辑'
           }, {
             
-            delete:'删除'
+            delete:'删除',
+            redact:'编辑'
           },
           {
            
-            delete:'删除'
+            delete:'删除',
+            redact:'编辑'
           },
           {
             
-            delete:'删除'
+            delete:'删除',
+            redact:'编辑'
           }
           ]
       }

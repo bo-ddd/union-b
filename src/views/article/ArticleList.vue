@@ -26,13 +26,13 @@
         <el-button class="button"
           @click.native.prevent="deleteRow(scope.$index, tableData)"
           type="text"
-          size="small">
+          >
           移除
         </el-button>
         <el-button class="button"
           @click.native.prevent=""
           type="text"
-          size="small">
+          >
           查看
         </el-button>
       </template>

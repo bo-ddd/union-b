@@ -17,7 +17,6 @@
           row-key="id"
           :row-class-name="rowClassNameFun"
           :header-row-class-name="headerRowClassName"
-          size="small"
           style="width: 97%"
           @select="selectFun"
           @select-all="selectAllFun"
@@ -64,7 +63,7 @@
               <el-link
                 class="ml-10"
                 type="danger"
-                @click="deleteData(scope.row.ord)"
+                @click="deleteData(scope.row)"
                 >删除</el-link
               >
             </template>
@@ -114,6 +113,9 @@ export default {
         }
       });
     },
+    /**
+     * @description 跳转到新增分类页面
+     */
     jump() {
       this.$router.push({
         name: "AddClassify",
@@ -276,14 +278,36 @@ export default {
       }
       this.table = arr;
     },
+    /**
+     * @description 调分类列表的接口 渲染页面
+     */
     async commodityInfo() {
       let res = await this.getCategoryList({});
+      console.log(res)
       let data = res.data.rows.slice();
-      data.forEach((el) => {
+      let target = this.format(data)  
+      target.forEach((el) => {
         el.createdAt = getTime(el.createdAt);
+        if(el.child.length){
+          el.child.forEach(item=>{
+            item.association = "规格"
+            item.createdAt = getTime(item.createdAt)
+          })
+        }
       });
-      this.renderDynamic = data;
+      this.renderDynamic = target;
        this.handleSizeChange(10);
+    },
+    format(target) {
+    let res = target.slice();
+    res.forEach((item,index) => {
+        console.log(index++);
+        item.child = [];
+        let p = res.find(type => type.id == item.pid);
+        item.pid && p.child.push(item);
+        item.category = p ? p.category + '=>' + item.title : item.title;
+    })
+    return res.filter(type => type.pid === null);
     },
     /**
      * @description 当前行上升一位
@@ -332,14 +356,26 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj);
+      // console.log(obj);
       let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
       this.ordSort(this.renderDynamic)
     },
+    /**
+     * @description 根据ord进行排序完成后 重新渲染页面
+     */
     ordSort(arr){
-      arr.sort((a,b)=>{
+     arr.forEach(el=>{
+            if(el.child.length){
+              el.child.sort((c,d)=>{
+                   let n1 = c.ord;
+                  let n2 = d.ord;
+                  return n1 - n2
+              })
+            }
+          })
+        arr.sort((a,b)=>{
         let num1 = a.ord;
         let num2 = b.ord;
         return num1 - num2
@@ -401,8 +437,20 @@ export default {
     /**
      * @description 删除当前行
      */
-    deleteData(val) {
-      console.log(val);
+    deleteData(row) {
+      for(var i = 0; i<this.renderDynamic.length;i++){
+        let el = this.renderDynamic[i];
+        if(row.ord==el.ord){
+          this.renderDynamic.splice(i,1)
+        }else{
+          for(var j = 0; j<el.child.length; j++){
+            if(row.ord==el.child[j].ord){
+              el.child.splice(j,1)
+            }
+          }
+        }
+      }
+      this.ordSort(this.renderDynamic)
     },
   },
   mounted() {

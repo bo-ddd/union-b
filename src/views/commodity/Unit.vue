@@ -1,29 +1,25 @@
 <template>
   <div class="wrap">
     <div class="Company">
-       <el-button type="primary" @click="dialogFormVisible = true">新增单位</el-button>
+      <el-button type="primary" @click="dialogFormVisible = true">新增单位</el-button>
       <div>
-          <el-select v-model="value" filterable placeholder="请选择"> 
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>  
-          <el-input v-model="input"  placeholder="请输入内容"  suffix-icon="el-icon-search"></el-input>
+        <el-select v-model="value" filterable placeholder="请选择">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+        <el-input v-model="input" placeholder="请输入内容" suffix-icon="el-icon-search"></el-input>
       </div>
     </div>
     <div class="table">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}">
-        <el-table-column prop="ord" label="序号">
-        </el-table-column>
-        <el-table-column prop="title" label="单位名称">
-        </el-table-column>
-        <el-table-column prop="categoryTitle" label="类目">
-        </el-table-column>
-        <el-table-column prop="storeTitle" label="店铺">
-        </el-table-column>
-        <el-table-column  label="排序">
+      <el-table :data="table" style="width: 100%" :header-cell-style="{ background: '#f7f8fa' }">
+        <el-table-column prop="ord" label="序号"> </el-table-column>
+        <el-table-column prop="title" label="单位名称"> </el-table-column>
+        <el-table-column prop="categoryTitle" label="类目"> </el-table-column>
+        <el-table-column prop="storeTitle" label="店铺"> </el-table-column>
+        <el-table-column label="排序">
           <template slot-scope="scope">
-             <el-link type="primary" class="link" @click="Topping(scope.row.ord)">置顶</el-link>
-             <el-link type="primary" class="link" @click="raise(scope.row.ord)">升序</el-link>
-             <el-link type="primary" class="link" @click="Down(scope.row.ord)">降序</el-link>
+            <el-link type="primary" class="link" @click="Topping(scope.row.ord)">置顶</el-link>
+            <el-link type="primary" class="link" @click="raise(scope.row.ord)">升序</el-link>
+            <el-link type="primary" class="link" @click="Down(scope.row.ord)">降序</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="operation" label="操作">
@@ -32,9 +28,15 @@
           </template>
         </el-table-column>
       </el-table>
-       <div class="block">
-        <el-pagination :current-page="currentPage" 
-          :page-sizes="[10, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+      <div class="block">
+        <el-pagination 
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage" 
+        :page-sizes="[5, 10, 15, 25]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper" 
+        :total="tableData.length">
         </el-pagination>
       </div>
     </div>
@@ -61,141 +63,170 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-   data() {
-        return {
-          currentPage: 1,
-          input:'',
-          dialogFormVisible: false,
-          formLabelWidth: '120px',
-          form: {
-            name: '',
-            type:'',
-            source:''
-          },
-          tableData: [],
-           options: [{
-          value: '选项1',
-          label: '序号'
-        }, {
-          value: '选项2',
-          label: '单位名称'
-        }, {
-          value: '选项3',
-          label: '类目'
+  data() {
+    return {
+      currentPage: 1,
+      pageSize:'',
+      input: "",
+      table:[],
+      dialogFormVisible: false,
+      formLabelWidth: "120px",
+      form: {
+        name: "",
+        type: "",
+        source: "",
+      },
+      tableData: [],
+      options: [{
+          value: "选项1",
+          label: "序号",
+        },
+        {
+          value: "选项2",
+          label: "单位名称",
+        },
+        {
+          value: "选项3",
+          label: "类目",
         }],
-        value: ''
-        }
-      },
-      methods: {
-         ...mapActions(["createUnitlibrary","getUnitlibraryList"]),
-        /**
-         * @description 置顶的方法
-         */
-        Topping(ord){
-          if(ord == 1) return;
-          console.log(ord);
-          console.log(ord-1);
-        },
-        /**
-         * @description 升序的方法
-         */
-        raise(ord){
-          if(ord == 1) return;
-          console.log(ord);
-          console.log(ord-1);
-        },
-        /**
-         * @description 降序的方法
-         */
-        Down(ord){
-          if(ord == 10) return;
-          console.log(ord);
-          console.log(ord+1);
-        },
-        /**
-         * @description 禁用的方法
-         */
-        Disable(ord){
-          console.log(ord);
-        },
-        /**
-         * @description 排序的方法
-         */
-        mySort(tableData){
-            tableData.sort((a,b)=>{
-            var num1 = a.id;
-            var num2 = b.id;
-            return num1-num2;
-          })
-        },
-        handleClose(done) {
-          this.$confirm('确认关闭？')
-            .then(_ => {
-              done();
-              console.log(_);
-            })
-            .catch(_ => {console.log(_);});
-        },
-        /**
-         *  @description 新增单位
-         */
-        async submit(){
-          this.dialogFormVisible = false;
-          let res = await this.createUnitlibrary({
-            title:this.form.name,
-            cid:Number(this.form.type),
-            storeId:Number(this.form.source)
-          });
-          console.log(res);
-          this.form = [];
-          this.List();
-        },
-        /**
-         *  @description 渲染数据
-         */
-        async List(){
-          let res = await this.getUnitlibraryList({
-            pagination:false,
-            // pageNum:15,//每页多少条数据  默认是10条
-            // pageSize:this.currentPage,//当前第几页
-          })
-        console.log(res);
-        this.tableData = res.data.rows;
-        }
-      },
-      created(){
-        this.List();
+      value: "",
+    };
+  },
+  methods: {
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList"]),
+    /**
+     * @description 置顶的方法
+     */
+    Topping(ord) {
+      if (ord == 1) return;
+      console.log(ord);
+      console.log(ord - 1);
+    },
+    /**
+     * @description 升序的方法
+     */
+    raise(ord) {
+      if (ord == 1) return;
+      console.log(ord);
+      console.log(ord - 1);
+    },
+    /**
+     * @description 降序的方法
+     */
+    Down(ord) {
+      if (ord == 10) return;
+      console.log(ord);
+      console.log(ord + 1);
+    },
+    /**
+     * @description 禁用的方法
+     */
+    Disable(ord) {
+      console.log(ord);
+    },
+    /**
+     * @description 排序的方法
+     */
+    mySort(tableData) {
+      tableData.sort((a, b) => {
+        var num1 = a.id;
+        var num2 = b.id;
+        return num1 - num2;
+      });
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+          console.log(_);
+        })
+        .catch((_) => {
+          console.log(_);
+        });
+    },
+    /**
+     *  @description 新增单位
+     */
+    async submit() {
+      this.dialogFormVisible = false;
+      let res = await this.createUnitlibrary({
+        title: this.form.name,
+        cid: Number(this.form.type),
+        storeId: Number(this.form.source),
+      });
+      console.log(res);
+      this.form = [];
+      this.List();
+    },
+    /**
+     *  @description 渲染数据
+     */
+    async List() {
+      let res = await this.getUnitlibraryList({
+        pagination: false,
+        // pageNum:1,//当前第几页
+        // pageSize:10,//每页多少条数据  默认是10条
+      });
+      console.log(res);
+      this.tableData = res.data.rows;
+      this.handleSizeChange(10);
+    },
+    /**
+     * @description 分页每页有多少条
+     * **/
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.handleCurrentChange(1);
+    },
+
+    /**
+     * @description 分页的当前页有多少条
+     * **/
+    handleCurrentChange(val) {
+      let arr = [];
+      for (
+        let i = val * this.pageSize - this.pageSize;
+        i < val * this.pageSize;
+        i++
+      ) {
+        if (this.tableData[i] != undefined) arr.push(this.tableData[i]);
       }
-}
+      this.table = arr;
+    },
+  },
+  created() {
+    this.List();
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-::v-deep .is-leaf{
+::v-deep .is-leaf {
   text-align: center;
 }
-::v-deep .cell{
+::v-deep .cell {
   text-align: center;
 }
-.wrap{
+.wrap {
   height: calc(100vh - 100px);
-  overflow-y:auto;
-  & .Company{
+  overflow-y: auto;
+  & .Company {
     padding: 15px;
     display: flex;
     justify-content: space-between;
-    & .el-input{
+    & .el-input {
       text-indent: 10px;
       width: 200px;
     }
   }
-  & .table{
+  & .table {
     width: 100%;
-    & .link{
+    & .link {
       margin: 0 1%;
       cursor: pointer;
     }
   }
-  & .block{
+  & .block {
     width: 100%;
     display: flex;
     justify-content: center;

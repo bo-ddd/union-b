@@ -8,17 +8,15 @@
       <div class="main">
         <div class="question1">您在哪个商铺遇到了问题？</div>
         <el-form ref="form" :model="form" label-width="80px">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
+          <el-input placeholder="请输入内容" v-model="form.title" clearable>
+          </el-input>
           <div class="question2">描述您的问题(300字以内)</div>
           <div>
             <el-input
               type="textarea"
               :autosize="{ minRows: 2, maxRows: 4 }"
               placeholder="请输入内容"
-              v-model="form.desc"
+              v-model="form.content"
               maxlength="300"
               show-word-limit
             >
@@ -26,18 +24,17 @@
           </div>
         </el-form>
         <div class="main-pack">
-          <span class="annex">上传图片附件</span>
+          <span class="annex">上传图片附件(可不上传)</span>
+          <!-- <i class="el-icon-warning-outline icon-img"></i> -->
+          <!-- <span class="tips-img"
+            >请上传一张图片，格式jpg，尺寸640*384，大小在30k之内</span
+          > -->
           <div class="img-pack">
-            <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
-            >
+            <el-upload action="" list-type="picture-card" :http-request="sss">
               <i class="el-icon-plus"></i>
             </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt="" />
+            <el-dialog :visible.sync="dialogVisible" ref="file">
+              <img width="100%" :src="form.img_url" value="10" alt="" />
             </el-dialog>
           </div>
         </div>
@@ -51,22 +48,50 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import lout from "../../../public/lib/uploud";
 export default {
   data() {
     return {
       form: {
-        region: "",
-        type: [],
-        desc: "",
+        title: "",
+        content: "",
+        img_url: "",
       },
-      dialogImageUrl: "",
       dialogVisible: false,
     };
   },
   methods: {
+    ...mapActions(["createOpinion", "getOpinionList", "uploadImage"]),
+
+    async createop() {
+      let { title, content, img_url } = this.form;
+      let res = await this.createOpinion({
+        title,
+        content,
+        img_url,
+      });
+      console.log(res);
+      // let res1 = await this.getOpinionList({});
+      // console.log(res1);
+
+      // 上传图片
+      this.$nextTick(() => {
+        console.log(this.$refs.file);
+        lout("file");
+      });
+    },
+
+    async sss(val) {
+      let a = lout(val.file, 1);
+      // console.log(a.get("file"));
+      let res = await this.uploadImage(a);
+      console.log(res);
+    },
+
     // 提交点击事件
     onSubmit() {
-      console.log("submit!");
+      this.createop();
     },
 
     // 上传图片
@@ -74,7 +99,7 @@ export default {
       console.log(file, fileList);
     },
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
+      this.img_url = file.url;
       this.dialogVisible = true;
     },
   },
@@ -112,7 +137,6 @@ export default {
     width: 98%;
     height: 75%;
     display: flex;
-    // align-items: start;
     align-items: baseline;
     flex-direction: column;
     margin-left: 20px;
@@ -124,9 +148,7 @@ export default {
 
     & ::v-deep .el-input__inner {
       width: 400px;
-      height: 50px;
       border-radius: 10px;
-      background-color: #f5f5f5;
     }
 
     & .question2 {
@@ -137,7 +159,6 @@ export default {
     & ::v-deep .el-textarea__inner {
       max-height: 150px;
       border-radius: 10px;
-      background-color: #f5f5f5;
     }
 
     & .main-pack {
@@ -145,6 +166,7 @@ export default {
       margin-top: 30px;
 
       & .annex {
+        margin-right: 15px;
         font-size: 18px;
       }
 
@@ -169,5 +191,11 @@ export default {
       width: 130px;
     }
   }
+}
+.tips-img {
+  margin-top: 28px;
+  margin-left: 10px;
+  font-size: 14px;
+  color: rgb(140, 140, 140);
 }
 </style>

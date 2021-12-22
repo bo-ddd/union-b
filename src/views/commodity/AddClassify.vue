@@ -56,12 +56,14 @@
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
-      <el-upload
-      ref="file"
-  action="https://jsonplaceholder.typicode.com/posts/"
+        <el-upload
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadClassify"
+  :before-upload="test"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -123,10 +125,12 @@
   </el-form-item> -->
    <el-form-item class="poster-classify" label="广告图片" prop="name">
    <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadSectionFile"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -148,6 +152,7 @@ import {mapActions} from "vuex"
 export default {
  data() {
       return {
+        src:'',
         pid:'',
         addrCode: undefined,
          dialogImageUrl: '',
@@ -166,7 +171,7 @@ export default {
       };
     },
     methods: {
-      ...mapActions(["createCategory","getCategoryList"]),
+      ...mapActions(["createCategory","getCategoryList","uploadImage"]),
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -176,10 +181,13 @@ export default {
       },
      async submit(){
        console.log(this.ruleForm.name)
-       console.log(this.ruleForm.pid)
+       console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
+       console.log(this.src)
       //  let res = await this.createCategory({
       //    title:this.ruleForm.name,
-      //    pid:null
+      //    pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+      //    category:this.src
+
       //  })
       //  console.log(res)
       },
@@ -220,23 +228,35 @@ export default {
       });
      
     },
+    test(val){
+      let isPNg = val.type === "image/png"||"image/jpg" ;
+      let isSz2m = val.size/1024/1024<2;
+      if(!isPNg){
+        this.$message("图片格式只能是PNG格式")
+      }
+      if(!isSz2m){
+        this.$message("上传图片大小不能超过2M")
+      }
+      return isPNg && isSz2m
+    },
+ async uploadClassify(val){
+       let formData = new FormData();
+       formData.append('file',val.file);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
+        this.src=res.data
+    },
+    async uploadSectionFile(val){
+      let formData = new FormData();
+       formData.append('file',val.file);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
+        this.src=res.data
+    }
+
   },
     created(){
       this.getClassifyInfo();
-      // let formData = new FormData();
-      //   let file = this.$refs.file.files[0];  //this.$refs.file.files[0] 获取到上传的文件
-      //   console.log(file);
-      //   formData.append('file',this.$refs.file.files[0])  //把获取到的文件append到formData里面
-      //   formData.append('type',1)                                         //把type append到formData里面
-      //   console.log(formData.get('file'));    //拿到formData里面的file并打印
-      //   console.log(formData.get('type'));    //拿到formData里面的type并打印
-      //   axios.post('/upload/avator',formData,{
-      //       headers:{
-      //           "Content-Type":"multipart/form-data"
-      //       }
-      //   }).then(res=>{
-      //       console.log(res);
-      //   })
     },
 }
 </script>
@@ -272,5 +292,9 @@ export default {
 .classify-img,.poster-classify{
   margin-bottom: 0 !important;
 }
-
+::v-deep .file{
+  & .el-input__inner{
+    border: none;
+  }
+}
 </style>

@@ -11,7 +11,7 @@
           </div>
         </div>
         <el-table
-          :data="renderDynamic"
+          :data="table"
           ref="product"
           border
           row-key="id"
@@ -283,6 +283,7 @@ export default {
         el.createdAt = getTime(el.createdAt);
       });
       this.renderDynamic = data;
+       this.handleSizeChange(10);
     },
     /**
      * @description 当前行上升一位
@@ -332,9 +333,18 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
-      // let ord = obj.currentData.ord;
-      // obj.currentData.ord = obj.preData.ord;
-      // obj.preData.ord = ord;
+      let ord = obj.currentData.ord;
+      obj.currentData.ord = obj.preData.ord;
+      obj.preData.ord = ord;
+      this.ordSort(this.renderDynamic)
+    },
+    ordSort(arr){
+      arr.sort((a,b)=>{
+        let num1 = a.ord;
+        let num2 = b.ord;
+        return num1 - num2
+      })
+      this.table = arr
     },
     /**
      * @description 当前行下降一位
@@ -383,9 +393,10 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
-      // let ord = obj.currentData.ord;
-      // obj.currentData.ord = obj.preData.ord;
-      // obj.preData.ord = ord;
+      let ord = obj.currentData.ord;
+      obj.currentData.ord = obj.preData.ord;
+      obj.preData.ord = ord;
+       this.ordSort(this.renderDynamic)
     },
     /**
      * @description 删除当前行
@@ -399,7 +410,6 @@ export default {
   },
   created() {
     this.commodityInfo();
-    this.handleSizeChange(10);
   },
 };
 </script>

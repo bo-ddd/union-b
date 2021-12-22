@@ -33,8 +33,8 @@
         </el-table-column>
       </el-table>
        <div class="block">
-        <el-pagination :current-page="currentPage" 
-          :page-sizes="[10, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+          <el-pagination  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" 
+          :page-sizes="[15,15,20,25]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
         </el-pagination>
       </div>
     </div>
@@ -64,6 +64,8 @@ export default {
    data() {
         return {
           currentPage: 1,
+          total: 20, // 总条数
+          pageSize: 15, // 每页的数据条数
           input:'',
           dialogFormVisible: false,
           formLabelWidth: '120px',
@@ -161,6 +163,15 @@ export default {
           })
         console.log(res);
         this.tableData = res.data.rows;
+        },
+        handleSizeChange(val) {
+          console.log(`每页 ${val} 条`);
+          this.currentPage = 1;
+          this.pageSize = val;
+        },
+        handleCurrentChange(val) {
+          console.log(`当前页: ${val}`);
+          this.currentPage = val;
         }
       },
       created(){

@@ -50,6 +50,10 @@ export default new Vuex.Store({
         userUpdatePwd(ctx, payload) {
             return Api.userUpdatePwd(payload);
         },
+        //获取token接口
+        userGetToken(ctx, payload) {
+            return Api.userGetToken(payload);
+        },
         //上传图片接口
         uploadImage(ctx, payload) {
             return Api.uploadImage(payload);

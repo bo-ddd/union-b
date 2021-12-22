@@ -154,9 +154,15 @@ export default {
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
         this.$message.success(res.msg);
-        this.$router.push({
-          path: "/",
+        if (localStorage.getItem('from')) {
+          this.$router.push({
+          path: localStorage.getItem('from'),
         });
+        }else{
+          this.$router.push({
+            path: "/",
+          });
+        }
       } else {
         this.$message.error(res.msg);
         this.generatorCaptcha();

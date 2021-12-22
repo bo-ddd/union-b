@@ -514,7 +514,7 @@ export default {
         checkedCount > 0 && checkedCount < this.cities.length;
     },
   },
- async created(){
+  async created(){
     let res = await this.createProduct({
       cid:1,
       title:'暖宝宝',

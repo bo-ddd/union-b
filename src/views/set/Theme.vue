@@ -236,9 +236,6 @@ export default {
     }
   },
   methods:{
-    getThisVal(data){
-      console.log(data)
-    },
     changeColor(num) {
       let root = document.querySelector(":root");
       if (num == 'red1') {
@@ -612,10 +609,6 @@ export default {
         root.style.setProperty("--textcolor", "rgb(255, 255, 255)");
       }
     },
-    controlColor(data){
-      window.document.documentElement.setAttribute('data-theme', `primary${data}`);
-      console.log(data)
-    }
   }
 }
 </script>

@@ -351,7 +351,7 @@ export default {
       padding: 20px;
       & > div {
         width: 100%;
-        background-color: #e7536b;
+        background-color: var(--color);
         display: flex;
         align-items: center;
         color: white;

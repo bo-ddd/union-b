@@ -78,8 +78,19 @@
       <el-input v-model="form.name" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item label="上传封面" :label-width="formLabelWidth" class="asterisk">
-      <input class="content-img" type="file" name="file" ref="file" />
-      <button @click="upload2">上传</button>
+
+        <el-upload
+          action=""
+          list-type="picture-card" 
+          :on-preview="handlePictureCardPreview"
+          :on-remove="handleRemove">
+          <i class="el-icon-plus"></i>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+
+
     </el-form-item>
     <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5 asterisk">
         <el-button type="primary"  @click="dialogFormVisible1 = true">添加省区</el-button>
@@ -272,7 +283,7 @@ export default {
 this.getpremium()
     },
     methods: {
-         ...mapActions(["getSuperList","uploadImage"]),
+         ...mapActions(["getSuperList"]),
       //已选省区
         gettext(value){
           // this.checkedlist.push(value[this.num]);
@@ -290,13 +301,14 @@ this.getpremium()
         handleChange(value) {
             console.log(value);
         },
-         async  upload2(){
-            let formData = new FormData();
-            formData.append('file',this.$refs.file.files[0]);
-            formData.append('type',2); 
-            let res  =  await this.uploadImage(formData);
-            console.log(res);                                
+        handleRemove(file, fileList) {
+          console.log(file, fileList);
         },
+        handlePictureCardPreview(file) {
+          console.log(file.url);
+          this.dialogImageUrl = file.url;
+          this.dialogVisible = true;
+        }
     }
   }
 </script>
@@ -319,7 +331,7 @@ this.getpremium()
   content: '*';
   color: #f56c6c;
   left: 40px;
-  top: 15px;
+  // top: 15px;
 }
 .mb-5{
     margin-bottom: 5px;
@@ -330,10 +342,6 @@ this.getpremium()
 ::v-deep .el-dialog__title{
     font-weight: 700;
 }
-.query{ 
-         background-color: #ff4070;
-         color: #fff3f6;
-      }
 .header{
     min-height:15vh;
     padding: 20px 15px;
@@ -358,21 +366,18 @@ this.getpremium()
     margin-bottom: 20px;
     color: #ff6051;
   }
-  ::v-deep .el-table__row  .el-table_1_column_1{
-      text-align: left;
-  }
   ::v-deep .el-table__row  .el-table_1_column_3 {
     padding-left: 70px;
   }
   ::v-deep .el-table__row  .el-table_1_column_5 {
     padding-left: 30px;
   }
- ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
-     background-color: #fcf9fa;
-  }
- ::v-deep .el-table__footer-wrapper, .el-table__header-wrapper {
-      background-color: #fcf9fa;
-     }
+//  ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+//      background-color: #fcf9fa;
+//   }
+//  ::v-deep .el-table__footer-wrapper, .el-table__header-wrapper {
+//       background-color: #fcf9fa;
+//      }
  
 ::v-deep .el-upload{
     border: 1px dashed #d9d9d9;

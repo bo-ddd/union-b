@@ -197,7 +197,7 @@ export default {
       }
     },
     methods: {
-      ...mapActions(["getAttributeList"]),
+      ...mapActions(["createAttribute"]),
        handleEdit(index, row) {
         console.log(index, row);
       },
@@ -210,8 +210,8 @@ export default {
       }
   },
   async created(){
-    let getAttributeList = await this.getAttributeList();
-    console.log(getAttributeList);
+    let res = await this.createAttribute();
+    console.log(res);
   } 
 }
 </script>

@@ -38,8 +38,8 @@
             >
               <i class="el-icon-plus"></i>
             </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="form.img_url" ref="file" alt="" />
+            <el-dialog :visible.sync="dialogVisible" ref="file">
+              <img width="100%" :src="form.img_url" value="10" alt="" />
             </el-dialog>
           </div>
         </div>
@@ -80,9 +80,11 @@ export default {
       // let res1 = await this.getOpinionList({});
       // console.log(res1);
 
-      // 上传图片
-      let b = lout;
-      console.log(b);
+      // 上传图片0
+      this.$nextTick(() => {
+        console.log(this.$refs.file);
+        lout("file");
+      });
     },
 
     // 提交点击事件

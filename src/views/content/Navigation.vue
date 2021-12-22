@@ -26,22 +26,22 @@
                         </div>
                         <div class="nav">
                             <!-- 可删除的导航 -->
-                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.text"  >
+                            <div class="nav-item" v-for="key in mainNav" :key="key.id"  >
                                 <div class="jian mt-5" @click="del(key.id)">
                                     <div><div></div></div>
                                 </div>
                                 <div class="img">
                                     <div>
-                                        <img :src="key.img" alt="">
+                                        <img :src="key.pictureUrl" alt="">
                                     </div>
                                 </div>
                                 <div class="text" >
-                                    <span>{{key.text}}</span>
+                                    <span>{{key.pictureName}}</span>
                                 </div>
                             </div>
 
                             <!-- 不可删除的导航 -->
-                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.text"  >
+                            <!-- <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.text"  >
                                 <div class="img mt-20">
                                     <div>
                                         <img :src="key.img" alt="">
@@ -50,18 +50,12 @@
                                 <div class="text">
                                     <span>{{key.text}}</span>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- 上传图片的 -->
                             <div>
-                                <input type="file" name="file"  ref="file">
+                                <input type="file" name="file"  ref="file1" >
                                 <button @click="upload1">上传</button>
-                                <!-- <el-upload list-type="picture-card">
-                                    <i class="el-icon-plus"></i>
-                                    </el-upload>
-                                    <el-dialog :visible.sync="dialogVisible">
-                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                </el-dialog> -->
                             </div>
                         </div>
                     </div>
@@ -74,42 +68,34 @@
                             <span class="font-color">(数量限制:2-6个)</span>
                         </div>
                         <div class="nav">
-                            <div class="nav-item flex" v-for="key in quickNav" :key="key.text">
+                            <div class="nav-item flex" v-for="key in quickNav" :key="key.id">
                                 <div class="img mt-20">
                                     <div>
-                                        <img :src="key.img" alt="">
+                                        <img :src="key.pictureUrl" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
-                                    <span>{{key.text}}</span>
+                                    <span>{{key.pictureName}}</span>
                                 </div>
                             </div>
 
 
                             <!-- 上传的照片 -->
                             <div>
-                                <input type="file" name="file"  ref="file">
+                                <input type="file" name="file"  ref="file2">
                                 <button @click="upload2">上传</button>
-                                <!-- <el-upload list-type="picture-card">
-                                    <i class="el-icon-plus"></i>
-                                    </el-upload>
-                                    <el-dialog :visible.sync="dialogVisible">
-                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                </el-dialog> -->
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="right">
                     <div class="nav">
-                        <div v-for="key in mainNav" :key="key.text">
+                        <div v-for="key in mainNav" :key="key.id">
                             <div class="img">
-                                <!-- <img :src="key.img" alt=""> -->
-                                <!-- <img src="@/assets/images/xiangxia.png" alt=""> -->
-                                <img :src="key.img" alt="">
+                                <img :src="key.pictureUrl" alt="">
                             </div>
                             <div class="text mt-5">
-                                {{key.text}}
+                                {{key.pictureName}}
                             </div>
                         </div>
                     </div>
@@ -139,8 +125,8 @@
                         </div>
                         <div class="floor-container">
                             <div class="flex" v-for="key in quickNav" :key="key.id">
-                                <img :src="key.img" alt="">
-                                <span>{{key.text}}</span>
+                                <img :src="key.pictureUrl" alt="">
+                                <span>{{key.pictureName}}</span>
                             </div>
                         </div>
                     </div>
@@ -179,91 +165,132 @@ export default{
         return{
             imageUrl: '',
             mainNav : [
-                {
-                    id : '1',
-                    img : require('@/assets/images/icon-order.png'),
-                    text : '消息1',
-                    delete : true,
-                },
-                {
-                    id : '2',
-                    img : require('@/assets/images/icon-order.png'),
-                    text : '消息2',
-                    delete : true,
-                },
-                {
-                    id : '3',
-                    img : require('@/assets/images/icon-order.png'),
-                    text : '消息3',
-                    delete : true,
-                },
-                {
-                    id : '4',
-                    img : require('@/assets/images/icon-order.png'),
-                    text : '消息4',
-                    delete : true,
-                },
-                {
-                    id : '5',
-                    img : require('@/assets/images/icon-order.png'),
-                    text : '消息5'
-                },
-                {
-                    id : '6',
-                    img : require('@/assets/images/icon-order.png'),
-                    text : '消息6'
-                },
+                // {
+                //     id : 1,
+                //     pictureName : '消息1',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 2,
+                //     pictureName : '消息2',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 3,
+                //     pictureName : '消息3',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 4,
+                //     pictureName : '消息4',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 5,
+                //     pictureName : '消息5',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 6,
+                //     pictureName : '消息6',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
                 
             ],
             quickNav : [
-                {
-                    id : '1',
-                    img : require('@/assets/images/iconfont-merchant.png'),
-                    text : '消息1',
-                    money : '￥99.9',
-                },
-                {
-                    id : '2',
-                    img : require('@/assets/images/iconfont-merchant.png'),
-                    text : '消息2',
-                    money : '￥99.9',
-                },
-                {
-                    id : '3',
-                    img : require('@/assets/images/iconfont-merchant.png'),
-                    text : '消息3',
-                    money : '￥99.9',
-                },
-                {
-                    id : '4',
-                    img : require('@/assets/images/iconfont-merchant.png'),
-                    text : '消息4',
-                    money : '￥99.9',
-                },
+                // {
+                //     id : 1,
+                //     pictureName : '消息1',
+                //     pictureUrl : require('@/assets/images/iconfont-merchant.png'),
+                //     pid : 2
+                // },
+                // {
+                //     id : 2,
+                //     pictureName : '消息2',
+                //     pictureUrl : require('@/assets/images/iconfont-merchant.png'),
+                //     pid : 2
+                // },
+                // {
+                //     id : 3,
+                //     pictureName : '消息3',
+                //     pictureUrl : require('@/assets/images/iconfont-merchant.png'),
+                //     pid : 2
+                // },
+                // {
+                //     id : 4,
+                //     pictureName : '消息4',
+                //     pictureUrl : require('@/assets/images/iconfont-merchant.png'),
+                //     pid : 2
+                // },
             ],
 
             dialogImageUrl: '',
             dialogVisible: false,
         }
     },
-    methods: {
-        ...mapActions(["uploadImage"]),
-        // 主导航上传的点击事件
-        async  upload1(){   
-            let formData = new FormData();
-            formData.append('file',this.$refs.file.files[0]);
-            formData.append('type',2) 
-            let res =  await this.uploadImage(formData);
-            console.log(res);                                
+    methods: {                         //列表接口  // 新增导航   // 删除导航
+        ...mapActions(["uploadImage","getNavList","createNav","deleteNav"]),
+        // 所有导航的列表接口
+        async navList(){
+            let res = await this.getNavList({});
+            if(res.data.rows.length){
+                res.data.rows.forEach(fs=>{
+                    if(fs.pid == '1'){
+                        this.mainNav.push(fs);
+                    }else{
+                        this.quickNav.push(fs);
+                    }
+                })
+            }else{
+                this.mainNav = [];
+                this.quickNav = [];
+            }
         },
-        // 快捷导航的点击事件
+        // 主导航上传的点击事件
+        async  upload1(a){
+            let formData = new FormData();
+            formData.append('file',this.$refs.file1.files[0]);
+            formData.append('type',2); 
+            // let res = await this.uploadImage(formData);
+            // await this.addNav(1,res.data,'微信');     
+            // this.navList();   
+            let res = await this.uploadImage(formData);
+            console.log(res,a);             
+        },
+        // 快捷导航上传的点击事件
         async  upload2(){
             let formData = new FormData();
-            formData.append('file',this.$refs.file.files[0]);
+            formData.append('file',this.$refs.file2.files[0]);
             formData.append('type',2); 
-            let res  =  await this.uploadImage(formData);
-            console.log(res);                                
+            let res  =  await this.uploadImage(formData); 
+            await this.addNav(2,res.data,'QQ');
+            this.navList();                
         },
+
+        // 新增导航的接口   pid 1/2  主导航/快捷导航   route  路径    contenr  内容
+        async addNav(pid,route,content){
+            let nav = await this.createNav({
+                pictureName : content,
+                pictureUrl : route,
+                pid : pid,
+            })
+            console.log(nav);
+        },
+
+        // 删除导航的接口
+        async removeNav(id){
+            let nav = await this.deleteNav({
+                id : id,
+            })
+            console.log(nav);
+        },
+        
 
         // 主导航可删除的数据的数组
         deletebtn(arr){
@@ -284,38 +311,18 @@ export default{
                 }
             })
             return newarr;
-        },
-        // 主导航和快捷导航的删除
-        handleRemove(file) {
-            this.quickNav.forEach((fs,index)=>{
-                if(fs.text == file.name){
-                    this.quickNav.splice(index,1)
-                }
-            })
-            this.mainNav.forEach((fs,index)=>{
-                if(fs.text == file.name){
-                    this.mainNav.splice(index,1)
-                }
-            })
-        },
+        },  
 
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        },
-        handleDownload(file) {
-            console.log(file);
-        },
         // 主导航右上角删除的点击事件
         del(a){
-            this.mainNav.forEach((nav,index)=>{
-                if(nav.id == a){
-                    this.mainNav.splice(index,1)
-                }
-            })
-
-        }
+            this.removeNav(a);
+            this.navList();
+        },
+        
     },   
+    created(){
+        this.navList();
+    }
 }
 </script>
 

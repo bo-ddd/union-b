@@ -2,42 +2,86 @@
   <div class="wrap">
     <div class="top">
       <div class="top-l">
+        <!-- 订单状态 -->
         <div class="select">
           <span class="mr-10" @click="updateOrderStatus">订单状态</span>
           <el-select
             size="small"
             v-model="orderStatusSelect"
+            @change="getOrderStatusId(orderStatusSelect)"
             placeholder="请选择"
           >
             <el-option
               size="small"
               v-for="item in orderStatus"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.status"
+              :label="item.status"
+              :value="item.status"
               :disabled="item.disabled"
             >
             </el-option>
           </el-select>
         </div>
+
+        <!-- 快递公司 -->
         <div class="select">
-          <span class="mr-10">支付状态</span>
+          <span class="mr-10" >快递公司</span>
+          <el-select
+            size="small"
+            v-model="expressSelect"
+            @change="getExpressId(expressSelect)"
+            placeholder="请选择"
+          >
+            <el-option
+              size="small"
+              v-for="item in express"
+              :key="item.expressName"
+              :label="item.expressName"
+              :value="item.expressName"
+              :disabled="item.disabled"
+            >
+            </el-option>
+          </el-select>
+        </div>
+
+        <!-- 供应商 -->
+       <div class="select">
+          <span class="mr-10">供应商</span>
+          <el-input v-model="storeTitle" placeholder="请输入"></el-input>
+        </div>
+
+        <!-- 采购商 -->
+        <div class="select">
+         <span class="mr-10">采购商</span>
+          <el-input v-model="avatorName" placeholder="请输入"></el-input>
+        </div>
+
+        <!-- 收货人 -->
+        <div class="select">
+         <span class="mr-10">收货人</span>
+          <el-input v-model="consigneeVal" placeholder="请输入"></el-input>
+        </div>
+
+        <!-- 支付方式 -->
+        <div class="select">
+          <span class="mr-10">支付方式</span>
           <el-select
             size="small"
             v-model="paymentStatusSelect"
+             @change="getPaymentStatusId(paymentStatusSelect)"
             placeholder="请选择"
           >
             <el-option
               size="small"
               v-for="item in paymentStatus"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.paymentName"
+              :label="item.paymentName"
+              :value="item.paymentName"
             >
             </el-option>
           </el-select>
         </div>
-        <div class="select">
+        <!-- <div class="select">
           <span class="mr-10">订单类型</span>
           <el-select
             size="small"
@@ -53,27 +97,16 @@
             >
             </el-option>
           </el-select>
-        </div>
+        </div> -->
+       
+       <!-- 订单编号 -->
         <div class="select">
-          <el-select
-            size="small"
-            v-model="orderNoSelect"
-            class="order"
-            placeholder="请选择"
-          >
-            <el-option
-              v-for="item in orderNo"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-          <el-input v-model="input" placeholder="请输入"></el-input>
+          <span class="mr-10">订单编号</span>
+          <el-input v-model="orderId" placeholder="请输入"></el-input>
         </div>
       </div>
       <div class="top-r">
-        <el-button type="primary" @click="querySelectOrderStatus"
+        <el-button type="primary" @click="querySelectOrderStatus(),queryOrder()"
           >查询</el-button
         >
         <el-button type="primary" @click="resetOrderStatus">重置</el-button>
@@ -82,14 +115,14 @@
     </div>
     <div class="bottom">
       <el-table
-        :data="table"
+        :data="allOrderList"
         ref="checkTable"
         stripe
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="45"> </el-table-column>
-        <el-table-column  prop="orderId" label="订单编号" align="center">
+        <el-table-column prop="orderId" label="订单编号" align="center">
         </el-table-column>
         <el-table-column prop="totalPrice" label="实付金额" align="center">
         </el-table-column>
@@ -107,7 +140,15 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="seeDetails(scope.row.orderId),getOrderDetailData(scope.row.orderId)"> 查看 </el-button>
+            <el-button
+              type="text"
+              @click="
+                seeDetails(scope.row.orderId),
+                  getOrderDetailData(scope.row.orderId)
+              "
+            >
+              查看
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -120,7 +161,7 @@
         class="hide"
       >
         <el-table-column type="selection" width="45"> </el-table-column>
-        <el-table-column  prop="orderId" label="订单编号" align="center">
+        <el-table-column prop="orderId" label="订单编号" align="center">
         </el-table-column>
         <el-table-column prop="totalPrice" label="实付金额" align="center">
         </el-table-column>
@@ -152,8 +193,8 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="
             $route.meta.title == '全部订单'
-              ? tableData.length
-              : tableData1.length
+              ? allOrder.length
+              : order.length
           "
           background
         >
@@ -178,18 +219,116 @@ export default {
   },
   async created() {
     await this.getOrderListData();
+    await this.getOrderStatusListData();
+    await this.getPaymentListData();
+    await this.getExpressListData();
     this.updateOrderStatus();
     this.handleCurrentChange(1);
   },
   methods: {
-    ...mapActions(["getOrderList","getOrderDetail"]),
+    ...mapActions([
+      "getOrderList",
+      "getOrderDetail",
+      "getOrderStatusList",
+      "getPaymentList",
+      "getPaymentList",
+      "getExpressList"
+    ]),
+
+    /**
+     * @description 获取快递
+     * **/ 
+    async getExpressListData(){
+      let res = await this.getExpressList();
+      if(res.status == 1){
+        this.express = res.data.rows;
+      }
+      console.log(res);
+    },
+
+    /**
+     * @description 拿到订单状态ID
+     * **/
+    getOrderStatusId(value) {
+      this.orderStatus.forEach((item) => {
+        if (item.status == value) {
+          this.orderStatusId = item.id;
+        }
+      });
+    },
+
+    /**
+     * @description 拿到快递公司ID
+     * **/
+    getExpressId(value) {
+      this.express.forEach((item) => {
+        if (item.expressName == value) {
+          this.expressId = item.id;
+        }
+      });
+    },
+
+    /**
+     * @description 拿到支付方式的ID
+     * **/ 
+    getPaymentStatusId(value){
+      this.paymentStatus.forEach(item=>{
+        if(item.paymentName == value){
+          this.paymentStatusId = item.id;
+        }
+      })
+    },
+
+    /**
+     * @description 根据条件查询
+     * **/ 
+    async queryOrder(){
+      let obj = {};
+      if(this.paymentStatusId) obj.paymentId = parseInt(this.paymentStatusId);
+      if(this.orderStatusId) obj.orderStatus = parseInt(this.orderStatusId);
+      if(this.orderId) obj.orderId = parseInt(this.orderId);
+      if(this.expressId) obj.expressId = parseInt(this.expressId);
+      if(this.storeTitle) obj.storeTitle = this.storeTitle;
+      if(this.avatorName) obj.avatorName = this.avatorName;
+      if(this.consigneeVal) obj.consignee = this.consigneeVal;
+      let res = await this.getOrderList(obj);
+      console.log(obj)
+      if(res.status == 1){
+        this.allOrderList = res.data.rows;
+      }
+      console.log(res)
+    },
+
+    /**
+     * @description 订单状态
+     * **/
+    async getOrderStatusListData() {
+      let res = await this.getOrderStatusList();
+      if (res.status == 1) {
+        this.orderStatus = res.data.rows;
+        for (let i = 0; i < this.orderStatus.length; i++) {
+          this.orderStatus[i].disabled = false;
+        }
+      }
+      console.log(res);
+    },
+
+    /**
+     * @description 获取支付方式
+     * **/
+    async getPaymentListData() {
+      let res = await this.getPaymentList();
+      if (res.status == 1) {
+        this.paymentStatus = res.data.rows;
+      }
+    },
 
     /**
      * @description 订单详情页
-     * **/ 
-    async getOrderDetailData(id){
-      let res = await this.getOrderDetail({id});
-      console.log(res)
+     * **/
+    async getOrderDetailData(id) {
+      let res = await this.getOrderDetail({ id });
+      console.log(res);
     },
 
     /**
@@ -198,8 +337,8 @@ export default {
     async getOrderListData() {
       let res = await this.getOrderList();
       if (res.status == 1) {
-        this.tableData = res.data.rows;
-        console.log(this.tableData);
+        this.allOrder = res.data.rows;
+        console.log(this.allOrder);
         console.log(res);
       }
     },
@@ -207,15 +346,18 @@ export default {
     exportExcel() {
       /* 从表生成工作簿对象 */
       console.log(this.cacheExport);
-      var xlsxParam = { raw: true }
-      let wb = XLSX.utils.table_to_book(document.querySelector("#out-table"),xlsxParam);
+      var xlsxParam = { raw: true };
+      let wb = XLSX.utils.table_to_book(
+        document.querySelector("#out-table"),
+        xlsxParam
+      );
       /* 获取二进制字符串作为输出 */
       var wbout = XLSX.write(wb, {
         bookType: "xlsx",
         bookSST: true,
         type: "array",
       });
-      console.log(wbout)
+      console.log(wbout);
       try {
         FileSaver.saveAs(
           //Blob 对象表示一个不可变、原始数据的类文件对象。
@@ -234,7 +376,7 @@ export default {
 
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.cacheExport =this.multipleSelection;
+      this.cacheExport = this.multipleSelection;
     },
 
     /**
@@ -245,18 +387,19 @@ export default {
       this.paymentStatusSelect = "全部";
       this.orderTypeSelect = "全部";
       this.orderNoSelect = "订单编号";
-      this.input = "";
+      this.orderId = "";
     },
 
     /**
      * @description 查询所有选中的状态
      * **/
     querySelectOrderStatus() {
+      console.log(this.orderStatus);
       console.log(this.orderStatusSelect);
       console.log(this.paymentStatusSelect);
       console.log(this.orderTypeSelect);
       console.log(this.orderNoSelect);
-      console.log(this.input);
+      console.log(this.orderId);
     },
 
     /**
@@ -264,22 +407,22 @@ export default {
      *
      * **/
     updateOrderStatus() {
-      console.log(this.orderStatus);
       let val = "";
       for (let i = 0; i < this.orderStatus.length; i++) {
         if (this.$route.meta.title != "全部订单") {
-          if (this.$route.meta.title != this.orderStatus[i].label) {
+          if (!this.$route.meta.title.includes(this.orderStatus[i].status)) {
             this.orderStatus[i].disabled = true;
           } else {
-            this.orderStatusSelect = this.orderStatus[i].label;
-            val = this.orderStatus[i].value;
+            this.orderStatusSelect = this.orderStatus[i].status;
+            val = this.orderStatus[i].status;
           }
         }
       }
-      this.tableData.forEach((item) => {
+
+      this.allOrder.forEach((item) => {
         if (item.orderStatus == val) {
-          this.tableData1.push(item);
-        } else if (val == "全部订单") this.tableData1.push(item);
+          this.order.push(item);
+        } else if (val == "全部订单") this.order.push(item);
       });
     },
 
@@ -305,10 +448,10 @@ export default {
         i < val * this.pageSize;
         i++
       ) {
-        if (this.tableData1[i] != undefined) arr.push(this.tableData1[i]);
-        if (this.tableData[i] != undefined) arr1.push(this.tableData[i]);
+        if (this.order[i] != undefined) arr.push(this.order[i]);
+        if (this.allOrder[i] != undefined) arr1.push(this.allOrder[i]);
       }
-      this.table = this.$route.meta.title == "全部订单" ? arr1 : arr;
+      this.allOrderList = this.$route.meta.title == "全部订单" ? arr1 : arr;
       console.log(`当前页: ${val}`);
     },
 
@@ -317,134 +460,61 @@ export default {
      * **/
     seeDetails(id) {
       this.$router.push({
-        query:{id:id},
+        query: { id: id },
         name: "OrderDetails",
       });
     },
   },
   data() {
     return {
+      orderStatusId: 0,
+      paymentStatusId:0,
+      expressId:0,
+      storeTitle:"",
+      avatorName:"",
+      orderId: "",
+      consigneeVal:"",
       cacheExport: [],
       multipleSelection: [],
-      table: [],
+      allOrderList: [],
       pageSize: 10,
 
-      orderStatus: [
-        {
-          value: "待审核",
-          label: "待审核订单",
-          disabled: false,
-        },
-        {
-          value: "待支付",
-          label: "待支付订单",
-          disabled: false,
-        },
-        {
-          value: "待发货",
-          label: "待发货订单",
-          disabled: false,
-        },
-        {
-          value: "待收货",
-          label: "待收货订单",
-          disabled: false,
-        },
-        {
-          value: "已完成",
-          label: "已完成订单",
-          disabled: false,
-        },
-        {
-          value: "已取消",
-          label: "已取消订单",
-          disabled: false,
-        },
-        {
-          value: "发货",
-          label: "发货管理",
-          disabled: false,
-        },
-        {
-          value: "异常",
-          label: "异常订单",
-          disabled: false,
-        },
-      ],
-      paymentStatus: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      orderType: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      orderStatus: [],
+      paymentStatus: [],
+      orderType: [],
+      express:[],
       orderNo: [
         {
           value: "选项1",
-          label: "黄金糕",
+          label: "订单编号",
         },
+      ],
+      supplier: [
         {
-          value: "选项2",
-          label: "双皮奶",
+          value: "选项1",
+          label: "供应商",
         },
+      ],
+      purchaser: [
         {
-          value: "选项3",
-          label: "蚵仔煎",
+          value: "选项1",
+          label: "采购商",
         },
+      ],
+      consignee: [
         {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
+          value: "选项1",
+          label: "收货人",
         },
       ],
       currentPage4: 1,
-      input: "",
       orderStatusSelect: "全部",
       paymentStatusSelect: "全部",
       orderTypeSelect: "全部",
-      orderNoSelect: "订单编号",
-      tableData: [],
-      tableData1: [],
+      orderNoSelect: "全部",
+      expressSelect:"全部",
+      allOrder: [],
+      order: [],
     };
   },
 };
@@ -460,11 +530,18 @@ export default {
   }
   & .top {
     padding: 15px;
-    display: grid;
-    grid-template-columns: 80% 20%;
+    // display: grid;
+    // grid-template-columns: 80% 20%;
+    display: flex;
+
 
     & .el-icon-arrow-down:before {
       padding-left: 15px !important;
+    }
+
+    & ::v-deep .el-input{
+      font-size:20px !important;
+      // width:0% !important;
     }
 
     & ::v-deep .el-input__inner {
@@ -480,6 +557,7 @@ export default {
 
     & .top-l {
       display: flex;
+      flex-wrap: wrap;
 
       & ::v-deep .order {
         border-right: none !important;
@@ -489,6 +567,7 @@ export default {
 
       & .select {
         margin-right: 15px;
+        margin-bottom: 15px;
         display: flex;
         align-items: center;
       }
@@ -526,8 +605,8 @@ export default {
     // margin: 15px;
     padding: 15px;
 
-    & ::v-deep .hide{
-      display:none;
+    & ::v-deep .hide {
+      display: none;
     }
 
     & ::v-deep .el-table .cell {

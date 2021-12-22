@@ -56,14 +56,13 @@
       <el-table
         ref="multipleTable"
         tooltip-effect="dark"
-        :data="arr"
+        :data="table"
         style="width: 97%"
         @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column :data="arr" type="selection" align="center">
-        </el-table-column>
+        <el-table-column type="selection" align="center"> </el-table-column>
         <el-table-column label="id" align="center" prop="id" sortable>
         </el-table-column>
         <el-table-column
@@ -161,12 +160,11 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page.sync="currentPage"
-              :page-sizes="[6, 10, 20, 30]"
-              :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
+              :current-page="currentPage3"
+              :page-sizes="[10, 15, 20]"
+              :page-size="100"
+              layout="total, sizes, prev, pager, next"
               :total="arr.length"
-              class="page"
             >
             </el-pagination>
           </div>
@@ -188,6 +186,10 @@ export default {
       input2: "",
       input3: "",
       select: "",
+      currentPage1: 1,
+      currentPage2: 5,
+      currentPage3: 3,
+      currentPage4: 4,
       options: [
         {
           value: "选项1",
@@ -202,8 +204,8 @@ export default {
       id: "",
       title: "",
       productCategory: "",
-      count: "",
-      pageCount: "",
+      count: "", //所有条数
+      // pageCount: "", //所有页数
       arr: [],
       deleteDataArr1: [],
       form: {
@@ -222,11 +224,22 @@ export default {
       formLabelWidth: "120px",
       multipleSelection: [],
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 43, //每页条数
       table: [],
-      pageNum: "",
+      pageNum: "", //一共几页
       num: "",
     };
+  },
+  watch: {
+    table: {
+      handler(newVal, oldVal) {
+        if (newVal != oldVal) {
+          this.table = newVal;
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   methods: {
     /**
@@ -247,7 +260,6 @@ export default {
       this.multipleSelection = val;
     },
     //添加规格
-
     async addspecification() {
       let res = await this.createSpecification({
         title: this.form1.title,
@@ -279,7 +291,10 @@ export default {
     },
     //获取所有类目规格
     async spelist() {
-      let res = await this.getSpecificationList();
+      let res = await this.getSpecificationList({
+        pagination: false,
+       pageSize:43
+      });
       console.log(res);
       this.count = res.data.count;
       this.pageCount = res.data.pageCount;
@@ -292,11 +307,11 @@ export default {
     },
     //分页
     handleSizeChange(val) {
-      this.pageSize = val;
+      console.log(`每页 ${val} 条`);
       this.handleCurrentChange(1);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.pageNum = val;
       this.offSize();
     },
@@ -305,12 +320,12 @@ export default {
       this.Num();
     },
     Num() {
-      this.table = this.tableData.slice(this.num, this.num + this.pageSize);
-      // console.log(this.table);
+      this.table = this.arr.slice(this.num, this.num + this.pageSize);
     },
   },
   async created() {
     this.spelist();
+    this.table = this.arr;
   },
 };
 </script>

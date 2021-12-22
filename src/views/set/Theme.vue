@@ -4,7 +4,7 @@
       <div class="palette">
         <div class="title">
           <div class="main-title">Dust Red / 薄暮</div>
-          <span @click="controlColor" class="description">斗志、奔放</span>
+          <span class="description">斗志、奔放</span>
         </div>
         <div class="main-color">
           <div @click="changeColor('red1')" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
@@ -235,10 +235,17 @@ export default {
 
     }
   },
+  created(){
+      let theme=localStorage.getItem("theme");
+      if(theme){
+          this.changeColor(theme);
+      }
+  },
   methods:{
     changeColor(num) {
       let root = document.querySelector(":root");
-      if (num == 'red1') {
+      localStorage.setItem("theme",num)
+       if (num == 'red1') {
         root.style.setProperty("--color", "rgb(255, 241, 240)");
         root.style.setProperty("--textcolor", "rgb(255, 77, 79)");
       } else if (num == 'red2') {
@@ -608,13 +615,13 @@ export default {
         root.style.setProperty("--color", "rgb(82, 3, 57)");
         root.style.setProperty("--textcolor", "rgb(255, 255, 255)");
       }
-    },
+       
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/theme.scss"; 
 .warp{
   width: 100%;
   height: calc(100vh - 100px);
@@ -633,8 +640,7 @@ export default {
       margin-left: 5%;
       & .title{
         margin: 0 0 24px;
-        // color: #777;
-        @include color_primary($color-primary1);
+        color: #777;
         font-weight: 500;
         height: 70px;
         font-size: 22px;

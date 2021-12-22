@@ -56,13 +56,19 @@
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
-     <div>
-       <input type="file" name="file" id="file" ref="file">
-       <div class="img">
-         <img :src="src" alt="">
-       </div>
-       <el-button @click="upImg">上传</el-button>
-     </div>
+        <el-upload
+   action=""
+  list-type="picture-card"
+  id="file"
+  :http-request="uploadClassify"
+  :before-upload="test"
+  name="file"
+ >
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
   </el-form-item>
 
 </el-form>
@@ -119,10 +125,12 @@
   </el-form-item> -->
    <el-form-item class="poster-classify" label="广告图片" prop="name">
    <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadSectionFile"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -172,16 +180,16 @@ export default {
         this.dialogVisible = true;
       },
      async submit(){
-      //  console.log(this.ruleForm.name)
-      //  console.log()
-      //  console.log(this.src)
-       let res = await this.createCategory({
-         title:this.ruleForm.name,
-         pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
-         category:this.src
+       console.log(this.ruleForm.name)
+       console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
+       console.log(this.src)
+      //  let res = await this.createCategory({
+      //    title:this.ruleForm.name,
+      //    pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+      //    category:this.src
 
-       })
-       console.log(res)
+      //  })
+      //  console.log(res)
       },
       async getClassifyInfo(){
         let res = await this.getCategoryList({});
@@ -220,14 +228,32 @@ export default {
       });
      
     },
-   async upImg(){
+    test(val){
+      let isPNg = val.type === "image/png"||"image/jpg" ;
+      let isSz2m = val.size/1024/1024<2;
+      if(!isPNg){
+        this.$message("图片格式只能是PNG格式")
+      }
+      if(!isSz2m){
+        this.$message("上传图片大小不能超过2M")
+      }
+      return isPNg && isSz2m
+    },
+ async uploadClassify(val){
        let formData = new FormData();
-       formData.append('file',document.getElementById('file').files[0]);
+       formData.append('file',val.file);
        formData.append('type',3); 
         let res = await this.uploadImage(formData)
-        console.log(res.data)
+        this.src=res.data
+    },
+    async uploadSectionFile(val){
+      let formData = new FormData();
+       formData.append('file',val.file);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
         this.src=res.data
     }
+
   },
     created(){
       this.getClassifyInfo();
@@ -269,20 +295,6 @@ export default {
 ::v-deep .file{
   & .el-input__inner{
     border: none;
-  }
-}
-.img{
-  width: 150px;
-  height: 150px;
-  border: 1px dashed #c0ccda;
-  border-radius:6px ;
-  margin-bottom: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & > img{
-    width: 90%;
-    height: 90%;
   }
 }
 </style>

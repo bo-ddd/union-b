@@ -94,7 +94,6 @@
           :data="tableData"
           stripe
           style="width: 100%"
-          size="small"
           id="#out-table"
         >
           <el-table-column prop="date" label="类目"> </el-table-column>
@@ -352,7 +351,7 @@ export default {
       padding: 20px;
       & > div {
         width: 100%;
-        background-color: #e7536b;
+        background-color: var(--color);
         display: flex;
         align-items: center;
         color: white;

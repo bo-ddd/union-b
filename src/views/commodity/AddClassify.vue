@@ -56,11 +56,14 @@
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
-      <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
+        <el-upload
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadClassify"
+  :before-upload="test"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -122,10 +125,12 @@
   </el-form-item> -->
    <el-form-item class="poster-classify" label="广告图片" prop="name">
    <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadSectionFile"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -147,6 +152,7 @@ import {mapActions} from "vuex"
 export default {
  data() {
       return {
+        src:'',
         pid:'',
         addrCode: undefined,
          dialogImageUrl: '',
@@ -165,8 +171,8 @@ export default {
       };
     },
     methods: {
-      ...mapActions(["createCategory","getCategoryList"]),
-        handleRemove(file, fileList) {
+      ...mapActions(["createCategory","getCategoryList","uploadImage"]),
+      handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
@@ -175,37 +181,21 @@ export default {
       },
      async submit(){
        console.log(this.ruleForm.name)
-       console.log(this.ruleForm.pid)
+       console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
+       console.log(this.src)
       //  let res = await this.createCategory({
       //    title:this.ruleForm.name,
-      //    pid:null
+      //    pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+      //    category:this.src
+
       //  })
       //  console.log(res)
       },
       async getClassifyInfo(){
         let res = await this.getCategoryList({});
-       let data =res.data.rows;
-       let target = this.format(data)
-       this.options = target
+       let data =res.data.rows.slice();
+       this.options = data
       },
-        format(target){
-       let childrenIndex = 1;
-       let parentIndex = 1;
-     let res = target.slice();
-     res.forEach(item=>{
-       item.children = [];
-           let p = res.find((el) => el.id == item.pid);
-           if(item.pid){
-             item.childIndex = childrenIndex++ 
-             item.association = '规格' 
-             p.children.push(item)
-           }else{
-             item.pIndex = parentIndex++
-           }
-            item.category = p ? p.category + "=>" + item.title : item.title;
-     })
-     return res.filter(el => el.pid === null)
-  },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -225,7 +215,7 @@ export default {
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-        cascaderClick (nodeData) {
+      cascaderClick (nodeData) {
       this.addrCode = nodeData.title;
       this.ruleForm.pid = nodeData.id || nodeData.pid
       this.$refs.cascader.checkedValue = nodeData.title;
@@ -238,9 +228,35 @@ export default {
       });
      
     },
+    test(val){
+      let isPNg = val.type === "image/png"||"image/jpg" ;
+      let isSz2m = val.size/1024/1024<2;
+      if(!isPNg){
+        this.$message("图片格式只能是PNG格式")
+      }
+      if(!isSz2m){
+        this.$message("上传图片大小不能超过2M")
+      }
+      return isPNg && isSz2m
+    },
+ async uploadClassify(val){
+       let formData = new FormData();
+       formData.append('file',val.file);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
+        this.src=res.data
+    },
+    async uploadSectionFile(val){
+      let formData = new FormData();
+       formData.append('file',val.file);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
+        this.src=res.data
+    }
+
   },
     created(){
-      this.getClassifyInfo()
+      this.getClassifyInfo();
     },
 }
 </script>
@@ -276,5 +292,9 @@ export default {
 .classify-img,.poster-classify{
   margin-bottom: 0 !important;
 }
-
+::v-deep .file{
+  & .el-input__inner{
+    border: none;
+  }
+}
 </style>

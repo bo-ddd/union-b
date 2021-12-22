@@ -76,6 +76,13 @@ export default {
         return axios.post('user/updatePwd', params, postConfig)
     },
     /**
+     * @description  获取token接口
+     * @params 无
+     * */
+    userGetToken(params) {
+        return axios.post('user/getToken', params, postConfig)
+    },
+    /**
      * @description 上传图片
      * @params {
      * file:  <stream>  上传的流 
@@ -90,6 +97,17 @@ export default {
 
 
     //商品管理
+    /**
+     * @description 商品管理列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getProductList(params) {
+        return axios.post('/product/list', params, postConfig)
+    },
     /**
      * @description 商品类目接口
      * @params {
@@ -287,6 +305,37 @@ export default {
     createArticle(params) {
         return axios.post('/article/create', params, postConfig)
     },
+    /**
+     * @description 导航列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getNavList(params) {
+        return axios.post('/navigation/list', params, postConfig)
+    },
+    /**
+     * @description 新增导航展示
+     * @params {
+     * pictureName:[string]     '图片内容',
+     * pictureUrl:[string]      '图片路径',
+     * pid:[number]     '1主导航  2快捷导航',
+     * } 
+     */
+    createNav(params) {
+        return axios.post('/navigation/create', params, postConfig)
+    },
+    /**
+     * @description 删除导航展示
+     * @params {
+     * id:[number] 必填  '传入删除的Id'
+     * } 
+     */
+    deleteNav(params) {
+        return axios.post('/navigation/delete', params, postConfig)
+    },
 
 
     //订单管理
@@ -350,12 +399,53 @@ export default {
      * @params {
      * title:[String] ,//意见的标题  
      * content:[String],//意见的内容 
-     * img_url:[String]//意见图  非必填  
+     * imgUrl:[String]//意见图  非必填  
      * } 
      */
     createOpinion(params) {
         return axios.post('/opinion/create', params, postConfig)
     },
 
+    //商户管理
+    /**
+     * @description 商户入驻接口
+     * @params {
+     * role:[int],//申请的身份id
+     * qualificationsUrl:[String], //资格证书的图片 非必填
+     * businessUrl:[String], //营业执照的图片 必填
+     * } 
+     */
+    createSettled(params) {
+        return axios.post('/settled/create', params, postConfig)
+    },
+    /**
+     * @description 同意申请接口
+     * @params {
+     * id :[Number]  //你点击的那个申请
+     * } 
+     */
+    settledAdopt(params) {
+        return axios.post('/settled/adopt', params, postConfig)
+    },
+    /**
+     * @description 拒绝申请接口
+     * @params {
+     * id :[Number]  //你点击的那个申请
+     * } 
+     */
+    settledRefuse(params) {
+        return axios.post('/settled/refuse', params, postConfig)
+    },
+    /**
+     * @description 商户申请列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getSettledList(params) {
+        return axios.post('/settled/list', params, postConfig)
+    },
 
 }

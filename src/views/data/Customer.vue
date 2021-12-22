@@ -58,8 +58,8 @@
               </el-select>
               </div>
               <div class="content-right">
-              <el-button size='small'>查询</el-button>
-              <el-button size='small'>重置</el-button>
+              <el-button type="primary" size='small'>查询</el-button>
+              <el-button type="primary" size='small'>重置</el-button>
               </div>
             </div>
             <el-table :data="tableData" stripe size='small'>
@@ -95,8 +95,8 @@
               </el-select>
               </div>
               <div class="content-right">
-              <el-button size='small'>查询</el-button>
-              <el-button size='small'>重置</el-button>
+              <el-button type="primary" size='small'>查询</el-button>
+              <el-button type="primary" size='small'>重置</el-button>
               </div>
             </div>
             <el-table :data="tableData" stripe size='small'>
@@ -272,7 +272,6 @@ export default {
     }
     & .content {
       background-color: #fff;
-      // min-height: 320px;
        height: calc(100vh - 400px);
       overflow-y: auto;
       padding: 10px 20px;

@@ -11,7 +11,7 @@
           </div>
         </div>
         <el-table
-          :data="renderDynamic"
+          :data="table"
           ref="product"
           border
           row-key="id"
@@ -24,7 +24,7 @@
           :tree-props="{ children: 'child', hasChildren: 'hasChildren' }"
           :header-cell-style="{ background: '#fafafa' }"
         >
-          <el-table-column type="selection" width="55" > </el-table-column>
+          <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column
             label="分类名称"
             prop="title"
@@ -50,16 +50,21 @@
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-link type="primary" @click="ascendingOrder(scope,scope.row.pIndex||scope.row.childIndex)"
+              <el-link
+                type="primary"
+                @click="ascendingOrder(scope.row)"
                 >升序</el-link
               >
               <el-link
                 class="ml-10"
                 type="primary"
-                @click="sescendingOrder(scope,scope.row.pIndex||scope.row.childIndex)"
+                @click="sescendingOrder(scope.row)"
                 >降序</el-link
               >
-              <el-link class="ml-10" type="danger" @click="deleteData(scope.row.ord)"
+              <el-link
+                class="ml-10"
+                type="danger"
+                @click="deleteData(scope.row.ord)"
                 >删除</el-link
               >
             </template>
@@ -67,25 +72,26 @@
         </el-table>
       </div>
       <div class="footer">
-           <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="renderDynamic.length"
-          background
-        >
-        </el-pagination>
-      </div>
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="renderDynamic.length"
+            background
+          >
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getTime } from "@/assets/until/until";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -93,11 +99,9 @@ export default {
       checked: true,
       size: "",
       currentPage: 1,
-      cacheExport: [],
-      multipleSelection: [],
       table: [],
       pageSize: 10,
-      renderDynamic: []
+      renderDynamic: [],
     };
   },
   methods: {
@@ -110,10 +114,10 @@ export default {
         }
       });
     },
-    jump(){
+    jump() {
       this.$router.push({
-        name:'AddClassify'
-      })
+        name: "AddClassify",
+      });
     },
     selectFun(selection, row) {
       this.setRowIsSelect(row);
@@ -250,7 +254,7 @@ export default {
       }
       return "";
     },
-     /**
+    /**
      * @description 分页每页有多少条
      * **/
     handleSizeChange(val) {
@@ -262,7 +266,6 @@ export default {
      * @description 分页的当前页有多少条
      * **/
     handleCurrentChange(val) {
-      this.cacheExport = this.multipleSelection;
       let arr = [];
       for (
         let i = val * this.pageSize - this.pageSize;
@@ -275,103 +278,140 @@ export default {
     },
     async commodityInfo() {
       let res = await this.getCategoryList({});
-      console.log(res)
-      let  target = res.data.rows.slice();
-      let data = this.format(target);
+      let data = res.data.rows.slice();
+      data.forEach((el) => {
+        el.createdAt = getTime(el.createdAt);
+      });
       this.renderDynamic = data;
+       this.handleSizeChange(10);
     },
     /**
-     * @description 根据id把数据重新排序
+     * @description 当前行上升一位
      */
-    mySort(arr){
+    ascendingOrder(row) {
+      //返回当前行所在的父级中所有的数据；
+      var fn = (row)=>{
+        console.log(row)
+          if(row.child.length){
+           return row.child;
+          }else{
+            for(var i =0;i <this.renderDynamic.length;i++){
+              if(this.renderDynamic[i].id==row.pid){
+                return this.renderDynamic[i].child;
+              }
+            }
+          }
+      }
+      //获取当前层所有额数据；
+      var formatData = (row) => {
+        let res = {};
+      if(row.pid){
+         let childData = fn(row);
+         for(let i = 0; i < childData.length;i++){
+            let item = childData[i];
+          if (item.id == row.id) {
+            // console.log(item);
+            res.i = i;
+            res.currentData = item; //当前的数据；
+            res.preData = childData[i - 1]; //上一个数据；
+            break;
+          }
+        }
+      }else{
+        for (let i = 0; i < this.renderDynamic.length; i++) {
+          let item = this.renderDynamic[i];
+          if (item.id == row.id) {
+            // console.log(item);
+            res.i = i;
+            res.currentData = item; //当前的数据；
+            res.preData = this.renderDynamic[i - 1]; //上一个数据；
+            break;
+          }
+        }
+      }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj);
+      let ord = obj.currentData.ord;
+      obj.currentData.ord = obj.preData.ord;
+      obj.preData.ord = ord;
+      this.ordSort(this.renderDynamic)
+    },
+    ordSort(arr){
       arr.sort((a,b)=>{
         let num1 = a.ord;
         let num2 = b.ord;
         return num1 - num2
       })
-      this.renderDynamic = arr
-    },
-    /**
-     * @description 当前行上升一位
-     */
-    ascendingOrder(val,id) {
-      console.log(val.row.ord)
-      if(val.row.pIndex==1||val.row.childIndex==1) return;
-      this.renderDynamic.forEach(el=>{
-        if(el.pIndex == id ||el.childIndex ==id){
-       let res =  el.pIndex? el.pIndex = id*1 -1 : el.childIndex = id*1 -1
-          console.log(this.renderDynamic[res-1].ord)
-        }
-      })
+      this.table = arr
     },
     /**
      * @description 当前行下降一位
      */
-    sescendingOrder(val,id) {
-      console.log(id)
-        if(val.row.pIndex==this.renderDynamic.length-1||val.row.childIndex==this.renderDynamic.length-1) return;
-      this.renderDynamic.forEach(el=>{
-        if(el.pIndex == id ||el.childIndex ==id){
-       let res =el.pIndex? el.pIndex = id*1 +1 : el.childIndex = id*1 +1
-          console.log(this.renderDynamic[res-1].id)
+    sescendingOrder(row) {
+      var fn = (row)=>{
+        console.log(row)
+          if(row.child.length){
+           return row.child;
+          }else{
+            for(var i =0;i <this.renderDynamic.length;i++){
+              if(this.renderDynamic[i].id==row.pid){
+                return this.renderDynamic[i].child;
+              }
+            }
+          }
+      }
+      //获取当前层所有额数据；
+      var formatData = (row) => {
+        let res = {};
+      if(row.pid){
+         let childData = fn(row);
+         for(let i = 0; i < childData.length;i++){
+            let item = childData[i];
+          if (item.id == row.id) {
+            // console.log(item);
+            res.i = i;
+            res.currentData = item; //当前的数据；
+            res.preData = childData[i + 1]; //上一个数据；
+            break;
+          }
         }
-      })
+      }else{
+        for (let i = 0; i < this.renderDynamic.length; i++) {
+          let item = this.renderDynamic[i];
+          if (item.id == row.id) {
+            // console.log(item);
+            res.i = i;
+            res.currentData = item; //当前的数据；
+            res.preData = this.renderDynamic[i + 1]; //上一个数据；
+            break;
+          }
+        }
+      }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj);
+      let ord = obj.currentData.ord;
+      obj.currentData.ord = obj.preData.ord;
+      obj.preData.ord = ord;
+       this.ordSort(this.renderDynamic)
     },
     /**
      * @description 删除当前行
      */
     deleteData(val) {
-    let data = this.renderDynamic.slice()
-     data.forEach(el=>{
-       if(el.id == val){
-         data.splice(val-1,1);
-       }
-     })
+      console.log(val);
     },
-    getTime(time){
-    let d = new Date(time);
-    let year = d.getFullYear();
-    let month = d.getMonth() + 1;
-    let date = d.getDate();
-    date = date > 9 ? date : "0" + date;
-    let hours = d.getHours();
-    hours = hours > 9 ? hours : "0" + hours;
-    let day = ["七", "一", "二", "三", "四", "五", "六"][d.getDay()];
-    let minutes = d.getMinutes();
-    minutes = minutes > 9 ? minutes : "0" + minutes;
-    let seconds = d.getSeconds();
-    seconds = seconds > 9 ? seconds : "0" + seconds;
-    return ( year + "年" +   month +   "月" +   date +   "日" +   "  星期" +   day +   "  " +   hours +   ":" +   minutes +   ":" +   seconds )
-  },
-     format(target){
-       let childrenIndex = 1;
-       let parentIndex = 1;
-     let res = target.slice();
-     res.forEach(item=>{
-       item.child = [];
-           let p = res.find((el) => el.id == item.pid);
-           if(item.pid){
-             item.childIndex = childrenIndex++ 
-             item.association = '规格' 
-             p.child.push(item)
-           }else{
-             item.pIndex = parentIndex++
-           }
-           item.createdAt = this.getTime(item.createdAt)
-            item.category = p ? p.category + "=>" + item.title : item.title;
-     })
-     return res.filter(el => el.pid === null)
-  }
   },
   mounted() {
     this.initData(this.renderDynamic);
   },
   created() {
-    this.commodityInfo() 
-     this.handleSizeChange(10);
- 
-  }
-}
+    this.commodityInfo();
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -385,7 +425,6 @@ export default {
       display: flex;
       align-items: center;
       & .add-classification {
-   
         color: #ffccd8;
         margin-top: 15px;
         margin-left: 15px;
@@ -393,11 +432,11 @@ export default {
         border-radius: 5px;
         font-size: 12px;
         cursor: pointer;
-        & .el-button{
-              padding: 9px 10px;
+        & .el-button {
+          padding: 9px 10px;
         }
       }
-      & .batch-association {   
+      & .batch-association {
         color: #686868;
         margin-top: 15px;
         border-radius: 5px;
@@ -405,13 +444,13 @@ export default {
         font-size: 12px;
         margin-bottom: 30px;
         cursor: pointer;
-        & .el-button{
-            padding: 9px 10px;
+        & .el-button {
+          padding: 9px 10px;
         }
       }
     }
-    & .el-table{
-     margin-left: 15px;
+    & .el-table {
+      margin-left: 15px;
     }
   }
   & .footer {

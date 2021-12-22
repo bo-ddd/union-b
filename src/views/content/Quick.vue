@@ -82,18 +82,6 @@
                 <div class="aaa"> <div>上传图标</div> </div>
                 <div class="ddd">
 
-
-
-                    <!-- <el-upload
-                        class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        :show-file-list="false"
-                        :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon fff"></i>
-                    </el-upload> -->
-
                     <el-upload
                         action="https://jsonplaceholder.typicode.com/posts/"
                         list-type="picture-card"

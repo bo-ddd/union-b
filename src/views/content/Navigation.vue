@@ -26,72 +26,36 @@
                         </div>
                         <div class="nav">
                             <!-- 可删除的导航 -->
-                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.id"  >
+                            <div class="nav-item" v-for="key in mainNav" :key="key.id"  >
                                 <div class="jian mt-5" @click="del(key.id)">
                                     <div><div></div></div>
                                 </div>
                                 <div class="img">
                                     <div>
-                                        <!-- <img :src="key.img" alt=""> -->
-                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
-                                        <img src="@/assets/images/icon-order.png" alt="">
+                                        <img :src="key.pictureUrl" alt="">
                                     </div>
                                 </div>
                                 <div class="text" >
-                                    <span>{{key.text}}</span>
+                                    <span>{{key.pictureName}}</span>
                                 </div>
                             </div>
 
                             <!-- 不可删除的导航 -->
-                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.id"  >
+                            <!-- <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.text"  >
                                 <div class="img mt-20">
                                     <div>
-                                        <!-- <img :src="key.img" alt=""> -->
-                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
-                                        <img src="@/assets/images/icon-order.png" alt="">
+                                        <img :src="key.img" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
                                     <span>{{key.text}}</span>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- 上传图片的 -->
                             <div>
-                                <el-upload
-                                    action="#"
-                                    list-type="picture-card"
-                                    :auto-upload="false">
-                                        <i slot="default" class="el-icon-plus"></i>
-                                        <div slot="file" slot-scope="{file}">
-                                        <img
-                                            class="el-upload-list__item-thumbnail"
-                                            :src="file.url" alt=""
-                                        >
-                                        <span class="el-upload-list__item-actions">
-                                            <span
-                                            class="el-upload-list__item-preview"
-                                            @click="handlePictureCardPreview(file)"
-                                            >
-                                            <i class="el-icon-zoom-in"></i>
-                                            </span>
-                                            <span
-                                            v-if="!disabled"
-                                            class="el-upload-list__item-delete"
-                                            @click="handleDownload(file)"
-                                            >
-                                            <i class="el-icon-download"></i>
-                                            </span>
-                                            <span
-                                            v-if="!disabled"
-                                            class="el-upload-list__item-delete"
-                                            @click="handleRemove(file)"
-                                            >
-                                            <i class="el-icon-delete"></i>
-                                            </span>
-                                        </span>
-                                        </div>
-                                </el-upload>
+                                <input type="file" name="file"  ref="file1" >
+                                <button @click="upload1">上传</button>
                             </div>
                         </div>
                     </div>
@@ -107,52 +71,20 @@
                             <div class="nav-item flex" v-for="key in quickNav" :key="key.id">
                                 <div class="img mt-20">
                                     <div>
-                                        <!-- <img :src="key.img" alt=""> -->
-                                        <!-- <img src="@/assets/images/xiangshang.png" alt=""> -->
-                                        <img src="@/assets/images/icon-order.png" alt="">
+                                        <img :src="key.pictureUrl" alt="">
                                     </div>
                                 </div>
                                 <div class="text">
-                                    <span>{{key.text}}</span>
+                                    <span>{{key.pictureName}}</span>
                                 </div>
                             </div>
 
 
                             <!-- 上传的照片 -->
-                            <el-upload
-                                action="#"
-                                list-type="picture-card"
-                                :auto-upload="false">
-                                    <i slot="default" class="el-icon-plus"></i>
-                                    <div slot="file" slot-scope="{file}">
-                                    <img
-                                        class="el-upload-list__item-thumbnail"
-                                        :src="file.url" alt=""
-                                    >
-                                    <span class="el-upload-list__item-actions">
-                                        <span
-                                        class="el-upload-list__item-preview"
-                                        @click="handlePictureCardPreview(file)"
-                                        >
-                                        <i class="el-icon-zoom-in"></i>
-                                        </span>
-                                        <span
-                                        v-if="!disabled"
-                                        class="el-upload-list__item-delete"
-                                        @click="handleDownload(file)"
-                                        >
-                                        <i class="el-icon-download"></i>
-                                        </span>
-                                        <span
-                                        v-if="!disabled"
-                                        class="el-upload-list__item-delete"
-                                        @click="handleRemove(file)"
-                                        >
-                                        <i class="el-icon-delete"></i>
-                                        </span>
-                                    </span>
-                                    </div>
-                            </el-upload>
+                            <div>
+                                <input type="file" name="file"  ref="file2">
+                                <button @click="upload2">上传</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,12 +92,10 @@
                     <div class="nav">
                         <div v-for="key in mainNav" :key="key.id">
                             <div class="img">
-                                <!-- <img :src="key.img" alt=""> -->
-                                <!-- <img src="@/assets/images/xiangxia.png" alt=""> -->
-                                <img src="@/assets/images/icon-order.png" alt="">
+                                <img :src="key.pictureUrl" alt="">
                             </div>
                             <div class="text mt-5">
-                                {{key.text}}
+                                {{key.pictureName}}
                             </div>
                         </div>
                     </div>
@@ -194,37 +124,23 @@
                             </div>
                         </div>
                         <div class="floor-container">
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
-                            </div>
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
-                            </div>
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
-                            </div>
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
-                            </div>
-                            <div class="flex" >
-                                <img src="@/assets/images/iconfont-merchant.png" alt="">
-                                <span>￥99.9</span>
+                            <div class="flex" v-for="key in quickNav" :key="key.id">
+                                <img :src="key.pictureUrl" alt="">
+                                <span>{{key.pictureName}}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- 主要内容 -->
                     <div class="waterfall">
+                        <!-- 手机端除导航以外的左侧 -->
                         <div class="feeds_col_left">
                             <div></div>
                             <div></div>
                             <div></div>
                             <div></div>
                         </div>
+                        <!-- 手机端除导航以外的右侧 -->
                         <div class="feeds_col_right">
                             <div></div>
                             <div></div>
@@ -243,77 +159,139 @@
 
 <script>
 
-
+import { mapActions } from "vuex";
 export default{
     data() {
         return{
             imageUrl: '',
             mainNav : [
-                {
-                    id : '1',
-                    img : '@/assets/images/xiangshang.png',
-                    text : '消息',
-                    delete : '-',
-                },
-                {
-                    id : '2',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
-                },
-                {
-                    id : '3',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
-                },
-                {
-                    id : '4',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
-                },
-                {
-                    id : '5',
-                    img : '',
-                    text : '消息'
-                },
-                {
-                    id : '6',
-                    img : '',
-                    text : '消息'
-                },
+                // {
+                //     id : 1,
+                //     pictureName : '消息1',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 2,
+                //     pictureName : '消息2',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 3,
+                //     pictureName : '消息3',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 4,
+                //     pictureName : '消息4',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 5,
+                //     pictureName : '消息5',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
+                // {
+                //     id : 6,
+                //     pictureName : '消息6',
+                //     pictureUrl : require('@/assets/images/icon-order.png'),
+                //     pid : 1
+                // },
                 
             ],
             quickNav : [
-                {
-                    id : '1',
-                    img : '',
-                    text : '消息',
-                },
-                {
-                    id : '2',
-                    img : '',
-                    text : '消息',
-                },
-                {
-                    id : '3',
-                    img : '',
-                    text : '消息',
-                },
-                {
-                    id : '4',
-                    img : '',
-                    text : '消息',
-                },
+                // {
+                //     id : 1,
+                //     pictureName : '消息1',
+                //     pictureUrl : require('@/assets/images/iconfont-merchant.png'),
+                //     pid : 2
+                // },
+                // {
+                //     id : 2,
+                //     pictureName : '消息2',
+                //     pictureUrl : require('@/assets/images/iconfont-merchant.png'),
+                //     pid : 2
+                // },
+                // {
+                //     id : 3,
+                //     pictureName : '消息3',
+                //     pictureUrl : require('@/assets/images/iconfont-merchant.png'),
+                //     pid : 2
+                // },
+                // {
+                //     id : 4,
+                //     pictureName : '消息4',
+                //     pictureUrl : require('@/assets/images/iconfont-merchant.png'),
+                //     pid : 2
+                // },
             ],
+
             dialogImageUrl: '',
             dialogVisible: false,
-            disabled: false
         }
     },
-    methods: {
+    methods: {                         //列表接口  // 新增导航   // 删除导航
+        ...mapActions(["uploadImage","getNavList","createNav","deleteNav"]),
+        // 所有导航的列表接口
+        async navList(){
+            let res = await this.getNavList({});
+            if(res.data.rows.length){
+                res.data.rows.forEach(fs=>{
+                    if(fs.pid == '1'){
+                        this.mainNav.push(fs);
+                    }else{
+                        this.quickNav.push(fs);
+                    }
+                })
+            }else{
+                this.mainNav = [];
+                this.quickNav = [];
+            }
+        },
+        // 主导航上传的点击事件
+        async  upload1(a){
+            let formData = new FormData();
+            formData.append('file',this.$refs.file1.files[0]);
+            formData.append('type',2); 
+            // let res = await this.uploadImage(formData);
+            // await this.addNav(1,res.data,'微信');     
+            // this.navList();   
+            let res = await this.uploadImage(formData);
+            console.log(res,a);             
+        },
+        // 快捷导航上传的点击事件
+        async  upload2(){
+            let formData = new FormData();
+            formData.append('file',this.$refs.file2.files[0]);
+            formData.append('type',2); 
+            let res  =  await this.uploadImage(formData); 
+            await this.addNav(2,res.data,'QQ');
+            this.navList();                
+        },
+
+        // 新增导航的接口   pid 1/2  主导航/快捷导航   route  路径    contenr  内容
+        async addNav(pid,route,content){
+            let nav = await this.createNav({
+                pictureName : content,
+                pictureUrl : route,
+                pid : pid,
+            })
+            console.log(nav);
+        },
+
+        // 删除导航的接口
+        async removeNav(id){
+            let nav = await this.deleteNav({
+                id : id,
+            })
+            console.log(nav);
+        },
         
+
         // 主导航可删除的数据的数组
         deletebtn(arr){
             var newarr = [];
@@ -333,27 +311,18 @@ export default{
                 }
             })
             return newarr;
-        },
-        handleRemove(file) {
-            console.log(file);
-        },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        },
-        handleDownload(file) {
-            console.log(file);
-        },
-        // 主导航的删除的点击事件
+        },  
+
+        // 主导航右上角删除的点击事件
         del(a){
-            console.log(a);
-            this.mainNav.forEach((nav,index)=>{
-                if(nav.id == a){
-                    this.mainNav.splice(index,1)
-                }
-            })
-        }
+            this.removeNav(a);
+            this.navList();
+        },
+        
     },   
+    created(){
+        this.navList();
+    }
 }
 </script>
 
@@ -361,6 +330,10 @@ export default{
 
 
 <style scoped lang="scss">
+::v-deep .el-upload-list__item{
+    width: 132px;
+    height: 112px;
+}
 .flex{
     display: flex;
     align-items: center;
@@ -553,13 +526,15 @@ export default{
 
            & .nav{
                padding: 20px 10px;
-               display: grid;
-               grid-template-columns: repeat(5,1fr);
-               gap:20px 20px;
-
+               display: flex;
+            //    grid-template-columns: repeat(5,1fr);
+            //    gap:20px 20px;
+            //    align-items: center;
+            //    justify-content: center;
+               align-items: center;
+               justify-content: space-around;
                & div{
                    height: 50px;
-
                    & div{
                        display: flex;
                        align-items: center;
@@ -633,6 +608,9 @@ export default{
                & .floor-container{
                    padding: 0 5px;
                    height: 100px;
+                   display: flex;
+                   align-items: center;
+                   justify-content: space-around;
                    
                    & div{
                        float: left;

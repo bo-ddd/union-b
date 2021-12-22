@@ -591,6 +591,7 @@ export default {
         this.inputVisibles11 = true;
         this.$nextTick(_ => {
           this.$refs.saveTagInput.$refs.input.focus();
+          // console.log(this.$refs.saveTagInput.$refs.input.focus());
           console.log(_);
         });
       },
@@ -619,6 +620,7 @@ export default {
       handleInputConfirm() {
         let inputValue = this.inputValue;
         if (inputValue) {
+          this.getAdd(inputValue);
           this.management.push(inputValue);
         }
         this.inputVisible = false;
@@ -627,6 +629,7 @@ export default {
       handleInputConfirms() {
         let inputValues = this.inputValues;
         if (inputValues) {
+          this.getAdd(inputValues);
           this.classify.push(inputValues);
         }
         this.inputVisibles = false;
@@ -635,6 +638,7 @@ export default {
       handleInputConfirms1() {
         let inputValues1 = this.inputValues1;
         if (inputValues1) {
+          this.getAdd(inputValues1);
           this.parameter.push(inputValues1);
         }
         this.inputVisibles1 = false;
@@ -643,6 +647,7 @@ export default {
       handleInputConfirms2() {
         let inputValues2 = this.inputValues2;
         if (inputValues2) {
+          this.getAdd(inputValues2);
           this.property.push(inputValues2);
         }
         this.inputVisibles2 = false;
@@ -651,6 +656,7 @@ export default {
       handleInputConfirms3() {
         let inputValues3 = this.inputValues3;
         if (inputValues3) {
+          this.getAdd(inputValues3);
           this.specification.push(inputValues3);
         }
         this.inputVisibles3 = false;
@@ -659,6 +665,7 @@ export default {
       handleInputConfirms4() {
         let inputValues4 = this.inputValues4;
         if (inputValues4) {
+          this.getAdd(inputValues4);
           this.brand.push(inputValues4);
         }
         this.inputVisibles4 = false;
@@ -667,6 +674,7 @@ export default {
       handleInputConfirms5() {
         let inputValues5 = this.inputValues5;
         if (inputValues5) {
+          this.getAdd(inputValues5);
           this.list.push(inputValues5);
         }
         this.inputVisibles5 = false;
@@ -675,6 +683,7 @@ export default {
       handleInputConfirms6() {
         let inputValues6 = this.inputValues6;
         if (inputValues6) {
+          this.getAdd(inputValues6);
           this.dispose.push(inputValues6);
         }
         this.inputVisibles6 = false;
@@ -683,6 +692,7 @@ export default {
       handleInputConfirms7() {
         let inputValues7 = this.inputValues7;
         if (inputValues7) {
+          this.getAdd(inputValues7);
           this.supplier.push(inputValues7);
         }
         this.inputVisibles7 = false;
@@ -691,6 +701,7 @@ export default {
       handleInputConfirms8() {
         let inputValues8 = this.inputValues8;
         if (inputValues8) {
+          this.getAdd(inputValues8);
           this.BDmanagement.push(inputValues8);
         }
         this.inputVisibles8 = false;
@@ -699,6 +710,7 @@ export default {
       handleInputConfirms9() {
         let inputValues9 = this.inputValues9;
         if (inputValues9) {
+          this.getAdd(inputValues9);
           this.Marketingmanagement.push(inputValues9);
         }
         this.inputVisibles9 = false;
@@ -707,6 +719,7 @@ export default {
       handleInputConfirms10() {
         let inputValues10 = this.inputValues10;
         if (inputValues10) {
+          this.getAdd(inputValues10);
           this.Salemanagement.push(inputValues10);
         }
         this.inputVisibles10 = false;
@@ -714,7 +727,9 @@ export default {
       },
       handleInputConfirms11() {
         let inputValues11 = this.inputValues11;
+        // console.log(inputValues11);
         if (inputValues11) {
+          this.getAdd(inputValues11);
           this.Secondskillmanagement.push(inputValues11);
         }
         this.inputVisibles11 = false;
@@ -723,6 +738,7 @@ export default {
       handleInputConfirms12() {
         let inputValues12 = this.inputValues12;
         if (inputValues12) {
+          this.getAdd(inputValues12);
           this.Willpinmanagement.push(inputValues12);
         }
         this.inputVisibles12 = false;
@@ -731,6 +747,7 @@ export default {
       handleInputConfirms13() {
         let inputValues13 = this.inputValues13;
         if (inputValues13) {
+          this.getAdd(inputValues13);
           this.discount.push(inputValues13);
         }
         this.inputVisibles13 = false;
@@ -739,16 +756,21 @@ export default {
       handleInputConfirms14() {
         let inputValues14 = this.inputValues14;
         if (inputValues14) {
+          this.getAdd(inputValues14);
           this.Agentmanagement.push(inputValues14);
         }
         this.inputVisibles14 = false;
         this.inputValues14 = '';
       },
+      async getAdd(value){
+        let res = await this.createLable({lableName:value});
+        console.log(res);
+      }
     },
-    async created() {
+    // async created() {
       // let res = await this.createLable();
       // console.log(res);
-    }
+    // }
 }
 </script>
 

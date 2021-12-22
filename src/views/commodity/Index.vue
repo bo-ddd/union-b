@@ -110,7 +110,6 @@
               <el-link
                 type="primary"
                 class="edit"
-              
                 @click="getCommodityDat(scope)"
                 >编辑</el-link
               >
@@ -188,6 +187,7 @@
   </div>
 </template>
 <script>
+import {mapActions} from "vuex"
 export default {
   /**
    * author: syh
@@ -656,23 +656,24 @@ export default {
       num: "",
     };
   },
-  watch:{
-    table:{
-      handler(newVal,oldVal){
-       console.log('我是新值');
-       console.log(newVal);
-       console.log('我是老值');
-       console.log(oldVal);
-        if(newVal !=oldVal){
-          console.log('值已经改变');
-          this.table = newVal;
-        }
-      },
-      immediate: true,
-      deep: true
-    }
-  },
+  // watch:{
+  //   table:{
+  //     handler(newVal,oldVal){
+  //      console.log('我是新值');
+  //      console.log(newVal);
+  //      console.log('我是老值');
+  //      console.log(oldVal);
+  //       if(newVal !=oldVal){
+  //         console.log('值已经改变');
+  //         this.table = newVal;
+  //       }
+  //     },
+  //     immediate: true,
+  //     deep: true
+  //   }
+  // },
   methods: {
+    ...mapActions(["getProductList"]),
     handleSizeChange(val) {
       this.pageSize = val;
       this.handleCurrentChange(1);
@@ -709,6 +710,7 @@ export default {
         this.tableData.splice(item,1)
       });
     //  this.handleSizeChange()
+    console.log(this.tableData);
     },
     MultipleRemove() {
       this.deleteDataArr.forEach((item) => {
@@ -729,8 +731,12 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
     this.table = this.tableData;
+    let res = await this.getProductList({
+     
+    })
+    console.log(res);
   },
 };
 </script>

@@ -73,6 +73,10 @@ export default new Vuex.Store({
         createCategory(ctx, payload) {
             return Api.createCategory(payload);
         },
+        //商品类目排序接口
+        CategoryOrders(ctx, payload) {
+            return Api.CategoryOrders(payload);
+        },
         //类目规格接口
         getSpecificationList(ctx, payload) {
             return Api.getSpecificationList(payload);
@@ -174,6 +178,10 @@ export default new Vuex.Store({
         //支付方式接口
         getPaymentList(ctx, payload) {
             return Api.getPaymentList(payload);
+        },
+        //获取快递接口
+        getExpressList(ctx, payload) {
+            return Api.getExpressList(payload);
         },
 
         //系统设置

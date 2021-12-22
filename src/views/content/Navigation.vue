@@ -273,23 +273,24 @@ export default{
             }
         },
         // 主导航上传的点击事件
-        async  upload1(){
-            let formData = new FormData();
-            formData.append('file',this.$refs.file1.files[0]);
-            formData.append('type',2); 
-            let res = await this.uploadImage(formData);
-            await this.addNav(1,res.data,'微信');     
-            this.navList();              
-        },
+        // async  upload1(){
+        //     let formData = new FormData();
+        //     formData.append('file',this.$refs.file1.files[0]);
+        //     formData.append('type',2); 
+        //     let res = await this.uploadImage(formData);
+        //     await this.addNav(1,res.data,'微信');     
+        //     this.navList();  
+        //     console.log(this.mainNav);            
+        // },
         // 快捷导航上传的点击事件
-        async  upload2(){
-            let formData = new FormData();
-            formData.append('file',this.$refs.file2.files[0]);
-            formData.append('type',2); 
-            let res  =  await this.uploadImage(formData); 
-            await this.addNav(2,res.data,'QQ');
-            this.navList();                
-        },
+        // async  upload2(){
+        //     let formData = new FormData();
+        //     formData.append('file',this.$refs.file2.files[0]);
+        //     formData.append('type',2); 
+        //     let res  =  await this.uploadImage(formData); 
+        //     await this.addNav(2,res.data,'QQ');
+        //     this.navList();                
+        // },
 
         // 新增导航的接口   pid 1/2  主导航/快捷导航   route  路径    contenr  内容
         async addNav(pid,route,content){
@@ -310,30 +311,9 @@ export default{
         },
         
 
-        // 主导航可删除的数据的数组
-        deletebtn(arr){
-            var newarr = [];
-            arr.forEach(fs=>{
-                if(fs.delete){
-                    newarr.push(fs);
-                }
-            })
-            return newarr;
-        },
-        // 主导航不可删除的数据的数组
-        notDeletebtn(arr){
-            var newarr = [];
-            arr.forEach(fs=>{
-                if(!fs.delete){
-                    newarr.push(fs);
-                }
-            })
-            return newarr;
-        },  
-
         // 导航删除的点击事件
-        del(a){
-            this.removeNav(a);
+        async del(a){
+            await this.removeNav(a);
             this.navList();
         },
         // 主导航的上传事件
@@ -369,6 +349,7 @@ export default{
     },   
     created(){
         this.navList();
+        console.log(this.mainNav);
     }
 }
 </script>

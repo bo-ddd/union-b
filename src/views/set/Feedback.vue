@@ -24,18 +24,13 @@
           </div>
         </el-form>
         <div class="main-pack">
-          <span class="annex">上传图片附件(可填可不填)</span>
-          <i class="el-icon-warning-outline icon-img"></i>
-          <span class="tips-img"
+          <span class="annex">上传图片附件(可不上传)</span>
+          <!-- <i class="el-icon-warning-outline icon-img"></i> -->
+          <!-- <span class="tips-img"
             >请上传一张图片，格式jpg，尺寸640*384，大小在30k之内</span
-          >
+          > -->
           <div class="img-pack">
-            <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
-            >
+            <el-upload action="" list-type="picture-card" :http-request="sss">
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible" ref="file">
@@ -80,11 +75,18 @@ export default {
       // let res1 = await this.getOpinionList({});
       // console.log(res1);
 
-      // 上传图片0
+      // 上传图片
       this.$nextTick(() => {
         console.log(this.$refs.file);
         lout("file");
       });
+    },
+
+    async sss(val) {
+      let a = lout(val.file, 1);
+      // console.log(a.get("file"));
+      let res = await this.uploadImage(a);
+      console.log(res);
     },
 
     // 提交点击事件

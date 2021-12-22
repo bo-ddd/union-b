@@ -130,6 +130,16 @@ export default {
         return axios.post('/category/create', params, postConfig)
     },
     /**
+     * @description 商品类目排序接口
+     * @params {
+     * currentDataord     [nmber] 当前的类目
+     * preDataord         [number]要跟交换的类目
+     * } 
+     */
+    CategoryOrders(params) {
+        return axios.post('/category/orders', params, postConfig)
+    },
+    /**
      * @description 类目规格接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;

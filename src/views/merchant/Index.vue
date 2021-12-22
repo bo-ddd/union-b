@@ -26,11 +26,15 @@
         </el-table-column>
         <el-table-column label="申请角色" prop="role" align="center">
         </el-table-column>
-        <el-table-column label="商铺地址" prop="address" align="center">
+        <el-table-column label="申请时间" align="center">
+            <template #default="scope">
+                <span>{{gettime(scope.row.createdAt)}}</span>
+            </template>
         </el-table-column>
-        <el-table-column label="创铺时间" prop="createdAt" align="center">
-        </el-table-column>
-        <el-table-column label="账户状态" prop="type" align="center">
+        <el-table-column label="账户状态" align="center">
+            <template #default="scope">
+                <span>{{getType(scope.row.type)}}</span>
+            </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
             <template slot-scope="scope">
@@ -45,6 +49,9 @@
 import {
     mapActions
 } from 'vuex';
+import {
+    getTime
+} from "../../assets/until/until"
 export default {
     data() {
         return {
@@ -94,6 +101,13 @@ export default {
             this.$router.push({
                 name: 'Settled'
             })
+        },
+        gettime(time) {
+            return getTime(time)
+        },
+        getType(type){
+            let arr = ['待审核','同意申请','拒绝申请']
+            return arr[type]
         }
     },
     async created() {

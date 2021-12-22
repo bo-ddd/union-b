@@ -73,6 +73,16 @@
                 >
                 </el-input>
               </el-form-item>
+              <el-form-item label="商品描述" class="trade_name">
+                <el-input
+                  type="text"
+                  placeholder="请填写商品描述"
+                  maxlength="60"
+                  v-model="productDescription"
+                  show-word-limit
+                >
+                </el-input>
+              </el-form-item>
             </el-form>
           </div>
           <div class="commodity_specifications">
@@ -92,6 +102,14 @@
                     >
                     </el-option>
                   </el-select>
+                </el-form-item>
+                <el-form-item label="平台价">
+                  <el-input
+                  placeholder="请填写商品平台价"
+                  v-model="commodityPlatformPrice"
+                  show-word-limit
+                >
+                </el-input>
                 </el-form-item>
                 <el-form-item label="重量">
                   <el-input
@@ -117,6 +135,12 @@
                     >
                     </el-option>
                   </el-select>
+                </el-form-item>
+                <el-form-item label="售卖价">
+                  <el-input
+                    v-model="sellingPriceGoods"
+                    placeholder="请填写售卖价"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="体积">
                   <el-input
@@ -231,27 +255,42 @@
               <el-form-item label="" class="product_picture">
                 <div>
                   <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action=""
                     list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
+                    id="file"
+                    name="file"
+                    :http-request="customUpload1"
                   >
-                    <i class="el-icon-plus"></i>
-                    <p>商品主图</p>
-                  </el-upload>
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" />
-                  </el-dialog>
-                </div>
-                <div>
-                  <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
-                  >
-                    <i class="el-icon-plus"></i>
-                    <p>商品主图</p>
+                    <i slot="default" class="el-icon-plus"></i>
+                    <div slot="file" slot-scope="{ file }">
+                      <img
+                        class="el-upload-list__item-thumbnail"
+                        :src="file.url"
+                        alt=""
+                      />
+                      <span class="el-upload-list__item-actions">
+                        <span
+                          class="el-upload-list__item-preview"
+                          @click="handlePictureCardPreview(file)"
+                        >
+                          <i class="el-icon-zoom-in"></i>
+                        </span>
+                        <span
+                          v-if="!disabled"
+                          class="el-upload-list__item-delete"
+                          @click="handleDownload(file)"
+                        >
+                          <i class="el-icon-download"></i>
+                        </span>
+                        <span
+                          v-if="!disabled"
+                          class="el-upload-list__item-delete"
+                          @click="handleRemove(file)"
+                        >
+                          <i class="el-icon-delete"></i>
+                        </span>
+                      </span>
+                    </div>
                   </el-upload>
                   <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="" />
@@ -264,20 +303,47 @@
                 >
               </el-form-item>
               <el-form-item label="" class="product_details">
-                <div>
-                  <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
-                  >
-                    <i class="el-icon-plus"></i>
-                    <p>商品详情页</p>
-                  </el-upload>
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" />
-                  </el-dialog>
-                </div>
+                <el-upload
+                  action=""
+                  list-type="picture-card"
+                  id="file"
+                  name="file"
+                  :http-request="customUpload"
+                >
+                  <i slot="default" class="el-icon-plus"></i>
+                  <div slot="file" slot-scope="{ file }">
+                    <img
+                      class="el-upload-list__item-thumbnail"
+                      :src="file.url"
+                      alt=""
+                    >
+                    <span class="el-upload-list__item-actions">
+                      <span
+                        class="el-upload-list__item-preview"
+                        @click="handlePictureCardPreview(file)"
+                      >
+                        <i class="el-icon-zoom-in"></i>
+                      </span>
+                      <span
+                        v-if="!disabled"
+                        class="el-upload-list__item-delete"
+                        @click="handleDownload(file)"
+                      >
+                        <i class="el-icon-download"></i>
+                      </span>
+                      <span
+                        v-if="!disabled"
+                        class="el-upload-list__item-delete"
+                        @click="handleRemove(file)"
+                      >
+                        <i class="el-icon-delete"></i>
+                      </span>
+                    </span>
+                  </div>
+                </el-upload>
+                <el-dialog :visible.sync="dialogVisible">
+                  <img width="100%" :src="dialogImageUrl" alt="" />
+                </el-dialog>
               </el-form-item>
             </el-form>
           </div>
@@ -285,7 +351,7 @@
       </div>
     </div>
     <div class="preservation">
-      <el-button plain type="primary">保存</el-button>
+      <el-button plain type="primary" @click="preservation">保存</el-button>
       <el-button plain type="primary">预览</el-button>
       <el-button plain type="primary">发布</el-button>
     </div>
@@ -367,6 +433,9 @@ export default {
         },
       ],
       text: "",
+      productDescription:"",
+      commodityPlatformPrice:"",
+      sellingPriceGoods:"",
       brand: "",
       brandList: [
         {
@@ -411,6 +480,8 @@ export default {
       Sixml: "",
       dialogImageUrl: "",
       dialogVisible: false,
+      disabled: false,
+      src:'',
 
       tableData: [
         {
@@ -471,13 +542,39 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createProduct"]),
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    ...mapActions(["createProduct", "uploadImage"]),
+    one() {
+      // let formData = new FormData();
+      let file = this.$refs.file.files[0]; //this.$refs.file.files[0] 获取到上传的文件
+      console.log(file);
+    },
+    handleRemove(file) {
+      console.log(file.raw);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
+    },
+
+    async customUpload(val) {
+      let formData = new FormData();
+      formData.append("file", val.file);
+      formData.append("type", 3);
+      // console.log(val.file);
+      let res = await this.uploadImage(formData);
+      console.log(res);
+      this.src = res.data
+    },
+    async customUpload1(val) {
+      let formData = new FormData();
+      formData.append("file", val.file);
+      formData.append("type", 3);
+      // console.log(val.file);
+      // let res = await this.uploadImage(formData);
+      // console.log(res);
     },
     arraySpanMethod({ rowIndex, columnIndex }) {
       if (rowIndex % 2 === 0) {
@@ -513,19 +610,19 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.cities.length;
     },
+    async preservation() {
+      let res = await this.createProduct({
+        cid: 1,
+        title: "暖宝宝",
+        keywords: "日用类",
+        bannerImg: this.src,
+        platformPrice: 10,
+        desc: "这是一个暖宝宝",
+        realPrice: 12,
+      });
+      console.log(res);
+    },
   },
-  async created(){
-    let res = await this.createProduct({
-      cid:1,
-      title:'暖宝宝',
-      keywords:'日用类',
-      bannerImg:'',
-      platformPrice:10,
-      desc:'这是一个暖宝宝',
-      realPrice: 12,
-    })
-    console.log(res);
-  }
 };
 </script>
 
@@ -616,6 +713,22 @@ export default {
   padding: 20px 0px;
 }
 
+::v-deep .product_picture {
+  & > div > div:nth-of-type(1) > div:nth-of-type(1) {
+    display: flex;
+  }
+}
+::v-deep .product_details {
+  & > div > div:nth-of-type(1) {
+    display: flex;
+  }
+}
+::v-deep .product_details {
+  & .el-form-item__content {
+    display: flex;
+    flex-direction: column;
+  }
+}
 ::v-deep .provincial_elastic_layer {
   display: flex;
   align-items: center;

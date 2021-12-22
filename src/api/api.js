@@ -76,6 +76,13 @@ export default {
         return axios.post('user/updatePwd', params, postConfig)
     },
     /**
+     * @description  获取token接口
+     * @params 无
+     * */
+    userGetToken(params) {
+        return axios.post('user/getToken', params, postConfig)
+    },
+    /**
      * @description 上传图片
      * @params {
      * file:  <stream>  上传的流 
@@ -406,7 +413,6 @@ export default {
      * role:[int],//申请的身份id
      * qualificationsUrl:[String], //资格证书的图片 非必填
      * businessUrl:[String], //营业执照的图片 必填
-     * type:[Number],//入驻状态 0:拒绝申请 1:同意申请
      * } 
      */
     createSettled(params) {

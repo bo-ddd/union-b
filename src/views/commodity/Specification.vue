@@ -57,7 +57,6 @@
         ref="multipleTable"
         tooltip-effect="dark"
         :data="arr"
-
         style="width: 97%"
         @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
@@ -149,22 +148,24 @@
           >
         </div>
         <div class="footer_right">
-          <div class="block">
+          <!-- <div class="block">
             <el-pagination
               :current-page="currentPage4"
-              :page-sizes="[6, 15, 20, 30, 50, 100]"
+              :page-sizes="[6, 10, 15, 20]"
               layout="sizes"
             >
             </el-pagination>
             <div>输入按回车</div>
-          </div>
+          </div> -->
           <div class="block2">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :page-count=pageCount
-              :total="count"
-              layout="prev, pager, next"
+              :current-page="currentPage4"
+              :page-sizes="[6, 10, 15, 20]"
+              :page-size="100"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="arr.length"
             >
             </el-pagination>
           </div>
@@ -186,6 +187,10 @@ export default {
       input2: "",
       input3: "",
       select: "",
+      currentPage1: 5,
+      currentPage2: 5,
+      currentPage3: 5,
+      currentPage4: 4,
       options: [
         {
           value: "选项1",
@@ -196,9 +201,7 @@ export default {
           label: "备注",
         },
       ],
-      currentPage4: 4,
       pagination: true,
-      pageNum: 10,
       id: "",
       title: "",
       productCategory: "",
@@ -221,7 +224,28 @@ export default {
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
       multipleSelection: [],
+      currentPage: 1,
+      pageSize: 20,
+      table: [],
+      pageNum: "",
+      num: "",
     };
+  },
+  watch: {
+    table: {
+      handler(newVal, oldVal) {
+        console.log("我是新值");
+        console.log(newVal);
+        console.log("我是老值");
+        console.log(oldVal);
+        if (newVal != oldVal) {
+          console.log("值已经改变");
+          this.table = newVal;
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   methods: {
     /**
@@ -241,21 +265,14 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
     //添加规格
-
     async addspecification() {
       let res = await this.createSpecification({
         title: this.form1.title,
         cid: Number(this.form1.cid),
       });
       console.log(res);
-      this.spelist()
+      this.spelist();
     },
     //批量删除
     MultipleRemove() {
@@ -281,6 +298,7 @@ export default {
     //获取所有类目规格
     async spelist() {
       let res = await this.getSpecificationList();
+      console.log(res.data.count);
       console.log(res);
       this.count = res.data.count;
       this.pageCount = res.data.pageCount;
@@ -291,9 +309,33 @@ export default {
         this.arr.push(item);
       });
     },
+    //分页
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.handleCurrentChange(1);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.pageNum = val;
+      this.offSize();
+    },
+    offSize() {
+      this.num = this.pageSize * (this.pageNum - 1);
+      this.Num();
+    },
+    Num() {
+      this.table = this.arr.slice(
+        this.num, 
+        this.num + this.pageSize
+      );
+      console.log("这是num方法");
+      console.log(this.num);
+      console.log(this.pageSize);
+    },
   },
   async created() {
     this.spelist();
+    this.table = this.arr;
   },
 };
 </script>

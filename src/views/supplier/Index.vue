@@ -35,8 +35,7 @@
             </div>
         </div>
         <div>
-            <el-table size="small" ref="multipleTable" :data="tableData" border id="out-table" tooltip-effect="dark" style="width: 100%" stripe :header-cell-style="{ background: '#fcfafb' }">
-                <el-table-column type="selection" width="55"> </el-table-column>
+            <el-table size="small" ref="multipleTable" :data="tableData" border id="out-table" tooltip-effect="dark" style="width: 100%" stripe>
                 <el-table-column label="供应商名称" align="center">
                     <template slot-scope="scope">{{ scope.row.name }}</template>
                 </el-table-column>
@@ -143,39 +142,7 @@ export default {
                     sales: "正常",
                     state: "否",
                     date: "2019-08-12",
-                },
-                {
-                    name: "供应商VIP商品管理",
-                    code: "平台",
-                    address: "上海市普陀区金沙江路 1518 弄",
-                    sales: "正常",
-                    state: "否",
-                    date: "2019-08-12",
-                },
-                {
-                    name: "供应商VIP商品管理",
-                    code: "平台",
-                    address: "上海市普陀区金沙江路 1518 弄",
-                    sales: "正常",
-                    state: "否",
-                    date: "2019-08-12",
-                },
-                {
-                    name: "供应商VIP商品管理",
-                    code: "平台",
-                    address: "上海市普陀区金沙江路 1518 弄",
-                    sales: "正常",
-                    state: "否",
-                    date: "2019-08-12",
-                },
-                {
-                    name: "供应商VIP商品管理",
-                    code: "平台",
-                    address: "上海市普陀区金沙江路 1518 弄",
-                    sales: "正常",
-                    state: "否",
-                    date: "2019-08-12",
-                },
+                },               
             ],
             multipleSelection: [],
             currentPage1: 5,

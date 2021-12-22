@@ -49,9 +49,7 @@
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-link
-                type="primary"
-                @click="ascendingOrder(scope.row)"
+              <el-link type="primary" @click="ascendingOrder(scope.row)"
                 >升序</el-link
               >
               <el-link
@@ -283,76 +281,78 @@ export default {
      */
     async commodityInfo() {
       let res = await this.getCategoryList({});
-      console.log(res)
       let data = res.data.rows.slice();
-      let target = this.format(data)  
+      console.log(data);
+      let target = this.format(data);
       target.forEach((el) => {
         el.createdAt = getTime(el.createdAt);
-        if(el.child.length){
-          el.child.forEach(item=>{
-            item.association = "规格"
-            item.createdAt = getTime(item.createdAt)
-          })
+        if (el.child.length) {
+          el.child.forEach((item) => {
+            item.association = "规格";
+            item.createdAt = getTime(item.createdAt);
+          });
         }
       });
       this.renderDynamic = target;
-       this.handleSizeChange(10);
+      this.handleSizeChange(10);
     },
     format(target) {
-    let res = target.slice();
-    res.forEach((item,index) => {
-        console.log(index++);
-        item.child = [];
-        let p = res.find(type => type.id == item.pid);
-        item.pid && p.child.push(item);
-        item.category = p ? p.category + '=>' + item.title : item.title;
-    })
-    return res.filter(type => type.pid === null);
+      let res = target.slice();
+      res.forEach((item) => {
+        item.child = item.child || [];
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
     },
     /**
      * @description 当前行上升一位
      */
-    ascendingOrder(row) {
+    async ascendingOrder(row) {
       //返回当前行所在的父级中所有的数据；
-      var fn = (row)=>{
-        console.log(row)
-          if(row.child.length){
-           return row.child;
-          }else{
-            for(var i =0;i <this.renderDynamic.length;i++){
-              if(this.renderDynamic[i].id==row.pid){
-                return this.renderDynamic[i].child;
-              }
+      var fn = (row) => {
+        console.log(row);
+        if (row.child.length) {
+          return row.child;
+        } else {
+          for (var i = 0; i < this.renderDynamic.length; i++) {
+            if (this.renderDynamic[i].id == row.pid) {
+              return this.renderDynamic[i].child;
             }
           }
-      }
+        }
+      };
       //获取当前层所有额数据；
       var formatData = (row) => {
         let res = {};
-      if(row.pid){
-         let childData = fn(row);
-         for(let i = 0; i < childData.length;i++){
+        if (row.pid) {
+          let childData = fn(row);
+          for (let i = 0; i < childData.length; i++) {
             let item = childData[i];
-          if (item.id == row.id) {
-            // console.log(item);
-            res.i = i;
-            res.currentData = item; //当前的数据；
-            res.preData = childData[i - 1]; //上一个数据；
-            break;
+            if (item.id == row.id) {
+              // console.log(item);
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = childData[i - 1]; //上一个数据；
+              break;
+            }
+          }
+        } else {
+          for (let i = 0; i < this.renderDynamic.length; i++) {
+            let item = this.renderDynamic[i];
+            if (item.id == row.id) {
+              // console.log(item);
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.renderDynamic[i - 1]; //上一个数据；
+              break;
+            }
           }
         }
-      }else{
-        for (let i = 0; i < this.renderDynamic.length; i++) {
-          let item = this.renderDynamic[i];
-          if (item.id == row.id) {
-            // console.log(item);
-            res.i = i;
-            res.currentData = item; //当前的数据；
-            res.preData = this.renderDynamic[i - 1]; //上一个数据；
-            break;
-          }
-        }
-      }
         return res;
       };
       let obj = formatData(row);
@@ -360,71 +360,76 @@ export default {
       let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
-      this.ordSort(this.renderDynamic)
+      this.ordSort(this.renderDynamic);
+      let res = await this.getCategoryList({
+        currentDataord: obj.currentData.ord,
+        preDataord: obj.preData.ord,
+      });
+      console.log(res);
     },
     /**
      * @description 根据ord进行排序完成后 重新渲染页面
      */
-    ordSort(arr){
-     arr.forEach(el=>{
-            if(el.child.length){
-              el.child.sort((c,d)=>{
-                   let n1 = c.ord;
-                  let n2 = d.ord;
-                  return n1 - n2
-              })
-            }
-          })
-        arr.sort((a,b)=>{
+    ordSort(arr) {
+      arr.forEach((el) => {
+        if (el.child.length) {
+          el.child.sort((c, d) => {
+            let n1 = c.ord;
+            let n2 = d.ord;
+            return n1 - n2;
+          });
+        }
+      });
+      arr.sort((a, b) => {
         let num1 = a.ord;
         let num2 = b.ord;
-        return num1 - num2
-      })
-      this.table = arr
+        return num1 - num2;
+      });
+      this.table = arr;
     },
     /**
      * @description 当前行下降一位
      */
     sescendingOrder(row) {
-      var fn = (row)=>{
-        console.log(row)
-          if(row.child.length){
-           return row.child;
-          }else{
-            for(var i =0;i <this.renderDynamic.length;i++){
-              if(this.renderDynamic[i].id==row.pid){
-                return this.renderDynamic[i].child;
-              }
+      var fn = (row) => {
+        console.log(row);
+        if (row.child.length) {
+          return row.child;
+        } else {
+          for (var i = 0; i < this.renderDynamic.length; i++) {
+            if (this.renderDynamic[i].id == row.pid) {
+              return this.renderDynamic[i].child;
             }
           }
-      }
+        }
+      };
       //获取当前层所有额数据；
       var formatData = (row) => {
         let res = {};
-      if(row.pid){
-         let childData = fn(row);
-         for(let i = 0; i < childData.length;i++){
+        if (row.pid) {
+          let childData = fn(row);
+          for (let i = 0; i < childData.length; i++) {
             let item = childData[i];
-          if (item.id == row.id) {
-            // console.log(item);
-            res.i = i;
-            res.currentData = item; //当前的数据；
-            res.preData = childData[i + 1]; //上一个数据；
-            break;
+            if (item.id == row.id) {
+              // console.log(item);
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = childData[i + 1]; //上一个数据；
+              break;
+            }
+          }
+        } else {
+          for (let i = 0; i < this.renderDynamic.length; i++) {
+            let item = this.renderDynamic[i];
+            if (item.id == row.id) {
+              // console.log(item);
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.renderDynamic[i + 1]; //上一个数据；
+              break;
+            }
           }
         }
-      }else{
-        for (let i = 0; i < this.renderDynamic.length; i++) {
-          let item = this.renderDynamic[i];
-          if (item.id == row.id) {
-            // console.log(item);
-            res.i = i;
-            res.currentData = item; //当前的数据；
-            res.preData = this.renderDynamic[i + 1]; //上一个数据；
-            break;
-          }
-        }
-      }
         return res;
       };
       let obj = formatData(row);
@@ -432,25 +437,25 @@ export default {
       let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
-       this.ordSort(this.renderDynamic)
+      this.ordSort(this.renderDynamic);
     },
     /**
      * @description 删除当前行
      */
     deleteData(row) {
-      for(var i = 0; i<this.renderDynamic.length;i++){
+      for (var i = 0; i < this.renderDynamic.length; i++) {
         let el = this.renderDynamic[i];
-        if(row.ord==el.ord){
-          this.renderDynamic.splice(i,1)
-        }else{
-          for(var j = 0; j<el.child.length; j++){
-            if(row.ord==el.child[j].ord){
-              el.child.splice(j,1)
+        if (row.ord == el.ord) {
+          this.renderDynamic.splice(i, 1);
+        } else {
+          for (var j = 0; j < el.child.length; j++) {
+            if (row.ord == el.child[j].ord) {
+              el.child.splice(j, 1);
             }
           }
         }
       }
-      this.ordSort(this.renderDynamic)
+      this.ordSort(this.renderDynamic);
     },
   },
   mounted() {

@@ -73,6 +73,10 @@ export default new Vuex.Store({
         createCategory(ctx, payload) {
             return Api.createCategory(payload);
         },
+        //商品类目排序接口
+        CategoryOrders(ctx, payload) {
+            return Api.CategoryOrders(payload);
+        },
         //类目规格接口
         getSpecificationList(ctx, payload) {
             return Api.getSpecificationList(payload);

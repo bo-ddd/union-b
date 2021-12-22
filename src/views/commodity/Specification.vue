@@ -56,14 +56,13 @@
       <el-table
         ref="multipleTable"
         tooltip-effect="dark"
-        :data="arr"
+        :data="table"
         style="width: 97%"
         @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column :data="arr" type="selection" align="center">
-        </el-table-column>
+        <el-table-column type="selection" align="center"> </el-table-column>
         <el-table-column label="id" align="center" prop="id" sortable>
         </el-table-column>
         <el-table-column
@@ -161,10 +160,10 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage4"
-              :page-sizes="[6, 10, 15, 20]"
+              :current-page="currentPage3"
+              :page-sizes="[10, 15, 20]"
               :page-size="100"
-              layout="total, sizes, prev, pager, next, jumper"
+              layout="total, sizes, prev, pager, next"
               :total="arr.length"
             >
             </el-pagination>
@@ -187,9 +186,9 @@ export default {
       input2: "",
       input3: "",
       select: "",
-      currentPage1: 5,
+      currentPage1: 1,
       currentPage2: 5,
-      currentPage3: 5,
+      currentPage3: 3,
       currentPage4: 4,
       options: [
         {
@@ -205,8 +204,8 @@ export default {
       id: "",
       title: "",
       productCategory: "",
-      count: "",
-      pageCount: "",
+      count: "", //所有条数
+      // pageCount: "", //所有页数
       arr: [],
       deleteDataArr1: [],
       form: {
@@ -225,21 +224,16 @@ export default {
       formLabelWidth: "120px",
       multipleSelection: [],
       currentPage: 1,
-      pageSize: 20,
+      pageSize: 43, //每页条数
       table: [],
-      pageNum: "",
+      pageNum: "", //一共几页
       num: "",
     };
   },
   watch: {
     table: {
       handler(newVal, oldVal) {
-        console.log("我是新值");
-        console.log(newVal);
-        console.log("我是老值");
-        console.log(oldVal);
         if (newVal != oldVal) {
-          console.log("值已经改变");
           this.table = newVal;
         }
       },
@@ -297,8 +291,10 @@ export default {
     },
     //获取所有类目规格
     async spelist() {
-      let res = await this.getSpecificationList();
-      console.log(res.data.count);
+      let res = await this.getSpecificationList({
+        pagination: false,
+       pageSize:43
+      });
       console.log(res);
       this.count = res.data.count;
       this.pageCount = res.data.pageCount;
@@ -315,7 +311,7 @@ export default {
       this.handleCurrentChange(1);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.pageNum = val;
       this.offSize();
     },
@@ -324,13 +320,7 @@ export default {
       this.Num();
     },
     Num() {
-      this.table = this.arr.slice(
-        this.num, 
-        this.num + this.pageSize
-      );
-      console.log("这是num方法");
-      console.log(this.num);
-      console.log(this.pageSize);
+      this.table = this.arr.slice(this.num, this.num + this.pageSize);
     },
   },
   async created() {

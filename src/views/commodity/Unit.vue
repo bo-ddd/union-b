@@ -3,14 +3,14 @@
     <div class="Company">
        <el-button type="primary" @click="dialogFormVisible = true">新增单位</el-button>
       <div>
-          <el-select v-model="value" filterable placeholder="请选择" size='small'> 
+          <el-select v-model="value" filterable placeholder="请选择"> 
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>  
-          <el-input v-model="input"  size='small' placeholder="请输入内容"  suffix-icon="el-icon-search"></el-input>
+          <el-input v-model="input"  placeholder="请输入内容"  suffix-icon="el-icon-search"></el-input>
       </div>
     </div>
     <div class="table">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}" size='small'>
+      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#f7f8fa'}">
         <el-table-column prop="ord" label="序号">
         </el-table-column>
         <el-table-column prop="title" label="单位名称">
@@ -21,9 +21,9 @@
         </el-table-column>
         <el-table-column  label="排序">
           <template slot-scope="scope">
-             <el-link type="primary" class="link" @click="Topping(scope.row.ord)" size='small'>置顶</el-link>
-             <el-link type="primary" class="link" @click="raise(scope.row.ord)" size='small'>升序</el-link>
-             <el-link type="primary" class="link" @click="Down(scope.row.ord)" size='small'>降序</el-link>
+             <el-link type="primary" class="link" @click="Topping(scope.row.ord)">置顶</el-link>
+             <el-link type="primary" class="link" @click="raise(scope.row.ord)">升序</el-link>
+             <el-link type="primary" class="link" @click="Down(scope.row.ord)">降序</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="operation" label="操作">
@@ -34,7 +34,7 @@
       </el-table>
        <div class="block">
         <el-pagination :current-page="currentPage" 
-          :page-sizes="[20, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+          :page-sizes="[10, 15, 20, 25]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
         </el-pagination>
       </div>
     </div>
@@ -64,9 +64,6 @@ export default {
    data() {
         return {
           currentPage: 1,
-          cacheExport: [],
-          multipleSelection: [],
-          table: [],
           input:'',
           dialogFormVisible: false,
           formLabelWidth: '120px',
@@ -84,7 +81,7 @@ export default {
           label: '单位名称'
         }, {
           value: '选项3',
-          label: '单位来源'
+          label: '类目'
         }],
         value: ''
         }
@@ -139,6 +136,9 @@ export default {
             })
             .catch(_ => {console.log(_);});
         },
+        /**
+         *  @description 新增单位
+         */
         async submit(){
           this.dialogFormVisible = false;
           let res = await this.createUnitlibrary({
@@ -150,11 +150,16 @@ export default {
           this.form = [];
           this.List();
         },
+        /**
+         *  @description 渲染数据
+         */
         async List(){
           let res = await this.getUnitlibraryList({
-            pagination:true,
+            pagination:false,
+            // pageNum:15,//每页多少条数据  默认是10条
+            // pageSize:this.currentPage,//当前第几页
           })
-          console.log(res);
+        console.log(res);
         this.tableData = res.data.rows;
         }
       },

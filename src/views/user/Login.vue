@@ -69,6 +69,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import JsEncrypt from "jsencrypt";
 export default {
   data() {
     return {
@@ -154,11 +155,11 @@ export default {
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
         this.$message.success(res.msg);
-        if (localStorage.getItem('from')) {
+        if (localStorage.getItem("from")) {
           this.$router.push({
-          path: localStorage.getItem('from'),
-        });
-        }else{
+            path: localStorage.getItem("from"),
+          });
+        } else {
           this.$router.push({
             path: "/",
           });
@@ -189,11 +190,31 @@ export default {
         path: "/registration",
       });
     },
+
+    // // 加密方法
+    // RSAencrypt(pas) {
+    //   // 实例化jsEncrypt对象
+    //   let jse = new JSEncrypt();
+    //   // 设置公钥
+    //   jse.setPublicKey(this.PublicKey);
+    //   console.log("加密:" + jse.encrypt(pas));
+    //   return jse.encrypt(pas);
+    // },
+    // // 解密方法
+    // RSAencrypt(pas) {
+    //   let jse = new JSEncrypt();
+    //   // 私钥
+    //   jse.setPublicKey(this.privateKey);
+    //   console.log("解密:" + jse.decrypt(pas));
+    //   return jse.decrypt(pas);
+    // },
   },
 
   created() {
     // 进页面直接调用验证码
     this.generatorCaptcha();
+    // 调用加密
+    // this.RSAencrypt();
   },
 
   mounted() {

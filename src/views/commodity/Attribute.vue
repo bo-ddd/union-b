@@ -44,7 +44,7 @@
   </el-select>
     </el-form-item>
     <el-form-item label="类目" :label-width="formLabelWidth" class="form-money">
-      <el-select v-model="value" filterable placeholder="请选择">
+      <el-select v-model="values" filterable placeholder="请选择">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -56,7 +56,7 @@
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+    <el-button type="primary" @click="confirm">确 定</el-button>
   </div>
 </el-dialog>
         <el-table
@@ -130,27 +130,28 @@ export default {
   data() {
       return {
         option: [{
-          value: '选项1',
+          value: '1',
           label: '属性'
         }, {
-          value: '选项2',
+          value: '2',
           label: '参数'
         }],
         options: [{
-          value: '选项1',
+          value: '1',
           label: '电子'
         }, {
-          value: '选项2',
+          value: '2',
           label: '电器'
         }, {
-          value: '选项3',
+          value: '3',
           label: '服装'
         }, {
-          value: '选项4',
+          value: '4',
           label: '食品'
         },
         ],
         value: '',
+        values:'',
         dialogFormVisible: false,
         formLabelWidth: '120px',
         forms: {
@@ -197,7 +198,7 @@ export default {
       }
     },
     methods: {
-      ...mapActions(["createAttribute"]),
+      ...mapActions(["createAttribute","getAttributeList"]),
        handleEdit(index, row) {
         console.log(index, row);
       },
@@ -207,12 +208,27 @@ export default {
       remove(data){
         console.log(data.$index);
        this.tableData.splice(data.$index,1) 
-      }
+      },
+  async confirm(){
+    this.dialogFormVisible = false;
+    this.option.forEach(item =>{
+      console.log(item.value);
+    })
+    this.options.forEach(items =>{
+      console.log(items.value);
+    })
+    let res = await this.createAttribute({
+      value: this.forms.name,
+      type: Number(this.value),
+      productId: Number(this.values)
+    });
+    console.log(res);
   },
   async created(){
-    let res = await this.createAttribute();
-    console.log(res);
-  } 
+    let getAttributeList = this.getAttributeList();
+    console.log(getAttributeList);
+  }
+  },
 }
 </script>
 

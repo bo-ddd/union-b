@@ -58,6 +58,18 @@ export default new Vuex.Store({
         uploadImage(ctx, payload) {
             return Api.uploadImage(payload);
         },
+        //生成rsa公钥接口
+        getRSAPublicKey(ctx, payload) {
+            return Api.getRSAPublicKey(payload);
+        },
+        //身份列表接口
+        getIdentityList(ctx, payload) {
+            return Api.getIdentityList(payload);
+        },
+        //新增身份接口
+        createIdentity(ctx, payload) {
+            return Api.createIdentity(payload);
+        },
 
 
         //商品管理
@@ -74,7 +86,7 @@ export default new Vuex.Store({
             return Api.createCategory(payload);
         },
         //商品类目排序接口
-        CategoryOrders(ctx, payload) {
+        categoryOrders(ctx, payload) {
             return Api.CategoryOrders(payload);
         },
         //类目规格接口
@@ -104,6 +116,14 @@ export default new Vuex.Store({
         //添加单位接口
         createUnitlibrary(ctx, payload) {
             return Api.createUnitlibrary(payload);
+        },
+        //商品单位排序接口
+        unitlibraryOrders(ctx, payload) {
+            return Api.unitlibraryOrders(payload);
+        },
+        //商品单位置顶接口
+        unitlibraryStick(ctx, payload) {
+            return Api.unitlibraryStick(payload);
         },
 
 

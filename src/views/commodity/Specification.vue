@@ -56,13 +56,18 @@
       <el-table
         ref="multipleTable"
         tooltip-effect="dark"
-        :data="arr"
+        :data="table"
         style="width: 97%"
         @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column :data="arr" type="selection" align="center">
+        <el-table-column
+          type="selection"
+          align="center"
+          v-model="checked"
+          @click="checkedclick()"
+        >
         </el-table-column>
         <el-table-column label="id" align="center" prop="id" sortable>
         </el-table-column>
@@ -148,24 +153,24 @@
           >
         </div>
         <div class="footer_right">
-          <!-- <div class="block">
+          <div class="block">
             <el-pagination
               :current-page="currentPage4"
               :page-sizes="[6, 10, 15, 20]"
               layout="sizes"
+              :page-size="10"
             >
             </el-pagination>
             <div>输入按回车</div>
-          </div> -->
+          </div>
           <div class="block2">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage4"
-              :page-sizes="[6, 10, 15, 20]"
-              :page-size="100"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="arr.length"
+              :current-page="currentPage1"
+              layout="total,prev, pager, next"
+              :total="table.length"
+              :page-size="5"
             >
             </el-pagination>
           </div>
@@ -187,10 +192,10 @@ export default {
       input2: "",
       input3: "",
       select: "",
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      currentPage1: 1,
+      currentPage4: 1,
+      pageSize1: "",
+      pageNum1: "",
       options: [
         {
           value: "选项1",
@@ -205,10 +210,11 @@ export default {
       id: "",
       title: "",
       productCategory: "",
-      count: "",
-      pageCount: "",
+      count: "", //所有条数
+      // pageCount: "", //所有页数
       arr: [],
       deleteDataArr1: [],
+      // deleteDataArr2: [],
       form: {
         serialId: "",
         speName: "",
@@ -225,21 +231,16 @@ export default {
       formLabelWidth: "120px",
       multipleSelection: [],
       currentPage: 1,
-      pageSize: 20,
+      pageSize: 10, //每页条数
       table: [],
-      pageNum: "",
+      pageNum: "", //一共几页
       num: "",
     };
   },
   watch: {
     table: {
       handler(newVal, oldVal) {
-        console.log("我是新值");
-        console.log(newVal);
-        console.log("我是老值");
-        console.log(oldVal);
         if (newVal != oldVal) {
-          console.log("值已经改变");
           this.table = newVal;
         }
       },
@@ -297,8 +298,10 @@ export default {
     },
     //获取所有类目规格
     async spelist() {
-      let res = await this.getSpecificationList();
-      console.log(res.data.count);
+      let res = await this.getSpecificationList({
+        pagination: false,
+        pageSize: 43,
+      });
       console.log(res);
       this.count = res.data.count;
       this.pageCount = res.data.pageCount;
@@ -308,34 +311,36 @@ export default {
         this.productCategory = item.productCategory;
         this.arr.push(item);
       });
+      this.table = this.arr.slice(0,this.pageSize1);
     },
+    //批量删除（查看是否选中）
+    // checkedclick() {
+    //   //把符合条件的数据放到一个数组里，然后用splice删除
+    //   if(this.checked == true){
+    //     this.deleteDataArr2.push()
+    //   }
+    // },
     //分页
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      this.handleCurrentChange(1);
+      this.pageSize1 = val;
+      this.handleCurrentChange(0);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-      this.pageNum = val;
-      this.offSize();
+      // console.log(`当前页: ${val}`);
+      this.pageNum1 = val;
+      console.log(val);
+      this.table = this.Num();
     },
     offSize() {
-      this.num = this.pageSize * (this.pageNum - 1);
-      this.Num();
+      return this.pageSize1 * (this.pageNum1 - 1);
     },
     Num() {
-      this.table = this.arr.slice(
-        this.num, 
-        this.num + this.pageSize
-      );
-      console.log("这是num方法");
-      console.log(this.num);
-      console.log(this.pageSize);
+      return this.arr.slice(this.offSize , this.offSize  + this.pageSize1 );
     },
   },
   async created() {
     this.spelist();
-    this.table = this.arr;
   },
 };
 </script>

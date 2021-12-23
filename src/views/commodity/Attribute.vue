@@ -100,16 +100,10 @@
         label="操作"
         align="center"
         >
-        <!-- <template slot-scope="scope">
-          <el-button size="mini">{{scope.row.redact}}</el-button>
-          <el-button size="mini" type="danger" @click="remove(scope)">{{scope.row.delete}}</el-button>
-        </template> -->
         <template slot-scope="scope">
         <el-button
+          @click="handleEdit(scope.$index, scope.row)"
           size="mini">编辑</el-button>
-        <!-- <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">向上</el-button> -->
         <el-button
           size="mini"
           type="danger"

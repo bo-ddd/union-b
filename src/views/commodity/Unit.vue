@@ -128,7 +128,6 @@ export default {
      * @description 排序的方法
      */
     mySort(tableData) {
-      console.log(tableData);
       tableData.sort((a, b) => {
         var num1 = a.ord;
         var num2 = b.ord;
@@ -165,8 +164,8 @@ export default {
     async List() {
       let res = await this.getUnitlibraryList({
         pagination: true, 
-        pageNum:5,
-        pageSize:10, 
+        pageNum:1,
+        pageSize:20, 
         //  pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
         //  pageNum   [number]    这是第几页      默认是第1页
         //  pageSize  [number]    每页多少条数据  默认是10条

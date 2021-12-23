@@ -101,7 +101,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getCategoryList"]),
+    ...mapActions(["getCategoryList","categoryOrders"]),
         setChildren(children, type) {
       // 编辑多个子层级
       children.map((j) => {
@@ -232,6 +232,7 @@ export default {
      * @description 当前行上升一位
      */
     async ascendingOrder(row) {
+      console.log(row.ord)
       //返回当前行所在的父级中所有的数据；
       var fn = (row) => {
         console.log(row);
@@ -247,6 +248,7 @@ export default {
       };
       //获取当前层所有额数据；
       var formatData = (row) => {
+        
         let res = {};
         if (row.pid) {
           let childData = fn(row);
@@ -275,12 +277,14 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      // console.log(obj);
+      console.log(obj);
       let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
+      console.log(obj.currentData.ord)
+      console.log(obj.preData.ord)
       this.ordSort(this.renderDynamic);
-      let res = await this.getCategoryList({
+      let res = await this.categoryOrders({
         currentDataord: obj.currentData.ord,
         preDataord: obj.preData.ord,
       });
@@ -295,21 +299,21 @@ export default {
           el.child.sort((c, d) => {
             let n1 = c.ord;
             let n2 = d.ord;
-            return n1 - n2;
+            return n2 - n1;
           });
         }
       });
       arr.sort((a, b) => {
         let num1 = a.ord;
         let num2 = b.ord;
-        return num1 - num2;
+        return num2 - num1;
       });
       this.table = arr;
     },
     /**
      * @description 当前行下降一位
      */
-    sescendingOrder(row) {
+  async sescendingOrder(row) {
       var fn = (row) => {
         console.log(row);
         if (row.child.length) {
@@ -357,6 +361,11 @@ export default {
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
       this.ordSort(this.renderDynamic);
+        let res = await this.categoryOrders({
+        currentDataord: obj.currentData.ord,
+        preDataord: obj.preData.ord,
+      });
+      console.log(res);
     },
     /**
      * @description 删除当前行

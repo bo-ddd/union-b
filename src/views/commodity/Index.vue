@@ -73,10 +73,10 @@
           style="width: 100%"
           stripe
           @select="checkBoxData"
-          @selection-change="handleSelectionChange"
+          @select-all="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
         >
-          <el-table-column type="selection" width="55" id="ydes"></el-table-column>
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column label="条码" width="90">
             <template slot-scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
@@ -371,7 +371,7 @@ export default {
       ],
       deleteDataArr: [],
       arr3: [],
-      arr4:[],
+      arr4: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
@@ -653,6 +653,7 @@ export default {
       table: [],
       pageNum: "",
       num: "",
+      cacheArr: [],
     };
   },
   methods: {
@@ -690,42 +691,31 @@ export default {
       this.form = data.row;
     },
     remove(indexArr) {
-      // console.log(indexArr[0].row);
       this.tableData.splice(this.tableData.indexOf(indexArr[0].row), 1);
-      // if (!this.tableData.length % 10) {
-      //   this.handleCurrentChange();
-      // }
     },
     multipleRemove() {
-      this.deleteDataArr = [...new Set(this.deleteDataArr)]
-      // console.log(this.deleteDataArr);
-      this.deleteDataArr.forEach((item) => {
+      for (let i = 0; i < this.arr4.length; i++) {
+        if (!this.cacheArr.includes(this.arr4[i])) {
+          this.cacheArr.push(this.arr4[i]);
+        } else {
+          let temp = this.cacheArr.indexOf(this.arr4[i]);
+          this.cacheArr.splice(temp, 1);
+        }
+      }
+      this.cacheArr.forEach((item) => {
         this.tableData.splice(this.tableData.indexOf(item), 1);
       });
-      this.deleteDataArr = [];
-      // console.log(this.tableData);
     },
-    checkBoxData: function (selection) {
-      // console.log(selection);
-      // this.deleteDataArr = selection;
-      selection.forEach((item) => {
-        this.arr3.push(this.tableData[this.tableData.indexOf(item)]);
-      });
-      this.arr3 = [...new Set(this.arr3)];
-      // console.log(this.arr3);
+    checkBoxData: function (selection, row) {
+      this.arr4.push(row);
     },
     handleSelectionChange(val) {
-      // console.log(val);
-      if (val) {
-        // this.deleteDataArr = []
-        val.forEach(item => {
-          // console.log(item);
-          this.deleteDataArr.push(item);
-        });
-        this.deleteDataArr = [...new Set(this.deleteDataArr)]
-        console.log(this.deleteDataArr);
+      if (!val.length) {
+        this.arr4 = [];
       } else {
-        this.$refs.multipleTable.clearSelection();
+        val.forEach((item) => {
+          this.arr4.push(item);
+        });
       }
     },
   },

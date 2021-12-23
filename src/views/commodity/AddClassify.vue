@@ -24,7 +24,7 @@
       <template slot-scope="{ node, data }">
         <div @click="cascaderClick(data)">
           <span>{{ data.title }}</span>
-          <span v-if="!node.isLeaf"> ({{ data.child.length }}) </span>
+          <span v-if="!node.isLeaf"> ({{ data.child.length }}) </span>   
         </div>
       </template>
     </el-cascader>
@@ -144,6 +144,16 @@
             <el-button type="primary" class="submit"  @click="submit">确定</el-button>
         </div>
      </div>
+<!-- 
+    <div v-for="item in parent">
+      <input type="text"   value="item.title">
+      <div v-if="item.child">
+        <div v-for="item.child in item.child">
+
+          <input type="text">
+        </div>
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -230,8 +240,9 @@ export default {
         this.$refs[formName].resetFields();
       },
       cascaderClick (nodeData) {
-      
+      this.addrCode = nodeData.title
       this.ruleForm.pid = nodeData.id || nodeData.pid
+      this.$refs.cascader.checkedValue = nodeData.title;
       this.$refs.cascader.computePresentText();
       this.$refs.cascader.toggleDropDownVisible(false);
        this.$message({

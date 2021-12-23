@@ -38,7 +38,7 @@
         </el-table-column>
         <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-                <el-button type='text' @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button type='text' @click="handleEdit(scope.row.id)">审核</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -93,9 +93,34 @@ export default {
         }
     },
     methods: {
-        ...mapActions(["getSettledList"]),
-        handleEdit(index, row) {
-            console.log(index, row);
+        ...mapActions(["getSettledList", "settledAdopt", "settledRefuse"]),
+        handleEdit(id) {
+            this.$confirm('是否可以审核通过', '审核信息', {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: '同意申请',
+                    cancelButtonText: '拒绝申请'
+                })
+                .then(async () => {
+                    let res = await this.settledAdopt({
+                        id
+                    })
+                    if (res.status) {
+                        this.$message.success('同意申请');
+                        this.getList()
+                    }
+                })
+                .catch(async action => {
+                    let res = await this.settledRefuse({
+                        id
+                    })
+                    if (res.status) {
+                        this.$message.error(
+                            action === 'cancel' ?
+                            '拒绝申请' : '再看一看信息'
+                        )
+                        this.getList()
+                    }
+                });
         },
         jump() {
             this.$router.push({
@@ -105,17 +130,19 @@ export default {
         gettime(time) {
             return getTime(time)
         },
-        getType(type){
-            let arr = ['待审核','同意申请','拒绝申请']
+        getType(type) {
+            let arr = ['待审核', '审核已通过', '审核未通过']
             return arr[type]
+        },
+        async getList() {
+            let res = await this.getSettledList();
+            if (res.status) {
+                this.tableData = res.data.rows
+            }
         }
     },
-    async created() {
-        let res = await this.getSettledList();
-        if (res.status) {
-            this.tableData = res.data.rows
-        }
-        console.log(this.tableData)
+    created() {
+        this.getList()
     }
 }
 </script>

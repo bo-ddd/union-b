@@ -158,6 +158,7 @@
               :current-page="currentPage4"
               :page-sizes="[6, 10, 15, 20]"
               layout="sizes"
+              :page-size="10"
             >
             </el-pagination>
             <div>输入按回车</div>
@@ -166,10 +167,10 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage3"
-              :page-size="10"
-              layout="total,size,prev, pager, next"
+              :current-page="currentPage1"
+              layout="total,prev, pager, next"
               :total="table.length"
+              :page-size="5"
             >
             </el-pagination>
           </div>
@@ -192,9 +193,9 @@ export default {
       input3: "",
       select: "",
       currentPage1: 1,
-      currentPage2: 5,
-      currentPage3: 3,
-      currentPage4: 4,
+      currentPage4: 1,
+      pageSize1: "",
+      pageNum1: "",
       options: [
         {
           value: "选项1",
@@ -230,7 +231,7 @@ export default {
       formLabelWidth: "120px",
       multipleSelection: [],
       currentPage: 1,
-      pageSize: 43, //每页条数
+      pageSize: 10, //每页条数
       table: [],
       pageNum: "", //一共几页
       num: "",
@@ -310,6 +311,7 @@ export default {
         this.productCategory = item.productCategory;
         this.arr.push(item);
       });
+      this.table = this.arr.slice(0,this.pageSize1);
     },
     //批量删除（查看是否选中）
     // checkedclick() {
@@ -321,28 +323,24 @@ export default {
     //分页
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      this.handleCurrentChange(1);
+      this.pageSize1 = val;
+      this.handleCurrentChange(0);
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`);
-      this.pageNum = val;
-      this.offSize();
+      this.pageNum1 = val;
+      console.log(val);
+      this.table = this.Num();
     },
     offSize() {
-      this.num = this.pageSize * (this.pageNum - 1);
-      this.Num();
+      return this.pageSize1 * (this.pageNum1 - 1);
     },
     Num() {
-      this.table = this.arr.slice(this.num, this.num + this.pageSize);
+      return this.arr.slice(this.offSize , this.offSize  + this.pageSize1 );
     },
   },
   async created() {
     this.spelist();
-    this.table = this.arr;
-    this.table.map((i) => {
-      i.show = false;
-      return i;
-    });
   },
 };
 </script>

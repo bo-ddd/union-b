@@ -57,7 +57,9 @@
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article" class="precontent"></div>
+                    <div v-html="article" class="precontent" >
+                    
+                    </div>
                   </div>
                 </div>
               </div>
@@ -82,8 +84,11 @@
                       label="图片文件"
                       :label-width="formLabelWidth"
                     >
+                    <!--上传图片-->
                     <el-upload
-                      action="https://jsonplaceholder.typicode.com/posts/"
+                      action=""
+                      :http-request="uploadImg"
+                      :on-change="fileChange"
                       list-type="picture-card"
                       :on-preview="handlePictureCardPreview"
                       :on-remove="handleRemove">
@@ -147,7 +152,7 @@
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article"></div>
+                      <img width="100%" :src="preview" alt="">
                   </div>
                 </div>
               </div>
@@ -227,22 +232,22 @@
         >
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="size"
           label="尺寸"
           show-overflow-tooltip
-          width="220"
+          width="150"
         >
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="type"
           label="类型"
           show-overflow-tooltip
-          width="240"
+          width="200"
         >
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="240">
           <template slot-scope="scope">
-            <el-button  @click="handleEdit(scope.$index, scope.row)" type="primary"
+            <el-button   @click="handleEdit(scope.$index, scope.row)" type="primary"
               >修改</el-button
             >
             <el-button  @click="deleteRow(scope.$index, tableData)" type="primary"
@@ -252,6 +257,22 @@
         </el-table-column>
       </el-table>
     </div>
+  <!--修改信息-->
+    <el-dialog title="修改" :visible.sync="dialogFormVisiblefix">
+  <el-form :model="form">
+    <el-form-item label="物料名称" :label-width="formLabelWidth">
+      <el-input v-model="form.name" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="尺寸" :label-width="formLabelWidth">
+      <el-input v-model="form.region" autocomplete="off"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisiblefix = false">取 消</el-button>
+    <el-button type="primary" @click="dialogFormVisiblefix = false">确 定</el-button>
+  </div>
+</el-dialog>
+
   </div>
 </template>
 
@@ -273,19 +294,25 @@ export default {
       rows:[],
       tableData: [
         {
-          date: "2016-05-03",
-          name: "王小虎",
+          date: "000001",
+          name: "这是一个图片连接",
           address: "上海市普陀区金沙江路 1518 弄",
+          size:"800*400",
+          type:"图片"
         },
         {
-          date: "2016-05-02",
-          name: "王小虎",
+          date: "000002",
+          name: "这是一个图片连接",
           address: "上海市普陀区金沙江路 1518 弄",
+          size:"800*400",
+          type:"图片"
         },
         {
-          date: "2016-05-04",
-          name: "王小虎",
+          date: "000003",
+          name: "这是一个图片连接",
           address: "上海市普陀区金沙江路 1518 弄",
+          size:"800*400",
+          type:"图片"
         },
        
       ],
@@ -313,7 +340,9 @@ export default {
         },
       ],
       value: "",
+      preview : '',    // 预览时的照片路径
       dialogFormVisible: false,
+      dialogFormVisiblefix:false,
       form: {
         name: "",
         link: "",
@@ -334,32 +363,44 @@ export default {
     this.getAds()
   },
   methods: {
-    ...mapActions(["getAdvertList"]),
+    ...mapActions(["getAdvertList","uploadImage"]),
    async getAds(){
     let res=await this.getAdvertList();
-    this.rows=res.data.rows;
-    // console.log(this.rows);
+    // this.rows=res.data.rows;
+    console.log(res);
     },
     
     handleEdit(index, row) {
+      this.dialogFormVisiblefix = true;
       console.log(index, row);
     },
-   deleteRow(index, rows) {
-        rows.splice(index, 1);
-      },
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     handleClick(tab, event) {
       console.log(tab, event);
     },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.preview = '';
+    },
+    //上传图片
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.preview = file.url
+      this.dialogVisible = true;
+    },
+     uploadImg(a){
+      console.log(a);
+    },
+    //文件状态改变时，(上传文件或失败都会调用)
+    fileChange(a){
+      // console.log(a.url);
+      this.preview = a.url;
+    },
     //新增商品，富文本
     openFormDialog() {
       this.dialogFormVisible = true;
@@ -378,6 +419,7 @@ export default {
         editor.create();
       });
     },
+   
   },
 };
 </script>

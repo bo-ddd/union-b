@@ -19,7 +19,7 @@
     </div>
          </div>
          <div class="header-center">
-             <el-button type="primary" icon="el-icon-plus">新增商品</el-button>
+             <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible3 = true">新增优品</el-button>
          </div>
      </div>
     <div class="main">
@@ -28,7 +28,7 @@
     stripe
     style="width: 100%">
     <el-table-column
-      prop="date"
+      prop="name"
       label="名称"
       width="280">
     </el-table-column>
@@ -38,7 +38,7 @@
       width="180">
     </el-table-column>
     <el-table-column
-      prop="num"
+      prop="goodnum"
       label="关联商品数量">
     </el-table-column>
     <el-table-column
@@ -46,7 +46,7 @@
       label="展示区域">
     </el-table-column>
     <el-table-column
-      prop="num"
+      prop="broadcast"
       label="播放量"
       width="120">
     </el-table-column>
@@ -114,6 +114,32 @@
   </el-checkbox-group>
   
 </el-dialog>
+
+<!--新增优品-->
+<el-dialog title="新增优品" :visible.sync="dialogFormVisible3">
+  <el-form :model="form">
+    <el-form-item label="商品名称" :label-width="formLabelWidth">
+     <el-select v-model="value" placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+    </el-form-item>
+    <el-form-item label="展示区域" :label-width="formLabelWidth">
+      <el-select v-model="form.region" placeholder="请选择活动区域">
+        <el-option label="区域一" value="shanghai"></el-option>
+        <el-option label="区域二" value="beijing"></el-option>
+      </el-select>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible3 = false">取 消</el-button>
+    <el-button type="primary" @click="dialogFormVisible3 = false">确 定</el-button>
+  </div>
+</el-dialog>
   </div>
 </template>
 <script>
@@ -141,28 +167,37 @@ export default {
         }],
         tableData: [{
           date: '2016-05-02',
-          name: '王小虎',
+          name: '奶粉通货行情',
           num:1,
-          address: '上海市普陀区金沙江路 1518 弄'
+          goodnum:5,
+          address: '全国',
+          broadcast:"92,394"
         }, {
           date: '2016-05-04',
-          name: '王小虎',
-           num:1,
-          address: '上海市普陀区金沙江路 1517 弄'
+          name: '尿不湿通货行情',
+          num:2,
+          goodnum:12,
+          address: '北京,上海,天津',
+          broadcast:"234"
         }, {
           date: '2016-05-01',
-          name: '王小虎',
-           num:1,
-          address: '上海市普陀区金沙江路 1519 弄'
+          name: '食品辅食',
+          num:3,
+          goodnum:22,
+          address: '全国',
+          broadcast:"768"
         }, {
           date: '2016-05-03',
-          name: '王小虎',
-           num:1,
-          address: '上海市普陀区金沙江路 1516 弄'
+          name: '婴幼营养',
+          num:4,
+          goodnum:80,
+          address: '上海,天津',
+          broadcast:"2,354"
         }],
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,
+        dialogFormVisible3: false,
         form: {
           name: '',
           region: '',

@@ -62,6 +62,18 @@ export default {
         return axios.post('/user/info', params, postConfig)
     },
     /**
+     * @description  更改用户信息 
+     * @params {
+     * avatorName : [string],     //非必填    用户名字
+     * avatorImg  : [string],     //非必填    用户头像
+     * phone      : [string],     //非必填    用户电话
+     * identityId : [number]      //非必填    用户身份
+     * }
+     * */
+    updateUserInfo(params) {
+        return axios.post('/userInfo/update', params, postConfig)
+    },
+    /**
      * @description  退出登录接口
      * @params 没有参数  必须登录
      * */
@@ -93,6 +105,33 @@ export default {
         // params   FormDate()
         // params.append('type',1);
         return axios.post('/upload/image', params, uploadConfig)
+    },
+    /**
+     * @description 生成rsa公钥接口 
+     * @params 无
+     */
+    getRSAPublicKey(params) {
+        return axios.post('user/generateRSAPublicKey', params, postConfig)
+    },
+    /**
+     * @description 身份列表接口 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getIdentityList(params) {
+        return axios.post('/identity/list', params, postConfig)
+    },
+    /**
+     * @description 新增身份接口 
+     * @params {
+     * identityName:[string]      '身份名称'
+     * } 
+     */
+    createIdentity(params) {
+        return axios.post('/identity/create', params, postConfig)
     },
 
 
@@ -128,6 +167,16 @@ export default {
      */
     createCategory(params) {
         return axios.post('/category/create', params, postConfig)
+    },
+    /**
+     * @description 商品类目排序接口
+     * @params {
+     * currentDataord     [nmber] 当前的类目
+     * preDataord         [number]要跟交换的类目
+     * } 
+     */
+    categoryOrders(params) {
+        return axios.post('/category/orders', params, postConfig)
     },
     /**
      * @description 类目规格接口
@@ -208,6 +257,25 @@ export default {
      */
     createUnitlibrary(params) {
         return axios.post('/unitlibrary/create', params, postConfig)
+    },
+    /**
+     * @description 商品单位排序接口
+     * @params {
+     * currentDataord     [nmber] 当前的类目
+     * preDataord            [number]要跟交换的类目
+     * } 
+     */
+    unitlibraryOrders(params) {
+        return axios.post('/unitlibrary/orders', params, postConfig)
+    },
+    /**
+     * @description 商品单位置顶接口
+     * @params {
+     * ord : [number]  要置顶单位的ord
+     * } 
+     */
+    unitlibraryStick(params) {
+        return axios.post('/unitlibrary/stick', params, postConfig)
     },
 
 
@@ -381,11 +449,24 @@ export default {
     getPaymentList(params) {
         return axios.post('/payment/list', params, postConfig)
     },
+    /**
+     * @description 获取快递接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getExpressList(params) {
+        return axios.post('/express/list', params, postConfig)
+    },
+
 
     //系统设置
     /**
      * @description 意见反馈接口
      * @params {
+     * roleId [number]   角色Id   选填  默认不传   传的话 返回的是申请角色为角色Id的数据
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
      * pageNum   [number]    每页多少条数据  默认是10条
      * pageSize  [number]    这是第几页      默认是第1页

@@ -6,34 +6,18 @@
   <el-form-item label="分类名称" prop="name">
     <el-input  v-model="ruleForm.name"></el-input>
   </el-form-item>
-  <el-form-item label="上级分类" prop="pid">
-<el-popover
-  placement="bottom"
-  width="400"
-  trigger="click">
-  <div class="superior-classify" style="height:200px">
- <el-input
-    placeholder="请输入内容"
-  
-    style="width:80%">
-    <i slot="prefix" class="el-input__icon el-icon-search"></i>
-  </el-input>
-<div class="block" style="margin-top:10px">
+  <el-form-item label="上级分类" prop="pid" class="classifya">
+    <template>
+      <div class="block" >
   <span class="demonstration"></span>
- <el-cascader ref="cascader" v-model="addrCode" :options="options" :props="{ checkStrictly: true, expandTrigger: 'hover', emitPath: false }">
-      <template slot-scope="{ node, data }">
-        <div @click="cascaderClick(data)">
-          <span>{{ data.title }}</span>
-          <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
-        </div>
-      </template>
-    </el-cascader>
+  <el-cascader
+      ref="cascader"
+    :options="options"
+    @change="getId()"
+    :props="{ checkStrictly: true ,label : 'title', children:'child',value:'title' }"
+    clearable></el-cascader>
 </div>
-  </div>
-   <el-select slot="reference" v-model="value"   style="width:100%">
-     
-   </el-select>
-</el-popover>
+    </template>
   </el-form-item>
  <!-- <el-form-item label="商品模板" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
@@ -148,13 +132,13 @@
 </template>
 
 <script>
-import {mapActions} from "vuex"
+import {mapActions} from "vuex";
+import uploud from "../../../public/lib/uploud"
 export default {
  data() {
       return {
         src:'',
         pid:'',
-        addrCode: undefined,
          dialogImageUrl: '',
         dialogVisible: false,
         radio1:'1',
@@ -167,8 +151,10 @@ export default {
           pid:''
         },
         value:'',
-         options: []
+         options: [],
+         arr:[],
       };
+
     },
     methods: {
       ...mapActions(["createCategory","getCategoryList","uploadImage"]),
@@ -179,56 +165,47 @@ export default {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
+      getId(){
+       let res= this.$refs['cascader'].getCheckedNodes();
+       this.ruleForm.pid =res[0].data.id
+      },
      async submit(){
-       console.log(this.ruleForm.name)
-       console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
-       console.log(this.src)
-      //  let res = await this.createCategory({
-      //    title:this.ruleForm.name,
-      //    pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
-      //    category:this.src
+      //  console.log(this.ruleForm.name)
+      //  console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
+      //  console.log(this.src)
+       let res = await this.createCategory({
+         title:this.ruleForm.name,
+         pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+         category:this.src
 
-      //  })
-      //  console.log(res)
+       })
+       console.log(res)
       },
       async getClassifyInfo(){
         let res = await this.getCategoryList({});
        let data =res.data.rows.slice();
-       this.options = data
+        this.arr = data;
+       let target = this.format(data)
+       this.options = target
       },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      handleChange(val){
-        console.log(val)
-      },
+       format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        item.child = item.child || [];
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
       handleChanges(){
         console.log('b')
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      cascaderClick (nodeData) {
-      this.addrCode = nodeData.title;
-      this.ruleForm.pid = nodeData.id || nodeData.pid
-      this.$refs.cascader.checkedValue = nodeData.title;
-      this.$refs.cascader.computePresentText();
-      this.$refs.cascader.toggleDropDownVisible(false);
-       this.$message({
-        message: '已选择：' + nodeData.title,
-        type: 'success',
-        duration: 1000
-      });
-     
-    },
     test(val){
+      console.log(val)
       let isPNg = val.type === "image/png"||"image/jpg" ;
       let isSz2m = val.size/1024/1024<2;
       if(!isPNg){
@@ -240,20 +217,15 @@ export default {
       return isPNg && isSz2m
     },
  async uploadClassify(val){
-       let formData = new FormData();
-       formData.append('file',val.file);
-       formData.append('type',3); 
-        let res = await this.uploadImage(formData)
+        let formData = uploud(val.file,3); 
+        let res = await this.uploadImage(formData);
          console.log(res)
-        this.src=res.data
+        this.src = res.data
     },
     async uploadSectionFile(val){
-      let formData = new FormData();
-       formData.append('file',val.file);
-       formData.append('type',3); 
-        let res = await this.uploadImage(formData)
-       
-        this.src=res.data
+    let formData = uploud(val.file,3); 
+        let res = await this.uploadImage(formData);
+        this.src = res.data;  
     }
   },
     created(){
@@ -282,7 +254,7 @@ export default {
   & .footer{
     display: flex;
     justify-content: center;
-    border-top: 1px solid #ff4370;
+    border-top: 1px solid  var(--color) ;
       background-color: #fff;
       padding: 15px 0px;
   }

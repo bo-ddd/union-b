@@ -24,7 +24,8 @@
         </el-table-column>
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-link :type="type" @click="Disable(scope.row.ord)">{{scope.row.disable ? '启用' : '禁用'}}</el-link>
+            <el-link :type="type" class="operation">{{scope.row.disable ? '已启用' : '已禁用'}}</el-link>
+            <el-link :type="types" class="operation" @click="Disable(scope.row.ord)">{{scope.row.disable ? '禁用' : '启用'}}</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -66,6 +67,7 @@ export default {
   data() {
     return {
       type:'',
+      types:'',
       currentPage: 1,
       pageSize:'',
       input: "",
@@ -137,6 +139,7 @@ export default {
      */
     Disable(ord) {
       console.log(ord);
+      this.List();
     },
     /**
      * @description 排序的方法
@@ -188,6 +191,7 @@ export default {
       this.tableData.forEach((item,index)=>{
         item.index = index+1;
         this.type = item.disable ? 'primary' : 'danger'
+        this.types = item.disable ? 'danger' : 'primary'
       })
       this.handleSizeChange(10);
     },

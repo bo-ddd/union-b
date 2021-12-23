@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from '@/api/api'
 import { routes } from '@/router'
-
+import dada from '../assets/js/getToken'
+console.log(dada);
 Vue.use(Vuex)
 
 let getRoutes = function() {
@@ -40,17 +41,13 @@ export default new Vuex.Store({
         },
         //用户信息
         getUserInfo(ctx, payload) {
-           Api.userGetToken().then(res=>{
-               sessionStorage.setItem('token',res.data)
-               console.log(res);
-            });
             return Api.getUserInfo(payload);
         },
         //退出登录
         userLogout(ctx, payload) {
-            return Api.userLogout(payload);
+            return Api.userLogout(payload); 
         },
-        //修改密码
+        //修改密码 
         userUpdatePwd(ctx, payload) {
             return Api.userUpdatePwd(payload);
         },

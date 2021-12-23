@@ -6,8 +6,9 @@
   <el-form-item label="分类名称" prop="name">
     <el-input  v-model="ruleForm.name"></el-input>
   </el-form-item>
-  <el-form-item label="上级分类" prop="pid">
-<div class="block" style="margin-top:10px">
+  <el-form-item label="上级分类" prop="pid" class="classifya">
+    <template>
+      <div class="block" >
   <span class="demonstration"></span>
   <el-cascader
       ref="cascader"
@@ -16,9 +17,7 @@
     :props="{ checkStrictly: true ,label : 'title', children:'child',value:'title' }"
     clearable></el-cascader>
 </div>
-   <el-select slot="reference" v-model="value"   style="width:100%">
-     
-   </el-select>
+    </template>
   </el-form-item>
  <!-- <el-form-item label="商品模板" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
@@ -133,7 +132,8 @@
 </template>
 
 <script>
-import {mapActions} from "vuex"
+import {mapActions} from "vuex";
+import uploud from "../../../public/lib/uploud"
 export default {
  data() {
       return {
@@ -205,6 +205,7 @@ export default {
         console.log('b')
       },
     test(val){
+      console.log(val)
       let isPNg = val.type === "image/png"||"image/jpg" ;
       let isSz2m = val.size/1024/1024<2;
       if(!isPNg){
@@ -216,20 +217,15 @@ export default {
       return isPNg && isSz2m
     },
  async uploadClassify(val){
-       let formData = new FormData();
-       formData.append('file',val.file);
-       formData.append('type',3); 
-        let res = await this.uploadImage(formData)
+        let formData = uploud(val.file,3); 
+        let res = await this.uploadImage(formData);
          console.log(res)
-        this.src=res.data
+        this.src = res.data
     },
     async uploadSectionFile(val){
-      let formData = new FormData();
-       formData.append('file',val.file);
-       formData.append('type',3); 
-        let res = await this.uploadImage(formData)
-       
-        this.src=res.data
+    let formData = uploud(val.file,3); 
+        let res = await this.uploadImage(formData);
+        this.src = res.data;  
     }
   },
     created(){
@@ -258,7 +254,7 @@ export default {
   & .footer{
     display: flex;
     justify-content: center;
-    border-top: 1px solid #ff4370;
+    border-top: 1px solid  var(--color) ;
       background-color: #fff;
       padding: 15px 0px;
   }

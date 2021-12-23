@@ -62,6 +62,18 @@ export default {
         return axios.post('/user/info', params, postConfig)
     },
     /**
+     * @description  更改用户信息 
+     * @params {
+     * avatorName : [string],     //非必填    用户名字
+     * avatorImg  : [string],     //非必填    用户头像
+     * phone      : [string],     //非必填    用户电话
+     * identityId : [number]      //非必填    用户身份
+     * }
+     * */
+    updateUserInfo(params) {
+        return axios.post('/userInfo/update', params, postConfig)
+    },
+    /**
      * @description  退出登录接口
      * @params 没有参数  必须登录
      * */
@@ -454,6 +466,7 @@ export default {
     /**
      * @description 意见反馈接口
      * @params {
+     * roleId [number]   角色Id   选填  默认不传   传的话 返回的是申请角色为角色Id的数据
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
      * pageNum   [number]    每页多少条数据  默认是10条
      * pageSize  [number]    这是第几页      默认是第1页

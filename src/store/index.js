@@ -43,6 +43,10 @@ export default new Vuex.Store({
         getUserInfo(ctx, payload) {
             return Api.getUserInfo(payload);
         },
+        //更改用户信息
+        updateUserInfo(ctx, payload) {
+            return Api.updateUserInfo(payload);
+        },
         //退出登录
         userLogout(ctx, payload) {
             return Api.userLogout(payload); 
@@ -88,7 +92,7 @@ export default new Vuex.Store({
         },
         //商品类目排序接口
         categoryOrders(ctx, payload) {
-            return Api.CategoryOrders(payload);
+            return Api.categoryOrders(payload);
         },
         //类目规格接口
         getSpecificationList(ctx, payload) {

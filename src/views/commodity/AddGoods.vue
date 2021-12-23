@@ -67,7 +67,7 @@
                 <el-input
                   type="text"
                   placeholder="请填写商品标题（不超过60个字符）"
-                  maxlength="60"
+                  maxlength="30"
                   v-model="text"
                   show-word-limit
                 >
@@ -105,11 +105,11 @@
                 </el-form-item>
                 <el-form-item label="平台价">
                   <el-input
-                  placeholder="请填写商品平台价"
-                  v-model="commodityPlatformPrice"
-                  show-word-limit
-                >
-                </el-input>
+                    placeholder="请填写商品平台价"
+                    v-model="commodityPlatformPrice"
+                    show-word-limit
+                  >
+                  </el-input>
                 </el-form-item>
                 <el-form-item label="重量">
                   <el-input
@@ -260,6 +260,7 @@
                     id="file"
                     name="file"
                     :http-request="customUpload1"
+                    :before-upload="commodityMasterChart"
                   >
                     <i slot="default" class="el-icon-plus"></i>
                     <div slot="file" slot-scope="{ file }">
@@ -316,7 +317,7 @@
                       class="el-upload-list__item-thumbnail"
                       :src="file.url"
                       alt=""
-                    >
+                    />
                     <span class="el-upload-list__item-actions">
                       <span
                         class="el-upload-list__item-preview"
@@ -351,9 +352,9 @@
       </div>
     </div>
     <div class="preservation">
-      <el-button plain type="primary" @click="preservation">保存</el-button>
+      <el-button plain type="primary">保存</el-button>
       <el-button plain type="primary">预览</el-button>
-      <el-button plain type="primary">发布</el-button>
+      <el-button plain type="primary" @click="preservation">发布</el-button>
     </div>
     <el-dialog
       title=""
@@ -433,9 +434,9 @@ export default {
         },
       ],
       text: "",
-      productDescription:"",
-      commodityPlatformPrice:"",
-      sellingPriceGoods:"",
+      productDescription: "",
+      commodityPlatformPrice: "",
+      sellingPriceGoods: "",
       brand: "",
       brandList: [
         {
@@ -481,7 +482,7 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
-      src:'',
+      src: "",
 
       tableData: [
         {
@@ -564,9 +565,9 @@ export default {
       formData.append("file", val.file);
       formData.append("type", 3);
       // console.log(val.file);
-      let res = await this.uploadImage(formData);
+      /*   let res = await this.uploadImage(formData);
       console.log(res);
-      this.src = res.data
+      this.src = res.data */
     },
     async customUpload1(val) {
       let formData = new FormData();
@@ -575,6 +576,11 @@ export default {
       // console.log(val.file);
       // let res = await this.uploadImage(formData);
       // console.log(res);
+    },
+    commodityMasterChart(val) {
+     if ((val.size/1024)>2) {
+       this.$message('超过2mb')
+     } 
     },
     arraySpanMethod({ rowIndex, columnIndex }) {
       if (rowIndex % 2 === 0) {
@@ -613,12 +619,12 @@ export default {
     async preservation() {
       let res = await this.createProduct({
         cid: 1,
-        title: "暖宝宝",
+        title: this.text,
         keywords: "日用类",
         bannerImg: this.src,
-        platformPrice: 10,
-        desc: "这是一个暖宝宝",
-        realPrice: 12,
+        platformPrice: this.commodityPlatformPrice,
+        desc: this.productDescription,
+        realPrice: this.sellingPriceGoods,
       });
       console.log(res);
     },
@@ -709,7 +715,7 @@ export default {
 .preservation {
   display: flex;
   justify-content: center;
-  border-top: 1px solid #ff4370;
+  border-top: 1px solid var(--color);
   padding: 20px 0px;
 }
 

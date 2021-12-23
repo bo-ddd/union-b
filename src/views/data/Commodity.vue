@@ -351,6 +351,7 @@ export default {
   grid-template-columns: repeat(4, 1fr);
   gap: 1%;
   &>div{
+    color: white;
     background: var(--color);
     padding: 4.5% 6%;
     border-radius: 5px;

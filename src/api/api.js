@@ -99,7 +99,7 @@ export default {
      * @params 无
      */
     getRSAPublicKey(params) {
-        return axios.post('user/generateRSAPublicKey,', params, postConfig)
+        return axios.post('user/generateRSAPublicKey', params, postConfig)
     },
     /**
      * @description 身份列表接口 

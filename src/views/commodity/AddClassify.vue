@@ -170,16 +170,16 @@ export default {
        this.ruleForm.pid =res[0].data.id
       },
      async submit(){
-       console.log(this.ruleForm.name)
-       console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
-       console.log(this.src)
-      //  let res = await this.createCategory({
-      //    title:this.ruleForm.name,
-      //    pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
-      //    category:this.src
+      //  console.log(this.ruleForm.name)
+      //  console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
+      //  console.log(this.src)
+       let res = await this.createCategory({
+         title:this.ruleForm.name,
+         pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+         category:this.src
 
-      //  })
-      //  console.log(res)
+       })
+       console.log(res)
       },
       async getClassifyInfo(){
         let res = await this.getCategoryList({});

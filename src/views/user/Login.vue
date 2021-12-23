@@ -70,7 +70,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import JSEncrypt from "jsencrypt";
+import { JSEncrypt } from "jsencrypt";
 export default {
   data() {
     return {
@@ -145,6 +145,22 @@ export default {
         this.generatorCaptcha();
         return;
       }
+
+      // 返回秘钥
+      let cry = await this.getRSAPublicKey();
+      let pubKey = cry.data;
+      // 加密
+      //之前ssl生成的公钥，复制的时候要小心不要有空格
+      var encryptor = new JSEncrypt(); // 创建加密对象实例
+      console.log(pubKey);
+      encryptor.setPublicKey(pubKey); //设置公钥
+      console.log(this.form.password);
+      console.log(typeof this.form.password);
+      var rsaPassWord = encryptor.encrypt("123456"); // 对内容进行加密
+      console.log(rsaPassWord);
+
+      if (pubKey != 1) return;
+
       let { username, password, captcha } = this.form;
       //   登录接口
       let res = await this.userLogin({
@@ -175,14 +191,6 @@ export default {
           message: res.msg,
         });
       }
-      // 返回秘钥
-      let cry = await this.getRSAPublicKey({});
-      console.log(cry);
-      let PublicKey = cry.data;
-      // 创建encrypt对象
-      var encrypt = new JSEncrypt();
-      // 设置公钥
-      encrypt.setPublickey(PublicKey);
     },
 
     // 按回车键登录
@@ -199,24 +207,6 @@ export default {
         path: "/registration",
       });
     },
-
-    // // 加密方法
-    // RSAencrypt(pas) {
-    //   // 实例化jsEncrypt对象
-    //   let jse = new JSEncrypt();
-    //   // 设置公钥
-    //   jse.setPublicKey(this.PublicKey);
-    //   console.log("加密:" + jse.encrypt(pas));
-    //   return jse.encrypt(pas);
-    // },
-    // // 解密方法
-    // RSAencrypt(pas) {
-    //   let jse = new JSEncrypt();
-    //   // 私钥
-    //   jse.setPublicKey(this.privateKey);
-    //   console.log("解密:" + jse.decrypt(pas));
-    //   return jse.decrypt(pas);
-    // },
   },
 
   async created() {

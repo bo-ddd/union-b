@@ -95,6 +95,13 @@ export default {
         return axios.post('/upload/image', params, uploadConfig)
     },
     /**
+     * @description 生成rsa公钥接口 
+     * @params 无
+     */
+    getRSAPublicKey(params) {
+        return axios.post('user/generateRSAPublicKey', params, postConfig)
+    },
+    /**
      * @description 身份列表接口 
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;

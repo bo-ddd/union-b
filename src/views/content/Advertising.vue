@@ -57,7 +57,9 @@
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article" class="precontent"></div>
+                    <div v-html="article" class="precontent" >
+                    
+                    </div>
                   </div>
                 </div>
               </div>
@@ -83,7 +85,9 @@
                       :label-width="formLabelWidth"
                     >
                     <el-upload
-                      action="https://jsonplaceholder.typicode.com/posts/"
+                      action=""
+                      :http-request="uploadImg"
+                      :on-change="abc"
                       list-type="picture-card"
                       :on-preview="handlePictureCardPreview"
                       :on-remove="handleRemove">
@@ -147,7 +151,9 @@
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article"></div>
+                    <!-- <div v-html="article"> -->
+                      <img width="100%" :src="preview" alt="">
+                    <!-- </div> -->
                   </div>
                 </div>
               </div>
@@ -313,6 +319,7 @@ export default {
         },
       ],
       value: "",
+      preview : '',    // 预览时的照片路径
       dialogFormVisible: false,
       form: {
         name: "",
@@ -334,32 +341,34 @@ export default {
     this.getAds()
   },
   methods: {
-    ...mapActions(["getAdvertList"]),
+    ...mapActions(["getAdvertList","uploadImage"]),
    async getAds(){
     let res=await this.getAdvertList();
-    this.rows=res.data.rows;
-    // console.log(this.rows);
+    // this.rows=res.data.rows;
+    console.log(res);
     },
     
     handleEdit(index, row) {
       console.log(index, row);
     },
-   deleteRow(index, rows) {
-        rows.splice(index, 1);
-      },
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     handleClick(tab, event) {
       console.log(tab, event);
     },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.preview = '';
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.preview = file.url
+      this.dialogVisible = true;
+    },
     //新增商品，富文本
     openFormDialog() {
       this.dialogFormVisible = true;
@@ -378,6 +387,13 @@ export default {
         editor.create();
       });
     },
+    uploadImg(a){
+      console.log(a);
+    },
+    abc(a){
+      // console.log(a.url);
+      this.preview = a.url;
+    }
   },
 };
 </script>

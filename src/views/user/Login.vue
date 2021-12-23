@@ -21,6 +21,7 @@
             <el-input
               v-model="form.password"
               class="inputb"
+              name="password"
               placeholder="请输入密码"
               maxlength="15"
               show-password
@@ -69,7 +70,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import JsEncrypt from "jsencrypt";
+import JSEncrypt from "jsencrypt";
 export default {
   data() {
     return {
@@ -82,7 +83,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["userLogin", "getCaptcha"]),
+    ...mapActions(["userLogin", "getCaptcha", "getRSAPublicKey"]),
     async generatorCaptcha() {
       // 验证码接口
       this.captchaSrc = await this.getCaptcha();
@@ -174,6 +175,14 @@ export default {
           message: res.msg,
         });
       }
+      // 返回秘钥
+      let cry = await this.getRSAPublicKey({});
+      console.log(cry);
+      let PublicKey = cry.data;
+      // 创建encrypt对象
+      var encrypt = new JSEncrypt();
+      // 设置公钥
+      encrypt.setPublickey(PublicKey);
     },
 
     // 按回车键登录
@@ -210,7 +219,7 @@ export default {
     // },
   },
 
-  created() {
+  async created() {
     // 进页面直接调用验证码
     this.generatorCaptcha();
     // 调用加密

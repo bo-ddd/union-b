@@ -152,14 +152,13 @@ export default {
       // 加密
       //之前ssl生成的公钥，复制的时候要小心不要有空格
       var encryptor = new JSEncrypt(); // 创建加密对象实例
-      console.log(pubKey);
       encryptor.setPublicKey(pubKey); //设置公钥
-      console.log(this.form.password);
-      console.log(typeof this.form.password);
-      var rsaPassWord = encryptor.encrypt("123456"); // 对内容进行加密
+      // console.log(this.form.password);
+      // console.log(typeof this.form.password);
+      var rsaPassWord = encryptor.encrypt(this.form.password); // 对内容进行加密
       console.log(rsaPassWord);
 
-      if (pubKey != 1) return;
+      // if (pubKey != 1) return;
 
       let { username, password, captcha } = this.form;
       //   登录接口

@@ -6,8 +6,9 @@
   <el-form-item label="分类名称" prop="name">
     <el-input  v-model="ruleForm.name"></el-input>
   </el-form-item>
-  <el-form-item label="上级分类" prop="pid">
-<div class="block" style="margin-top:10px">
+  <el-form-item label="上级分类" prop="pid" class="classifya">
+    <template>
+      <div class="block" >
   <span class="demonstration"></span>
   <el-cascader
       ref="cascader"
@@ -16,9 +17,7 @@
     :props="{ checkStrictly: true ,label : 'title', children:'child',value:'title' }"
     clearable></el-cascader>
 </div>
-   <el-select slot="reference" v-model="value"   style="width:100%">
-     
-   </el-select>
+    </template>
   </el-form-item>
  <!-- <el-form-item label="商品模板" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
@@ -258,7 +257,7 @@ export default {
   & .footer{
     display: flex;
     justify-content: center;
-    border-top: 1px solid #ff4370;
+    border-top: 1px solid  var(--color) ;
       background-color: #fff;
       padding: 15px 0px;
   }

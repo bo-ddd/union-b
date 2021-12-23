@@ -19,7 +19,7 @@
     </div>
          </div>
          <div class="header-center">
-             <el-button type="primary" icon="el-icon-plus">新增商品</el-button>
+             <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible3 = true">新增优品</el-button>
          </div>
      </div>
     <div class="main">
@@ -114,6 +114,32 @@
   </el-checkbox-group>
   
 </el-dialog>
+
+<!--新增优品-->
+<el-dialog title="新增优品" :visible.sync="dialogFormVisible3">
+  <el-form :model="form">
+    <el-form-item label="商品名称" :label-width="formLabelWidth">
+     <el-select v-model="value" placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+    </el-form-item>
+    <el-form-item label="展示区域" :label-width="formLabelWidth">
+      <el-select v-model="form.region" placeholder="请选择活动区域">
+        <el-option label="区域一" value="shanghai"></el-option>
+        <el-option label="区域二" value="beijing"></el-option>
+      </el-select>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible3 = false">取 消</el-button>
+    <el-button type="primary" @click="dialogFormVisible3 = false">确 定</el-button>
+  </div>
+</el-dialog>
   </div>
 </template>
 <script>
@@ -163,6 +189,7 @@ export default {
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,
+        dialogFormVisible3: false,
         form: {
           name: '',
           region: '',

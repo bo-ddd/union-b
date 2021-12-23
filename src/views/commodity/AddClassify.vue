@@ -4,38 +4,21 @@
        <div class="main-classify">
        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="分类名称" prop="name">
-    <el-input  size="small" v-model="ruleForm.name"></el-input>
+    <el-input  v-model="ruleForm.name"></el-input>
   </el-form-item>
   <el-form-item label="上级分类" prop="pid">
-<el-popover
-  placement="bottom"
-  width="400"
-  trigger="click">
-  <div class="superior-classify" style="height:200px">
- <el-input
-    placeholder="请输入内容"
-     size="small"
-    style="width:80%">
-    <i slot="prefix" class="el-input__icon el-icon-search"></i>
-  </el-input>
 <div class="block" style="margin-top:10px">
   <span class="demonstration"></span>
   <el-cascader
-    size="small"
-    v-model="value"
+      ref="cascader"
     :options="options"
-    clearable
-    @change="handleChange">
-      <template slot-scope="{  data }">
-    <span>{{ data.title }}</span>
-  </template>
-    </el-cascader>
+    @change="getId()"
+    :props="{ checkStrictly: true ,label : 'title', children:'child',value:'title' }"
+    clearable></el-cascader>
 </div>
-  </div>
-   <el-select slot="reference" v-model="value"  size="small" style="width:100%">
+   <el-select slot="reference" v-model="value"   style="width:100%">
      
    </el-select>
-</el-popover>
   </el-form-item>
  <!-- <el-form-item label="商品模板" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
@@ -58,11 +41,14 @@
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
-      <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
+        <el-upload
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadClassify"
+  :before-upload="test"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -124,10 +110,12 @@
   </el-form-item> -->
    <el-form-item class="poster-classify" label="广告图片" prop="name">
    <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadSectionFile"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -138,7 +126,7 @@
 </el-form>
         </div>
         <div class="footer">
-            <el-button type="primary" class="submit" size="small" @click="submit">确定</el-button>
+            <el-button type="primary" class="submit"  @click="submit">确定</el-button>
         </div>
      </div>
   </div>
@@ -149,6 +137,8 @@ import {mapActions} from "vuex"
 export default {
  data() {
       return {
+        src:'',
+        pid:'',
          dialogImageUrl: '',
         dialogVisible: false,
         radio1:'1',
@@ -156,78 +146,95 @@ export default {
         radio3:'1',
           radio4:'1',
         radio5:'1',
-        value:'',
         ruleForm: {
           name:'',
           pid:''
         },
-         options: []
+        value:'',
+         options: [],
+         arr:[],
       };
+
     },
     methods: {
-      ...mapActions(["createCategory","getCategoryList"]),
-        handleRemove(file, fileList) {
+      ...mapActions(["createCategory","getCategoryList","uploadImage"]),
+      handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
+      getId(){
+       let res= this.$refs['cascader'].getCheckedNodes();
+       this.ruleForm.pid =res[0].data.id
+      },
      async submit(){
+      //  console.log(this.ruleForm.name)
+      //  console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
+      //  console.log(this.src)
        let res = await this.createCategory({
          title:this.ruleForm.name,
-         pid:null
+         pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+         category:this.src
+
        })
        console.log(res)
       },
       async getClassifyInfo(){
         let res = await this.getCategoryList({});
-        console.log(res)
-       let data =res.data.rows;
+       let data =res.data.rows.slice();
+        this.arr = data;
        let target = this.format(data)
        this.options = target
       },
-        format(target){
-       let childrenIndex = 1;
-       let parentIndex = 1;
-     let res = target.slice();
-     res.forEach(item=>{
-       item.children = [];
-           let p = res.find((el) => el.id == item.pid);
-           if(item.pid){
-             item.childIndex = childrenIndex++ 
-             item.association = '规格' 
-             p.children.push(item)
-           }else{
-             item.pIndex = parentIndex++
-           }
-            item.category = p ? p.category + "=>" + item.title : item.title;
-     })
-     return res.filter(el => el.pid === null)
-  },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      handleChange(){
-        console.log('a')
-      },
+       format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        item.child = item.child || [];
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
       handleChanges(){
         console.log('b')
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+    test(val){
+      let isPNg = val.type === "image/png"||"image/jpg" ;
+      let isSz2m = val.size/1024/1024<2;
+      if(!isPNg){
+        this.$message("图片格式只能是PNG格式")
       }
+      if(!isSz2m){
+        this.$message("上传图片大小不能超过2M")
+      }
+      return isPNg && isSz2m
     },
-    created(){
-      this.getClassifyInfo()
+ async uploadClassify(val){
+       let formData = new FormData();
+       formData.append('file',val.file);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
+         console.log(res)
+        this.src=res.data
+    },
+    async uploadSectionFile(val){
+      let formData = new FormData();
+       formData.append('file',val.file);
+       formData.append('type',3); 
+        let res = await this.uploadImage(formData)
+       
+        this.src=res.data
     }
+  },
+    created(){
+      this.getClassifyInfo();
+    },
 }
 </script>
 
@@ -261,5 +268,10 @@ export default {
 }
 .classify-img,.poster-classify{
   margin-bottom: 0 !important;
+}
+::v-deep .file{
+  & .el-input__inner{
+    border: none;
+  }
 }
 </style>

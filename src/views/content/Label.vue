@@ -8,8 +8,7 @@
             icon="el-icon-plus"
             type="primary"
             @click="dialogFormVisible = true"
-            >创建标签</el-button
-          >
+            >创建标签</el-button>
         </el-row>
         <el-dialog title="创建标签" :visible.sync="dialogFormVisible">
           <el-form :model="form">
@@ -31,17 +30,8 @@
                 >
                   <i slot="suffix" class="el-input__icon el-icon-date"></i>
                 </el-input>
-                值：
-                <el-input
-                  class="input1"
-                  placeholder="请选择已有或手动输入"
-                  v-model="input4"
-                >
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-                <button class="bu">X</button>
               </div>
-              <div class="demo-input-suffix">
+              <!-- <div class="demo-input-suffix">
                 标签键：
                 <el-input
                   class="input1"
@@ -59,8 +49,8 @@
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
                 <button class="bu">X</button>
-              </div>
-              <div class="demo-input-suffix">
+              </div> -->
+              <!-- <div class="demo-input-suffix">
                 标签键：
                 <el-input
                   class="input1"
@@ -78,7 +68,7 @@
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
                 <button class="bu">X</button>
-              </div>
+              </div> -->
             </div>
 
             <div class="se">
@@ -87,9 +77,9 @@
                   class="query1"
                   icon="el-icon-plus"
                   type="primary"
-                  @click="dialogFormVisible = true"
+                  @click="addArticle = true"
                   >添加标签</el-button
-                >
+                > 
               </el-row>
 
               <el-link> <i class="el-icon-link"></i> 帮助文档</el-link>
@@ -126,35 +116,42 @@
     </div>
     <div class="third">
       <div class="third-top">
-
+        <el-table
+    :data="tableData"
+    style="width: 100%"
+   >
+    <el-table-column
+      prop="date"
+      label="标签列表"
+      width="250">
+    </el-table-column>
+  </el-table>
       </div>
       <div class="third-left">
-        <div class="t-f">
-          每页展示 &nbsp;
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </div>
+        <!-- <div class="t-f">
+          
+           <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage2"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="100"
+      layout="sizes, prev, pager, next"
+      :to5tal="1000">
+    </el-pagination>
+         
+        </div> -->
 
         <div>
-          <el-pagination class="paging" small layout="prev, pager, next" :total="20">
-          </el-pagination>
+          <!-- <el-pagination class="paging" small layout="prev, pager, next" :total="20">
+          </el-pagination> -->
         </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped lang='scss'>
-.third-top{
-  height: 300px;
 
-}
 .paging{
   margin-top: 10px;
 }
@@ -217,15 +214,13 @@
   margin-left: 200px;
   margin-top: 40px;
 }
-.bu {
-  margin-left: 10px;
-}
+
 .demo-input-suffix {
   margin-top: 20px;
   margin-left: 112px;
 }
 .input1 {
-  width: 200px;
+  width: 400px;
 }
 .f {
   margin: auto;
@@ -299,9 +294,12 @@
 }
 </style>
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      lableName:'',
+      tableData:[],
       value:'',
       input1: "",
       input2: "",
@@ -311,9 +309,27 @@ export default {
       options:'',
       dialogTableVisible: false,
       dialogFormVisible: false,
+      dialogFormVisibles: false,
       form: {},
       formLabelWidth: "200px",
     };
   },
+  async created(){
+    this.list();
+  },
+  methods:{
+    ...mapActions(["getLableList","createLable"]),
+      async list(){
+        let listAll = await this.getLableList();
+        console.log(listAll);
+      },
+      async addArticle(){
+        let lableAll = await this.createLable({
+          lableName:this.lableName,
+        });
+
+        console.log(lableAll);
+      }
+  }
 };
 </script>

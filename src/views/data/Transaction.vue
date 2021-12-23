@@ -11,7 +11,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>{{allData.storeCount}}</h3>
+            <h3>{{allData.storeCount || 888}}</h3>
             <span>平台商家总数</span>
           </div>
         </div>
@@ -24,7 +24,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>{{allData.goodsCount}}</h3>
+            <h3>{{allData.goodsCount || 8888}}</h3>
             <span>平台商品总数</span>
           </div>
         </div>
@@ -94,7 +94,6 @@
           :data="tableData"
           stripe
           style="width: 100%"
-          size="small"
           id="#out-table"
         >
           <el-table-column prop="date" label="类目"> </el-table-column>
@@ -352,7 +351,7 @@ export default {
       padding: 20px;
       & > div {
         width: 100%;
-        background-color: #e7536b;
+        background-color: var(--color);
         display: flex;
         align-items: center;
         color: white;

@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="header">
       <div class="header-left">
-         <el-button  icon="el-icon-plus" size="small" @click="openFormDialog" type="primary"
+         <el-button  icon="el-icon-plus"  @click="openFormDialog" type="primary"
           >新增商品</el-button
         >
             <el-dialog :visible.sync="dialogFormVisible">
@@ -21,7 +21,7 @@
                           autocomplete="off"
                           class="logisticsIpt"
                         ></el-input>
-                        <span>最多可输入100个字符</span>
+                        <span class="ml-10">最多可输入100个字符</span>
                       </div>
                     </el-form-item>
                     <el-form-item
@@ -41,7 +41,7 @@
                           v-model="form.link"
                           autocomplete="off"
                         ></el-input>
-                        <span>最多可输入1000个字符</span>
+                        <span class="ml-10">最多可输入1000个字符</span>
                       </div>
                     </el-form-item>
 
@@ -57,7 +57,9 @@
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article" class="precontent"></div>
+                    <div v-html="article" class="precontent" >
+                    
+                    </div>
                   </div>
                 </div>
               </div>
@@ -75,23 +77,26 @@
                           v-model="form.name"
                           autocomplete="off"
                         ></el-input>
-                        <span>最多可输入100个字符</span>
+                        <span class="ml-10">最多可输入100个字符</span>
                       </div>
                     </el-form-item>
                     <el-form-item
                       label="图片文件"
                       :label-width="formLabelWidth"
                     >
-
                     <el-upload
-                      class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
-                      list-type="picture">
-                      <el-button size="small" type="primary">上传图片</el-button>
+                      action=""
+                      :http-request="uploadImg"
+                      :on-change="abc"
+                      list-type="picture-card"
+                      :on-preview="handlePictureCardPreview"
+                      :on-remove="handleRemove">
+                      <i class="el-icon-plus"></i>
                     </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                      <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                    
                     </el-form-item>
                     <el-form-item
                       label="图片描述"
@@ -119,7 +124,7 @@
                           v-model="form.region"
                           autocomplete="off"
                         ></el-input>
-                        <span>最多可输入100个字符</span>
+                        <span class="ml-10">最多可输入100个字符</span>
                       </div>
                     </el-form-item>
                     <el-form-item
@@ -131,7 +136,7 @@
                           v-model="form.link"
                           autocomplete="off"
                         ></el-input>
-                        <span>最多可输入1000个字符</span>
+                        <span class="ml-10">最多可输入1000个字符</span>
                       </div>
                     </el-form-item>
                     <el-form-item
@@ -146,7 +151,9 @@
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article"></div>
+                    <!-- <div v-html="article"> -->
+                      <img width="100%" :src="preview" alt="">
+                    <!-- </div> -->
                   </div>
                 </div>
               </div>
@@ -241,10 +248,10 @@
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="240">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary"
+            <el-button  @click="handleEdit(scope.$index, scope.row)" type="primary"
               >修改</el-button
             >
-            <el-button size="mini" @click="deleteRow(scope.$index, tableData)" type="primary"
+            <el-button  @click="deleteRow(scope.$index, tableData)" type="primary"
               >删除</el-button
             >
           </template>
@@ -260,7 +267,8 @@ import {mapActions} from "vuex";
 export default {
   data() {
     return {
-      isDisplay:false,
+       dialogImageUrl: '',
+        dialogVisible: false,
       input2: "",
       input1: "",
       radio: "1",
@@ -270,41 +278,22 @@ export default {
       pageCount:"",
       rows:[],
       tableData: [
-        // {
-        //   date: "2016-05-03",
-        //   name: "王小虎",
-        //   address: "上海市普陀区金沙江路 1518 弄",
-        // },
-        // {
-        //   date: "2016-05-02",
-        //   name: "王小虎",
-        //   address: "上海市普陀区金沙江路 1518 弄",
-        // },
-        // {
-        //   date: "2016-05-04",
-        //   name: "王小虎",
-        //   address: "上海市普陀区金沙江路 1518 弄",
-        // },
-        // {
-        //   date: "2016-05-01",
-        //   name: "王小虎",
-        //   address: "上海市普陀区金沙江路 1518 弄",
-        // },
-        // {
-        //   date: "2016-05-08",
-        //   name: "王小虎",
-        //   address: "上海市普陀区金沙江路 1518 弄",
-        // },
-        // {
-        //   date: "2016-05-06",
-        //   name: "王小虎",
-        //   address: "上海市普陀区金沙江路 1518 弄",
-        // },
-        // {
-        //   date: "2016-05-07",
-        //   name: "王小虎",
-        //   address: "上海市普陀区金沙江路 1518 弄",
-        // },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+       
       ],
       multipleSelection: [],
       options: [
@@ -330,6 +319,7 @@ export default {
         },
       ],
       value: "",
+      preview : '',    // 预览时的照片路径
       dialogFormVisible: false,
       form: {
         name: "",
@@ -344,7 +334,6 @@ export default {
       },
       formLabelWidth: "120px",
       article: null,
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
     };
   },
 
@@ -352,33 +341,35 @@ export default {
     this.getAds()
   },
   methods: {
-    ...mapActions(["getAdvertList"]),
+    ...mapActions(["getAdvertList","uploadImage"]),
    async getAds(){
     let res=await this.getAdvertList();
-    this.rows=res.data.rows;
-    // console.log(this.rows);
+    // this.rows=res.data.rows;
+    console.log(res);
     },
+    
     handleEdit(index, row) {
       console.log(index, row);
     },
-   deleteRow(index, rows) {
-        rows.splice(index, 1);
-      },
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-     handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-     changeDisplay(){
-        this.isDisplay = !this.isDisplay
-      },
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.preview = '';
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.preview = file.url
+      this.dialogVisible = true;
+    },
+    //新增商品，富文本
     openFormDialog() {
       this.dialogFormVisible = true;
       this.initEditor();
@@ -396,6 +387,13 @@ export default {
         editor.create();
       });
     },
+    uploadImg(a){
+      console.log(a);
+    },
+    abc(a){
+      // console.log(a.url);
+      this.preview = a.url;
+    }
   },
 };
 </script>
@@ -469,6 +467,12 @@ export default {
   justify-content: space-around;
   & .textleft {
   width: 60%;
+}
+::v-deep .el-input{
+  width: 60%;
+}
+& .ml-10{
+  margin-left: 10px;
 }
 }
 .preview {

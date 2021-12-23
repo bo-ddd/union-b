@@ -7,7 +7,7 @@
           <span class="description">斗志、奔放</span>
         </div>
         <div class="main-color">
-          <div @click="changeColor('red1')" value="1" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
+          <div @click="changeColor('red1')" class="main-color-item" style="background-color:#fff1f0"><span class="main-color-text">red-1</span></div>
           <div @click="changeColor('red2')" class="main-color-item" style="background-color:#ffccc7"><span class="main-color-text">red-2</span></div>
           <div @click="changeColor('red3')" class="main-color-item" style="background-color:#ffa39e"><span class="main-color-text">red-3</span></div>
           <div @click="changeColor('red4')" class="main-color-item" style="background-color:#ff7875"><span class="main-color-text">red-4</span></div>
@@ -236,12 +236,10 @@ export default {
     }
   },
   methods:{
-    getThisVal(data){
-      console.log(data)
-    },
-       changeColor(num) {
+    changeColor(num) {
       let root = document.querySelector(":root");
-      if (num == 'red1') {
+      localStorage.setItem("theme",num)
+       if (num == 'red1') {
         root.style.setProperty("--color", "rgb(255, 241, 240)");
         root.style.setProperty("--textcolor", "rgb(255, 77, 79)");
       } else if (num == 'red2') {
@@ -611,21 +609,13 @@ export default {
         root.style.setProperty("--color", "rgb(82, 3, 57)");
         root.style.setProperty("--textcolor", "rgb(255, 255, 255)");
       }
+       
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/theme.scss"; 
-:root{
-  --theme-color_red:#ff4d4f;
-  --theme-color_volcano:#ff7a45;
-  --theme-color_orange:#ffa940;
-  --theme-color_gold:#ffc53d;
-  --theme-color_yellow:#ffec3d;
-  --theme-color_lime:#bae637;
-}
 .warp{
   width: 100%;
   height: calc(100vh - 100px);
@@ -649,6 +639,7 @@ export default {
         height: 70px;
         font-size: 22px;
         text-align: center;
+        cursor: pointer;
         & .main-title{
           height: 50px;
           line-height: 50px;

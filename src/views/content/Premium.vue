@@ -28,7 +28,7 @@
     stripe
     style="width: 100%">
     <el-table-column
-      prop="date"
+      prop="name"
       label="名称"
       width="280">
     </el-table-column>
@@ -38,7 +38,7 @@
       width="180">
     </el-table-column>
     <el-table-column
-      prop="num"
+      prop="goodnum"
       label="关联商品数量">
     </el-table-column>
     <el-table-column
@@ -46,7 +46,7 @@
       label="展示区域">
     </el-table-column>
     <el-table-column
-      prop="num"
+      prop="broadcast"
       label="播放量"
       width="120">
     </el-table-column>
@@ -167,24 +167,32 @@ export default {
         }],
         tableData: [{
           date: '2016-05-02',
-          name: '王小虎',
+          name: '奶粉通货行情',
           num:1,
-          address: '上海市普陀区金沙江路 1518 弄'
+          goodnum:5,
+          address: '全国',
+          broadcast:"92,394"
         }, {
           date: '2016-05-04',
-          name: '王小虎',
-           num:1,
-          address: '上海市普陀区金沙江路 1517 弄'
+          name: '尿不湿通货行情',
+          num:2,
+          goodnum:12,
+          address: '北京,上海,天津',
+          broadcast:"234"
         }, {
           date: '2016-05-01',
-          name: '王小虎',
-           num:1,
-          address: '上海市普陀区金沙江路 1519 弄'
+          name: '食品辅食',
+          num:3,
+          goodnum:22,
+          address: '全国',
+          broadcast:"768"
         }, {
           date: '2016-05-03',
-          name: '王小虎',
-           num:1,
-          address: '上海市普陀区金沙江路 1516 弄'
+          name: '婴幼营养',
+          num:4,
+          goodnum:80,
+          address: '上海,天津',
+          broadcast:"2,354"
         }],
         dialogFormVisible: false,
         dialogFormVisible1: false,

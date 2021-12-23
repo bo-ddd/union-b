@@ -313,7 +313,7 @@ export default {
     /**
      * @description 当前行下降一位
      */
-    sescendingOrder(row) {
+  async sescendingOrder(row) {
       var fn = (row) => {
         console.log(row);
         if (row.child.length) {
@@ -361,6 +361,11 @@ export default {
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
       this.ordSort(this.renderDynamic);
+        let res = await this.categoryOrders({
+        currentDataord: obj.currentData.ord,
+        preDataord: obj.preData.ord,
+      });
+      console.log(res);
     },
     /**
      * @description 删除当前行

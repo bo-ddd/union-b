@@ -114,6 +114,9 @@ export default {
            phone:this.form.phone
         })
         console.log(res);
+        this.$router.push({
+            path: "/login",
+          });
         this.$message({
           type:"warning",
           message:`${res.msg}`

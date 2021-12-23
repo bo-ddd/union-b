@@ -2,24 +2,24 @@
 <div class="wrap">
     <div class="selectbox">
         <div>
-            <span>角色归属</span>
-            <el-select v-model="value" placeholder="全部" size='small' class="mar-right_20">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            <span>申请角色</span>
+            <el-select v-model="value" placeholder="全部" clearable class="mar-right_20">
+                <el-option v-for="item in IdentList" :key="item.id" :label="item.identityName" :value="item.id">
                 </el-option>
             </el-select>
-            <el-select v-model="values" filterable placeholder="商铺名称" size='small'>
-                <el-option v-for="item in option" :key="item.value" :label="item.label" :value="item.value">
+            <span>申请状态</span>
+            <el-select v-model="typevalue" placeholder="全部" clearable class="mar-right_20">
+                <el-option v-for="(item,index) in typeArr" :key="index" :label="item" :value="index">
                 </el-option>
             </el-select>
         </div>
         <div>
-            <el-button size='small' type="primary">查询</el-button>
-            <el-button size='small' plain>重置</el-button>
+            <el-button type="primary" @click="inquiry">查询</el-button>
+            <el-button plain @click="reset">重置</el-button>
         </div>
     </div>
     <div class="btnbox">
-        <el-button size='small' icon="el-icon-plus" type="primary" @click="jump">商户入驻</el-button>
-        <el-button size='small' plain>批量删除</el-button>
+        <el-button icon="el-icon-plus" type="primary" @click="jump">商户入驻</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe>
         <el-table-column label="申请人" prop="userName" align="center">
@@ -56,44 +56,14 @@ export default {
     data() {
         return {
             tableData: [],
-            options: [{
-                value: '选项1',
-                label: '黄金糕'
-            }, {
-                value: '选项2',
-                label: '双皮奶'
-            }, {
-                value: '选项3',
-                label: '蚵仔煎'
-            }, {
-                value: '选项4',
-                label: '龙须面'
-            }, {
-                value: '选项5',
-                label: '北京烤鸭'
-            }],
-            option: [{
-                value: '选项1',
-                label: '黄金糕'
-            }, {
-                value: '选项2',
-                label: '双皮奶'
-            }, {
-                value: '选项3',
-                label: '蚵仔煎'
-            }, {
-                value: '选项4',
-                label: '龙须面'
-            }, {
-                value: '选项5',
-                label: '北京烤鸭'
-            }],
+            IdentList: [],
             value: '',
-            values: ''
+            typevalue: '',
+            typeArr: ['待审核', '审核已通过', '审核未通过']
         }
     },
     methods: {
-        ...mapActions(["getSettledList", "settledAdopt", "settledRefuse"]),
+        ...mapActions(["getSettledList", "settledAdopt", "settledRefuse", "getIdentityList"]),
         handleEdit(id) {
             this.$confirm('是否可以审核通过', '审核信息', {
                     distinguishCancelAndClose: true,
@@ -131,18 +101,38 @@ export default {
             return getTime(time)
         },
         getType(type) {
-            let arr = ['待审核', '审核已通过', '审核未通过']
-            return arr[type]
+            return this.typeArr[type]
         },
         async getList() {
             let res = await this.getSettledList();
+            console.log(res)
             if (res.status) {
                 this.tableData = res.data.rows
             }
+        },
+        async getIdentList() {
+            let res = await this.getIdentityList()
+            if (res.status) {
+                this.IdentList = res.data.rows
+            }
+            console.log(this.IdentList)
+        },
+        reset() {
+            this.value = ''
+        },
+        async inquiry() {
+            let res = await this.getSettledList({
+                role: this.value
+            });
+            if (res.status) {
+                this.tableData = res.data.rows
+            }
+            console.log(this.tableData)
         }
     },
     created() {
         this.getList()
+        this.getIdentList()
     }
 }
 </script>

@@ -2,26 +2,28 @@
   <div class="warp">
     <!-- 刘青松 -->
     <div class="class">
-      <div class="fen"><span>商品数据</span> <i class="el-icon-edit"></i></div>
-      <div class="fen"><span>商品数据</span> <i class="el-icon-edit"></i></div>
-      <div class="fen"><span>商品数据</span> <i class="el-icon-edit"></i></div>
-      <div class="fen"><span>商品数据</span> <i class="el-icon-edit"></i></div>
+      <div><span>商品数据</span><i class="el-icon-edit el-icon--right"></i></div>
+      <div><span>商品数据</span><i class="el-icon-edit el-icon--right"></i></div>
+      <div><span>商品数据</span><i class="el-icon-edit el-icon--right"></i></div>
+      <div><span>商品数据</span><i class="el-icon-edit el-icon--right"></i></div>
     </div>
     <div class="filter">
       <div>
-        <el-date-picker
-          v-model="value1"
-          type="datetimerange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :default-time="['12:00:00']">
-        </el-date-picker>
-      </div>
-      <div>
-        <el-cascader
-          v-model="value"
-          :options="options"
-          @change="handleChange"></el-cascader>
+        <div>
+          <el-date-picker
+            v-model="value1"
+            type="datetimerange"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :default-time="['12:00:00']">
+          </el-date-picker>
+        </div>
+        <div>
+          <el-cascader
+            v-model="value"
+            :options="options"
+            @change="handleChange"></el-cascader>
+        </div>
       </div>
       <div class="chaxun">
         <el-button type="primary" @click="filter">查询</el-button>
@@ -49,7 +51,7 @@
       <div class="bottom-b">
         <div>
           <h6>商品类目销量前10名</h6>
-          <el-table border :data="tableData" stripe size="small">
+          <el-table border :data="tableData" stripe>
             <el-table-column prop="categoryTitle" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="count" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
@@ -57,7 +59,7 @@
         </div>
         <div>
           <h6>商品数量销量前10名</h6>
-          <el-table border :data="tableData1" stripe size="small">
+          <el-table border :data="tableData1" stripe>
             <el-table-column prop="categoryTitle" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="price" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
@@ -65,7 +67,7 @@
         </div>
         <div>
           <h6>商品店铺销量前10名</h6>
-          <el-table border :data="tableData2" stripe size="small">
+          <el-table border :data="tableData2" stripe>
             <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
@@ -73,7 +75,7 @@
         </div>
         <div>
           <h6>快递小哥配送前10名</h6>
-          <el-table border :data="tableData3" stripe size="small">
+          <el-table border :data="tableData3" stripe>
             <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
             <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
             <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
@@ -124,18 +126,7 @@ export default {
       }], 
       value:"",
       value1:"",
-      tableData: [
-        // { name: "牛奶", date: "100", address: "1" },
-        // { name: "啤酒", date: "98", address: "2" },
-        // { name: "手机", date: "95", address: "3" },
-        // { name: "电视机", date: "89", address: "4" },
-        // { name: "洗衣机", date: "86", address: "5" },
-        // { name: "冰箱", date: "83", address: "6" },
-        // { name: "空调", date: "80", address: "7" },
-        // { name: "自行车", date: "50", address: "8" },
-        // { name: "窗帘", date: "30", address: "9" },
-        // { name: "毛衣", date: "29", address: "10" },
-      ],
+      tableData: [],
       tableData1:[],
       tableData2:[],
       tableData3:[],
@@ -354,20 +345,18 @@ export default {
   min-width: 1100px;
   height: 80vh;
 }
-// ::v-deep .el-input__inner,
-// .filter .el-input{
-//   height: 55%;
-// }
-// ::v-deep .el-date-editor .el-range__icon,::v-deep .el-date-editor .el-range-separator{
-//   line-height: 150%;
-// }
-// ::v-deep .el-cascader .el-input .el-input__inner{
-//   padding: 1.24% 5% 1.24% 3%;
-// }
+
 .class {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1%;
+  &>div{
+    background: var(--color);
+    padding: 4.5% 6%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
   & .fen {
     background: #409EFF;
     padding: 5% 3.5%;
@@ -386,28 +375,16 @@ export default {
 .filter {
   margin: 1% 0;
   border-radius: 3px;
-  padding-left: 1%;
   background: white;
   display: flex;
-  position: relative;
+  justify-content: space-between;
+  padding: 0.5% 1%;
   & > div {
-    height: 8vh;
-    padding-right: 2%;
     display: flex;
     align-items: center;
-    & .el-input{
-      height: 8vh !important;
-    }
-  }
-  & > .chaxun {
-    position: absolute;
-    right: 0px;
-    height: 100%;
   }
 }
-// ::v-deep .el-cascader,::v-deep .el-cascader>.el-input{
-//   height: 100%;
-// }
+
 ::v-deep .el-cascader>.el-input{
   display: flex;
   align-items: center;
@@ -428,8 +405,8 @@ export default {
     border-radius: 5px;
   }
 }
-::v-deep .filter .el-button {
-  padding: 12% 16%;
+::v-deep .el-cascader .el-input .el-input__inner{
+  margin-left: 10%;
 }
 .filter {
   font-size: 14px;

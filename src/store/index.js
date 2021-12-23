@@ -40,6 +40,10 @@ export default new Vuex.Store({
         },
         //用户信息
         getUserInfo(ctx, payload) {
+           Api.userGetToken().then(res=>{
+               sessionStorage.setItem('token',res.data)
+               console.log(res);
+            });
             return Api.getUserInfo(payload);
         },
         //退出登录
@@ -87,7 +91,7 @@ export default new Vuex.Store({
         },
         //商品类目排序接口
         categoryOrders(ctx, payload) {
-            return Api.CategoryOrders(payload);
+            return Api.categoryOrders(payload);
         },
         //类目规格接口
         getSpecificationList(ctx, payload) {
@@ -198,10 +202,6 @@ export default new Vuex.Store({
         //支付方式接口
         getPaymentList(ctx, payload) {
             return Api.getPaymentList(payload);
-        },
-        //获取快递接口
-        getExpressList(ctx, payload) {
-            return Api.getExpressList(payload);
         },
 
         //系统设置

@@ -24,13 +24,16 @@
           </div>
         </el-form>
         <div class="main-pack">
-          <span class="annex">上传图片附件(可不上传)</span>
-          <!-- <i class="el-icon-warning-outline icon-img"></i> -->
-          <!-- <span class="tips-img"
-            >请上传一张图片，格式jpg，尺寸640*384，大小在30k之内</span
-          > -->
+          <span class="annex">上传图片附件</span>
+          <i class="el-icon-warning-outline icon-img"></i>
+          <span class="tips-img">可不上传或可传一张图</span>
           <div class="img-pack">
-            <el-upload action="" list-type="picture-card" :http-request="sss">
+            <el-upload
+              action=""
+              list-type="picture-card"
+              :http-request="sss"
+              :limit="1"
+            >
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible" ref="file">
@@ -56,7 +59,7 @@ export default {
       form: {
         title: "",
         content: "",
-        img_url: "",
+        imgUrl: [],
       },
       dialogVisible: false,
     };
@@ -65,42 +68,23 @@ export default {
     ...mapActions(["createOpinion", "getOpinionList", "uploadImage"]),
 
     async createop() {
-      let { title, content, img_url } = this.form;
-      let res = await this.createOpinion({
-        title,
-        content,
-        img_url,
-      });
+      let res = await this.createOpinion(this.form);
       console.log(res);
       // let res1 = await this.getOpinionList({});
       // console.log(res1);
-
-      // 上传图片
-      this.$nextTick(() => {
-        console.log(this.$refs.file);
-        lout("file");
-      });
     },
-
+    // 接口上传图片
     async sss(val) {
-      let a = lout(val.file, 1);
+      let a = lout(val.file, 2);
       // console.log(a.get("file"));
       let res = await this.uploadImage(a);
-      console.log(res);
+      this.form.imgUrl.push(res.data);
+      console.log(res.data);
     },
 
     // 提交点击事件
     onSubmit() {
       this.createop();
-    },
-
-    // 上传图片
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      this.img_url = file.url;
-      this.dialogVisible = true;
     },
   },
 };

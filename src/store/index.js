@@ -58,6 +58,14 @@ export default new Vuex.Store({
         uploadImage(ctx, payload) {
             return Api.uploadImage(payload);
         },
+        //身份列表接口
+        getIdentityList(ctx, payload) {
+            return Api.getIdentityList(payload);
+        },
+        //新增身份接口
+        createIdentity(ctx, payload) {
+            return Api.createIdentity(payload);
+        },
 
 
         //商品管理
@@ -72,6 +80,10 @@ export default new Vuex.Store({
         //添加类目接口
         createCategory(ctx, payload) {
             return Api.createCategory(payload);
+        },
+        //商品类目排序接口
+        categoryOrders(ctx, payload) {
+            return Api.CategoryOrders(payload);
         },
         //类目规格接口
         getSpecificationList(ctx, payload) {
@@ -100,6 +112,14 @@ export default new Vuex.Store({
         //添加单位接口
         createUnitlibrary(ctx, payload) {
             return Api.createUnitlibrary(payload);
+        },
+        //商品单位排序接口
+        unitlibraryOrders(ctx, payload) {
+            return Api.unitlibraryOrders(payload);
+        },
+        //商品单位置顶接口
+        unitlibraryStick(ctx, payload) {
+            return Api.unitlibraryStick(payload);
         },
 
 
@@ -174,6 +194,10 @@ export default new Vuex.Store({
         //支付方式接口
         getPaymentList(ctx, payload) {
             return Api.getPaymentList(payload);
+        },
+        //获取快递接口
+        getExpressList(ctx, payload) {
+            return Api.getExpressList(payload);
         },
 
         //系统设置

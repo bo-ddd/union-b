@@ -33,9 +33,9 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage" 
-        :page-sizes="[5, 10, 15, 25]"
+        :page-sizes="[10, 15, 20, 25]"
         :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper" 
+        layout="total, sizes, prev, pager, next, jumper"
         :total="tableData.length">
         </el-pagination>
       </div>
@@ -129,8 +129,8 @@ export default {
      */
     mySort(tableData) {
       tableData.sort((a, b) => {
-        var num1 = a.id;
-        var num2 = b.id;
+        var num1 = a.ord;
+        var num2 = b.ord;
         return num1 - num2;
       });
     },
@@ -163,12 +163,16 @@ export default {
      */
     async List() {
       let res = await this.getUnitlibraryList({
-        pagination: false,
-        // pageNum:1,//当前第几页
-        // pageSize:10,//每页多少条数据  默认是10条
+        pagination: true, 
+        pageNum:1,
+        pageSize:20, 
+        //  pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+        //  pageNum   [number]    这是第几页      默认是第1页
+        //  pageSize  [number]    每页多少条数据  默认是10条
       });
       console.log(res);
       this.tableData = res.data.rows;
+      this.mySort(this.tableData)
       this.handleSizeChange(10);
     },
     /**

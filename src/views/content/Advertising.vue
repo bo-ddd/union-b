@@ -82,8 +82,17 @@
                       label="图片文件"
                       :label-width="formLabelWidth"
                     >
-                      <input class="content-img" type="file" name="file" ref="file" />
-                       <button @click="upload2">上传</button>
+                    <el-upload
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      list-type="picture-card"
+                      :on-preview="handlePictureCardPreview"
+                      :on-remove="handleRemove">
+                      <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                      <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                    
                     </el-form-item>
                     <el-form-item
                       label="图片描述"
@@ -252,7 +261,8 @@ import {mapActions} from "vuex";
 export default {
   data() {
     return {
-      isDisplay:false,
+       dialogImageUrl: '',
+        dialogVisible: false,
       input2: "",
       input1: "",
       radio: "1",
@@ -324,20 +334,13 @@ export default {
     this.getAds()
   },
   methods: {
-    ...mapActions(["getAdvertList","uploadImage"]),
+    ...mapActions(["getAdvertList"]),
    async getAds(){
     let res=await this.getAdvertList();
     this.rows=res.data.rows;
     // console.log(this.rows);
     },
-    //上传图片
-     async  upload2(){
-            let formData = new FormData();
-            formData.append('file',this.$refs.file.files[0]);
-            formData.append('type',2); 
-            let res  =  await this.uploadImage(formData);
-            console.log(res);                                
-        },
+    
     handleEdit(index, row) {
       console.log(index, row);
     },
@@ -347,13 +350,17 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-   
-     changeDisplay(){
-        this.isDisplay = !this.isDisplay
-      },
     handleClick(tab, event) {
       console.log(tab, event);
     },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+    //新增商品，富文本
     openFormDialog() {
       this.dialogFormVisible = true;
       this.initEditor();

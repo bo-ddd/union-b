@@ -20,11 +20,11 @@
   </el-input>
 <div class="block" style="margin-top:10px">
   <span class="demonstration"></span>
- <el-cascader ref="cascader" v-model="addrCode" :options="options" :props="{ checkStrictly: true, expandTrigger: 'hover', emitPath: false }">
+ <el-cascader ref="cascader" v-model="addrCode" :options="options"  children="child">
       <template slot-scope="{ node, data }">
         <div @click="cascaderClick(data)">
           <span>{{ data.title }}</span>
-          <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+          <span v-if="!node.isLeaf"> ({{ data.child.length }}) </span>
         </div>
       </template>
     </el-cascader>
@@ -154,7 +154,7 @@ export default {
       return {
         src:'',
         pid:'',
-        addrCode: undefined,
+        addrCode: [],
          dialogImageUrl: '',
         dialogVisible: false,
         radio1:'1',
@@ -194,8 +194,22 @@ export default {
       async getClassifyInfo(){
         let res = await this.getCategoryList({});
        let data =res.data.rows.slice();
-       this.options = data
+       let target = this.format(data)
+       this.options = target
       },
+       format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        item.child = item.child || [];
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -216,9 +230,8 @@ export default {
         this.$refs[formName].resetFields();
       },
       cascaderClick (nodeData) {
-      this.addrCode = nodeData.title;
+      
       this.ruleForm.pid = nodeData.id || nodeData.pid
-      this.$refs.cascader.checkedValue = nodeData.title;
       this.$refs.cascader.computePresentText();
       this.$refs.cascader.toggleDropDownVisible(false);
        this.$message({

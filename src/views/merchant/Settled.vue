@@ -17,7 +17,7 @@
                     <el-input class="el-input"></el-input>
                 </el-form-item>
                 <el-form-item label="上传营业执照" :rules="[{required: true}]" class="img">
-                    <el-upload action="" list-type="picture-card" :http-request="upload" :before-upload="text">
+                    <el-upload action="" list-type="picture-card" :http-request="upload" :before-upload="text" limit="1">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                     <el-dialog :visible.sync="dialogVisible">

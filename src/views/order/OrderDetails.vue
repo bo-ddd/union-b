@@ -1,52 +1,52 @@
 <template>
   <div class="box">
     <el-form label-position="left" inline class="demo-table-expand">
-      <el-form-item label="订单id">
+      <el-form-item label="订单id：">
         <span>{{ tableData.orderId  }}</span>
       </el-form-item>
-      <el-form-item label="订单总价">
+      <el-form-item label="订单总价：">
         <span>{{ tableData.totalPrice  }}</span>
       </el-form-item>
-      <el-form-item label="快递公司名称">
+      <el-form-item label="快递公司名称：">
         <span>{{ tableData.expressName  }}</span>
       </el-form-item>
-      <el-form-item label="店铺名称">
+      <el-form-item label="店铺名称：">
         <span>{{ tableData.storeTitle }}</span>
       </el-form-item>
-      <el-form-item label="用户名称">
+      <el-form-item label="用户名称：">
         <span>{{ tableData.avatorName  }}</span>
       </el-form-item>
-      <el-form-item label="用户电话">
+      <el-form-item label="用户电话：">
         <span>{{ tableData.userPhone }}</span>
       </el-form-item>
-      <el-form-item label="支付方式">
+      <el-form-item label="支付方式：">
         <span>{{ tableData.paymentName }}</span>
       </el-form-item>
-      <el-form-item label="下单时间">
+      <el-form-item label="下单时间：">
         <span>{{ tableData.createdAt }}</span>
       </el-form-item>
-      <el-form-item label="收货人">
+      <el-form-item label="收货人：">
         <span>{{ tableData.consignee }}</span>
       </el-form-item>
-      <el-form-item label="国家">
+      <el-form-item label="国家：">
         <span>{{ tableData.country }}</span>
       </el-form-item>
-      <el-form-item label="省份">
+      <el-form-item label="省份：">
         <span>{{ tableData.province }}</span>
       </el-form-item>
-      <el-form-item label="市">
+      <el-form-item label="市：">
         <span>{{ tableData.city }}</span>
       </el-form-item>
-      <el-form-item label="县/区">
+      <el-form-item label="县/区：">
         <span>{{ tableData.area }}</span>
       </el-form-item>
-      <el-form-item label="详情地址">
+      <el-form-item label="详情地址：">
         <span>{{ tableData.address }}</span>
       </el-form-item>
-      <el-form-item label="邮政编码">
+      <el-form-item label="邮政编码：">
         <span>{{ tableData.zipcode }}</span>
       </el-form-item>
-      <el-form-item label="状态">
+      <el-form-item label="状态：">
         <span>{{ tableData.orderStatus }}</span>
       </el-form-item>
     </el-form>
@@ -67,6 +67,23 @@
         <span class="te-r"> {{item.singlePrice*100*item.count/100}}</span>
       </div>
     </div>
+    <el-form label-position="left"  inline class="demo-table-expand tx-r ">
+      <el-form-item label="订单id：">
+        <span>{{ tableData.orderId  }}</span>
+      </el-form-item>
+      <el-form-item label="订单总价：">
+        <span>{{ tableData.totalPrice  }}</span>
+      </el-form-item>
+      <el-form-item label="快递公司名称：">
+        <span>{{ tableData.expressName  }}</span>
+      </el-form-item>
+      <el-form-item label="店铺名称：">
+        <span>{{ tableData.storeTitle }}</span>
+      </el-form-item>
+      <el-form-item label="应付总额：">
+        <span class="c-red fs-20">{{ tableData.storeTitle }}</span>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -110,12 +127,25 @@ export default {
     padding-left: 15px;
   }
 
+  & .tx-r{
+    text-align: right;
+  }
+
   & ::v-deep .el-form--inline .el-form-item__label{
     font-size: 14px !important;
   }
 
   & ::v-deep .el-form-item__content{
     font-size:13px !important;
+    width:230px;
+  }
+
+  & .c-red{
+    color:red;
+  }
+
+  & .fs-20{
+    font-size: 20px;
   }
 
   & .el-form {

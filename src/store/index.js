@@ -179,10 +179,6 @@ export default new Vuex.Store({
         getPaymentList(ctx, payload) {
             return Api.getPaymentList(payload);
         },
-        //获取快递接口
-        getExpressList(ctx, payload) {
-            return Api.getExpressList(payload);
-        },
 
         //系统设置
         //意见反馈接口

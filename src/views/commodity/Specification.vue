@@ -62,7 +62,13 @@
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column type="selection" align="center"> </el-table-column>
+        <el-table-column
+          type="selection"
+          align="center"
+          v-model="checked"
+          @click="checkedclick()"
+        >
+        </el-table-column>
         <el-table-column label="id" align="center" prop="id" sortable>
         </el-table-column>
         <el-table-column
@@ -147,7 +153,7 @@
           >
         </div>
         <div class="footer_right">
-          <!-- <div class="block">
+          <div class="block">
             <el-pagination
               :current-page="currentPage4"
               :page-sizes="[6, 10, 15, 20]"
@@ -155,16 +161,15 @@
             >
             </el-pagination>
             <div>输入按回车</div>
-          </div> -->
+          </div>
           <div class="block2">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="currentPage3"
-              :page-sizes="[10, 15, 20]"
-              :page-size="100"
-              layout="total, sizes, prev, pager, next"
-              :total="arr.length"
+              :page-size="10"
+              layout="total,size,prev, pager, next"
+              :total="table.length"
             >
             </el-pagination>
           </div>
@@ -208,6 +213,7 @@ export default {
       // pageCount: "", //所有页数
       arr: [],
       deleteDataArr1: [],
+      // deleteDataArr2: [],
       form: {
         serialId: "",
         speName: "",
@@ -293,7 +299,7 @@ export default {
     async spelist() {
       let res = await this.getSpecificationList({
         pagination: false,
-       pageSize:43
+        pageSize: 43,
       });
       console.log(res);
       this.count = res.data.count;
@@ -305,6 +311,13 @@ export default {
         this.arr.push(item);
       });
     },
+    //批量删除（查看是否选中）
+    // checkedclick() {
+    //   //把符合条件的数据放到一个数组里，然后用splice删除
+    //   if(this.checked == true){
+    //     this.deleteDataArr2.push()
+    //   }
+    // },
     //分页
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -326,6 +339,10 @@ export default {
   async created() {
     this.spelist();
     this.table = this.arr;
+    this.table.map((i) => {
+      i.show = false;
+      return i;
+    });
   },
 };
 </script>

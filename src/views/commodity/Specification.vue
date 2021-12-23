@@ -62,7 +62,13 @@
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column type="selection" align="center"> </el-table-column>
+        <el-table-column
+          type="selection"
+          align="center"
+          v-model="checked"
+          @click="checkedclick()"
+        >
+        </el-table-column>
         <el-table-column label="id" align="center" prop="id" sortable>
         </el-table-column>
         <el-table-column
@@ -146,32 +152,22 @@
             >批量删除</el-button
           >
         </div>
-        <div class="footer_right">
-          <!-- <div class="block">
-            <el-pagination
-              :current-page="currentPage4"
-              :page-sizes="[6, 10, 15, 20]"
-              layout="sizes"
-            >
-            </el-pagination>
-            <div>输入按回车</div>
-          </div> -->
-          <div class="block2">
+          <div class="footer_right">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage3"
-              :page-sizes="[10, 15, 20]"
+              :current-page.sync="currentPage"
+              :page-sizes="[10, 20, 30, 40, 50]"
               :page-size="100"
-              layout="total, sizes, prev, pager, next"
-              :total="arr.length"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="renderDynamic.length"
+              background
             >
             </el-pagination>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -187,9 +183,9 @@ export default {
       input3: "",
       select: "",
       currentPage1: 1,
-      currentPage2: 5,
-      currentPage3: 3,
-      currentPage4: 4,
+      currentPage4: 1,
+      pageSize1: 45,
+      pageNum1: "",
       options: [
         {
           value: "选项1",
@@ -200,12 +196,11 @@ export default {
           label: "备注",
         },
       ],
-      pagination: true,
+      pagination: false,
       id: "",
       title: "",
       productCategory: "",
       count: "", //所有条数
-      // pageCount: "", //所有页数
       arr: [],
       deleteDataArr1: [],
       form: {
@@ -223,11 +218,11 @@ export default {
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
       multipleSelection: [],
+
       currentPage: 1,
-      pageSize: 43, //每页条数
       table: [],
-      pageNum: "", //一共几页
-      num: "",
+      pageSize: 10, //每页条数
+      renderDynamic: [],
     };
   },
   watch: {
@@ -293,40 +288,65 @@ export default {
     async spelist() {
       let res = await this.getSpecificationList({
         pagination: false,
-       pageSize:43
+        pageNum: 1,
+        pageSize: this.pageSize1,
       });
       console.log(res);
-      this.count = res.data.count;
-      this.pageCount = res.data.pageCount;
-      res.data.rows.forEach((item) => {
-        this.id = item.id;
-        this.title = item.title;
-        this.productCategory = item.productCategory;
-        this.arr.push(item);
-      });
+      // this.pageSize1 = res.data.count.slice();
+      this.renderDynamic = res.data.rows.slice();
+      this.handleSizeChange(10);
     },
+    //批量删除（查看是否选中）
+    // checkedclick() {
+    //   //把符合条件的数据放到一个数组里，然后用splice删除
+    //   if(this.checked == true){
+    //     this.deleteDataArr2.push()
+    //   }
+    // },
     //分页
+    //分页有多少条
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.pageSize = val;
       this.handleCurrentChange(1);
     },
+    //分页的当前页有多少条
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
-      this.pageNum = val;
-      this.offSize();
+      let arr = [];
+      for (
+        let i = val * this.pageSize - this.pageSize;
+        i < val * this.pageSize;
+        i++
+      ) {
+        if (this.renderDynamic[i] != undefined) arr.push(this.renderDynamic[i]);
+      }
+      this.table = arr;
     },
-    offSize() {
-      this.num = this.pageSize * (this.pageNum - 1);
-      this.Num();
-    },
-    Num() {
-      this.table = this.arr.slice(this.num, this.num + this.pageSize);
-    },
+
+    // handleSizeChange(val) {
+    //   console.log(`每页 ${val} 条`);
+    //   this.pageSize1 = val;
+    //   this.handleCurrentChange(0);
+    // },
+    // handleCurrentChange(val) {
+    //   console.log(`当前页: ${val}`);
+    //   this.pageNum1 = val;
+    //   this.table = this.Num();
+    // },
+    // Num() {
+    //   // console.log(this.offSize + this.pageSize);
+    //   console.log(this.offSize);
+    //   let res = this.arr.slice(this.offSize, this.offSize + this.pageSize);
+    //   return res;
+    // },
   },
   async created() {
     this.spelist();
-    this.table = this.arr;
   },
+  // computed: {
+  //   offSize() {
+  //     return this.pageSize || 10 * (this.pageNum1 - 1);
+  //   },
+  // },
 };
 </script>
 

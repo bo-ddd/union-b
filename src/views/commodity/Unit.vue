@@ -11,20 +11,21 @@
     </div>
     <div class="table">
       <el-table :data="table" style="width: 100%" :header-cell-style="{ background: '#f7f8fa' }">
-        <el-table-column prop="ord" label="序号"> </el-table-column>
+        <el-table-column prop="index" label="序号"> </el-table-column>
         <el-table-column prop="title" label="单位名称"> </el-table-column>
         <el-table-column prop="categoryTitle" label="类目"> </el-table-column>
         <el-table-column prop="storeTitle" label="店铺"> </el-table-column>
         <el-table-column label="排序">
           <template slot-scope="scope">
-            <el-link type="primary" class="link" @click="Topping(scope.row.ord)">置顶</el-link>
-            <el-link type="primary" class="link" @click="raise(scope.row.ord)">升序</el-link>
-            <el-link type="primary" class="link" @click="Down(scope.row.ord)">降序</el-link>
+            <el-link type="primary" class="link" @click="Topping(scope.row)">置顶</el-link>
+            <el-link type="primary" class="link" @click="raise(scope.row)">升序</el-link>
+            <el-link type="primary" class="link" @click="Down(scope.row)">降序</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-link type="primary" @click="Disable(scope.row.ord)">禁用</el-link>
+            <el-link :type="type" class="operation">{{scope.row.disable ? '已启用' : '已禁用'}}</el-link>
+            <el-link :type="types" class="operation" @click="Disable(scope.row.ord)">{{scope.row.disable ? '禁用' : '启用'}}</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -65,6 +66,8 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      type:'',
+      types:'',
       currentPage: 1,
       pageSize:'',
       input: "",
@@ -93,42 +96,55 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick"]),
     /**
      * @description 置顶的方法
      */
-    Topping(ord) {
-      if (ord == 1) return;
-      console.log(ord);
-      console.log(ord - 1);
+    async Topping(ord) {
+      var num = ord.ord;
+      let res = await this.unitlibraryStick({
+        ord:num
+      })
+      console.log(res);
+      this.List();
     },
     /**
      * @description 升序的方法
      */
-    raise(ord) {
-      if (ord == 1) return;
-      console.log(ord);
-      console.log(ord - 1);
+    async raise(ord) {
+      let num = this.tableData[ord.index-2].ord;
+        let res = await this.unitlibraryOrders({
+          currentDataord:ord.ord,
+          preDataord:num
+        })
+        console.log(res);
+        this.List();
     },
     /**
      * @description 降序的方法
      */
-    Down(ord) {
-      if (ord == 10) return;
-      console.log(ord);
-      console.log(ord + 1);
+    async Down(ord) {
+      let num = this.tableData[ord.index].ord;
+      let res = await this.unitlibraryOrders({
+        currentDataord:ord.ord,
+        preDataord:num
+    //  * currentDataord     [nmber] 当前的类目
+    //  * preDataord            [number]要跟交换的类目
+      })
+      console.log(res);
+      this.List();
     },
     /**
      * @description 禁用的方法
      */
     Disable(ord) {
       console.log(ord);
+      this.List();
     },
     /**
      * @description 排序的方法
      */
     mySort(tableData) {
-      console.log(tableData);
       tableData.sort((a, b) => {
         var num1 = a.ord;
         var num2 = b.ord;
@@ -164,16 +180,19 @@ export default {
      */
     async List() {
       let res = await this.getUnitlibraryList({
-        pagination: true, 
-        pageNum:5,
-        pageSize:10, 
-        //  pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
-        //  pageNum   [number]    这是第几页      默认是第1页
-        //  pageSize  [number]    每页多少条数据  默认是10条
+        pagination: true,
+        pageNum:1,
+        pageSize:100,
+        //  * pageNum   [number]    每页多少条数据  默认是10条
+        //  * pageSize  [number]    这是第几页      默认是第1页
       });
-      console.log(res);
+      console.log(res.data);
       this.tableData = res.data.rows;
-      this.mySort(this.tableData)
+      this.tableData.forEach((item,index)=>{
+        item.index = index+1;
+        this.type = item.disable ? 'primary' : 'danger'
+        this.types = item.disable ? 'danger' : 'primary'
+      })
       this.handleSizeChange(10);
     },
     /**
@@ -198,6 +217,7 @@ export default {
       }
       this.table = arr;
     },
+
   },
   created() {
     this.List();

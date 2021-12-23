@@ -41,7 +41,7 @@ export default {
           type:"warning",
           message:"密码长度为6-15位"
         })
-      }else if(!this.newpassword==this.confirmpass){
+      }else if(this.newpassword!==this.confirmpass){
         this.$message({
           type:"warning",
           message:"两次输入密码不一致"

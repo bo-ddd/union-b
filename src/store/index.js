@@ -40,11 +40,15 @@ export default new Vuex.Store({
         },
         //用户信息
         getUserInfo(ctx, payload) {
-           Api.userGetToken().then(res=>{
-               sessionStorage.setItem('token',res.data)
-               console.log(res);
+            Api.userGetToken().then(res => {
+                sessionStorage.setItem('token', res.data)
+                console.log(res);
             });
             return Api.getUserInfo(payload);
+        },
+        //更改用户信息
+        updateUserInfo(ctx, payload) {
+            return Api.updateUserInfo(payload);
         },
         //退出登录
         userLogout(ctx, payload) {

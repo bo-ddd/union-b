@@ -62,6 +62,18 @@ export default {
         return axios.post('/user/info', params, postConfig)
     },
     /**
+     * @description  更改用户信息 
+     * @params {
+     * avatorName : [string],     //非必填    用户名字
+     * avatorImg  : [string],     //非必填    用户头像
+     * phone      : [string],     //非必填    用户电话
+     * identityId : [number]      //非必填    用户身份
+     * }
+     * */
+    updateUserInfo(params) {
+        return axios.post('/userInfo/update', params, postConfig)
+    },
+    /**
      * @description  退出登录接口
      * @params 没有参数  必须登录
      * */

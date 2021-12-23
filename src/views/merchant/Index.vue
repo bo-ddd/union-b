@@ -9,7 +9,7 @@
             </el-select>
             <span>申请状态</span>
             <el-select v-model="typevalue" placeholder="全部" clearable class="mar-right_20">
-                <el-option v-for="(item,index) in typeArr" :key="index" :label="item" :value="index">
+                <el-option v-for="(item,index) in typeArr" :key="index" :label="item" :value="index+1">
                 </el-option>
             </el-select>
         </div>
@@ -26,7 +26,17 @@
         </el-table-column>
         <el-table-column label="申请角色" prop="role" align="center">
         </el-table-column>
-        <el-table-column label="申请时间" align="center">
+        <el-table-column label="资格证书" align="center">
+            <template #default="scope">
+                <img :src=" scope.row.qualificationsUrl" alt="" width="50px">
+            </template>
+        </el-table-column>
+        <el-table-column label="营业执照" align="center">
+            <template #default="scope">
+                <img :src=" scope.row.businessUrl" alt="" width="50px">
+            </template>
+        </el-table-column>
+        <el-table-column label="申请时间" align="center" width="210%">
             <template #default="scope">
                 <span>{{gettime(scope.row.createdAt)}}</span>
             </template>
@@ -42,6 +52,8 @@
             </template>
         </el-table-column>
     </el-table>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[1, 2, 10, 20]" layout="total, sizes, prev, pager, next, jumper" :total="total" class="paging">
+    </el-pagination>
 </div>
 </template>
 
@@ -59,7 +71,11 @@ export default {
             IdentList: [],
             value: '',
             typevalue: '',
-            typeArr: ['待审核', '审核已通过', '审核未通过']
+            typeArr: ['审核已通过', '审核未通过', '待审核'],
+            currentPage: 1,
+            total:null,
+            pageSize:null,
+            pageNum:null
         }
     },
     methods: {
@@ -92,6 +108,14 @@ export default {
                     }
                 });
         },
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+            this.pageSize = val
+        },
+        handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
+            this.pageNum = val
+        },
         jump() {
             this.$router.push({
                 name: 'Settled'
@@ -101,34 +125,36 @@ export default {
             return getTime(time)
         },
         getType(type) {
-            return this.typeArr[type]
+            return this.typeArr[type - 1]
         },
         async getList() {
             let res = await this.getSettledList();
-            console.log(res)
             if (res.status) {
                 this.tableData = res.data.rows
             }
+            console.log(res)
+            this.total = res.data.count
         },
         async getIdentList() {
             let res = await this.getIdentityList()
             if (res.status) {
                 this.IdentList = res.data.rows
             }
-            console.log(this.IdentList)
         },
         reset() {
-            this.value = ''
+            this.value = '';
+            this.typevalue = ''
         },
         async inquiry() {
             let res = await this.getSettledList({
-                role: this.value
+                role: this.value || null,
+                type: this.typevalue || null
             });
             if (res.status) {
                 this.tableData = res.data.rows
             }
-            console.log(this.tableData)
-        }
+        },
+        
     },
     created() {
         this.getList()
@@ -161,6 +187,11 @@ export default {
         & .bac-ff4070 {
             background-color: '#ff4070';
         }
+    }
+
+    & .paging{
+        text-align: center;
+        margin: 20px 0px ;
     }
 }
 </style>

@@ -86,7 +86,6 @@ export default {
           changeColor(theme);
         }
         let res = await this.getUserInfo();
-        console.log(res.data)
         this.userInfo = res.data[0]
         this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
     }

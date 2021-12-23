@@ -11,7 +11,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>{{allData.storeCount}}</h3>
+            <h3>{{allData.storeCount || 888}}</h3>
             <span>平台商家总数</span>
           </div>
         </div>
@@ -24,7 +24,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>{{allData.goodsCount}}</h3>
+            <h3>{{allData.goodsCount || 8888}}</h3>
             <span>平台商品总数</span>
           </div>
         </div>

@@ -65,7 +65,7 @@ export default {
   & > .home {
     height: 100%;
     & > .header {
-      background-color: #e7536b;
+      background-color: var(--color);
       color: white;
       display: flex;
       align-items: center;
@@ -76,6 +76,8 @@ export default {
         & > .content {
           & > .msg {
             font-size: 20px;
+            overflow: auto;
+            max-height: 65vh;
             & > .right_msg {
               text-align: right;
               margin-top: 10px;

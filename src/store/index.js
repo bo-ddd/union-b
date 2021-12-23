@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from '@/api/api'
 import { routes } from '@/router'
-
+import dada from '../assets/js/getToken'
+console.log(dada);
 Vue.use(Vuex)
 
 let getRoutes = function() {
@@ -42,11 +43,15 @@ export default new Vuex.Store({
         getUserInfo(ctx, payload) {
             return Api.getUserInfo(payload);
         },
+        //更改用户信息
+        updateUserInfo(ctx, payload) {
+            return Api.updateUserInfo(payload);
+        },
         //退出登录
         userLogout(ctx, payload) {
-            return Api.userLogout(payload);
+            return Api.userLogout(payload); 
         },
-        //修改密码
+        //修改密码 
         userUpdatePwd(ctx, payload) {
             return Api.userUpdatePwd(payload);
         },
@@ -57,6 +62,10 @@ export default new Vuex.Store({
         //上传图片接口
         uploadImage(ctx, payload) {
             return Api.uploadImage(payload);
+        },
+        //生成rsa公钥接口
+        getRSAPublicKey(ctx, payload) {
+            return Api.getRSAPublicKey(payload);
         },
         //身份列表接口
         getIdentityList(ctx, payload) {
@@ -83,7 +92,7 @@ export default new Vuex.Store({
         },
         //商品类目排序接口
         categoryOrders(ctx, payload) {
-            return Api.CategoryOrders(payload);
+            return Api.categoryOrders(payload);
         },
         //类目规格接口
         getSpecificationList(ctx, payload) {
@@ -194,10 +203,6 @@ export default new Vuex.Store({
         //支付方式接口
         getPaymentList(ctx, payload) {
             return Api.getPaymentList(payload);
-        },
-        //获取快递接口
-        getExpressList(ctx, payload) {
-            return Api.getExpressList(payload);
         },
 
         //系统设置

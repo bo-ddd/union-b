@@ -21,6 +21,7 @@
             <el-input
               v-model="form.password"
               class="inputb"
+              name="password"
               placeholder="请输入密码"
               maxlength="15"
               show-password
@@ -69,6 +70,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { JSEncrypt } from "jsencrypt";
 export default {
   data() {
     return {
@@ -143,8 +145,21 @@ export default {
         this.generatorCaptcha();
         return;
       }
-      let { username, password, captcha } = this.form;
+
+      // 密码加密
+      var encryptor = new JSEncrypt(); // 创建加密对象实例
+      let publicKey = `-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnZIdkAWLgkux1eMT1mSwyOb7V
+uTtfDYMepItVxy6IhZNT1mSLZ0Ab4b2FvJ7JQmkDEG38l9JcFYY9f61tNPaEZWfl
+FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
+/9AAyN2x4vdqegRNFQIDAQAB
+-----END PUBLIC KEY-----`;
+      encryptor.setPublicKey(publicKey); //设置公钥
+      var rsaPassWord = encryptor.encrypt(this.form.password); // 对内容进行加密
+      this.form.password = rsaPassWord;
+
       //   登录接口
+      let { username, password, captcha } = this.form;
       let res = await this.userLogin({
         username,
         password,
@@ -154,11 +169,11 @@ export default {
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
         this.$message.success(res.msg);
-        if (localStorage.getItem('from')) {
+        if (localStorage.getItem("from")) {
           this.$router.push({
-          path: localStorage.getItem('from'),
-        });
-        }else{
+            path: localStorage.getItem("from"),
+          });
+        } else {
           this.$router.push({
             path: "/",
           });
@@ -191,7 +206,7 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     // 进页面直接调用验证码
     this.generatorCaptcha();
   },
@@ -248,7 +263,6 @@ export default {
           width: 100%;
           height: 110px;
           display: flex;
-          // justify-content: start;
           flex-direction: column;
 
           & .login {

@@ -132,7 +132,8 @@
 </template>
 
 <script>
-import {mapActions} from "vuex"
+import {mapActions} from "vuex";
+import uploud from "../../../public/lib/uploud"
 export default {
  data() {
       return {
@@ -215,20 +216,14 @@ export default {
       return isPNg && isSz2m
     },
  async uploadClassify(val){
-       let formData = new FormData();
-       formData.append('file',val.file);
-       formData.append('type',3); 
-        let res = await this.uploadImage(formData)
-         console.log(res)
-        this.src=res.data
+        let formData = uploud(val.file,3); 
+        let res = await this.uploadImage(formData);
+        this.src = res.data
     },
     async uploadSectionFile(val){
-      let formData = new FormData();
-       formData.append('file',val.file);
-       formData.append('type',3); 
-        let res = await this.uploadImage(formData)
-       
-        this.src=res.data
+    let formData = uploud(val.file,3); 
+        let res = await this.uploadImage(formData);
+        this.src = res.data;  
     }
   },
     created(){

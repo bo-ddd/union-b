@@ -129,8 +129,7 @@
       </div>
       <div class="third-left">
         <!-- <div class="t-f">
-          
-           <el-pagination
+    <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage2"
@@ -298,15 +297,13 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      lableName:'',
+      lableName:"",
       tableData:[],
-      value:'',
-      input1: "",
-      input2: "",
+      value : "",
       input3: "",
       input4: "",
       select: "",
-      options:'',
+      options:"",
       dialogTableVisible: false,
       dialogFormVisible: false,
       dialogFormVisibles: false,
@@ -316,9 +313,10 @@ export default {
   },
   async created(){
     this.list();
+    this.lableAll();
   },
   methods:{
-    ...mapActions(["getLableList","createLable"]),
+      ...mapActions(["getLableList","createLable"]),
       async list(){
         let listAll = await this.getLableList();
         console.log(listAll);
@@ -327,7 +325,6 @@ export default {
         let lableAll = await this.createLable({
           lableName:this.lableName,
         });
-
         console.log(lableAll);
       }
   }

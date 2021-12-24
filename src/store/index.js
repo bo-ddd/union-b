@@ -133,8 +133,8 @@ export default new Vuex.Store({
             return Api.createUnitlibrary(payload);
         },
         //删除单位接口
-        deleteUnitlibrary(ctx, payload) {
-            return Api.deleteUnitlibrary(payload);
+        disableUnitlibrary(ctx, payload) {
+            return Api.disableUnitlibrary(payload);
         },
         //商品单位排序接口
         unitlibraryOrders(ctx, payload) {

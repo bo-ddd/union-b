@@ -162,6 +162,15 @@ export default {
         return axios.post('/category/create', params, postConfig)
     },
     /**
+     * @description 删除类目接口
+     * @params {
+     * id     //要删除类目的id
+     * } 
+     */
+    deleteCategory(params) {
+        return axios.post('/category/delete', params, postConfig)
+    },
+    /**
      * @description 商品类目排序接口
      * @params {
      * currentDataord     [nmber] 当前的类目
@@ -193,6 +202,15 @@ export default {
         return axios.post('/specification/create', params, postConfig)
     },
     /**
+     * @description 删除规格接口
+     * @params {
+     *  id     //要删除类目的id
+     * } 
+     */
+    deleteSpecification(params) {
+        return axios.post('/specification/delete', params, postConfig)
+    },
+    /**
      * @description 添加商品接口 
      * @params {
      * cid           : [Number],     商品类目标识
@@ -206,6 +224,15 @@ export default {
      */
     createProduct(params) {
         return axios.post('/product/create;', params, postConfig)
+    },
+    /**
+     * @description 删除商品接口 
+     * @params {
+     *  id     要删除删除的id
+     * } 
+     */
+    deleteProduct(params) {
+        return axios.post('/product/delete;', params, postConfig)
     },
     /**
      * @description 商品属性接口
@@ -230,6 +257,17 @@ export default {
         return axios.post('/attribute/create', params, postConfig)
     },
     /**
+     * @description 删除属性接口
+     * @params {
+     * value     : [String]     商品的属性或者是参数
+     * type      : [Number]     类型 1 属性  2参数
+     * productId : [Number]     商品id
+     * } 
+     */
+    deleteAttribute(params) {
+        return axios.post('/attribute/delete', params, postConfig)
+    },
+    /**
      * @description 商品单位接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
@@ -250,6 +288,15 @@ export default {
      */
     createUnitlibrary(params) {
         return axios.post('/unitlibrary/create', params, postConfig)
+    },
+    /**
+     * @description 删除单位接口
+     * @params {
+     * id     //要删除单位的id
+     * } 
+     */
+    deleteUnitlibrary(params) {
+        return axios.post('/unitlibrary/delete', params, postConfig)
     },
     /**
      * @description 商品单位排序接口

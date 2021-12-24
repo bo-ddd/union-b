@@ -200,8 +200,8 @@ export default {
      */
     async commodityInfo() {
       let res = await this.getCategoryList({});
+         console.log(res);
       let data = res.data.rows.slice();
-      console.log(data);
       let target = this.format(data);
       target.forEach((el) => {
         el.createdAt = getTime(el.createdAt);
@@ -248,7 +248,6 @@ export default {
       };
       //获取当前层所有额数据；
       var formatData = (row) => {
-        
         let res = {};
         if (row.pid) {
           let childData = fn(row);
@@ -277,19 +276,21 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj);
-      let ord = obj.currentData.ord;
+      console.log(obj)
+      if(obj.i){
+          let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
-      console.log(obj.currentData.ord)
-      console.log(obj.preData.ord)
-      this.ordSort(this.renderDynamic);
-      let res = await this.categoryOrders({
-        currentDataord: obj.currentData.ord,
-        preDataord: obj.preData.ord,
-      });
-      console.log(res);
-    },
+        this.ordSort(this.renderDynamic);
+        let res = await this.categoryOrders({
+          currentDataord: obj.currentData.ord,
+          preDataord: obj.preData.ord,
+        });
+        console.log(res)
+      }else{
+        this.$message("已经是第一个了不能再升序了")
+      }
+    },  
     /**
      * @description 根据ord进行排序完成后 重新渲染页面
      */
@@ -329,8 +330,8 @@ export default {
       //获取当前层所有额数据；
       var formatData = (row) => {
         let res = {};
+             let childData = fn(row);
         if (row.pid) {
-          let childData = fn(row);
           for (let i = 0; i < childData.length; i++) {
             let item = childData[i];
             if (item.id == row.id) {
@@ -357,15 +358,15 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
-      let ord = obj.currentData.ord;
-      obj.currentData.ord = obj.preData.ord;
-      obj.preData.ord = ord;
-      this.ordSort(this.renderDynamic);
-        let res = await this.categoryOrders({
-        currentDataord: obj.currentData.ord,
-        preDataord: obj.preData.ord,
-      });
-      console.log(res);
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        this.ordSort(this.renderDynamic);
+          let res = await this.categoryOrders({
+          currentDataord: obj.currentData.ord,
+          preDataord: obj.preData.ord,
+        });
+        console.log(res)
     },
     /**
      * @description 删除当前行

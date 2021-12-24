@@ -205,7 +205,6 @@ export default {
         console.log('b')
       },
     test(val){
-      console.log(val)
       let isPNg = val.type === "image/png"||"image/jpg" ;
       let isSz2m = val.size/1024/1024<2;
       if(!isPNg){
@@ -219,7 +218,6 @@ export default {
  async uploadClassify(val){
         let formData = uploud(val.file,3); 
         let res = await this.uploadImage(formData);
-         console.log(res)
         this.src = res.data
     },
     async uploadSectionFile(val){

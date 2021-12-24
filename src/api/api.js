@@ -162,6 +162,15 @@ export default {
         return axios.post('/category/create', params, postConfig)
     },
     /**
+     * @description 删除类目接口
+     * @params {
+     * id     //要删除类目的id
+     * } 
+     */
+    deleteCategory(params) {
+        return axios.post('/category/delete', params, postConfig)
+    },
+    /**
      * @description 商品类目排序接口
      * @params {
      * currentDataord     [nmber] 当前的类目
@@ -193,6 +202,15 @@ export default {
         return axios.post('/specification/create', params, postConfig)
     },
     /**
+     * @description 删除规格接口
+     * @params {
+     *  id     //要删除类目的id
+     * } 
+     */
+    deleteSpecification(params) {
+        return axios.post('/specification/delete', params, postConfig)
+    },
+    /**
      * @description 添加商品接口 
      * @params {
      * cid           : [Number],     商品类目标识
@@ -206,6 +224,15 @@ export default {
      */
     createProduct(params) {
         return axios.post('/product/create;', params, postConfig)
+    },
+    /**
+     * @description 删除商品接口 
+     * @params {
+     *  id     要删除删除的id
+     * } 
+     */
+    deleteProduct(params) {
+        return axios.post('/product/delete;', params, postConfig)
     },
     /**
      * @description 商品属性接口
@@ -230,6 +257,17 @@ export default {
         return axios.post('/attribute/create', params, postConfig)
     },
     /**
+     * @description 删除属性接口
+     * @params {
+     * value     : [String]     商品的属性或者是参数
+     * type      : [Number]     类型 1 属性  2参数
+     * productId : [Number]     商品id
+     * } 
+     */
+    deleteAttribute(params) {
+        return axios.post('/attribute/delete', params, postConfig)
+    },
+    /**
      * @description 商品单位接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
@@ -250,6 +288,16 @@ export default {
      */
     createUnitlibrary(params) {
         return axios.post('/unitlibrary/create', params, postConfig)
+    },
+    /**
+     * @description 禁用商品单位接口
+     * @params {
+     * id     //要禁用单位的id
+     * disable  //改成禁用还是可以使用  1可以使用    0是禁用
+     * } 
+     */
+    disableUnitlibrary(params) {
+        return axios.post('/unitlibrary/disable', params, postConfig)
     },
     /**
      * @description 商品单位排序接口
@@ -311,6 +359,37 @@ export default {
      */
     getAdvertList(params) {
         return axios.post('/advert/list', params, postConfig)
+    },
+    /**
+     * @description 新增广告接口 
+     * @params {
+     * title : [string]     广告标题
+     * imgUrl:[string]  图片路径
+     * type:[number] 图片类型   1代表首屏广告
+     * } 
+     */
+    createAdvert(params) {
+        return axios.post('/advert/create', params, postConfig)
+    },
+    /**
+     * @description 更改广告接口 
+     * @params {
+     * title : [string]     广告标题
+     * imgUrl:[string]  图片路径
+     * type:[number] 图片类型   1代表首屏广告
+     * } 
+     */
+    updateAdvert(params) {
+        return axios.post('/advert/update', params, postConfig)
+    },
+    /**
+     * @description 根据Id查询广告 
+     * @params {
+     * id : [number]    必填    广告id
+     * } 
+     */
+    findIdAdvert(params) {
+        return axios.post('/advert/findId', params, postConfig)
     },
     /**
      * @description 优品展示接口

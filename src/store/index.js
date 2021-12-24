@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from '@/api/api'
 import { routes } from '@/router'
-import dada from '../assets/js/getToken'
-console.log(dada);
 Vue.use(Vuex)
 
 let getRoutes = function() {
@@ -49,7 +47,7 @@ export default new Vuex.Store({
         },
         //退出登录
         userLogout(ctx, payload) {
-            return Api.userLogout(payload); 
+            return Api.userLogout(payload);
         },
         //修改密码 
         userUpdatePwd(ctx, payload) {
@@ -86,6 +84,10 @@ export default new Vuex.Store({
         createCategory(ctx, payload) {
             return Api.createCategory(payload);
         },
+        //删除类目接口
+        deleteCategory(ctx, payload) {
+            return Api.deleteCategory(payload);
+        },
         //商品类目排序接口
         categoryOrders(ctx, payload) {
             return Api.categoryOrders(payload);
@@ -98,17 +100,29 @@ export default new Vuex.Store({
         createSpecification(ctx, payload) {
             return Api.createSpecification(payload);
         },
+        //删除规格接口
+        deleteSpecification(ctx, payload) {
+            return Api.deleteSpecification(payload);
+        },
         //添加商品接口
         createProduct(ctx, payload) {
             return Api.createProduct(payload);
+        },
+        //删除商品接口
+        deleteProduct(ctx, payload) {
+            return Api.deleteProduct(payload);
         },
         //商品属性接口
         getAttributeList(ctx, payload) {
             return Api.getAttributeList(payload);
         },
-        //商品属性接口
+        //添加属性接口
         createAttribute(ctx, payload) {
             return Api.createAttribute(payload);
+        },
+        //删除属性接口
+        deleteAttribute(ctx, payload) {
+            return Api.deleteAttribute(payload);
         },
         //商品单位接口
         getUnitlibraryList(ctx, payload) {
@@ -117,6 +131,10 @@ export default new Vuex.Store({
         //添加单位接口
         createUnitlibrary(ctx, payload) {
             return Api.createUnitlibrary(payload);
+        },
+        //删除单位接口
+        disableUnitlibrary(ctx, payload) {
+            return Api.disableUnitlibrary(payload);
         },
         //商品单位排序接口
         unitlibraryOrders(ctx, payload) {
@@ -148,6 +166,18 @@ export default new Vuex.Store({
         //广告管理接口
         getAdvertList(ctx, payload) {
             return Api.getAdvertList(payload);
+        },
+        //新增广告接口
+        createAdvert(ctx, payload) {
+            return Api.createAdvert(payload);
+        },
+        //更改广告接口
+        updateAdvert(ctx, payload) {
+            return Api.updateAdvert(payload);
+        },
+        //根据Id查询广告
+        findIdAdvert(ctx, payload) {
+            return Api.findIdAdvert(payload);
         },
         //优品展示接口
         getSuperList(ctx, payload) {
@@ -199,6 +229,10 @@ export default new Vuex.Store({
         //支付方式接口
         getPaymentList(ctx, payload) {
             return Api.getPaymentList(payload);
+        },
+        //获取快递接口
+        getExpressList(ctx, payload) {
+            return Api.getExpressList(payload);
         },
 
         //系统设置

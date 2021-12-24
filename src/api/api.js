@@ -17,7 +17,7 @@ axios.interceptors.response.use(function(response) {
     return response.data;
 }, function(error) {
     // 对响应错误做点什么
-    // console.log('get error:', error)
+    console.log('get error:', error)
     return {
         code: -1,
         msg: '网络异常'

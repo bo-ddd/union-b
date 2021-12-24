@@ -21,6 +21,7 @@
             <el-input
               v-model="form.password"
               class="inputb"
+              name="password"
               placeholder="请输入密码"
               maxlength="15"
               show-password
@@ -69,6 +70,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { JSEncrypt } from "jsencrypt";
 export default {
   data() {
     return {
@@ -81,7 +83,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["userLogin", "getCaptcha"]),
+    ...mapActions(["userLogin", "getCaptcha", "getRSAPublicKey"]),
     async generatorCaptcha() {
       // 验证码接口
       this.captchaSrc = await this.getCaptcha();
@@ -143,6 +145,26 @@ export default {
         this.generatorCaptcha();
         return;
       }
+
+      // 返回秘钥
+      // let cry = await this.getRSAPublicKey();
+      // let pubKey = cry.data;
+      // 加密
+      //之前ssl生成的公钥，复制的时候要小心不要有空格
+      var encryptor = new JSEncrypt(); // 创建加密对象实例
+      let publicKey = `-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnZIdkAWLgkux1eMT1mSwyOb7V
+uTtfDYMepItVxy6IhZNT1mSLZ0Ab4b2FvJ7JQmkDEG38l9JcFYY9f61tNPaEZWfl
+FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
+/9AAyN2x4vdqegRNFQIDAQAB
+-----END PUBLIC KEY-----`;
+      encryptor.setPublicKey(publicKey); //设置公钥
+      var rsaPassWord = encryptor.encrypt(this.form.password); // 对内容进行加密
+      this.form.password = rsaPassWord;
+      console.log(rsaPassWord);
+
+      // if (pubKey != 1) return;
+
       let { username, password, captcha } = this.form;
       //   登录接口
       let res = await this.userLogin({
@@ -154,11 +176,11 @@ export default {
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
         this.$message.success(res.msg);
-        if (localStorage.getItem('from')) {
+        if (localStorage.getItem("from")) {
           this.$router.push({
-          path: localStorage.getItem('from'),
-        });
-        }else{
+            path: localStorage.getItem("from"),
+          });
+        } else {
           this.$router.push({
             path: "/",
           });
@@ -191,9 +213,11 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     // 进页面直接调用验证码
     this.generatorCaptcha();
+    // 调用加密
+    // this.RSAencrypt();
   },
 
   mounted() {

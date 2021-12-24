@@ -147,15 +147,20 @@ export default {
       }
 
       // 返回秘钥
-      let cry = await this.getRSAPublicKey();
-      let pubKey = cry.data;
+      // let cry = await this.getRSAPublicKey();
+      // let pubKey = cry.data;
       // 加密
       //之前ssl生成的公钥，复制的时候要小心不要有空格
       var encryptor = new JSEncrypt(); // 创建加密对象实例
-      encryptor.setPublicKey(pubKey); //设置公钥
-      // console.log(this.form.password);
-      // console.log(typeof this.form.password);
+      let publicKey = `-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnZIdkAWLgkux1eMT1mSwyOb7V
+uTtfDYMepItVxy6IhZNT1mSLZ0Ab4b2FvJ7JQmkDEG38l9JcFYY9f61tNPaEZWfl
+FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
+/9AAyN2x4vdqegRNFQIDAQAB
+-----END PUBLIC KEY-----`;
+      encryptor.setPublicKey(publicKey); //设置公钥
       var rsaPassWord = encryptor.encrypt(this.form.password); // 对内容进行加密
+      this.form.password = rsaPassWord;
       console.log(rsaPassWord);
 
       // if (pubKey != 1) return;

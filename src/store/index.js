@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from '@/api/api'
 import { routes } from '@/router'
-// import data from '../assets/js/getToken'
-// console.log(data);
+import data from '../assets/js/getToken'
+console.log(data);
 Vue.use(Vuex)
 
 let getRoutes = function() {

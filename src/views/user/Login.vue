@@ -83,7 +83,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["userLogin", "getCaptcha", "getRSAPublicKey"]),
+    ...mapActions(["userLogin", "getCaptcha"]),
     async generatorCaptcha() {
       // 验证码接口
       this.captchaSrc = await this.getCaptcha();
@@ -146,11 +146,7 @@ export default {
         return;
       }
 
-      // 返回秘钥
-      // let cry = await this.getRSAPublicKey();
-      // let pubKey = cry.data;
-      // 加密
-      //之前ssl生成的公钥，复制的时候要小心不要有空格
+      // 密码加密
       var encryptor = new JSEncrypt(); // 创建加密对象实例
       let publicKey = `-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnZIdkAWLgkux1eMT1mSwyOb7V

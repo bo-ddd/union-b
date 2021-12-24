@@ -146,7 +146,7 @@ export default {
         return;
       }
 
-      // 密码加密
+      // 对密码增加rsa（非对称加密）
       var encryptor = new JSEncrypt(); // 创建加密对象实例
       let publicKey = `-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnZIdkAWLgkux1eMT1mSwyOb7V

@@ -25,7 +25,7 @@
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
             <el-link :type="type" class="operation">{{scope.row.disable ? '已启用' : '已禁用'}}</el-link>
-            <el-link :type="types" class="operation" @click="Disable(scope.row.ord)">{{scope.row.disable ? '禁用' : '启用'}}</el-link>
+            <el-link :type="types" class="operation" @click="Disable(scope.row)">{{scope.row.disable ? '禁用' : '启用'}}</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -96,7 +96,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","deleteUnitlibrary"]),
     /**
      * @description 置顶的方法
      */
@@ -137,8 +137,13 @@ export default {
     /**
      * @description 禁用的方法
      */
-    Disable(ord) {
+    async Disable(ord) {
       console.log(ord);
+      let num = ord.id
+      let res = await this.deleteUnitlibrary({
+        id:num
+      });
+      console.log(res);
       this.List();
     },
     /**
@@ -192,7 +197,7 @@ export default {
         this.type = item.disable ? 'primary' : 'danger'
         this.types = item.disable ? 'danger' : 'primary'
       })
-      this.mySort(this.tableData);
+      // this.mySort(this.tableData);
       this.handleSizeChange(10);
     },
     /**

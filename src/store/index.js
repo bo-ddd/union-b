@@ -133,8 +133,8 @@ export default new Vuex.Store({
             return Api.createUnitlibrary(payload);
         },
         //删除单位接口
-        deleteUnitlibrary(ctx, payload) {
-            return Api.deleteUnitlibrary(payload);
+        disableUnitlibrary(ctx, payload) {
+            return Api.disableUnitlibrary(payload);
         },
         //商品单位排序接口
         unitlibraryOrders(ctx, payload) {
@@ -166,6 +166,18 @@ export default new Vuex.Store({
         //广告管理接口
         getAdvertList(ctx, payload) {
             return Api.getAdvertList(payload);
+        },
+        //新增广告接口
+        createAdvert(ctx, payload) {
+            return Api.createAdvert(payload);
+        },
+        //更改广告接口
+        updateAdvert(ctx, payload) {
+            return Api.updateAdvert(payload);
+        },
+        //根据Id查询广告
+        findIdAdvert(ctx, payload) {
+            return Api.findIdAdvert(payload);
         },
         //优品展示接口
         getSuperList(ctx, payload) {
@@ -217,6 +229,10 @@ export default new Vuex.Store({
         //支付方式接口
         getPaymentList(ctx, payload) {
             return Api.getPaymentList(payload);
+        },
+        //获取快递接口
+        getExpressList(ctx, payload) {
+            return Api.getExpressList(payload);
         },
 
         //系统设置

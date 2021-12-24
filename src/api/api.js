@@ -290,13 +290,14 @@ export default {
         return axios.post('/unitlibrary/create', params, postConfig)
     },
     /**
-     * @description 删除单位接口
+     * @description 禁用商品单位接口
      * @params {
-     * id     //要删除单位的id
+     * id     //要禁用单位的id
+     * disable  //改成禁用还是可以使用  1可以使用    0是禁用
      * } 
      */
-    deleteUnitlibrary(params) {
-        return axios.post('/unitlibrary/delete', params, postConfig)
+    disableUnitlibrary(params) {
+        return axios.post('/unitlibrary/disable', params, postConfig)
     },
     /**
      * @description 商品单位排序接口
@@ -358,6 +359,37 @@ export default {
      */
     getAdvertList(params) {
         return axios.post('/advert/list', params, postConfig)
+    },
+    /**
+     * @description 新增广告接口 
+     * @params {
+     * title : [string]     广告标题
+     * imgUrl:[string]  图片路径
+     * type:[number] 图片类型   1代表首屏广告
+     * } 
+     */
+    createAdvert(params) {
+        return axios.post('/advert/create', params, postConfig)
+    },
+    /**
+     * @description 更改广告接口 
+     * @params {
+     * title : [string]     广告标题
+     * imgUrl:[string]  图片路径
+     * type:[number] 图片类型   1代表首屏广告
+     * } 
+     */
+    updateAdvert(params) {
+        return axios.post('/advert/update', params, postConfig)
+    },
+    /**
+     * @description 根据Id查询广告 
+     * @params {
+     * id : [number]    必填    广告id
+     * } 
+     */
+    findIdAdvert(params) {
+        return axios.post('/advert/findId', params, postConfig)
     },
     /**
      * @description 优品展示接口

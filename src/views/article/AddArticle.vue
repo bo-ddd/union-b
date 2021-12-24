@@ -17,10 +17,20 @@
         <div class="center-content">
           <span class="content-img">文章照片</span>
           <div class="chuan">
-          <input class="content-img" type="file" name="file" ref="file" />
-          <button class="button-img" @click="upload2">上传</button>
+          <!-- <input class="content-img" type="file" name="file" ref="file" />
+          <button class="button-img" @click="upload2">上传</button> -->
+          <el-upload class="photoWall"
+  action=""
+  :http-request="imgAdd"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
           </div>
-         
           <i class="el-icon-warning-outline icon-img"></i>
           <span class="tips-img"
             >请上传一张图片，格式jpg，尺寸640*384，大小在30k之内</span
@@ -55,6 +65,7 @@
 
 <script>
 import { mapActions } from "vuex";
+// import addImg from '../../../public/lib/uploud'
 export default {
   data() {
     return {
@@ -74,14 +85,15 @@ export default {
   },
   methods: {
     ...mapActions(["createArticle", "getUserInfo","uploadImage"]), 
-    async upload2(){
-            let formData = new FormData();
-            formData.append('file',this.$refs.file.files[0]);
-            formData.append('type',2); 
-            let res  =  await this.uploadImage(formData);
-            console.log(res);                                
-        },
-    async addArticle() {
+    imgAdd(){},
+    // async upload2(){
+    //         let formData = new FormData();
+    //         formData.append('file',this.$refs.file.files[0]);
+    //         formData.append('type',2); 
+    //         let res  =  await this.uploadImage(formData);
+    //         console.log(res);                                
+    //     },
+    async addArticl(){
       let add = await this.createArticle({
         articleTitle: this.articleTitle,
         articleImg: this.articleImg,
@@ -106,6 +118,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+.photoWall{
+  margin: 20px 79px;
+}
 
 .button-img{
  width: 40px;

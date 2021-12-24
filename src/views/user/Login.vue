@@ -157,12 +157,9 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
       encryptor.setPublicKey(publicKey); //设置公钥
       var rsaPassWord = encryptor.encrypt(this.form.password); // 对内容进行加密
       this.form.password = rsaPassWord;
-      console.log(rsaPassWord);
 
-      // if (pubKey != 1) return;
-
-      let { username, password, captcha } = this.form;
       //   登录接口
+      let { username, password, captcha } = this.form;
       let res = await this.userLogin({
         username,
         password,
@@ -212,8 +209,6 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   async created() {
     // 进页面直接调用验证码
     this.generatorCaptcha();
-    // 调用加密
-    // this.RSAencrypt();
   },
 
   mounted() {
@@ -268,7 +263,6 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
           width: 100%;
           height: 110px;
           display: flex;
-          // justify-content: start;
           flex-direction: column;
 
           & .login {

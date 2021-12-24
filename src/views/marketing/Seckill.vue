@@ -5,7 +5,7 @@
       <div class="content_header">
         <div class="content_header-left">
           <span>状态筛选</span>
-          <el-select v-model="value" clearable placeholder="请选择" size='small'>
+          <el-select v-model="value" clearable placeholder="请选择" >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -14,7 +14,7 @@
             </el-option>
           </el-select>
           <span>地区筛选</span>
-          <el-select v-model="value" clearable placeholder="请选择" size='small'>
+          <el-select v-model="value" clearable placeholder="请选择" >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -24,7 +24,7 @@
           </el-select>
           <div class="block">
             <span class="demonstration">时间筛选</span>
-            <el-date-picker v-model="value1" size='small'
+            <el-date-picker v-model="value1" 
               unlink-panels
               type="daterange"
               range-separator="至"
@@ -34,17 +34,17 @@
           </div>
         </div>
         <div class="content_header-right">
-          <el-button type="primary" size='small'>查询</el-button>
-          <el-button type="primary" size='small'>重置</el-button>
+          <el-button type="primary" >查询</el-button>
+          <el-button type="primary" >重置</el-button>
         </div>
       </div>
       <div class="content_center">
-        <el-button type="primary" size='small'>+新增秒杀</el-button>
-        <el-button type="primary" size='small'>批量终止</el-button>
-        <el-button type="primary" size='small'>批量删除</el-button>
+        <el-button type="primary" >+新增秒杀</el-button>
+        <el-button type="primary" >批量终止</el-button>
+        <el-button type="primary" >批量删除</el-button>
       </div>
       <div class="table">
-          <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" size='small' style="width: 100%">
+          <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"  style="width: 100%">
             <el-table-column type="selection" >
             </el-table-column>
             <el-table-column label="名称" >
@@ -142,9 +142,7 @@ export default {
 <style lang="scss" scoped>
 .wrap {
   min-width: 1270px;
-  
   & .content {
-    // min-height: 500px;
     min-width: 1000px;
     height: calc(100vh - 260px);
     background-color: #fff;
@@ -158,7 +156,6 @@ export default {
          align-items: center;
          & .el-select {
             margin: 0 25px;
-            
           }
          & .demonstration {
         margin-right: 25px;
@@ -170,7 +167,6 @@ export default {
           background-color: rgb(255, 111, 147);
         }
       }
-     
     }
     & .content_center{
       margin-top: 50px;

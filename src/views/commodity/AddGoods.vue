@@ -6,7 +6,7 @@
       <div class="essential_information">
         <div>
           <div>
-            <el-form :label-position="labelPosition" label-width="80px" size='small'>
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="商品类型" class="commodity_type">
                 <el-select
                   v-model="commodityType"
@@ -67,8 +67,18 @@
                 <el-input
                   type="text"
                   placeholder="请填写商品标题（不超过60个字符）"
-                  maxlength="60"
+                  maxlength="30"
                   v-model="text"
+                  show-word-limit
+                >
+                </el-input>
+              </el-form-item>
+              <el-form-item label="商品描述" class="trade_name">
+                <el-input
+                  type="text"
+                  placeholder="请填写商品描述"
+                  maxlength="60"
+                  v-model="productDescription"
                   show-word-limit
                 >
                 </el-input>
@@ -77,7 +87,7 @@
           </div>
           <div class="commodity_specifications">
             <div>
-              <el-form :label-position="labelPosition" label-width="80px" size='small'>
+              <el-form :label-position="labelPosition" label-width="80px">
                 <el-form-item label="品牌">
                   <el-select
                     v-model="brand"
@@ -93,6 +103,14 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
+                <el-form-item label="平台价">
+                  <el-input
+                    placeholder="请填写商品平台价"
+                    v-model="commodityPlatformPrice"
+                    show-word-limit
+                  >
+                  </el-input>
+                </el-form-item>
                 <el-form-item label="重量">
                   <el-input
                     v-model="weight"
@@ -102,7 +120,7 @@
               </el-form>
             </div>
             <div>
-              <el-form :label-position="labelPosition" label-width="80px" size='small'>
+              <el-form :label-position="labelPosition" label-width="80px">
                 <el-form-item label="销售单位">
                   <el-select
                     v-model="company"
@@ -117,6 +135,12 @@
                     >
                     </el-option>
                   </el-select>
+                </el-form-item>
+                <el-form-item label="售卖价">
+                  <el-input
+                    v-model="sellingPriceGoods"
+                    placeholder="请填写售卖价"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="体积">
                   <el-input
@@ -135,7 +159,7 @@
       <div class="m_c_center">
         <div>
           <div>
-            <el-form :label-position="labelPosition" label-width="80px" size='small'>
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="生产日期" class="date_of_manufacture">
                 <div>
                   <el-date-picker
@@ -204,10 +228,12 @@
                 </el-table>
               </el-form-item>
               <el-form-item label="销售区域" class="sales_area">
-                <el-button @click="dialogFormVisible = true" plain
+                <el-button
+                  @click="dialogFormVisible = true"
+                  plain
+                  type="primary"
                   >添加省区</el-button
                 >
-                <!-- <el-button plain>添加省区</el-button> -->
                 <div><span>已选省区:</span> 山东省，河南省,</div>
               </el-form-item>
             </el-form>
@@ -220,7 +246,7 @@
       <div class="m_f_center">
         <div>
           <div class="commodity_rotation">
-            <el-form :label-position="labelPosition" label-width="80px" size='small'>
+            <el-form :label-position="labelPosition" label-width="80px">
               <el-form-item label="商品轮播">
                 <span class="font"
                   >图片不能超过1MB；1:1以上图片上传后详情页自动提供放大镜功能。白底图用来展示，若是没有则取第二张图片</span
@@ -229,27 +255,43 @@
               <el-form-item label="" class="product_picture">
                 <div>
                   <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action=""
                     list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
+                    id="file"
+                    name="file"
+                    :http-request="customUpload1"
+                    :before-upload="commodityMasterChart"
                   >
-                    <i class="el-icon-plus"></i>
-                    <p>商品主图</p>
-                  </el-upload>
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" />
-                  </el-dialog>
-                </div>
-                <div>
-                  <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
-                  >
-                    <i class="el-icon-plus"></i>
-                    <p>商品主图</p>
+                    <i slot="default" class="el-icon-plus"></i>
+                    <div slot="file" slot-scope="{ file }">
+                      <img
+                        class="el-upload-list__item-thumbnail"
+                        :src="file.url"
+                        alt=""
+                      />
+                      <span class="el-upload-list__item-actions">
+                        <span
+                          class="el-upload-list__item-preview"
+                          @click="handlePictureCardPreview(file)"
+                        >
+                          <i class="el-icon-zoom-in"></i>
+                        </span>
+                        <span
+                          v-if="!disabled"
+                          class="el-upload-list__item-delete"
+                          @click="handleDownload(file)"
+                        >
+                          <i class="el-icon-download"></i>
+                        </span>
+                        <span
+                          v-if="!disabled"
+                          class="el-upload-list__item-delete"
+                          @click="handleRemove(file)"
+                        >
+                          <i class="el-icon-delete"></i>
+                        </span>
+                      </span>
+                    </div>
                   </el-upload>
                   <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="" />
@@ -262,20 +304,47 @@
                 >
               </el-form-item>
               <el-form-item label="" class="product_details">
-                <div>
-                  <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
-                  >
-                    <i class="el-icon-plus"></i>
-                    <p>商品详情页</p>
-                  </el-upload>
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" />
-                  </el-dialog>
-                </div>
+                <el-upload
+                  action=""
+                  list-type="picture-card"
+                  id="file"
+                  name="file"
+                  :http-request="customUpload"
+                >
+                  <i slot="default" class="el-icon-plus"></i>
+                  <div slot="file" slot-scope="{ file }">
+                    <img
+                      class="el-upload-list__item-thumbnail"
+                      :src="file.url"
+                      alt=""
+                    />
+                    <span class="el-upload-list__item-actions">
+                      <span
+                        class="el-upload-list__item-preview"
+                        @click="handlePictureCardPreview(file)"
+                      >
+                        <i class="el-icon-zoom-in"></i>
+                      </span>
+                      <span
+                        v-if="!disabled"
+                        class="el-upload-list__item-delete"
+                        @click="handleDownload(file)"
+                      >
+                        <i class="el-icon-download"></i>
+                      </span>
+                      <span
+                        v-if="!disabled"
+                        class="el-upload-list__item-delete"
+                        @click="handleRemove(file)"
+                      >
+                        <i class="el-icon-delete"></i>
+                      </span>
+                    </span>
+                  </div>
+                </el-upload>
+                <el-dialog :visible.sync="dialogVisible">
+                  <img width="100%" :src="dialogImageUrl" alt="" />
+                </el-dialog>
               </el-form-item>
             </el-form>
           </div>
@@ -283,16 +352,22 @@
       </div>
     </div>
     <div class="preservation">
-      <el-button plain>保存</el-button>
-      <el-button plain>预览</el-button>
-      <el-button plain>发布</el-button>
+      <el-button plain type="primary">保存</el-button>
+      <el-button plain type="primary">预览</el-button>
+      <el-button plain type="primary" @click="preservation">发布</el-button>
     </div>
-    <el-dialog title="" :visible.sync="dialogFormVisible" align="center" class="provincial_elastic_layer">
+    <el-dialog
+      title=""
+      :visible.sync="dialogFormVisible"
+      align="center"
+      class="provincial_elastic_layer"
+    >
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
         @change="handleCheckAllChange"
-        ><div>全选</div> </el-checkbox>
+        ><div>全选</div>
+      </el-checkbox>
       <div style="margin: 15px 0"></div>
       <el-checkbox-group
         v-model="checkedCities"
@@ -303,7 +378,9 @@
         }}</el-checkbox>
       </el-checkbox-group>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="dialogFormVisible = false" type="primary"
+          >取 消</el-button
+        >
         <el-button type="primary" @click="dialogFormVisible = false"
           >确 定</el-button
         >
@@ -313,7 +390,8 @@
 </template>
 
 <script>
-const cityOptions = ["上海", "北京", "广州", "深圳","成都"];
+import { mapActions } from "vuex";
+const cityOptions = ["上海", "北京", "广州", "深圳", "成都"];
 export default {
   data() {
     return {
@@ -356,6 +434,9 @@ export default {
         },
       ],
       text: "",
+      productDescription: "",
+      commodityPlatformPrice: "",
+      sellingPriceGoods: "",
       brand: "",
       brandList: [
         {
@@ -400,6 +481,8 @@ export default {
       Sixml: "",
       dialogImageUrl: "",
       dialogVisible: false,
+      disabled: false,
+      src: "",
 
       tableData: [
         {
@@ -460,12 +543,44 @@ export default {
     };
   },
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    ...mapActions(["createProduct", "uploadImage"]),
+    one() {
+      // let formData = new FormData();
+      let file = this.$refs.file.files[0]; //this.$refs.file.files[0] 获取到上传的文件
+      console.log(file);
+    },
+    handleRemove(file) {
+      console.log(file.raw);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
+    },
+
+    async customUpload(val) {
+      let formData = new FormData();
+      formData.append("file", val.file);
+      formData.append("type", 3);
+      // console.log(val.file);
+      /*   let res = await this.uploadImage(formData);
+      console.log(res);
+      this.src = res.data */
+    },
+    async customUpload1(val) {
+      let formData = new FormData();
+      formData.append("file", val.file);
+      formData.append("type", 3);
+      // console.log(val.file);
+      // let res = await this.uploadImage(formData);
+      // console.log(res);
+    },
+    commodityMasterChart(val) {
+     if ((val.size/1024)>2) {
+       this.$message('超过2mb')
+     } 
     },
     arraySpanMethod({ rowIndex, columnIndex }) {
       if (rowIndex % 2 === 0) {
@@ -476,7 +591,6 @@ export default {
         }
       }
     },
-
     objectSpanMethod({ rowIndex, columnIndex }) {
       if (columnIndex === 0) {
         if (rowIndex % 2 === 0) {
@@ -501,6 +615,18 @@ export default {
       this.checkAll = checkedCount === this.cities.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.cities.length;
+    },
+    async preservation() {
+      let res = await this.createProduct({
+        cid: 1,
+        title: this.text,
+        keywords: "日用类",
+        bannerImg: this.src,
+        platformPrice: this.commodityPlatformPrice,
+        desc: this.productDescription,
+        realPrice: this.sellingPriceGoods,
+      });
+      console.log(res);
     },
   },
 };
@@ -589,21 +715,36 @@ export default {
 .preservation {
   display: flex;
   justify-content: center;
-  border-top: 1px solid #ff4370;
+  border-top: 1px solid var(--color);
   padding: 20px 0px;
 }
 
-::v-deep .provincial_elastic_layer{
+::v-deep .product_picture {
+  & > div > div:nth-of-type(1) > div:nth-of-type(1) {
+    display: flex;
+  }
+}
+::v-deep .product_details {
+  & > div > div:nth-of-type(1) {
+    display: flex;
+  }
+}
+::v-deep .product_details {
+  & .el-form-item__content {
+    display: flex;
+    flex-direction: column;
+  }
+}
+::v-deep .provincial_elastic_layer {
   display: flex;
   align-items: center;
   justify-content: center;
-  & >.el-dialog{
+  & > .el-dialog {
     width: 40%;
-    & .el-dialog__body div:nth-of-type(2){
+    & .el-dialog__body div:nth-of-type(2) {
       display: flex;
       justify-content: space-between;
     }
-
   }
 }
 ::v-deep .sales_information .cell {

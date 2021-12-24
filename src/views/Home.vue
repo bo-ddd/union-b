@@ -36,7 +36,7 @@
                         </div>
                         <span>{{userInfo.avatorName}}</span>
                     </div>
-                    <el-link type="primary" plain size='small' @click="logout">退出登录</el-link>
+                    <el-link type="primary" plain size='small' @click="logout" :underline="false">退出</el-link>
                 </div>
             </el-header>
             <el-main>
@@ -49,6 +49,7 @@
 
 <script>
 import '@/assets/theme.scss'
+import changeColor from "../assets/js/changeColor.js"
 import {
     mapGetters,
     mapActions
@@ -80,8 +81,11 @@ export default {
         ...mapGetters(['routes'])
     },
     async created() {
+        let theme=localStorage.getItem("theme");
+        if(theme){
+          changeColor(theme);
+        }
         let res = await this.getUserInfo();
-        console.log(res.data)
         this.userInfo = res.data[0]
         this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
     }

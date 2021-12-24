@@ -62,6 +62,18 @@ export default {
         return axios.post('/user/info', params, postConfig)
     },
     /**
+     * @description  更改用户信息 
+     * @params {
+     * avatorName : [string],     //非必填    用户名字
+     * avatorImg  : [string],     //非必填    用户头像
+     * phone      : [string],     //非必填    用户电话
+     * identityId : [number]      //非必填    用户身份
+     * }
+     * */
+    updateUserInfo(params) {
+        return axios.post('/userInfo/update', params, postConfig)
+    },
+    /**
      * @description  退出登录接口
      * @params 没有参数  必须登录
      * */
@@ -76,6 +88,13 @@ export default {
         return axios.post('user/updatePwd', params, postConfig)
     },
     /**
+     * @description  获取token接口
+     * @params 无
+     * */
+    userGetToken(params) {
+        return axios.post('user/getToken', params, postConfig)
+    },
+    /**
      * @description 上传图片
      * @params {
      * file:  <stream>  上传的流 
@@ -87,9 +106,47 @@ export default {
         // params.append('type',1);
         return axios.post('/upload/image', params, uploadConfig)
     },
+    /**
+     * @description 生成rsa公钥接口 
+     * @params 无
+     */
+    getRSAPublicKey(params) {
+        return axios.post('user/generateRSAPublicKey', params, postConfig)
+    },
+    /**
+     * @description 身份列表接口 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getIdentityList(params) {
+        return axios.post('/identity/list', params, postConfig)
+    },
+    /**
+     * @description 新增身份接口 
+     * @params {
+     * identityName:[string]      '身份名称'
+     * } 
+     */
+    createIdentity(params) {
+        return axios.post('/identity/create', params, postConfig)
+    },
 
 
     //商品管理
+    /**
+     * @description 商品管理列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getProductList(params) {
+        return axios.post('/product/list', params, postConfig)
+    },
     /**
      * @description 商品类目接口
      * @params {
@@ -110,6 +167,16 @@ export default {
      */
     createCategory(params) {
         return axios.post('/category/create', params, postConfig)
+    },
+    /**
+     * @description 商品类目排序接口
+     * @params {
+     * currentDataord     [nmber] 当前的类目
+     * preDataord         [number]要跟交换的类目
+     * } 
+     */
+    categoryOrders(params) {
+        return axios.post('/category/orders', params, postConfig)
     },
     /**
      * @description 类目规格接口
@@ -190,6 +257,25 @@ export default {
      */
     createUnitlibrary(params) {
         return axios.post('/unitlibrary/create', params, postConfig)
+    },
+    /**
+     * @description 商品单位排序接口
+     * @params {
+     * currentDataord     [nmber] 当前的类目
+     * preDataord            [number]要跟交换的类目
+     * } 
+     */
+    unitlibraryOrders(params) {
+        return axios.post('/unitlibrary/orders', params, postConfig)
+    },
+    /**
+     * @description 商品单位置顶接口
+     * @params {
+     * ord : [number]  要置顶单位的ord
+     * } 
+     */
+    unitlibraryStick(params) {
+        return axios.post('/unitlibrary/stick', params, postConfig)
     },
 
 
@@ -287,6 +373,37 @@ export default {
     createArticle(params) {
         return axios.post('/article/create', params, postConfig)
     },
+    /**
+     * @description 导航列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getNavList(params) {
+        return axios.post('/navigation/list', params, postConfig)
+    },
+    /**
+     * @description 新增导航展示
+     * @params {
+     * pictureName:[string]     '图片内容',
+     * pictureUrl:[string]      '图片路径',
+     * pid:[number]     '1主导航  2快捷导航',
+     * } 
+     */
+    createNav(params) {
+        return axios.post('/navigation/create', params, postConfig)
+    },
+    /**
+     * @description 删除导航展示
+     * @params {
+     * id:[number] 必填  '传入删除的Id'
+     * } 
+     */
+    deleteNav(params) {
+        return axios.post('/navigation/delete', params, postConfig)
+    },
 
 
     //订单管理
@@ -332,11 +449,24 @@ export default {
     getPaymentList(params) {
         return axios.post('/payment/list', params, postConfig)
     },
+    /**
+     * @description 获取快递接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getExpressList(params) {
+        return axios.post('/express/list', params, postConfig)
+    },
+
 
     //系统设置
     /**
      * @description 意见反馈接口
      * @params {
+     * roleId [number]   角色Id   选填  默认不传   传的话 返回的是申请角色为角色Id的数据
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
      * pageNum   [number]    每页多少条数据  默认是10条
      * pageSize  [number]    这是第几页      默认是第1页
@@ -350,12 +480,53 @@ export default {
      * @params {
      * title:[String] ,//意见的标题  
      * content:[String],//意见的内容 
-     * img_url:[String]//意见图  非必填  
+     * imgUrl:[String]//意见图  非必填  
      * } 
      */
     createOpinion(params) {
         return axios.post('/opinion/create', params, postConfig)
     },
 
+    //商户管理
+    /**
+     * @description 商户入驻接口
+     * @params {
+     * role:[int],//申请的身份id
+     * qualificationsUrl:[String], //资格证书的图片 非必填
+     * businessUrl:[String], //营业执照的图片 必填
+     * } 
+     */
+    createSettled(params) {
+        return axios.post('/settled/create', params, postConfig)
+    },
+    /**
+     * @description 同意申请接口
+     * @params {
+     * id :[Number]  //你点击的那个申请
+     * } 
+     */
+    settledAdopt(params) {
+        return axios.post('/settled/adopt', params, postConfig)
+    },
+    /**
+     * @description 拒绝申请接口
+     * @params {
+     * id :[Number]  //你点击的那个申请
+     * } 
+     */
+    settledRefuse(params) {
+        return axios.post('/settled/refuse', params, postConfig)
+    },
+    /**
+     * @description 商户申请列表接口
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getSettledList(params) {
+        return axios.post('/settled/list', params, postConfig)
+    },
 
 }

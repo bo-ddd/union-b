@@ -22,7 +22,10 @@
         <el-button icon="el-icon-plus" type="primary" @click="jump">商户入驻</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe>
-        <el-table-column label="申请人" prop="userName" align="center">
+        <el-table-column label="申请人" align="center">
+            <template #default="scope">
+                <span>{{scope.row.userName || scope.row.email}}</span>
+            </template>
         </el-table-column>
         <el-table-column label="申请角色" prop="role" align="center">
         </el-table-column>

@@ -186,13 +186,13 @@ export default {
         //  * pageNum   [number]    每页多少条数据  默认是10条
         //  * pageSize  [number]    这是第几页      默认是第1页
       });
-      console.log(res.data);
       this.tableData = res.data.rows;
       this.tableData.forEach((item,index)=>{
         item.index = index+1;
         this.type = item.disable ? 'primary' : 'danger'
         this.types = item.disable ? 'danger' : 'primary'
       })
+      this.mySort(this.tableData);
       this.handleSizeChange(10);
     },
     /**

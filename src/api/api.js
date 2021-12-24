@@ -361,6 +361,37 @@ export default {
         return axios.post('/advert/list', params, postConfig)
     },
     /**
+     * @description 新增广告接口 
+     * @params {
+     * title : [string]     广告标题
+     * imgUrl:[string]  图片路径
+     * type:[number] 图片类型   1代表首屏广告
+     * } 
+     */
+    createAdvert(params) {
+        return axios.post('/advert/create', params, postConfig)
+    },
+    /**
+     * @description 更改广告接口 
+     * @params {
+     * title : [string]     广告标题
+     * imgUrl:[string]  图片路径
+     * type:[number] 图片类型   1代表首屏广告
+     * } 
+     */
+    updateAdvert(params) {
+        return axios.post('/advert/update', params, postConfig)
+    },
+    /**
+     * @description 根据Id查询广告 
+     * @params {
+     * id : [number]    必填    广告id
+     * } 
+     */
+    findIdAdvert(params) {
+        return axios.post('/advert/findId', params, postConfig)
+    },
+    /**
      * @description 优品展示接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;

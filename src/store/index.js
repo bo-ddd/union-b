@@ -167,6 +167,18 @@ export default new Vuex.Store({
         getAdvertList(ctx, payload) {
             return Api.getAdvertList(payload);
         },
+        //新增广告接口
+        createAdvert(ctx, payload) {
+            return Api.createAdvert(payload);
+        },
+        //更改广告接口
+        updateAdvert(ctx, payload) {
+            return Api.updateAdvert(payload);
+        },
+        //根据Id查询广告
+        findIdAdvert(ctx, payload) {
+            return Api.findIdAdvert(payload);
+        },
         //优品展示接口
         getSuperList(ctx, payload) {
             return Api.getSuperList(payload);
@@ -217,6 +229,10 @@ export default new Vuex.Store({
         //支付方式接口
         getPaymentList(ctx, payload) {
             return Api.getPaymentList(payload);
+        },
+        //获取快递接口
+        getExpressList(ctx, payload) {
+            return Api.getExpressList(payload);
         },
 
         //系统设置

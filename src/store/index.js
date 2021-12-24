@@ -63,10 +63,6 @@ export default new Vuex.Store({
         uploadImage(ctx, payload) {
             return Api.uploadImage(payload);
         },
-        //生成rsa公钥接口
-        getRSAPublicKey(ctx, payload) {
-            return Api.getRSAPublicKey(payload);
-        },
         //身份列表接口
         getIdentityList(ctx, payload) {
             return Api.getIdentityList(payload);

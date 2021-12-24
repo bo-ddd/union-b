@@ -72,6 +72,7 @@
           style="width: 100%"
           stripe
         >
+          <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column label="供应商名称" align="center">
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>

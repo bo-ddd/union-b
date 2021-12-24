@@ -290,13 +290,14 @@ export default {
         return axios.post('/unitlibrary/create', params, postConfig)
     },
     /**
-     * @description 删除单位接口
+     * @description 禁用商品单位接口
      * @params {
-     * id     //要删除单位的id
+     * id     //要禁用单位的id
+     * disable  //改成禁用还是可以使用  1可以使用    0是禁用
      * } 
      */
-    deleteUnitlibrary(params) {
-        return axios.post('/unitlibrary/delete', params, postConfig)
+    disableUnitlibrary(params) {
+        return axios.post('/unitlibrary/disable', params, postConfig)
     },
     /**
      * @description 商品单位排序接口

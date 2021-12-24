@@ -71,7 +71,7 @@
         align="center">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="value"
         label="属性"
         align="center"
         >
@@ -79,7 +79,7 @@
           <input type="text" class="property" v-model="name">
         </template> -->
       </el-table-column>
-      <el-table-column prop="input" label="属性值"  align="center">
+      <el-table-column prop="productTitle" label="属性值"  align="center">
         <!-- <template>
           <input type="text" class="inp" v-model="input">
         </template> -->
@@ -170,38 +170,10 @@ export default {
           required: '',
         },
         tableData: [{
-            id:'1',
-            name:'型号',
-            input:'FX86'
-          }, {
-            id:'2',
-            name:'分辨率',
-            input:'1920*1080'
-          }, {
-            id:'3',
-            name:'尺寸',
-            input:'15.6英寸'
-          }, {
-            id:'4',
-            name:'刷新率',
-            input:'60HZ (1/秒)'
-          },
-          {
-            id:'5',
-            name:'显卡',
-            input:'独立显卡'
-          },
-          {
-            id:'6',
-            name:'运行内存',
-            input:'8G'
-          },
-          {
-            id:'7',
-            name:'硬盘容量',
-            input:'256G'
-          }
-          ]
+            id:'',
+            productTitle:'',
+            value:''
+          },]
       }
     },
     methods: {
@@ -221,15 +193,15 @@ export default {
        that.tableData.splice(index - 1, 1);
        that.tableData.splice(index, 0, upDate);
        console.log(row);
-       let getAttributeList = await this.getAttributeList();
-      console.log(getAttributeList);
+      //  let getAttributeList = await this.getAttributeList();
+      // console.log(getAttributeList);
      }
    },
     async downLayer(index, row) {
      var that = this;
      if (index + 1 === that.tableData.length) {
        that.$message({
-         message: "处于末端端，不能继续下移",
+         message: "处于末端，不能继续下移",
          type: "warning"
        });
      } else {
@@ -237,8 +209,8 @@ export default {
        that.tableData.splice(index + 1, 1);
        that.tableData.splice(index, 0, downDate);
        console.log(row);
-       let getAttributeList = await this.getAttributeList();
-       console.log(getAttributeList);
+      //  let getAttributeList = await this.getAttributeList();
+      //  console.log(getAttributeList);
      }
    },
   //   async delData(index){
@@ -249,8 +221,8 @@ export default {
       async remove(data){
         console.log(data.$index);
         this.tableData.splice(data.$index,1) 
-        let getAttributeList = await this.getAttributeList();
-        console.log(getAttributeList);
+        // let getAttributeList = await this.getAttributeList();
+        // console.log(getAttributeList);
       },
   async confirm(){
     this.dialogFormVisible = false;
@@ -267,11 +239,12 @@ export default {
     });
     console.log(res);
   },
-  // async created(){
-  //   let getAttributeList = this.getAttributeList();
-  //   console.log(getAttributeList);
-  // }
   },
+  async created(){
+    let res = await this.getAttributeList();
+    this.tableData = res.data.rows;
+    console.log(res);
+  }
 }
 </script>
 

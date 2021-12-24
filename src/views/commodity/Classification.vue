@@ -248,7 +248,6 @@ export default {
       };
       //获取当前层所有额数据；
       var formatData = (row) => {
-        
         let res = {};
         if (row.pid) {
           let childData = fn(row);
@@ -277,7 +276,7 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj);
+      console.log(obj)
       if(obj.i){
           let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
@@ -287,7 +286,7 @@ export default {
           currentDataord: obj.currentData.ord,
           preDataord: obj.preData.ord,
         });
-        console.log(res);
+        console.log(res)
       }else{
         this.$message("已经是第一个了不能再升序了")
       }
@@ -359,9 +358,6 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
-      if(obj.i==this.renderDynamic.length-1||obj.i == fn(row).length-1){
-        this.$message("已经是最后一个了不能再降序了")
-      }else{
         let ord = obj.currentData.ord;
         obj.currentData.ord = obj.preData.ord;
         obj.preData.ord = ord;
@@ -371,7 +367,6 @@ export default {
           preDataord: obj.preData.ord,
         });
         console.log(res)
-      }
     },
     /**
      * @description 删除当前行

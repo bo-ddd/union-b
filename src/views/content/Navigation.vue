@@ -19,7 +19,7 @@
     <div class="content">
       <div class="left">
         <!-- 主导航 -->
-        <div class="mainNav" v-for="key in newNav" :key="key.title">
+        <div class="mainNav" v-for="key in newNav" :key="key.id">
           <!-- <div class="nav-name">
             <span class="wrods">{{ key.title }}&nbsp;&nbsp;</span>
             <span class="font-color">(数量限制:2-6个)</span>
@@ -53,7 +53,7 @@
                 </el-dialog>
             </div> -->
           <!-- </div> -->
-          <el-demo :type="key.id" :content='key'></el-demo>
+          <el-demo :type="key" ></el-demo>
         </div>
       </div>
 
@@ -136,6 +136,7 @@ export default {
       navs: [],
       dialogImageUrl: "",
       dialogVisible: false,
+      arr : [1,2],
     };
   },
   methods: {
@@ -146,9 +147,6 @@ export default {
     async navList() {
       let res = await this.getNavList();
       this.navs = res.data.rows;
-    },
-    fff(aaa){
-      console.log(aaa);
     },
 
     // 新增导航的接口   pid 1/2  主导航/快捷导航   route  路径    contenr  内容

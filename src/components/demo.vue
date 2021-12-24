@@ -1,11 +1,11 @@
 <template>
   <div class="demo">
     <div class="nav-name">
-      <span class="wrods">{{ content.title }}&nbsp;&nbsp;</span>
+      <span class="wrods">{{ type.title }}&nbsp;&nbsp;</span>
       <span class="font-color">(数量限制:2-6个)</span>
     </div>
     <div class="nav">
-      <div class="nav-item" v-for="key in content.nav" :key="key.id">
+      <div class="nav-item" v-for="key in type.nav" :key="key.id">
         <div class="jian mt-5" @click="removeNav(key.id)">
           <div><div></div></div>
         </div>
@@ -32,8 +32,7 @@
 import { mapActions } from "vuex";
 import uploada from '../../public/lib/uploud';
 export default {
-  props: ["type","content"],
-  created() {},
+  props: ["type"],
   data() {
     return {
       navs: [],
@@ -42,15 +41,8 @@ export default {
     };
   },
   methods: {
-    //                     上传图片       列表接口     新增导航       删除导航
+//                   上传图片       列表接口     新增导航       删除导航
     ...mapActions(["uploadImage", "getNavList", "createNav", "deleteNav"]),
-
-    // 所有导航的列表接口
-    async navList() {
-      let res = await this.getNavList();
-      this.navs = res.data.rows;
-      console.log(this.navs);
-    },
 
     // 新增导航的接口   pid 1/2  主导航/快捷导航   route  路径    contenr  内容
     async addNav(pid, route, content) {
@@ -66,7 +58,6 @@ export default {
       await this.deleteNav({
         id: id,
       });
-      this.navList();
     },
 
     // 导航删除的点击事件
@@ -77,41 +68,9 @@ export default {
     // 主导航的http事件   参数file
     async httpRequest(file) {
       let name = file.file.name.substring(0,file.file.name.indexOf('.'));
-      let formdata = uploada(file.file,4)
+      let formdata = uploada(file.file,4);
       let res =  await this.uploadImage(formdata);
-      await this.addNav(this.type,res.data,name);
-      this.navList();
-    },
-  },
-  computed: {
-    //   主导航
-    mainNav: {
-      get() {
-        if (!this.navs.length) return [];
-        return this.navs.filter((item) => item.pid === "1");
-      },
-    },
-    // 快捷导航
-    quickNav: {
-      get() {
-        if (!this.navs.length) return [];
-        return this.navs.filter((item) => item.pid === "2");
-      },
-    },
-    // 总数组
-    newNav() {
-      return [
-        {
-          id: 1,
-          title: "主导航",
-          nav: this.mainNav,
-        },
-        {
-          id: 2,
-          title: "快捷导航",
-          nav: this.quickNav,
-        },
-      ];
+      await this.addNav(this.type.id,res.data,name);
     },
   },
 };

@@ -144,6 +144,14 @@ export default new Vuex.Store({
         unitlibraryStick(ctx, payload) {
             return Api.unitlibraryStick(payload);
         },
+        //商品属性置顶接口
+        attributeStick(ctx, payload) {
+            return Api.attributeStick(payload);
+        },
+        //商品属性排序接口
+        attributeOrders(ctx, payload) {
+            return Api.attributeOrders(payload);
+        },
 
 
 

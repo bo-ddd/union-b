@@ -34,7 +34,6 @@
             </el-form>
         </div>
         <div class="bottom">
-            <el-button>保存</el-button>
             <el-button type="primary" @click="submit">提交</el-button>
         </div>
     </div>
@@ -86,6 +85,8 @@ export default {
             let res = await this.uploadImage(formData);
             if (res.status) {
                 this.businessUrl = res.data
+            }else{
+                this.$message.error(res.message)
             }
             console.log(this.businessUrl)
         },
@@ -96,6 +97,8 @@ export default {
             let res = await this.uploadImage(formData);
             if (res.status) {
                 this.qualificationsUrl = res.data
+            }else{
+                this.$message.error(res.message)
             }
             console.log(this.qualificationsUrl)
         },

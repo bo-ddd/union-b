@@ -6,10 +6,9 @@
           <el-button
             class="query"
             icon="el-icon-plus"
-            type="text"
+            type="primary"
             @click="dialogFormVisible = true"
-            >创建标签</el-button
-          >
+            >创建标签</el-button>
         </el-row>
         <el-dialog title="创建标签" :visible.sync="dialogFormVisible">
           <el-form :model="form">
@@ -31,17 +30,8 @@
                 >
                   <i slot="suffix" class="el-input__icon el-icon-date"></i>
                 </el-input>
-                值：
-                <el-input
-                  class="input1"
-                  placeholder="请选择已有或手动输入"
-                  v-model="input4"
-                >
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-                <button class="bu">X</button>
               </div>
-              <div class="demo-input-suffix">
+              <!-- <div class="demo-input-suffix">
                 标签键：
                 <el-input
                   class="input1"
@@ -59,8 +49,8 @@
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
                 <button class="bu">X</button>
-              </div>
-              <div class="demo-input-suffix">
+              </div> -->
+              <!-- <div class="demo-input-suffix">
                 标签键：
                 <el-input
                   class="input1"
@@ -78,7 +68,7 @@
                   <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
                 <button class="bu">X</button>
-              </div>
+              </div> -->
             </div>
 
             <div class="se">
@@ -86,10 +76,10 @@
                 <el-button
                   class="query1"
                   icon="el-icon-plus"
-                  type="text"
-                  @click="dialogFormVisible = true"
+                  type="primary"
+                  @click="addArticle = true"
                   >添加标签</el-button
-                >
+                > 
               </el-row>
 
               <el-link> <i class="el-icon-link"></i> 帮助文档</el-link>
@@ -100,7 +90,7 @@
             <el-button
               class="que"
               type="primary"
-              @click="(dialogFormVisible = false), third-left()"
+              @click="(dialogFormVisible = false), third - left()"
               >确 定</el-button
             >
           </div>
@@ -113,65 +103,70 @@
             v-model="input3"
             class="input-with-select"
           >
-            <el-select v-model="select" slot="prepend" placeholder="标签值">
-              <el-option label="餐厅名" value="1"></el-option>
-              <el-option label="订单号" value="2"></el-option>
-              <el-option label="用户电话" value="3"></el-option>
-            </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
       </div>
-      <div class="center"></div>
     </div>
     <div class="bottom">
       <div class="long">
-        <span class="jian">></span>
+        <span>></span>
         <b class="s">标签建：默认项目</b>
       </div>
     </div>
     <div class="third">
+      <div class="third-top">
+        <el-table
+    :data="tableData"
+    style="width: 100%"
+   >
+    <el-table-column
+      prop="date"
+      label="标签列表"
+      width="250">
+    </el-table-column>
+  </el-table>
+      </div>
       <div class="third-left">
-        <div class="t-f">
-          每页展示 &nbsp;
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </div>
-          <i class="el-icon-arrow-left"></i>
-        <!-- <div class="rrr"></div> -->
-        <el-input class="rrr" v-model="input"></el-input>
-          <i class="el-icon-arrow-right"></i>
-        <div>
-        跳转至
-        <el-input class="i" v-model="input"></el-input>
-        <button class="go">GO</button>
+        <!-- <div class="t-f">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage2"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="100"
+      layout="sizes, prev, pager, next"
+      :to5tal="1000">
+    </el-pagination>
+         
+        </div> -->
 
+        <div>
+          <!-- <el-pagination class="paging" small layout="prev, pager, next" :total="20">
+          </el-pagination> -->
         </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped lang='scss'>
-.go{
-    width: 40px;
-    height: 40px;
-    border: none;
-    color: #ccc;
+
+.paging{
+  margin-top: 10px;
 }
-.i{
-    width: 50px;
+.go {
+  width: 40px;
+  height: 40px;
+  border: none;
+  color: #ccc;
+}
+.i {
+  width: 50px;
 }
 .third-left {
   width: 600px;
   height: 50px;
-  float: right;
+  float: left;
   margin-top: 20px;
 }
 .el-icon-arrow-left {
@@ -189,8 +184,8 @@
   float: left;
   border: none;
 }
-.el-link_inner{
-    border: none;
+.el-link_inner {
+  border: none;
 }
 .kkk {
   width: 30px;
@@ -205,29 +200,26 @@
   text-align: left;
 }
 .que {
-  background-color: #ff4070;
   border: none;
 }
 .query1 {
-  background-color: #ff4070;
+  padding: 10px;
   color: #fff;
 }
 .se {
   display: flex;
   justify-content: space-around;
   width: 300px;
-  margin-left: 310px;
+  margin-left: 200px;
   margin-top: 40px;
 }
-.bu {
-  margin-left: 10px;
-}
+
 .demo-input-suffix {
   margin-top: 20px;
-  margin-left: 205px;
+  margin-left: 112px;
 }
 .input1 {
-  width: 200px;
+  width: 400px;
 }
 .f {
   margin: auto;
@@ -237,16 +229,15 @@
 }
 .p2 {
   margin-left: 80px;
-  color: #ff4070;
+
 }
 .wen {
-  width: 600px;
   height: 100px;
-  margin-left: 55px;
+  position: relative;
+  right: 40px;
   text-align: left;
   font-size: 16px;
   padding-left: 150px;
-  background-color: aliceblue;
 }
 .el-select .el-input {
   width: 130px;
@@ -268,16 +259,15 @@
   height: 50px;
 }
 .query {
-  background-color: #ff4070;
-  font-size: 18px;
   border: none;
   color: #fff;
+  padding: 10px;
 }
 
 .right {
   width: 500px;
   height: 40px;
-  margin-left: 1150px;
+  // margin-left: 1150px;
 }
 .center {
   width: 30px;
@@ -290,14 +280,11 @@
 }
 .long {
   height: 70px;
-  border: 1px solid rgb(185, 183, 183);
   text-align: left;
   line-height: 70px;
   padding-left: 20px;
 }
-.jian {
-  color: #ff4070;
-}
+
 .s {
   margin-left: 5px;
 }
@@ -306,18 +293,40 @@
 }
 </style>
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      input1: "",
-      input2: "",
+      lableName:"",
+      tableData:[],
+      value : "",
       input3: "",
+      input4: "",
       select: "",
+      options:"",
       dialogTableVisible: false,
       dialogFormVisible: false,
+      dialogFormVisibles: false,
       form: {},
       formLabelWidth: "200px",
     };
   },
+  async created(){
+    this.list();
+    this.lableAll();
+  },
+  methods:{
+      ...mapActions(["getLableList","createLable"]),
+      async list(){
+        let listAll = await this.getLableList();
+        console.log(listAll);
+      },
+      async addArticle(){
+        let lableAll = await this.createLable({
+          lableName:this.lableName,
+        });
+        console.log(lableAll);
+      }
+  }
 };
 </script>

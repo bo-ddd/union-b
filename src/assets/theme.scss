@@ -1,8 +1,7 @@
-$color-primary1:rgb(255, 163, 158);
-$color-primary2:#ff7a45;
-$color-primary3:#ffec3d;
-$color-primary4:#bae637;
-
+$color-primary1:rgb(255, 241, 240);
+$color-primary2:rgb(255, 204, 199);
+$color-primary3:rgb(255, 163, 158);
+$color-primary4:rgb(255, 120, 117);
 @mixin color_primary($color){
     color:$color;
     /*判断匹配*/
@@ -21,6 +20,6 @@ $color-primary4:#bae637;
 }
 
 :root{
-    --color:hsl(345, 100%, 96%);
-    --back:rgb(90, 28, 25);
+    --color:rgb(88, 167, 252);
+    --textcolor:rgb(226, 239, 255);
 }

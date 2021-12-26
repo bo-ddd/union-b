@@ -53,14 +53,12 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="danger" size="small">查询</el-button>
-            <el-button size="small">重置</el-button>
+            <el-button type="primary" size="small">查询</el-button>
+            <el-button type="primary" size="small">重置</el-button>
+            <el-button type="primary" size="small" @click="exportExcel"
+              >导出全部</el-button
+            >
           </div>
-        </div>
-        <div class="commodity_operation">
-          <el-button size="small">批量下架</el-button>
-          <el-button size="small">批量上架</el-button>
-          <el-button size="small">批量删除</el-button>
         </div>
       </div>
       <div>
@@ -68,24 +66,17 @@
           size="small"
           ref="multipleTable"
           :data="tableData"
+          border
+          id="out-table"
           tooltip-effect="dark"
           style="width: 100%"
           stripe
-          :header-cell-style="{ background: '#fcfafb' }"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column label="供应商名称" align="center">
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
           <el-table-column prop="code" label="角色归属" align="center">
-          </el-table-column>
-
-          <el-table-column
-            prop="address"
-            label="描述"
-            align="center"
-            show-overflow-tooltip
-          >
           </el-table-column>
           <el-table-column
             prop="date"
@@ -100,13 +91,6 @@
             align="center"
             show-overflow-tooltip
           >
-          </el-table-column>
-          <el-table-column label="操作" align="center" show-overflow-tooltip>
-            <template>
-              <el-link type="primary" class="edit">编辑</el-link>
-              <el-link type="warning" class="off_the_shelf">审核</el-link>
-              <el-link type="danger" class="delete">删除</el-link>
-            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -129,18 +113,12 @@
 </template>
 
 <script>
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
   data() {
     return {
-      input1: "",
-      input2: "",
-      input3: "",
-      select: "",
-      formInline: {
-        user: "",
-        region: "",
-      },
-
+      value: "",
       options: [
         {
           value: "选项1",
@@ -150,54 +128,17 @@ export default {
           value: "选项2",
           label: "双皮奶",
         },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
       ],
-      value: "",
+      input1: "",
+      input2: "",
+      input3: "",
+      select: "",
+      formInline: {
+        user: "",
+        region: "",
+      },
 
       tableData: [
-        {
-          name: "供应商VIP商品管理",
-          code: "平台",
-          address: "上海市普陀区金沙江路 1518 弄",
-          sales: "正常",
-          state: "否",
-          date: "2019-08-12",
-        },
-        {
-          name: "供应商VIP商品管理",
-          code: "平台",
-          address: "上海市普陀区金沙江路 1518 弄",
-          sales: "正常",
-          state: "否",
-          date: "2019-08-12",
-        },
-        {
-          name: "供应商VIP商品管理",
-          code: "平台",
-          address: "上海市普陀区金沙江路 1518 弄",
-          sales: "正常",
-          state: "否",
-          date: "2019-08-12",
-        },
-        {
-          name: "供应商VIP商品管理",
-          code: "平台",
-          address: "上海市普陀区金沙江路 1518 弄",
-          sales: "正常",
-          state: "否",
-          date: "2019-08-12",
-        },
         {
           name: "供应商VIP商品管理",
           code: "平台",
@@ -261,6 +202,34 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+
+    // 表格导出到Excel中
+    exportExcel() {
+      /* 从表生成工作簿对象 */
+      let wb = XLSX.utils.table_to_book(document.querySelector("#out-table"));
+      /* 获取二进制字符串作为输出 */
+      var wbout = XLSX.write(wb, {
+        bookType: "xlsx",
+        bookSST: true,
+        type: "array",
+      });
+      try {
+        FileSaver.saveAs(
+          //Blob 对象表示一个不可变、原始数据的类文件对象。
+          //Blob 表示的不一定是JavaScript原生格式的数据。
+          //File 接口基于Blob，继承了 blob 的功能并将其扩展使其支持用户系统上的文件。
+          //返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+          new Blob([wbout], {
+            type: "application/octet-stream",
+          }),
+          //设置导出文件名称
+          "sheet.xlsx"
+        );
+      } catch (e) {
+        if (typeof console !== "undefined") console.log(e, wbout);
+      }
+      return wbout;
+    },
   },
 };
 </script>
@@ -272,30 +241,37 @@ export default {
   height: calc(100vh - 100px);
   overflow-y: auto;
   min-height: 80vh;
+
   & > .m_main {
     padding: 20px;
     display: flex;
     flex-direction: column;
     background: #ffffff;
+
     & > .m_m_center {
       display: grid;
       width: 100%;
+
       & > .m_m_c_top {
         display: grid;
         grid-template-columns: 85% 15%;
         row-gap: 20px;
+
         & > div:nth-of-type(1) {
           display: flex;
           flex-direction: row;
+
           & > .commodity_status,
           & > .commodity_type,
           & > .trade_name {
             display: flex;
             justify-content: flex-start;
             align-items: center;
+
             & span {
               margin-right: 10px;
             }
+
             & .search {
               height: 32px;
               line-height: 32px;
@@ -306,9 +282,12 @@ export default {
             }
           }
         }
+
         & > div:nth-of-type(2) {
           display: flex;
           align-items: center;
+          margin-left: -45px;
+
           & > div {
             height: 32px;
             width: 60px;
@@ -319,6 +298,7 @@ export default {
             justify-content: center;
             font-weight: 700;
           }
+
           & > div:nth-of-type(1) {
             background: #ff4370;
             color: #ffc6d3;
@@ -326,13 +306,16 @@ export default {
           }
         }
       }
+
       & > .commodity_operation {
         padding-top: 20px;
         display: flex;
+
         & .el-button {
           height: 40px;
           padding: 10px;
         }
+
         & > div {
           height: 32px;
           width: 80px;
@@ -344,24 +327,29 @@ export default {
           justify-content: center;
           font-weight: 700;
         }
+
         & > div:nth-of-type(1) {
           background: #ff4370;
         }
       }
     }
+
     & > div:nth-of-type(2) {
       padding: 20px 0px;
     }
   }
+
   & > .m_footer {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 }
+
 .edit,
 .off_the_shelf {
   margin-right: 10px;
+
   & a:hover {
     text-decoration: none;
   }
@@ -369,49 +357,61 @@ export default {
 
 .mains {
   width: 100%;
+
   & > form {
     width: 100%;
+
     & > .el-form-item {
       margin-bottom: 0px;
     }
+
     & > .el-form-item:nth-of-type(1) {
       margin-right: 15px;
     }
+
     & > .el-form-item:nth-of-type(2) {
       margin-right: 15px;
     }
   }
 }
+
 ::v-deep .modify_information .el-dialog {
   width: 30%;
 }
+
 ::v-deep
   .mains
   > form
   > .el-form-item:nth-of-type(3)
   .el-form-item__content
   .el-input__inner {
-  width: 280px;
+  width: 120px;
 }
+
 .delete {
   text-decoration: none;
 }
+
 input::-webkit-input-placeholder {
   color: #c0c4cc;
   font-weight: 700;
 }
+
 input::-moz-placeholder {
   color: #c0c4cc;
   font-weight: 700;
 }
+
 input:-moz-placeholder {
   font-weight: 700;
   color: #c0c4cc;
 }
+
 input:-ms-input-placeholder {
   color: #c0c4cc;
   font-weight: 700;
 }
+
 ::v-deep .mains .el-input:nth-of-type(1),
 ::v-deep .mains .el-input:nth-of-type(2) {
   width: 120px;
@@ -420,9 +420,11 @@ input:-ms-input-placeholder {
 .el-form--inline .el-form-item {
   margin-right: -90px;
 }
+
 .el-select .el-input {
   width: 130px;
 }
+
 .inputs {
   margin-left: 20px;
 }

@@ -2,29 +2,31 @@
   <div class="warp">
     <!-- 刘青松 -->
     <div class="class">
-      <div class="fen"><span>商品数据</span> <i class="el-icon-edit"></i></div>
-      <div class="fen"><span>商品数据</span> <i class="el-icon-edit"></i></div>
-      <div class="fen"><span>商品数据</span> <i class="el-icon-edit"></i></div>
-      <div class="fen"><span>商品数据</span> <i class="el-icon-edit"></i></div>
+      <div><span>商品数据</span><i class="el-icon-edit el-icon--right"></i></div>
+      <div><span>商品数据</span><i class="el-icon-edit el-icon--right"></i></div>
+      <div><span>商品数据</span><i class="el-icon-edit el-icon--right"></i></div>
+      <div><span>商品数据</span><i class="el-icon-edit el-icon--right"></i></div>
     </div>
     <div class="filter">
-      <div class="block">
-        <el-date-picker
-          v-model="value1"
-          type="datetimerange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :default-time="['12:00:00']">
-        </el-date-picker>
-      </div>
-      <div class="block">
-        <el-cascader
-          v-model="value"
-          :options="options"
-          @change="handleChange"></el-cascader>
+      <div>
+        <div>
+          <el-date-picker
+            v-model="value1"
+            type="datetimerange"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :default-time="['12:00:00']">
+          </el-date-picker>
+        </div>
+        <div>
+          <el-cascader
+            v-model="value"
+            :options="options"
+            @change="handleChange"></el-cascader>
+        </div>
       </div>
       <div class="chaxun">
-        <el-button type="primary">查询</el-button>
+        <el-button type="primary" @click="filter">查询</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -48,35 +50,35 @@
       </div>
       <div class="bottom-b">
         <div>
-          <h6>销量最高的某某商品的前10名</h6>
-          <el-table border :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="name" label="商品名称"> </el-table-column>
-            <el-table-column prop="date" label="商品销量"> </el-table-column>
-            <el-table-column prop="address" label="销售排序"> </el-table-column>
+          <h6>商品类目销量前10名</h6>
+          <el-table border :data="tableData" stripe>
+            <el-table-column prop="categoryTitle" label="商品名称" align="center"> </el-table-column>
+            <el-table-column prop="count" label="商品销量" align="center"> </el-table-column>
+            <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
         <div>
-          <h6>销量最高的某某商品的前10名</h6>
-          <el-table border :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="name" label="商品名称"> </el-table-column>
-            <el-table-column prop="date" label="商品销量"> </el-table-column>
-            <el-table-column prop="address" label="销售排序"> </el-table-column>
+          <h6>商品数量销量前10名</h6>
+          <el-table border :data="tableData1" stripe>
+            <el-table-column prop="categoryTitle" label="商品名称" align="center"> </el-table-column>
+            <el-table-column prop="price" label="商品销量" align="center"> </el-table-column>
+            <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
         <div>
-          <h6>销量最高的某某商品的前10名</h6>
-          <el-table border :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="name" label="商品名称"> </el-table-column>
-            <el-table-column prop="date" label="商品销量"> </el-table-column>
-            <el-table-column prop="address" label="销售排序"> </el-table-column>
+          <h6>商品店铺销量前10名</h6>
+          <el-table border :data="tableData2" stripe>
+            <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
+            <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
+            <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
         <div>
-          <h6>销量最高的某某商品的前10名</h6>
-          <el-table border :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="name" label="商品名称"> </el-table-column>
-            <el-table-column prop="date" label="商品销量"> </el-table-column>
-            <el-table-column prop="address" label="销售排序"> </el-table-column>
+          <h6>快递小哥配送前10名</h6>
+          <el-table border :data="tableData3" stripe>
+            <el-table-column prop="name" label="商品名称" align="center"> </el-table-column>
+            <el-table-column prop="date" label="商品销量" align="center"> </el-table-column>
+            <el-table-column prop="address" label="销售排序" align="center"> </el-table-column>
           </el-table>
         </div>
       </div>
@@ -86,9 +88,11 @@
 
 <script>
 import * as echarts from "echarts";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      ...mapActions(["getRankingData"]),
       options: [{
           value: 'zhinan',
           label: '指南',
@@ -122,18 +126,10 @@ export default {
       }], 
       value:"",
       value1:"",
-      tableData: [
-        { name: "牛奶", date: "100", address: "1" },
-        { name: "啤酒", date: "98", address: "2" },
-        { name: "手机", date: "95", address: "3" },
-        { name: "电视机", date: "89", address: "4" },
-        { name: "洗衣机", date: "86", address: "5" },
-        { name: "冰箱", date: "83", address: "6" },
-        { name: "空调", date: "80", address: "7" },
-        { name: "自行车", date: "50", address: "8" },
-        { name: "窗帘", date: "30", address: "9" },
-        { name: "毛衣", date: "29", address: "10" },
-      ],
+      tableData: [],
+      tableData1:[],
+      tableData2:[],
+      tableData3:[],
     };
   },
   methods: {
@@ -151,6 +147,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
+            center: ["40%","60%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -186,6 +183,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
+            center: ["40%","60%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -222,6 +220,7 @@ export default {
             name: "Access From",
             type: "pie",
             radius: ["25%", "50%"],
+            center: ["40%","60%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -246,27 +245,20 @@ export default {
         ],
       }
       let option3 = {
-        // tooltip: {
-        //   trigger: "axis",
-        // },
+        grid:{
+          height:'50%',
+        },
+        tooltip: {
+          trigger: "axis",
+        },
         legend: {
           data: ["Rainfall", "Evaporation"],
         },
-        // toolbox: {
-        //   show: true,
-        //   feature: {
-        //     dataView: { show: true, readOnly: false },
-        //     magicType: { show: true, type: ["line", "bar"] },
-        //     restore: { show: true },
-        //     saveAsImage: { show: true },
-        //   },
-        // },
-        // calculable: true,
+        calculable: true,
         xAxis: [
           {
             type: "category",
-            // prettier-ignore
-            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            data: ['Jan', 'Feb', 'Mar'],
           },
         ],
         yAxis: [
@@ -278,7 +270,7 @@ export default {
           {
             name: "Rainfall",
             type: "bar",
-            data: [2.0, 4.9, 7.0, 23.2, 25.6],
+            data: [20.0, 40.9, 77.0],
             markPoint: {
               data: [
                 { type: "max", name: "Max" },
@@ -292,16 +284,16 @@ export default {
           {
             name: "Evaporation",
             type: "bar",
-            data: [2.6, 5.9, 9.0, 26.4, 28.7],
+            data: [20.6, 50.9, 90.0],
             markPoint: {
               data: [
                 { name: "Max", value: 182.2, xAxis: 7, yAxis: 183 },
                 { name: "Min", value: 2.3, xAxis: 11, yAxis: 3 },
               ],
             },
-            // markLine: {
-            //   data: [{ type: "average", name: "Avg" }],
-            // },
+            markLine: {
+              data: [{ type: "average", name: "Avg" }],
+            },
           },
         ],
       }
@@ -309,6 +301,12 @@ export default {
       let myChart1 = echarts.init(document.getElementsByClassName("type")[1]);
       let myChart2 = echarts.init(document.getElementsByClassName("type")[2]);
       let myChart3 = echarts.init(document.getElementsByClassName("type")[3]);
+      window.addEventListener("resize",function(){
+        myChart.resize();
+        myChart1.resize()
+        myChart2.resize()
+        myChart3.resize()
+      });
       myChart.setOption(option);
       myChart1.setOption(option1);
       myChart2.setOption(option2);
@@ -316,33 +314,53 @@ export default {
     },
     handleChange(){
 
+    },
+    filter(){
+      console.log(this.value1);
+      console.log(1);
+      console.log(this.value);
+    },
+    async fn(){
+      let res = await this.getRankingData();
+      if(res.status == 1){
+        console.log(res.data);
+        this.tableData = res.data.categoryRanking;
+        this.tableData1 = res.data.productRanking;
+        console.log(this.tableData);
+        console.log(this.tableData1);
+      }else{
+        console.log("获取失败!");
+      }
     }
   },
-  mounted() {
+  async mounted() {
     this.drawnBar();
+    console.log(await this.fn());
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .warp {
-  min-width: 1109px;
-  height: calc(100vh - 100px);
+  min-width: 1100px;
+  height: 80vh;
 }
-::v-deep .el-input__inner{
-  height: 30px;
-  line-height: 30px;
-}
-::v-deep .el-date-editor .el-range__icon,::v-deep .el-date-editor .el-range-separator{
-  line-height: 22px;
-}
+
 .class {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 1%;
+  &>div{
+    color: white;
+    background: var(--color);
+    padding: 4.5% 6%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
   & .fen {
-    background: #e7536b;
-    padding: 12px 10px;
+    background: #409EFF;
+    padding: 5% 3.5%;
     border-radius: 5px;
     color: white;
     cursor: pointer;
@@ -351,57 +369,45 @@ export default {
     align-items: center;
   }
 }
-.el-button--primary{
-    color: #FFF;
-    background-color: #e7536b;
-    border-color: #e7536b;
-}
+
 .type {
-  width: 248px;
-  height: 150px;
+  height: 25vh;
 }
 .filter {
-  margin: 10px 0;
-  border-radius: 5px;
-  padding-left: 10px;
+  margin: 1% 0;
+  border-radius: 3px;
   background: white;
   display: flex;
-  position: relative;
+  justify-content: space-between;
+  padding: 0.5% 1%;
   & > div {
-    height: 40px;
-    padding-right: 20px;
     display: flex;
     align-items: center;
   }
-  & > .chaxun {
-    position: absolute;
-    right: 0px;
-  }
-  & label {
-    padding-right: 5px;
-  }
+}
+
+::v-deep .el-cascader>.el-input{
+  display: flex;
+  align-items: center;
+}
+.bottom{
+  height: 100%;
 }
 .bottom-s,
-.bottom-b {
+.bottom-b{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px 10px;
+  grid-template-columns: repeat(4, 24.25%);
+  gap: 1% 1%;
   & > div {
-    margin: 5px 0;
-    padding: 10px;
+    margin: 0 0 4% 0;
+    padding: 3%;
     background: white;
     border: 1px solid white;
     border-radius: 5px;
   }
 }
-.bottom-s {
-  grid-template-rows: 200px;
-}
-.bottom-b {
-  grid-template-rows: 350px;
-}
-::v-deep .filter .el-button {
-  padding: 6px 10px;
+::v-deep .el-cascader .el-input .el-input__inner{
+  margin-left: 10%;
 }
 .filter {
   font-size: 14px;
@@ -410,9 +416,9 @@ export default {
   padding: 0 !important;
 }
 .el-table {
-  margin-top: 13px !important;
+  margin-top: 3% !important;
 }
 ::v-deep .el-table .cell{
-  line-height: 25px;
+  line-height: 4vh;
 }
 </style>

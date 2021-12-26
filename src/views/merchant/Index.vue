@@ -2,114 +2,167 @@
 <div class="wrap">
     <div class="selectbox">
         <div>
-            <span>角色归属</span>
-            <el-select v-model="value" placeholder="全部" size='small' class="mar-right_20">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            <span>申请角色</span>
+            <el-select v-model="value" placeholder="全部" clearable class="mar-right_20">
+                <el-option v-for="item in IdentList" :key="item.id" :label="item.identityName" :value="item.id">
                 </el-option>
             </el-select>
-            <el-select v-model="values" filterable placeholder="商铺名称" size='small' >
-                <el-option v-for="item in option" :key="item.value" :label="item.label" :value="item.value">
+            <span>申请状态</span>
+            <el-select v-model="typevalue" placeholder="全部" clearable class="mar-right_20">
+                <el-option v-for="(item,index) in typeArr" :key="index" :label="item" :value="index+1">
                 </el-option>
             </el-select>
         </div>
         <div>
-            <el-button size='small' type="danger">查询</el-button>
-            <el-button size='small' plain>重置</el-button>
+            <el-button type="primary" @click="inquiry">查询</el-button>
+            <el-button plain @click="reset">重置</el-button>
         </div>
     </div>
     <div class="btnbox">
-        <el-button size='small' icon="el-icon-plus" type="danger" @click="jump">商户入驻</el-button>
-        <el-button size='small' plain>批量删除</el-button>
+        <el-button icon="el-icon-plus" type="primary" @click="jump">商户入驻</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe>
-        <el-table-column label="商铺名称" prop="name" align="center">
+        <el-table-column label="申请人" align="center">
+            <template #default="scope">
+                <span>{{scope.row.userName || scope.row.email}}</span>
+            </template>
         </el-table-column>
-        <el-table-column label="角色归属" prop="role" align="center">
+        <el-table-column label="申请角色" prop="role" align="center">
         </el-table-column>
-        <el-table-column label="商铺地址" prop="address" align="center">
+        <el-table-column label="资格证书" align="center">
+            <template #default="scope">
+                <img :src=" scope.row.qualificationsUrl" alt="" width="50px">
+            </template>
         </el-table-column>
-        <el-table-column label="创铺时间" prop="date" align="center">
+        <el-table-column label="营业执照" align="center">
+            <template #default="scope">
+                <img :src=" scope.row.businessUrl" alt="" width="50px">
+            </template>
         </el-table-column>
-        <el-table-column label="账户状态" prop="status" align="center">
+        <el-table-column label="申请时间" align="center" width="210%">
+            <template #default="scope">
+                <span>{{gettime(scope.row.createdAt)}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="账户状态" align="center">
+            <template #default="scope">
+                <span>{{getType(scope.row.type)}}</span>
+            </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-                <el-button type='text' @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button type='text' @click="handleEdit(scope.row.id)">审核</el-button>
             </template>
         </el-table-column>
     </el-table>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[1, 2, 10, 20]" layout="total, sizes, prev, pager, next, jumper" :total="total" class="paging">
+    </el-pagination>
 </div>
 </template>
 
 <script>
+import {
+    mapActions
+} from 'vuex';
+import {
+    getTime
+} from "../../assets/until/until"
 export default {
     data() {
         return {
-            tableData: [{
-                name: '王小虎',
-                role: '平台',
-                address: '上海市普陀区金沙江路 1518 弄',
-                date: '2016-05-02',
-                status: '优'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
-            options: [{
-                value: '选项1',
-                label: '黄金糕'
-            }, {
-                value: '选项2',
-                label: '双皮奶'
-            }, {
-                value: '选项3',
-                label: '蚵仔煎'
-            }, {
-                value: '选项4',
-                label: '龙须面'
-            }, {
-                value: '选项5',
-                label: '北京烤鸭'
-            }],
-            option: [{
-                value: '选项1',
-                label: '黄金糕'
-            }, {
-                value: '选项2',
-                label: '双皮奶'
-            }, {
-                value: '选项3',
-                label: '蚵仔煎'
-            }, {
-                value: '选项4',
-                label: '龙须面'
-            }, {
-                value: '选项5',
-                label: '北京烤鸭'
-            }],
+            tableData: [],
+            IdentList: [],
             value: '',
-            values: ''
+            typevalue: '',
+            typeArr: ['审核已通过', '审核未通过', '待审核'],
+            currentPage: 1,
+            total:null,
+            pageSize:null,
+            pageNum:null
         }
     },
     methods: {
-        handleEdit(index, row) {
-            console.log(index, row);
+        ...mapActions(["getSettledList", "settledAdopt", "settledRefuse", "getIdentityList"]),
+        handleEdit(id) {
+            this.$confirm('是否可以审核通过', '审核信息', {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: '同意申请',
+                    cancelButtonText: '拒绝申请'
+                })
+                .then(async () => {
+                    let res = await this.settledAdopt({
+                        id
+                    })
+                    if (res.status) {
+                        this.$message.success('同意申请');
+                        this.getList()
+                    }
+                })
+                .catch(async action => {
+                    let res = await this.settledRefuse({
+                        id
+                    })
+                    if (res.status) {
+                        this.$message.error(
+                            action === 'cancel' ?
+                            '拒绝申请' : '再看一看信息'
+                        )
+                        this.getList()
+                    }
+                });
         },
-        jump(){
-          this.$router.push({
-            name:'Settled'
-          })
-        }
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+            this.pageSize = val
+        },
+        handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
+            this.pageNum = val
+        },
+        jump() {
+            this.$router.push({
+                name: 'Settled'
+            })
+        },
+        gettime(time) {
+            return getTime(time)
+        },
+        getType(type) {
+            return this.typeArr[type - 1]
+        },
+        async getList() {
+            let res = await this.getSettledList();
+            if (res.status) {
+                this.tableData = res.data.rows
+            }
+            console.log(res)
+            this.total = res.data.count
+        },
+        async getIdentList() {
+            let res = await this.getIdentityList()
+            if (res.status) {
+                this.IdentList = res.data.rows
+            }
+        },
+        reset() {
+            this.value = '';
+            this.typevalue = ''
+        },
+        async inquiry() {
+            let res = await this.getSettledList({
+                role: this.value || null,
+                type: this.typevalue || null
+            });
+            if (res.status) {
+                this.tableData = res.data.rows
+            }
+        },
+        
     },
+    created() {
+        this.getList()
+        this.getIdentList()
+    }
 }
 </script>
 
@@ -137,6 +190,11 @@ export default {
         & .bac-ff4070 {
             background-color: '#ff4070';
         }
+    }
+
+    & .paging{
+        text-align: center;
+        margin: 20px 0px ;
     }
 }
 </style>

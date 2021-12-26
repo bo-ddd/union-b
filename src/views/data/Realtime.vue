@@ -1,6 +1,6 @@
 <template>
    <div class="warp">
-    <div class="main-t">
+    <!-- <div class="main-t">
       <div class="main-t_left">
         <h3>实时数据</h3>
         <span>更新时间</span>
@@ -13,7 +13,7 @@
           </template>
         </el-cascader>
       </div>
-    </div>
+    </div> -->
     <div class="main_c">
       <div class="main_c-left">
         <h3>成交统计</h3>
@@ -202,6 +202,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
+          top:'center'
         },
         series: [
           {
@@ -245,27 +246,6 @@ export default {
 .ranking {
   height: 98%;
 }
-.main-t {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #c8c8c8;
-  padding-right: 2%;
-}
-.main-t_left {
-  display: flex;
-  align-items: center;
-}
-.main-t_left > span {
-  margin-top: 1%;
-}
-.main-t h3 {
-  margin-right: 15px;
-  color: #000;
-}
-.date {
-  margin-left: 10px;
-}
 .statistics {
   height: 98%;
 }
@@ -276,7 +256,7 @@ export default {
 .main_c-left {
   padding: 2%;
   width: 50%;
-  margin: 2.5% 1.5% 0 0;
+  margin: 0 1.5% 2.5% 0;
   height: 40vh;
   background-color: #fff;
 }
@@ -284,13 +264,12 @@ export default {
   padding: 2%;
   width: 40%;
   height: 40vh;
-  margin: 2.5% 0 0 0;
+  margin-bottom: 2.5%;
   background-color: #fff;
 }
 .main_c-c {
   width: 45%;
   height: 40vh;
-  margin-top: 2.5%;
   background-color: #fff;
   padding: 2%;
 }

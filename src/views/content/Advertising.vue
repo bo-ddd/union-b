@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="wrap">
     <div class="header">
-      <div>
-        <el-button class="query" icon="el-icon-plus" @click="openFormDialog"
+      <div class="header-left">
+         <el-button  icon="el-icon-plus"  @click="openFormDialog" type="primary"
           >新增商品</el-button
         >
-        <el-dialog :visible.sync="dialogFormVisible">
+            <el-dialog :visible.sync="dialogFormVisible">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="文字" name="first">
               <div class="texttab">
@@ -21,7 +21,7 @@
                           autocomplete="off"
                           class="logisticsIpt"
                         ></el-input>
-                        <span>最多可输入100个字符</span>
+                        <span class="ml-10">最多可输入100个字符</span>
                       </div>
                     </el-form-item>
                     <el-form-item
@@ -41,7 +41,7 @@
                           v-model="form.link"
                           autocomplete="off"
                         ></el-input>
-                        <span>最多可输入1000个字符</span>
+                        <span class="ml-10">最多可输入1000个字符</span>
                       </div>
                     </el-form-item>
 
@@ -57,7 +57,9 @@
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article" class="precontent"></div>
+                    <div v-html="article" class="precontent" >
+                    
+                    </div>
                   </div>
                 </div>
               </div>
@@ -75,23 +77,27 @@
                           v-model="form.name"
                           autocomplete="off"
                         ></el-input>
-                        <span>最多可输入100个字符</span>
+                        <span class="ml-10">最多可输入100个字符</span>
                       </div>
                     </el-form-item>
                     <el-form-item
                       label="图片文件"
                       :label-width="formLabelWidth"
                     >
-
+                    <!--上传图片-->
                     <el-upload
-                      class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
-                      list-type="picture">
-                      <el-button size="small" type="primary">上传图片</el-button>
+                      action=""
+                      :http-request="uploadImg"
+                      :on-change="fileChange"
+                      list-type="picture-card"
+                      :on-preview="handlePictureCardPreview"
+                      :on-remove="handleRemove">
+                      <i class="el-icon-plus"></i>
                     </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                      <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                    
                     </el-form-item>
                     <el-form-item
                       label="图片描述"
@@ -101,12 +107,12 @@
                         <div class="imagede">
                           <span>宽度</span>
                           <el-input v-model="input1"></el-input>
-                          <span>px</span>
+                          <span class="ml-10">px</span>
                         </div>
                         <div class="imagede">
                           <span>高度</span>
                           <el-input v-model="input1"></el-input>
-                          <span>px</span>
+                          <span class="ml-10">px</span>
                         </div>
                       </div>
                     </el-form-item>
@@ -119,7 +125,7 @@
                           v-model="form.region"
                           autocomplete="off"
                         ></el-input>
-                        <span>最多可输入100个字符</span>
+                        <span class="ml-10">最多可输入100个字符</span>
                       </div>
                     </el-form-item>
                     <el-form-item
@@ -131,7 +137,7 @@
                           v-model="form.link"
                           autocomplete="off"
                         ></el-input>
-                        <span>最多可输入1000个字符</span>
+                        <span class="ml-10">最多可输入1000个字符</span>
                       </div>
                     </el-form-item>
                     <el-form-item
@@ -146,7 +152,7 @@
                 <div class="textright">
                   <div class="preview">
                     <div class="previewtop">预览</div>
-                    <div v-html="article"></div>
+                      <img width="100%" :src="preview" alt="">
                   </div>
                 </div>
               </div>
@@ -155,56 +161,55 @@
         </el-dialog>
       </div>
       <div class="header-right">
-        <div class="header-choice">
-          <el-button class="queryAt">删除</el-button>
-          <el-button class="queryAt" @click="changeDisplay"
-            > <span v-if="isDisplay==false">筛选(点击展开)</span>
-            <span v-else>筛选(点击隐藏)</span></el-button>
+        <div class="selectBox">
+        <div class="select">
+          <span class="mr-10">类型</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="全部">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
         </div>
-        <el-input
+         <div class="select">
+          <span class="mr-10">尺寸</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="全部">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
+         
+        </div>
+         <div class="select">
+          <span class="mr-10">广告</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="请选择广告">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
+        </div>
+        </div>
+            <el-input
           placeholder="请输入物料ID 物料名称或物料内容"
           prefix-icon="el-icon-search"
           v-model="input2"
           class="ipt"
         >
         </el-input>
-      </div>
-    </div>
-   <div class="screen" v-show="isDisplay">
-      <div class="screeen_top">
-        <div class="screen_top-r">
-          <label for="" class="lab">类型</label>
-          <el-select v-model="value" placeholder="全部">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </div>
-        <div class="screen_top-r">
-          <label for="" class="lab">尺寸</label>
-          <el-select v-model="value" placeholder="全部">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </div>
-      </div>
-      <div class="screen_top-r">
-        <label for="" class="lab">广告</label>
-        <el-select v-model="value" placeholder="请选择广告" class="labwidth">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
       </div>
     </div>
     <div class="main">
@@ -227,83 +232,89 @@
         >
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="size"
           label="尺寸"
           show-overflow-tooltip
-          width="220"
+          width="150"
         >
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="type"
           label="类型"
           show-overflow-tooltip
-          width="240"
+          width="200"
         >
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="240">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+            <el-button   @click="handleEdit(scope.$index, scope.row)" type="primary"
               >修改</el-button
             >
-            <el-button
-              size="mini"
-              @click="handleDelete(scope.$index, scope.row)"
+            <el-button  @click="deleteRow(scope.$index, tableData)" type="primary"
               >删除</el-button
             >
           </template>
         </el-table-column>
       </el-table>
     </div>
+  <!--修改信息-->
+    <el-dialog title="修改" :visible.sync="dialogFormVisiblefix">
+  <el-form :model="form">
+    <el-form-item label="物料名称" :label-width="formLabelWidth">
+      <el-input v-model="form.name" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="尺寸" :label-width="formLabelWidth">
+      <el-input v-model="form.region" autocomplete="off"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisiblefix = false">取 消</el-button>
+    <el-button type="primary" @click="dialogFormVisiblefix = false">确 定</el-button>
+  </div>
+</el-dialog>
+
   </div>
 </template>
 
 <script>
 import E from "wangeditor";
+import {mapActions} from "vuex";
 export default {
   data() {
     return {
-        isDisplay:false,
+       dialogImageUrl: '',
+        dialogVisible: false,
       input2: "",
       input1: "",
       radio: "1",
       activeName: "first",
       cont:0,
+      count:"",
+      pageCount:"",
+      rows:[],
       tableData: [
         {
-          date: "2016-05-03",
-          name: "王小虎",
+          date: "000001",
+          name: "这是一个图片连接",
           address: "上海市普陀区金沙江路 1518 弄",
+          size:"800*400",
+          type:"图片"
         },
         {
-          date: "2016-05-02",
-          name: "王小虎",
+          date: "000002",
+          name: "这是一个图片连接",
           address: "上海市普陀区金沙江路 1518 弄",
+          size:"800*400",
+          type:"图片"
         },
         {
-          date: "2016-05-04",
-          name: "王小虎",
+          date: "000003",
+          name: "这是一个图片连接",
           address: "上海市普陀区金沙江路 1518 弄",
+          size:"800*400",
+          type:"图片"
         },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
+       
       ],
       multipleSelection: [],
       options: [
@@ -329,7 +340,9 @@ export default {
         },
       ],
       value: "",
+      preview : '',    // 预览时的照片路径
       dialogFormVisible: false,
+      dialogFormVisiblefix:false,
       form: {
         name: "",
         link: "",
@@ -343,33 +356,52 @@ export default {
       },
       formLabelWidth: "120px",
       article: null,
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
     };
   },
 
-  created() {},
+  created() {
+    this.getAds()
+  },
   methods: {
+    ...mapActions(["getAdvertList","uploadImage"]),
+   async getAds(){
+    let res=await this.getAdvertList();
+    // this.rows=res.data.rows;
+    console.log(res);
+    },
+    
     handleEdit(index, row) {
+      this.dialogFormVisiblefix = true;
       console.log(index, row);
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-     handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-     changeDisplay(){
-        this.isDisplay = !this.isDisplay
-      },
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.preview = '';
+    },
+    //上传图片
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.preview = file.url
+      this.dialogVisible = true;
+    },
+     uploadImg(a){
+      console.log(a);
+    },
+    //文件状态改变时，(上传文件或失败都会调用)
+    fileChange(a){
+      // console.log(a.url);
+      this.preview = a.url;
+    },
+    //新增商品，富文本
     openFormDialog() {
       this.dialogFormVisible = true;
       this.initEditor();
@@ -387,34 +419,51 @@ export default {
         editor.create();
       });
     },
+   
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-  & .query {
-    background-color: #ff4070;
-    color: #fff3f6;
-    width: 250px;
-  }
-  & .header-right {
-    width: 78%;
-    background: #eceff6;
-    display: flex;
-    justify-content: space-between;
-    min-width: 580px;
-    & .ipt {
-      width: 350px;
-      margin-right: 50px;
-    }
-    & .queryAt {
-      background-color: #eceff6;
-    }
-  }
+.wrap{
+  height: calc(100vh - 100px);
+  overflow-y:auto;
+  background: #fff;
 }
+.header {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  padding: 10px;
+  align-items: center;
+  & .header-right{
+    display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & .selectBox{
+    display: flex;
+  & .select{
+          margin-right: 15px;
+    display: flex;
+    align-items: center;
+   ::v-deep .el-input__inner{
+      width: 120px;
+    }
+    & .mr-10{
+      margin-right: 10px;
+    }
+    & .select-suf{
+          display: inline-block;
+    position: relative;
+    }
+    }
+  }
+    & .ipt{
+      width: 350px;
+      margin-right: 35px;
+    }
+  }
+  }
+  
 ::v-deep .el-button {
   border-radius: 0px;
 }
@@ -425,25 +474,6 @@ export default {
 }
 ::v-deep .el-input__icon {
   height: 30px;
-}
-.screen {
-  min-height: 20vh;
-  border: 1px solid #ccc;
-  margin-top: 15px;
-  & .lab {
-    margin-right: 25px;
-    color: #aeb1b6;
-  }
-  & .screeen_top {
-    display: flex;
-  }
-}
-.screen_top-r {
-  margin-left: 50px;
-  margin-top: 30px;
-}
-.labwidth {
-  width: 545px;
 }
 .main {
   margin-top: 15px;
@@ -464,8 +494,13 @@ export default {
   & .textleft {
   width: 60%;
 }
+::v-deep .el-input{
+  width: 60%;
 }
-
+& .ml-10{
+  margin-left: 10px;
+}
+}
 .preview {
   height: 320px;
   width: 280px;
@@ -477,16 +512,6 @@ export default {
     padding-left: 10px;
   }
 }
-.logistics {
-  display: flex;
-  & > span {
-    width: 210px;
-  }
-& ::v-deep .el-input__inner {
-  width: 80%;
-}
-}
-
 .imagedeBox{
   display:flex;
     & .imagede {
@@ -494,6 +519,9 @@ export default {
   & > .el-input {
     width: 30% !important;
     margin-left: 5px;
+  }
+  &> .ml-10{
+    margin-left: 10px;
   }
 }
 }

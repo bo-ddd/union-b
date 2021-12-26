@@ -8,12 +8,15 @@
               :inline="true"
               :model="formInline"
               class="demo-form-inline"
-              size="small"
             >
               <el-form-item label="商品状态">
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select
+                  v-model="commodityStatusValue"
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in commodityStatus"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -22,9 +25,13 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="商品类型">
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select
+                  v-model="salesTypeValue"
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in salesType"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -53,82 +60,67 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="danger" size="small">查询</el-button>
-            <el-button size="small">重置</el-button>
+            <el-button type="primary" @click="query">查询</el-button>
+            <el-button type="primary">重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
-          <!-- <div>新增商品</div> -->
-          <!-- <div>批量下架</div>
-          <div>批量上架</div>
-          <div>批量删除</div> -->
-          <el-button type="danger" size="small">+ 新增商品</el-button>
-          <el-button size="small">批量下架</el-button>
-          <el-button size="small">批量上架</el-button>
-          <el-button size="small">批量删除</el-button>
+          <el-button type="primary" @click="skip">+ 新增商品</el-button>
+          <el-button type="primary">批量下架</el-button>
+          <el-button type="primary">批量上架</el-button>
+          <el-button @click="multipleRemove()" type="primary"
+            >批量删除</el-button
+          >
         </div>
       </div>
       <div>
         <el-table
           ref="multipleTable"
-          :data="tableData"
+          :data="articles()"
           tooltip-effect="dark"
           style="width: 100%"
           stripe
-          size="small"
+          @select="checkBoxData"
+          @select-all="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
         >
-          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column label="条码" width="90">
             <template slot-scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
-          <el-table-column prop="name" label="商品名称" width="180">
+          <el-table-column label="商品名称" width="180">
+            <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
-          <el-table-column
-            prop="classify"
-            label="商品分类"
-            sortable
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品分类" sortable show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.classify }}</template>
           </el-table-column>
-          <el-table-column
-            prop="money"
-            label="售价"
-            sortable
-            show-overflow-tooltip
-          >
+          <el-table-column label="售价" sortable show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.money }}</template>
           </el-table-column>
-          <el-table-column
-            prop="inventory"
-            label="库存"
-            sortable
-            show-overflow-tooltip
-          >
+          <el-table-column label="库存" sortable show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.inventory }}</template>
           </el-table-column>
-          <el-table-column
-            prop="sales"
-            label="销量"
-            sortable
-            show-overflow-tooltip
-          >
+          <el-table-column label="销量" sortable show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.sales }}</template>
           </el-table-column>
-          <el-table-column prop="state" label="状态" show-overflow-tooltip>
+          <el-table-column label="状态" show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.state }}</template>
           </el-table-column>
-          <el-table-column prop="date" label="创建日期" show-overflow-tooltip>
+          <el-table-column label="创建日期" show-overflow-tooltip>
+            <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip align="center">
-            <template>
+            <template slot-scope="scope">
               <el-link
                 type="primary"
                 class="edit"
-                size="small"
-                @click="dialogFormVisible = true"
+                @click="getCommodityDat(scope)"
                 >编辑</el-link
               >
-              <el-link type="warning" class="off_the_shelf" size="small"
-                >下架</el-link
+              <el-link type="warning" class="off_the_shelf">下架</el-link>
+              <el-link type="danger" class="delete" @click="remove([scope])"
+                >删除</el-link
               >
-              <el-link type="danger" class="delete" size="small">删除</el-link>
             </template>
           </el-table-column>
         </el-table>
@@ -138,58 +130,90 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
+            :current-page.sync="currentPage"
+            :page-sizes="[10, 20, 30]"
+            :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
+            :total="tableData.length"
             class="page"
           >
           </el-pagination>
         </div>
       </div>
-      <el-dialog title="编辑商品" :visible.sync="dialogFormVisible" class="modify_information">
-      <el-form :model="form">
-        <el-form-item label="商品名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="商品分类" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="售价" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="库存" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
-      </div>
-    </el-dialog>
+      <el-dialog
+        title="编辑商品"
+        :visible.sync="dialogFormVisible"
+        class="modify_information"
+      >
+        <el-form :model="form">
+          <el-form-item label="商品名称" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="商品分类" :label-width="formLabelWidth">
+            <div class="block">
+              <el-cascader
+                placeholder="请选择分类"
+                :options="form.classificationList"
+                filterable
+                class="classification"
+              ></el-cascader>
+            </div>
+          </el-form-item>
+          <el-form-item label="售价" :label-width="formLabelWidth">
+            <el-input v-model="form.money" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="库存" :label-width="formLabelWidth">
+            <el-input v-model="form.inventory" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" type="primary"
+            >取 消</el-button
+          >
+          <el-button type="primary" @click="dialogFormVisible = false"
+            >确 定</el-button
+          >
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
-
 <script>
+import { mapActions } from "vuex";
 export default {
   /**
    * author: syh
    */
   data() {
     return {
+      checked: false,
+      commodityStatusValue: "",
+      commodityStatus: [
+        {
+          value: "销售中",
+          label: "销售中",
+        },
+        {
+          value: "已售空",
+          label: "已售空",
+        },
+      ],
+      salesTypeValue: "",
+      salesType: [
+        {
+          value: "孕产妇用品",
+          label: "孕产妇用品",
+        },
+        {
+          value: "婴幼儿用品",
+          label: "婴幼儿用品",
+        },
+      ],
       value: "",
       options: [
         {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
+          value: "选项一",
+          label: "0000",
         },
       ],
       input1: "",
@@ -203,8 +227,9 @@ export default {
 
       tableData: [
         {
+          id: 1,
           code: "20160503",
-          name: "十月结晶一次性产妇纸",
+          name: "立白洗衣液",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
           money: "159.00",
@@ -214,10 +239,35 @@ export default {
           date: "2019-08-12",
         },
         {
+          id: 2,
           code: "20160503",
-          name: "十月结晶一次性产妇纸",
+          name: "舒克儿童牙膏",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "婴幼儿用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "已售空",
+          date: "2019-08-12",
+        },
+        {
+          id: 3,
+          code: "20160503",
+          name: "苏菲卫生巾",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "已售空",
+          date: "2019-08-12",
+        },
+        {
+          id: 4,
+          code: "20160503",
+          name: "阿迪达斯运动鞋",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
@@ -225,10 +275,47 @@ export default {
           date: "2019-08-12",
         },
         {
+          id: 5,
           code: "20160503",
-          name: "十月结晶一次性产妇纸",
+          name: "三只松鼠_手撕面包",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "婴幼儿用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "已售空",
+          date: "2019-08-12",
+        },
+        {
+          id: 6,
+          code: "20160503",
+          name: "苹果IPhone",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "已售空",
+          date: "2019-08-12",
+        },
+        {
+          id: 7,
+          code: "20160503",
+          name: "体重秤",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "已售空",
+          date: "2019-08-12",
+        },
+        {
+          id: 8,
+          code: "20160503",
+          name: "南极人袜子",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
@@ -236,78 +323,470 @@ export default {
           date: "2019-08-12",
         },
         {
+          id: 9,
           code: "20160503",
-          name: "十月结晶一次性产妇纸",
+          name: "乡巴佬鹌鹑蛋",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
+          id: 10,
           code: "20160503",
-          name: "十月结晶一次性产妇纸",
+          name: "书箱收纳箱",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
+          id: 11,
           code: "20160503",
-          name: "十月结晶一次性产妇纸",
+          name: "桂花奶茶瓜子",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
+          id: 12,
           code: "20160503",
-          name: "十月结晶一次性产妇纸",
+          name: "男女加绒加厚裤子",
           address: "上海市普陀区金沙江路 1518 弄",
           classify: "孕产妇用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
+          date: "2019-08-12",
+        },
+        {
+          id: 13,
+          code: "20160503",
+          name: "米创网红同款口罩",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "已售空",
+          date: "2019-08-12",
+        },
+        {
+          id: 14,
+          code: "20160503",
+          name: "正宗藏红花茶",
+          address: "上海市普陀区金沙江路 1518 弄",
+          classify: "孕产妇用品",
+          money: "159.00",
+          inventory: "4647",
+          sales: "464",
+          state: "已售空",
           date: "2019-08-12",
         },
       ],
-
+      deleteDataArr: [],
+      arr3: [],
+      arr4: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+        money: "",
+        inventory: "",
+        classificationList: [
+          {
+            value: "zhinan",
+            label: "指南",
+            children: [
+              {
+                value: "shejiyuanze",
+                label: "设计原则",
+                children: [
+                  {
+                    value: "yizhi",
+                    label: "一致",
+                  },
+                  {
+                    value: "fankui",
+                    label: "反馈",
+                  },
+                  {
+                    value: "xiaolv",
+                    label: "效率",
+                  },
+                  {
+                    value: "kekong",
+                    label: "可控",
+                  },
+                ],
+              },
+              {
+                value: "daohang",
+                label: "导航",
+                children: [
+                  {
+                    value: "cexiangdaohang",
+                    label: "侧向导航",
+                  },
+                  {
+                    value: "dingbudaohang",
+                    label: "顶部导航",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            value: "zujian",
+            label: "组件",
+            children: [
+              {
+                value: "basic",
+                label: "Basic",
+                children: [
+                  {
+                    value: "layout",
+                    label: "Layout 布局",
+                  },
+                  {
+                    value: "color",
+                    label: "Color 色彩",
+                  },
+                  {
+                    value: "typography",
+                    label: "Typography 字体",
+                  },
+                  {
+                    value: "icon",
+                    label: "Icon 图标",
+                  },
+                  {
+                    value: "button",
+                    label: "Button 按钮",
+                  },
+                ],
+              },
+              {
+                value: "form",
+                label: "Form",
+                children: [
+                  {
+                    value: "radio",
+                    label: "Radio 单选框",
+                  },
+                  {
+                    value: "checkbox",
+                    label: "Checkbox 多选框",
+                  },
+                  {
+                    value: "input",
+                    label: "Input 输入框",
+                  },
+                  {
+                    value: "input-number",
+                    label: "InputNumber 计数器",
+                  },
+                  {
+                    value: "select",
+                    label: "Select 选择器",
+                  },
+                  {
+                    value: "cascader",
+                    label: "Cascader 级联选择器",
+                  },
+                  {
+                    value: "switch",
+                    label: "Switch 开关",
+                  },
+                  {
+                    value: "slider",
+                    label: "Slider 滑块",
+                  },
+                  {
+                    value: "time-picker",
+                    label: "TimePicker 时间选择器",
+                  },
+                  {
+                    value: "date-picker",
+                    label: "DatePicker 日期选择器",
+                  },
+                  {
+                    value: "datetime-picker",
+                    label: "DateTimePicker 日期时间选择器",
+                  },
+                  {
+                    value: "upload",
+                    label: "Upload 上传",
+                  },
+                  {
+                    value: "rate",
+                    label: "Rate 评分",
+                  },
+                  {
+                    value: "form",
+                    label: "Form 表单",
+                  },
+                ],
+              },
+              {
+                value: "data",
+                label: "Data",
+                children: [
+                  {
+                    value: "table",
+                    label: "Table 表格",
+                  },
+                  {
+                    value: "tag",
+                    label: "Tag 标签",
+                  },
+                  {
+                    value: "progress",
+                    label: "Progress 进度条",
+                  },
+                  {
+                    value: "tree",
+                    label: "Tree 树形控件",
+                  },
+                  {
+                    value: "pagination",
+                    label: "Pagination 分页",
+                  },
+                  {
+                    value: "badge",
+                    label: "Badge 标记",
+                  },
+                ],
+              },
+              {
+                value: "notice",
+                label: "Notice",
+                children: [
+                  {
+                    value: "alert",
+                    label: "Alert 警告",
+                  },
+                  {
+                    value: "loading",
+                    label: "Loading 加载",
+                  },
+                  {
+                    value: "message",
+                    label: "Message 消息提示",
+                  },
+                  {
+                    value: "message-box",
+                    label: "MessageBox 弹框",
+                  },
+                  {
+                    value: "notification",
+                    label: "Notification 通知",
+                  },
+                ],
+              },
+              {
+                value: "navigation",
+                label: "Navigation",
+                children: [
+                  {
+                    value: "menu",
+                    label: "NavMenu 导航菜单",
+                  },
+                  {
+                    value: "tabs",
+                    label: "Tabs 标签页",
+                  },
+                  {
+                    value: "breadcrumb",
+                    label: "Breadcrumb 面包屑",
+                  },
+                  {
+                    value: "dropdown",
+                    label: "Dropdown 下拉菜单",
+                  },
+                  {
+                    value: "steps",
+                    label: "Steps 步骤条",
+                  },
+                ],
+              },
+              {
+                value: "others",
+                label: "Others",
+                children: [
+                  {
+                    value: "dialog",
+                    label: "Dialog 对话框",
+                  },
+                  {
+                    value: "tooltip",
+                    label: "Tooltip 文字提示",
+                  },
+                  {
+                    value: "popover",
+                    label: "Popover 弹出框",
+                  },
+                  {
+                    value: "card",
+                    label: "Card 卡片",
+                  },
+                  {
+                    value: "carousel",
+                    label: "Carousel 走马灯",
+                  },
+                  {
+                    value: "collapse",
+                    label: "Collapse 折叠面板",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            value: "ziyuan",
+            label: "资源",
+            children: [
+              {
+                value: "axure",
+                label: "Axure Components",
+              },
+              {
+                value: "sketch",
+                label: "Sketch Templates",
+              },
+              {
+                value: "jiaohu",
+                label: "组件交互文档",
+              },
+            ],
+          },
+        ],
       },
       formLabelWidth: "120px",
-      multipleSelection: [],
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      currentPage: 1,
+      pageSize: 10,
+      table: [],
+      pageNum: "",
+      num: "",
+      cacheArr: [],
     };
   },
   methods: {
+    ...mapActions(["getProductList", "deleteProduct"]),
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+      // console.log(this.pageSize);
+      // this.handleCurrentChange(1);
+      //  console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
+      this.pageNum = val;
+      this.offSize();
+      this.tableData.forEach((item) => {
+        item["checked"] = false;
+      });
     },
+    offSize() {
+      this.num = this.pageSize * (this.pageNum - 1);
+      this.articles();
+    },
+    articles(val) {
+      // console.log(val);
+      if (!val) {
+        return this.tableData.slice(this.num, this.num + this.pageSize);
+      } else {
+        return val;
+      }
+    },
+    query() {
+      // console.log(this.tableData);
+      // return this.tableData.slice(this.num, this.num + this.pageSize);
+      console.log(this.tableData);
+      if (!this.commodityStatusValue && !this.salesTypeValue) {
+        this.tableData.slice(this.num, this.num + this.pageSize);
+      } else if (this.commodityStatusValue && !this.salesTypeValue) {
+        console.log(
+          this.tableData.filter((item) => {
+            // item.state == this.commodityStatusValue;
+            console.log(item);
+          })
+        );
+      } else if (!this.commodityStatusValue && this.salesTypeValue) {
+        console.log(
+          this.tableData.filter((item) => {
+            item.classify == this.classify;
+          })
+        );
+      } else {
+        console.log(
+          this.tableData.filter((item) => {
+            item.classify == this.classify &&
+              item.state == this.commodityStatusValue;
+          })
+        );
+      }
+    },
+    skip() {
+      this.$router.push({
+        name: "AddGoods",
+      });
+    },
+    getCommodityDat(data) {
+      this.dialogFormVisible = true;
+      // console.log(data);
+      this.form = data.row;
+    },
+    async remove(indexArr) {
+      this.tableData.splice(this.tableData.indexOf(indexArr[0].row), 1);
+      // let res = await this.deleteProduct({
+      //   id: indexArr[0].row.id,
+      // });
+      // console.log(res);
+    },
+    multipleRemove() {
+      for (let i = 0; i < this.arr4.length; i++) {
+        if (!this.cacheArr.includes(this.arr4[i])) {
+          this.cacheArr.push(this.arr4[i]);
+        } else {
+          let temp = this.cacheArr.indexOf(this.arr4[i]);
+          this.cacheArr.splice(temp, 1);
+        }
+      }
+      this.cacheArr.forEach((item) => {
+        this.tableData.splice(this.tableData.indexOf(item), 1);
+      });
+    },
+    checkBoxData: function (selection, row) {
+      this.arr4.push(row);
+    },
+    handleSelectionChange(val) {
+      if (!val.length) {
+        this.arr4 = [];
+      } else {
+        val.forEach((item) => {
+          this.arr4.push(item);
+        });
+      }
+    },
+  },
+  async created() {
+    this.handleSizeChange(10);
+    this.handleCurrentChange(1);
+    // let res = await this.getProductList({
+    // })
+    // console.log(res);
   },
 };
 </script>
@@ -378,8 +857,7 @@ export default {
         padding-top: 20px;
         display: flex;
         & .el-button {
-          height: 40px;
-          padding: 10px;
+          padding: 9px 10px;
         }
         & > div {
           height: 32px;
@@ -430,15 +908,28 @@ export default {
     }
   }
 }
-::v-deep .modify_information .el-dialog{
+.query .el-button {
+  padding: 9px 10px;
+}
+::v-deep .modify_information .el-dialog {
   width: 30%;
+  & > .el-dialog__body {
+    & > .el-form {
+      & > .el-form-item:nth-of-type(2) {
+        & > .el-form-item__content {
+          display: flex;
+        }
+      }
+    }
+  }
 }
 ::v-deep
   .mains
   > form
   > .el-form-item:nth-of-type(3)
-  .el-form-item__content
-  .el-input__inner {
+  > .el-form-item__content
+  > .el-input
+  > .el-input__inner {
   width: 280px;
 }
 .delete {

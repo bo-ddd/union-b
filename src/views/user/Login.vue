@@ -21,6 +21,7 @@
             <el-input
               v-model="form.password"
               class="inputb"
+              name="password"
               placeholder="请输入密码"
               maxlength="15"
               show-password
@@ -36,14 +37,30 @@
                 ></el-input>
               </div>
               <div class="captcha">
-                <img :src="captchaSrc" alt="" />
+                <img
+                  style="height: 43px"
+                  :src="captchaSrc"
+                  @click="generatorCaptcha"
+                  alt=""
+                  srcset=""
+                />
               </div>
             </div>
           </div>
           <div class="main-foot">
-            <el-button type="primary" @click="submit" round>
+            <el-button
+              type="primary"
+              @click="submit"
+              @keyup.enter="submit"
+              round
+            >
               登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
             </el-button>
+          </div>
+          <div class="glink">
+            <el-link :underline="false" type="primary" @click="submitregist"
+              >还没账号，去注册！</el-link
+            >
           </div>
         </div>
       </div>
@@ -53,6 +70,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { JSEncrypt } from "jsencrypt";
 export default {
   data() {
     return {
@@ -66,7 +84,6 @@ export default {
   },
   methods: {
     ...mapActions(["userLogin", "getCaptcha"]),
-
     async generatorCaptcha() {
       // 验证码接口
       this.captchaSrc = await this.getCaptcha();
@@ -128,8 +145,21 @@ export default {
         this.generatorCaptcha();
         return;
       }
-      let { username, password, captcha } = this.form;
+
+      // 对密码增加rsa（非对称加密）
+      var encryptor = new JSEncrypt(); // 创建加密对象实例
+      let publicKey = `-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnZIdkAWLgkux1eMT1mSwyOb7V
+uTtfDYMepItVxy6IhZNT1mSLZ0Ab4b2FvJ7JQmkDEG38l9JcFYY9f61tNPaEZWfl
+FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
+/9AAyN2x4vdqegRNFQIDAQAB
+-----END PUBLIC KEY-----`;
+      encryptor.setPublicKey(publicKey); //设置公钥
+      var rsaPassWord = encryptor.encrypt(this.form.password); // 对内容进行加密
+      this.form.password = rsaPassWord;
+
       //   登录接口
+      let { username, password, captcha } = this.form;
       let res = await this.userLogin({
         username,
         password,
@@ -137,20 +167,58 @@ export default {
       });
       console.log(res);
       if (res.status == 1) {
-        console.log("success");
         sessionStorage.setItem("token", res.data);
+        this.$message.success(res.msg);
+        if (localStorage.getItem("from")) {
+          this.$router.push({
+            path: localStorage.getItem("from"),
+          });
+        } else {
+          this.$router.push({
+            path: "/",
+          });
+        }
       } else {
+        this.$message.error(res.msg);
+        this.generatorCaptcha();
+      }
+      if (res.status == 0) {
         this.$message({
           type: "warning",
           message: res.msg,
         });
-        this.generatorCaptcha();
       }
     },
+
+    // 按回车键登录
+    keyDown(e) {
+      // 回车则执行登录方法 enter键的ASCII是13
+      if (e.keyCode === 13) {
+        this.submit(); //登录方法
+      }
+    },
+
+    // 跳转到注册页面
+    submitregist() {
+      this.$router.push({
+        path: "/registration",
+      });
+    },
   },
-  created() {
+
+  async created() {
     // 进页面直接调用验证码
-    // this.generatorCaptcha();
+    this.generatorCaptcha();
+  },
+
+  mounted() {
+    // 绑定监听事件
+    window.addEventListener("keydown", this.keyDown);
+  },
+
+  destroyed() {
+    // 销毁事件
+    window.removeEventListener("keydown", this.keyDown, false);
   },
 };
 </script>
@@ -162,10 +230,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 1200px;
+  min-height: 500px;
 
   & .main {
     width: 55%;
-    height: 65%;
+    height: 550px;
     background-color: #fff;
     border-radius: 5px;
     display: flex;
@@ -189,13 +259,10 @@ export default {
       & .mainpack {
         width: 100%;
         height: 70%;
-
         & .main-top {
           width: 100%;
-          height: 30%;
+          height: 110px;
           display: flex;
-          align-items: flex-start;
-          justify-content: start;
           flex-direction: column;
 
           & .login {
@@ -214,11 +281,10 @@ export default {
 
         & .main-con {
           width: 100%;
-          height: 50%;
+          height: 195px;
           display: flex;
           justify-content: center;
           flex-direction: column;
-          align-items: flex-start;
 
           & .el-input {
             width: 80%;
@@ -252,9 +318,8 @@ export default {
 
         & .main-foot {
           width: 100%;
-          height: 20%;
+          height: 90px;
           display: flex;
-          justify-content: start;
           align-items: center;
 
           & .el-button {
@@ -272,5 +337,11 @@ export default {
 }
 ::v-deep input::-webkit-input-placeholder {
   color: #717171;
+}
+
+.glink {
+  float: right;
+  position: relative;
+  right: 78px;
 }
 </style>

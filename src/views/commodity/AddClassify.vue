@@ -4,32 +4,20 @@
        <div class="main-classify">
        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="分类名称" prop="name">
-    <el-input  size="small" v-model="ruleForm.name"></el-input>
+    <el-input  v-model="ruleForm.name"></el-input>
   </el-form-item>
-  <el-form-item label="上级分类" prop="name">
-<el-popover
-  placement="bottom"
-  width="400"
-  trigger="click">
-  <div class="superior-classify" style="height:200px">
- <el-input
-    placeholder="请输入内容"
-     size="small"
-    style="width:80%">
-    <i slot="prefix" class="el-input__icon el-icon-search"></i>
-  </el-input>
-<div class="block" style="margin-top:10px">
+  <el-form-item label="上级分类" prop="pid" class="classifya">
+    <template>
+      <div class="block" >
   <span class="demonstration"></span>
   <el-cascader
-    v-model="value"
+      ref="cascader"
     :options="options"
-    @change="handleChange"></el-cascader>
+    @change="getId()"
+    :props="{ checkStrictly: true ,label : 'title', children:'child',value:'title' }"
+    clearable></el-cascader>
 </div>
-  </div>
-   <el-select slot="reference" v-model="value"  size="small" style="width:100%">
-     
-   </el-select>
-</el-popover>
+    </template>
   </el-form-item>
  <!-- <el-form-item label="商品模板" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
@@ -52,11 +40,14 @@
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item> -->
    <el-form-item class="classify-img" label="分类图片" prop="name">
-      <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
+        <el-upload
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadClassify"
+  :before-upload="test"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -67,7 +58,7 @@
 </el-form>
        </div>
           <div class="minor-classify">
-                  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                  <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <!-- <el-form-item label="分类编码" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
   </el-form-item>
@@ -118,10 +109,12 @@
   </el-form-item> -->
    <el-form-item class="poster-classify" label="广告图片" prop="name">
    <el-upload
-  action="https://jsonplaceholder.typicode.com/posts/"
+   action=""
   list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
+  id="file"
+  :http-request="uploadSectionFile"
+  name="file"
+ >
   <i class="el-icon-plus"></i>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
@@ -131,14 +124,21 @@
 
 </el-form>
         </div>
+        <div class="footer">
+            <el-button type="primary" class="submit"  @click="submit">确定</el-button>
+        </div>
      </div>
   </div>
 </template>
 
 <script>
+import {mapActions} from "vuex";
+import uploud from "../../../public/lib/uploud"
 export default {
  data() {
       return {
+        src:'',
+        pid:'',
          dialogImageUrl: '',
         dialogVisible: false,
         radio1:'1',
@@ -146,242 +146,89 @@ export default {
         radio3:'1',
           radio4:'1',
         radio5:'1',
-        value:'',
         ruleForm: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          name:'',
+          pid:''
         },
-         options: [{
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'shejiyuanze',
-            label: '设计原则',
-            children: [{
-              value: 'yizhi',
-              label: '一致'
-            }, {
-              value: 'fankui',
-              label: '反馈'
-            }, {
-              value: 'xiaolv',
-              label: '效率'
-            }, {
-              value: 'kekong',
-              label: '可控'
-            }]
-          }, {
-            value: 'daohang',
-            label: '导航',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '侧向导航'
-            }, {
-              value: 'dingbudaohang',
-              label: '顶部导航'
-            }]
-          }]
-        }, {
-          value: 'zujian',
-          label: '组件',
-          children: [{
-            value: 'basic',
-            label: 'Basic',
-            children: [{
-              value: 'layout',
-              label: 'Layout 布局'
-            }, {
-              value: 'color',
-              label: 'Color 色彩'
-            }, {
-              value: 'typography',
-              label: 'Typography 字体'
-            }, {
-              value: 'icon',
-              label: 'Icon 图标'
-            }, {
-              value: 'button',
-              label: 'Button 按钮'
-            }]
-          }, {
-            value: 'form',
-            label: 'Form',
-            children: [{
-              value: 'radio',
-              label: 'Radio 单选框'
-            }, {
-              value: 'checkbox',
-              label: 'Checkbox 多选框'
-            }, {
-              value: 'input',
-              label: 'Input 输入框'
-            }, {
-              value: 'input-number',
-              label: 'InputNumber 计数器'
-            }, {
-              value: 'select',
-              label: 'Select 选择器'
-            }, {
-              value: 'cascader',
-              label: 'Cascader 级联选择器'
-            }, {
-              value: 'switch',
-              label: 'Switch 开关'
-            }, {
-              value: 'slider',
-              label: 'Slider 滑块'
-            }, {
-              value: 'time-picker',
-              label: 'TimePicker 时间选择器'
-            }, {
-              value: 'date-picker',
-              label: 'DatePicker 日期选择器'
-            }, {
-              value: 'datetime-picker',
-              label: 'DateTimePicker 日期时间选择器'
-            }, {
-              value: 'upload',
-              label: 'Upload 上传'
-            }, {
-              value: 'rate',
-              label: 'Rate 评分'
-            }, {
-              value: 'form',
-              label: 'Form 表单'
-            }]
-          }, {
-            value: 'data',
-            label: 'Data',
-            children: [{
-              value: 'table',
-              label: 'Table 表格'
-            }, {
-              value: 'tag',
-              label: 'Tag 标签'
-            }, {
-              value: 'progress',
-              label: 'Progress 进度条'
-            }, {
-              value: 'tree',
-              label: 'Tree 树形控件'
-            }, {
-              value: 'pagination',
-              label: 'Pagination 分页'
-            }, {
-              value: 'badge',
-              label: 'Badge 标记'
-            }]
-          }, {
-            value: 'notice',
-            label: 'Notice',
-            children: [{
-              value: 'alert',
-              label: 'Alert 警告'
-            }, {
-              value: 'loading',
-              label: 'Loading 加载'
-            }, {
-              value: 'message',
-              label: 'Message 消息提示'
-            }, {
-              value: 'message-box',
-              label: 'MessageBox 弹框'
-            }, {
-              value: 'notification',
-              label: 'Notification 通知'
-            }]
-          }, {
-            value: 'navigation',
-            label: 'Navigation',
-            children: [{
-              value: 'menu',
-              label: 'NavMenu 导航菜单'
-            }, {
-              value: 'tabs',
-              label: 'Tabs 标签页'
-            }, {
-              value: 'breadcrumb',
-              label: 'Breadcrumb 面包屑'
-            }, {
-              value: 'dropdown',
-              label: 'Dropdown 下拉菜单'
-            }, {
-              value: 'steps',
-              label: 'Steps 步骤条'
-            }]
-          }, {
-            value: 'others',
-            label: 'Others',
-            children: [{
-              value: 'dialog',
-              label: 'Dialog 对话框'
-            }, {
-              value: 'tooltip',
-              label: 'Tooltip 文字提示'
-            }, {
-              value: 'popover',
-              label: 'Popover 弹出框'
-            }, {
-              value: 'card',
-              label: 'Card 卡片'
-            }, {
-              value: 'carousel',
-              label: 'Carousel 走马灯'
-            }, {
-              value: 'collapse',
-              label: 'Collapse 折叠面板'
-            }]
-          }]
-        }, {
-          value: 'ziyuan',
-          label: '资源',
-          children: [{
-            value: 'axure',
-            label: 'Axure Components'
-          }, {
-            value: 'sketch',
-            label: 'Sketch Templates'
-          }, {
-            value: 'jiaohu',
-            label: '组件交互文档'
-          }]
-        }],
+        value:'',
+         options: [],
+         arr:[],
       };
+
     },
     methods: {
-        handleRemove(file, fileList) {
+      ...mapActions(["createCategory","getCategoryList","uploadImage"]),
+      handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+      getId(){
+       let res= this.$refs['cascader'].getCheckedNodes();
+       this.ruleForm.pid =res[0].data.id
       },
-      handleChange(){
-        console.log('a')
+     async submit(){
+      //  console.log(this.ruleForm.name)
+      //  console.log(this.ruleForm.pid==""? null:this.ruleForm.pid)
+      //  console.log(this.src)
+       let res = await this.createCategory({
+         title:this.ruleForm.name,
+         pid:this.ruleForm.pid==""? null:this.ruleForm.pid,
+         category:this.src
+
+       })
+       console.log(res)
       },
+      async getClassifyInfo(){
+        let res = await this.getCategoryList({});
+       let data =res.data.rows.slice();
+        this.arr = data;
+       let target = this.format(data)
+       this.options = target
+      },
+       format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        item.child = item.child || [];
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
       handleChanges(){
         console.log('b')
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+    test(val){
+      let isPNg = val.type === "image/png"||"image/jpg" ;
+      let isSz2m = val.size/1024/1024<2;
+      if(!isPNg){
+        this.$message("图片格式只能是PNG格式")
       }
+      if(!isSz2m){
+        this.$message("上传图片大小不能超过2M")
+      }
+      return isPNg && isSz2m
+    },
+ async uploadClassify(val){
+        let formData = uploud(val.file,3); 
+        let res = await this.uploadImage(formData);
+        this.src = res.data
+    },
+    async uploadSectionFile(val){
+    let formData = uploud(val.file,3); 
+        let res = await this.uploadImage(formData);
+        this.src = res.data;  
     }
+  },
+    created(){
+      this.getClassifyInfo();
+    },
 }
 </script>
 
@@ -402,11 +249,23 @@ export default {
   & .minor-classify{
     margin-top: 30px;
   }
+  & .footer{
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid  var(--color) ;
+      background-color: #fff;
+      padding: 15px 0px;
+  }
 }
 ::v-deep .el-form-item__label{
   font-size: 12px;
 }
 .classify-img,.poster-classify{
   margin-bottom: 0 !important;
+}
+::v-deep .file{
+  & .el-input__inner{
+    border: none;
+  }
 }
 </style>

@@ -2,15 +2,14 @@
   <div class="wrap">
     <div class="wrap_recommend">
       <div class="preservation">
-        <el-button plain class="issuebtn" size="small">发布</el-button>
+        <el-button plain class="issuebtn">发布</el-button>
       </div>
       <el-table
         :data="tableData"
         stripe
         :header-cell-style="{ background: '#fcfcfc' }"
-        size="small"
       >
-        <el-table-column type="selection" align="center">
+        <el-table-column type="selection" align="center" width="50">
         </el-table-column>
         <el-table-column
           label="商品编号"
@@ -78,7 +77,8 @@
         </el-table-column>
         <el-table-column
           label="操作"
-          align="center"
+          align="left"
+          width="100"
           sortable
           show-overflow-tooltip
         >
@@ -144,7 +144,7 @@ export default {
           inventory: "4647件",
           sales: "464",
           state: "销售中",
-          date: "2019-08-12",
+          date: "2019-10-12",
         },
         {
           code: "20160503",

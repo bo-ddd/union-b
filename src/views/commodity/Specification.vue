@@ -3,62 +3,92 @@
     <div class="wrap_interior">
       <div class="tit">商品规格</div>
       <div class="addspebut">
-        <el-button type="primary" size="small" @click="addspecification()"
+        <el-button
+          type="primary"
+          @click="addspecification, (dialogaddFormVisible = true)"
           >添加规格</el-button
         >
+        <div class="">
+          <el-input
+            placeholder="请输入内容"
+            v-model="input3"
+            class="input-with-select"
+          >
+            <el-select
+              v-model="value"
+              filterable
+              placeholder="请选择"
+              slot="prepend"
+              class="sel"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </div>
+        <el-dialog title="添加规格" :visible.sync="dialogaddFormVisible">
+          <el-form :model="form1">
+            <el-form-item label="规格名称" :label-width="formLabelWidth">
+              <el-input v-model="form1.title" autocomplete="off"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="备注" :label-width="formLabelWidth">
+              <el-input v-model="form1.name" autocomplete="off"></el-input>
+            </el-form-item> -->
+            <el-form-item label="类目id" :label-width="formLabelWidth">
+              <el-input v-model="form1.cid" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogaddFormVisible = false">取 消</el-button>
+            <el-button
+              type="primary"
+              @click="addspecification(), (dialogaddFormVisible = false)"
+              >确 定</el-button
+            >
+          </div>
+        </el-dialog>
       </div>
       <el-table
         ref="multipleTable"
         tooltip-effect="dark"
-        :data="tableData"
-        size='small'
+        :data="table"
         style="width: 97%"
+        @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
-        <el-table-column :data="tableData" type="selection" align="center">
-        </el-table-column>
         <el-table-column
-          :data="tableData"
-          label="id"
+          type="selection"
           align="center"
-          prop="id"
-          sortable
+          v-model="checked"
+          @click="checkedclick()"
         >
+        </el-table-column>
+        <el-table-column label="id" align="center" prop="id" sortable>
         </el-table-column>
         <el-table-column
           label="规格名称"
           align="center"
-          prop="name"
-          :data="tableData"
+          prop="title"
           show-overflow-tooltip
           sortable
         >
         </el-table-column>
         <el-table-column
           label="备注"
-          :data="tableData"
-          prop="remark"
+          prop="productCategory"
           show-overflow-tooltip
           align="center"
           sortable
         >
-        </el-table-column>
-        <el-table-column
-          label="排列顺序"
-          :data="tableData"
-          prop="id"
-          show-overflow-tooltip
-          align="center"
-          sortable
-        >
-          <template>
-            <input type="text" class="inp" v-model="input" />
-          </template>
         </el-table-column>
         <el-table-column
           label="操作"
-          :data="tableData"
           show-overflow-tooltip
           align="center"
           :formatter="formatter"
@@ -69,12 +99,43 @@
               type="primary"
               i
               class="el-icon-edit cell1"
-              @click="editListData"
+              @click="editListData, (dialogFormVisible = true)"
             ></el-button>
+            <el-dialog title="修改此行数据" :visible.sync="dialogFormVisible">
+              <el-form :model="form">
+                <el-form-item label="id" :label-width="formLabelWidth">
+                  <el-input
+                    v-model="form.serialId"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="规格名称" :label-width="formLabelWidth">
+                  <el-input
+                    v-model="form.speName"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="备注" :label-width="formLabelWidth">
+                  <el-input v-model="form.remark" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="排列顺序" :label-width="formLabelWidth">
+                  <el-input
+                    v-model="form.sortOrder"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false"
+                  >确 定</el-button
+                >
+              </div>
+            </el-dialog>
             <el-button
               i
               class="el-icon-delete cell2"
-              @click.native.prevent="deleteRow(scope.$index)"
+              @click.native.prevent="deleteRow(scope.$index, arr)"
               type="text"
             >
             </el-button>
@@ -83,103 +144,104 @@
       </el-table>
       <div class="footer">
         <div class="footer_left">
-          <el-button type="primary" size="small">保存排序</el-button>
+          <el-button type="primary">保存排序</el-button>
           <el-button
-            plain
+            type="primary"
             class="batch_del_btn"
-            size="small"
-            @click="batchesDelete"
+            @click="MultipleRemove()"
             >批量删除</el-button
           >
         </div>
-        <div class="footer_right">
-          <div class="block">
-            <el-pagination
-              :current-page="currentPage4"
-              :page-sizes="[6, 15, 20, 30, 50, 100]"
-              layout="sizes"
-            >
-            </el-pagination>
-            <div>输入按回车</div>
-          </div>
-          <div class="block2">
+          <div class="footer_right">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
+              :current-page.sync="currentPage"
+              :page-sizes="[10, 20, 30, 40, 50]"
               :page-size="100"
-              :total="6"
-              layout="total, prev, pager, next"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="renderDynamic.length"
+              background
             >
             </el-pagination>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
-// import { mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      input: 10,
-      currentPage4: 4,
-      pagination: true,
-      pageNum: 10,
-      pageSize: 1,
-      // id: "",
-      // title: "",
-      // productCategory: "",
-      tableData: [
+      checked: false,
+      value: "",
+      input: "",
+      input1: "",
+      input2: "",
+      input3: "",
+      select: "",
+      currentPage1: 1,
+      currentPage4: 1,
+      pageSize1: 45,
+      pageNum1: "",
+      options: [
         {
-          id: "1",
-          name: "颜色",
-          remark: "服装",
-          list: "",
-          operation: "",
+          value: "选项1",
+          label: "规格名称",
         },
         {
-          id: "2",
-          name: "尺寸",
-          remark: "服装",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "3",
-          name: "颜色",
-          remark: "手机",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "4",
-          name: "版本",
-          remark: "手机",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "5",
-          name: "购买方式",
-          remark: "手机",
-          list: "",
-          operation: "",
-        },
-        {
-          id: "6",
-          name: "版本",
-          remark: "服装",
-          list: "",
-          operation: "",
+          value: "选项2",
+          label: "备注",
         },
       ],
+      pagination: false,
+      id: "",
+      title: "",
+      productCategory: "",
+      count: "", //所有条数
+      arr: [],
+      deleteDataArr1: [],
+      form: {
+        serialId: "",
+        speName: "",
+        remark: "",
+        sortOrder: "",
+      },
+      form1: {
+        title: "",
+        cid: "",
+        name: "",
+      },
+      dialogFormVisible: false,
+      dialogaddFormVisible: false,
+      formLabelWidth: "120px",
       multipleSelection: [],
+
+      currentPage: 1,
+      table: [],
+      pageSize: 10, //每页条数
+      renderDynamic: [],
     };
   },
+  watch: {
+    table: {
+      handler(newVal, oldVal) {
+        if (newVal != oldVal) {
+          this.table = newVal;
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
+  },
   methods: {
-    // ...mapActions(["getSpecificationList"]),
+    /**
+     * getSpecificationList获取所有的类目接口
+     * createSpecification 添加规格接口
+     */
+    ...mapActions(["getSpecificationList", "createSpecification"]),
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -192,18 +254,24 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
     //添加规格
-    addspecification() {
-      console.log("添加成功");
+    async addspecification() {
+      let res = await this.createSpecification({
+        title: this.form1.title,
+        cid: Number(this.form1.cid),
+      });
+      console.log(res);
+      this.spelist();
     },
     //批量删除
-    batchesDelete() {},
+    MultipleRemove() {
+      this.deleteDataArr1.forEach((item) => {
+        this.arr.splice(this.arr.indexOf(item), 1);
+      });
+    },
+    checkBoxData: function (selection) {
+      this.deleteDataArr1 = selection;
+    },
     //单个修改
     editListData() {
       console.log("单个修改成功");
@@ -216,13 +284,68 @@ export default {
     formatter(row) {
       return row.address;
     },
+    //获取所有类目规格
+    async spelist() {
+      let res = await this.getSpecificationList({
+        pagination: false,
+        pageNum: 1,
+        pageSize: this.pageSize1,
+      });
+      console.log(res);
+      // this.pageSize1 = res.data.count.slice();
+      this.renderDynamic = res.data.rows.slice();
+      this.handleSizeChange(10);
+    },
+    //批量删除（查看是否选中）
+    // checkedclick() {
+    //   //把符合条件的数据放到一个数组里，然后用splice删除
+    //   if(this.checked == true){
+    //     this.deleteDataArr2.push()
+    //   }
+    // },
+    //分页
+    //分页有多少条
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.handleCurrentChange(1);
+    },
+    //分页的当前页有多少条
+    handleCurrentChange(val) {
+      let arr = [];
+      for (
+        let i = val * this.pageSize - this.pageSize;
+        i < val * this.pageSize;
+        i++
+      ) {
+        if (this.renderDynamic[i] != undefined) arr.push(this.renderDynamic[i]);
+      }
+      this.table = arr;
+    },
+
+    // handleSizeChange(val) {
+    //   console.log(`每页 ${val} 条`);
+    //   this.pageSize1 = val;
+    //   this.handleCurrentChange(0);
+    // },
+    // handleCurrentChange(val) {
+    //   console.log(`当前页: ${val}`);
+    //   this.pageNum1 = val;
+    //   this.table = this.Num();
+    // },
+    // Num() {
+    //   // console.log(this.offSize + this.pageSize);
+    //   console.log(this.offSize);
+    //   let res = this.arr.slice(this.offSize, this.offSize + this.pageSize);
+    //   return res;
+    // },
   },
-  // async created() {
-  //   let res = await this.getSpecificationList({});
-  //   console.log(res);
-  //   this.id = res.data.id;
-  //   this.title = res.data.title;
-  //   this.productCategory = res.data.productCategory;
+  async created() {
+    this.spelist();
+  },
+  // computed: {
+  //   offSize() {
+  //     return this.pageSize || 10 * (this.pageNum1 - 1);
+  //   },
   // },
 };
 </script>
@@ -245,6 +368,11 @@ export default {
     padding: 20px;
     background-color: #ffffff;
     border-bottom: 1px solid #d4dde2;
+    display: flex;
+    justify-content: space-between;
+    & .findshop {
+      width: 300px;
+    }
   }
   & .el-table {
     // margin: 0px 20px 0px 20px;
@@ -256,11 +384,6 @@ export default {
     display: flex;
     align-items: center;
     background-color: #ffffff;
-    & .footer_left {
-      & .batch_del_btn {
-        color: #c0c4cc;
-      }
-    }
     & .footer_right {
       margin-left: 25px;
       display: flex;
@@ -286,6 +409,9 @@ export default {
   text-indent: 16px;
   border-radius: 5px;
 }
+.sel {
+  width: 120px;
+}
 .cell1 {
   background-color: #17d57e;
   padding: 10px 10px;
@@ -294,7 +420,14 @@ export default {
 .cell2 {
   background-color: #ff8b53;
   padding: 10px 10px;
+  margin-left: 10px;
   border: none;
   color: #ffffff;
+}
+.el-select .el-input {
+  width: 130px;
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
 }
 </style>

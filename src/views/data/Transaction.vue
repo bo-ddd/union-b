@@ -11,7 +11,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>888</h3>
+            <h3>{{allData.storeCount || 888}}</h3>
             <span>平台商家总数</span>
           </div>
         </div>
@@ -24,7 +24,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>8888</h3>
+            <h3>{{allData.goodsCount || 8888}}</h3>
             <span>平台商品总数</span>
           </div>
         </div>
@@ -36,23 +36,23 @@
             <span></span>
             <div class="top_left">
               <span class="font-15">80%</span>
-              <span class="font-12">日均销售量</span>
+              <span class="font-12">用户总数</span>
             </div>
             <div class="top_center">
               <span class="font-20">80%</span>
-              <span class="font-16">月销售量</span>
+              <span class="font-16">日均访问量</span>
             </div>
             <span></span>
             <div class="top_right">
               <span class="font-15">80%</span>
-              <span class="font-12">商品成交率</span>
+              <span class="font-12">成交率</span>
             </div>
           </div>
           <div class="bottom">
             <span></span>
             <div class="bottom_left">
               <span class="font-20">80%</span>
-              <span class="font-16">商家活跃度</span>
+              <span class="font-16">总访问量</span>
             </div>
             <span></span>
             <div class="bottom_center">
@@ -90,11 +90,17 @@
       </div>
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
-          <el-table :data="tableData" stripe style="width: 100%;" size="small">
-            <el-table-column prop="date" label="类目"> </el-table-column>
-            <el-table-column prop="name" label="名称"> </el-table-column>
-            <el-table-column prop="address" label="销售量"> </el-table-column>
-          </el-table>
+        <el-table
+          :data="tableData"
+          stripe
+          style="width: 100%"
+          id="#out-table"
+        >
+          <el-table-column prop="date" label="类目"> </el-table-column>
+          <el-table-column prop="name" label="名称"> </el-table-column>
+          <el-table-column prop="address" label="销售量"> </el-table-column>
+          <el-table-column slot="scope"> </el-table-column>
+        </el-table>
         <!-- 商家综合排行 -->
         <!-- 商品排行 -->
       </div>
@@ -104,9 +110,11 @@
 
 <script>
 import * as echarts from "echarts";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      allData:[],
       tableData: [
         {
           date: "家电",
@@ -141,8 +149,15 @@ export default {
       myTotalChart.resize();
     });
   },
-
+  created() {
+    this.getTrade();
+  },
   methods: {
+    ...mapActions(["getTradeData"]),
+    async getTrade() {
+      let res = await this.getTradeData({});
+      this.allData = res.data;
+    },
     drawnBar() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = echarts.init(document.getElementsByClassName("stata")[0]);
@@ -152,9 +167,15 @@ export default {
           trigger: "axis",
         },
         legend: {
-          data: ["Rainfall", "Evaporation"],
+          data: ["去年同期", "今年"],
+        },
+        grid:{
+        bottom:'1%',
+        left:'5%',
+        right:'5%',
         },
         toolbox: {
+          center:['20%','50%'],
           show: true,
           feature: {
             dataView: { show: true, readOnly: false },
@@ -190,9 +211,6 @@ export default {
                 { type: "min", name: "Min" },
               ],
             },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
-            },
           },
           {
             name: "今年",
@@ -204,11 +222,8 @@ export default {
             markPoint: {
               data: [
                 { name: "Max", value: 182.2, xAxis: 7, yAxis: 183 },
-                { name: "Min", value: 2.3, xAxis: 11, yAxis: 3 },
+                { name: "Min", value: 2.3, xAxis: 10, yAxis: 3 },
               ],
-            },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
             },
           },
         ],
@@ -222,14 +237,15 @@ export default {
           trigger: "item",
         },
         legend: {
-          top: "30%",
-          left: "70%",
+          top: "40%",
+          left: "50%",
         },
         series: [
           {
             name: "品类分布",
             type: "pie",
             radius: ["40%", "70%"],
+            center:['30%','60%'],
             avoidLabelOverlap: true,
             data: [
               { value: 1048, name: "电器" },
@@ -253,12 +269,12 @@ export default {
           },
         },
         legend: {
-          data: ["Profit", "Expenses", "Income"],
+          data: ["收入", "支出"],
         },
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
+          bottom:'1%',
           containLabel: true,
         },
         xAxis: [
@@ -282,6 +298,7 @@ export default {
             stack: "Total",
             label: {
               show: true,
+              position: "right",
             },
             emphasis: {
               focus: "series",
@@ -289,7 +306,7 @@ export default {
             data: [320, 302, 341, 374, 390, 450, 420],
           },
           {
-            name: "成本",
+            name: "支出",
             type: "bar",
             stack: "Total",
             label: {
@@ -334,7 +351,7 @@ export default {
       padding: 20px;
       & > div {
         width: 100%;
-        background-color: #e7536b;
+        background-color: var(--color);
         display: flex;
         align-items: center;
         color: white;
@@ -356,10 +373,11 @@ export default {
       background-color: #ffffff;
       & > .main {
         display: grid;
-        grid-template-rows: repeat(2, 50%);
+        grid-template-rows: repeat(1, 1fr 1fr);
         --size: 60px;
         font-size: 12px;
-        min-height: 90%;
+        height: 80%;
+        padding: 10px;
         & > .top,
         .bottom {
           width: 100%;
@@ -431,11 +449,11 @@ export default {
     gap: 20px;
     & > div {
       background-color: #ffffff;
-      padding: 10px;
       min-width: 100px;
+      padding: 10px;
       & > div {
         height: 46vh;
-        width: 96%;
+        width: 100%;
       }
     }
   }

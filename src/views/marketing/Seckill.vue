@@ -5,7 +5,7 @@
       <div class="content_header">
         <div class="content_header-left">
           <span>状态筛选</span>
-          <el-select v-model="value" clearable placeholder="请选择">
+          <el-select v-model="value" clearable placeholder="请选择" >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -14,7 +14,7 @@
             </el-option>
           </el-select>
           <span>地区筛选</span>
-          <el-select v-model="value" clearable placeholder="请选择">
+          <el-select v-model="value" clearable placeholder="请选择" >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -24,8 +24,7 @@
           </el-select>
           <div class="block">
             <span class="demonstration">时间筛选</span>
-            <el-date-picker
-              v-model="value1"
+            <el-date-picker v-model="value1" 
               unlink-panels
               type="daterange"
               range-separator="至"
@@ -35,17 +34,17 @@
           </div>
         </div>
         <div class="content_header-right">
-          <el-button>查询</el-button>
-          <el-button>重置</el-button>
+          <el-button type="primary" >查询</el-button>
+          <el-button type="primary" >重置</el-button>
         </div>
       </div>
       <div class="content_center">
-        <el-button>+新增秒杀</el-button>
-        <el-button>批量终止</el-button>
-        <el-button>批量删除</el-button>
+        <el-button type="primary" >+新增秒杀</el-button>
+        <el-button type="primary" >批量终止</el-button>
+        <el-button type="primary" >批量删除</el-button>
       </div>
       <div class="table">
-          <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" size='small' style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"  style="width: 100%">
             <el-table-column type="selection" >
             </el-table-column>
             <el-table-column label="名称" >
@@ -78,10 +77,27 @@
 export default {
   data() {
     return {
+      options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: '',
       value1: "",
       tableData: [{
           name: '手机秒杀专场',
-          start: '2021-11-11 00;00',
+          start: '2021-11-11 00:00',
           end: '2021-11-11 24:00',
           account:'雷军',
           createTime:'2009-01-01 09:30',
@@ -90,7 +106,7 @@ export default {
           operate :''
       },{
           name: '电脑秒杀专场',
-          start: '2021-11-11 00;00',
+          start: '2021-11-11 00:00',
           end: '2021-11-11 24:00',
           account:'马化腾',
           createTime:'2009-01-01 09:30',
@@ -99,7 +115,7 @@ export default {
           operate :''
       },{
           name: '生活秒杀专场',
-          start: '2021-11-11 00;00',
+          start: '2021-11-11 00:00',
           end: '2021-11-11 24:00',
           account:'马云',
           createTime:'2009-01-01 09:30',
@@ -109,7 +125,7 @@ export default {
       },{
 
           name: '空调秒杀专场',
-          start: '2021-11-11 00;00',
+          start: '2021-11-11 00:00',
           end: '2021-11-11 24:00',
           account:'董明珠',
           createTime:'2009-01-01 09:30',
@@ -125,9 +141,10 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
-  min-width: 1400px;
+  min-width: 1270px;
   & .content {
-    min-height: 690px;
+    min-width: 1000px;
+    height: calc(100vh - 260px);
     background-color: #fff;
     margin-top: 20px;
     padding: 20px;
@@ -150,7 +167,6 @@ export default {
           background-color: rgb(255, 111, 147);
         }
       }
-     
     }
     & .content_center{
       margin-top: 50px;

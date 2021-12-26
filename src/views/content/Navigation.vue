@@ -1,597 +1,443 @@
 <template>
-    <div class="wrap">
-        <div class="head">
-            <div>
-                <div class="right-block"></div>
-                <h3>桌面端导航</h3>
+  <div class="wrap">
+      <!-- <el-rows :type="primary" :key="">asdasd</el-rows> -->
+    <div class="head">
+      <div>
+        <div class="right-block"></div>
+        <h3>桌面端导航</h3>
+      </div>
+      <div>
+        <el-button type="primary">取消</el-button>
+        <el-button type="primary">保存</el-button>
+      </div>
+    </div>
+
+    <div class="text-tips">
+      <h4>操作区域</h4>
+      <h4 class="mr-300">桌面端预览</h4>
+    </div>
+    <div class="content">
+      <div class="left">
+        <!-- 主导航 -->
+        <div class="mainNav" v-for="key in newNav" :key="key.id">
+          <!-- <div class="nav-name">
+            <span class="wrods">{{ key.title }}&nbsp;&nbsp;</span>
+            <span class="font-color">(数量限制:2-6个)</span>
+          </div> -->
+          <!-- <div class="nav">
+            <div class="nav-item" v-for="key in key.nav" :key="key.id">
+              <div class="jian mt-5" @click="del(key.id)">
+                <div><div></div></div>
+              </div>
+              <div class="img">
+                <div>
+                  <img :src="key.pictureUrl" alt="" />
+                </div>
+              </div>
+              <div class="text">
+                <span>{{ key.pictureName }}</span>
+              </div>
+            </div> -->
+
+            <!-- 上传图片的 -->
+            <!-- <div>
+                <el-upload
+                    action=""
+                    list-type="picture-card"
+                    :http-request="uploadNav"
+                >
+                <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="" />
+                </el-dialog>
+            </div> -->
+          <!-- </div> -->
+          <el-demo :type="key" @change1='change1'></el-demo>
+        </div>
+      </div>
+
+      <!-- 手机端部分 -->
+      <div class="right">
+        <div class="nav">
+          <div v-for="key in mainNav" :key="key.id">
+            <div class="img">
+              <img :src="key.pictureUrl" alt="" />
             </div>
-            <div class="mr-180">
-                <el-button>取消</el-button>
-                <el-button class="pink">保存</el-button>
+            <div class="text mt-5">
+              {{ key.pictureName }}
             </div>
+          </div>
+        </div>
+        <!-- 秒杀活动 -->
+        <div class="sec_kill_floor">
+          <div class="title_wrap">
+            <div class="seckill-left-link">
+              <span>京东秒杀</span>
+              <span>12</span>
+              <div class="miaosha">
+                <span class="red-background fs-color">01</span>
+                <span>:</span>
+                <span class="red-background fs-color">02</span>
+                <span>:</span>
+                <span class="red-background fs-color">03</span>
+              </div>
+            </div>
+            <div class="seckill-more-link">
+              <div>
+                <span>更多秒杀</span>
+                <div class="miao">
+                  <span>></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="floor-container">
+            <div class="flex" v-for="key in quickNav" :key="key.id">
+              <img :src="key.pictureUrl" alt="" />
+              <span>{{ key.pictureName }}</span>
+            </div>
+          </div>
         </div>
 
-            <div class="text-tips">
-                <h4>操作区域</h4>
-                <h4 class="mr-300">桌面端预览</h4>
-                <!-- <span>操作区域</span><span>桌面端预览</span> -->
-            </div>
-            <div class="content">
-                <div class="left">
-                    <!-- 主导航 -->
-                    <div class="mainNav">
-                        <div class="nav-name">
-                            <span class="wrods">主导航&nbsp;&nbsp;</span>
-                            <span class="font-color">(数量限制:2-6个)</span>
-                        </div>
-                        <div class="nav">
-                            <!-- 可删除的导航 -->
-                            <div class="nav-item" v-for="key in deletebtn(mainNav)" :key="key.id">
-                                <div class="jian mt-5" @click="del(key.id)">
-                                    <div>{{key.delete}}</div>
-                                </div>
-                                <div class="img">
-                                    <div>
-                                        <img :src="key.img" alt="">
-                                    </div>
-                                </div>
-                                <div class="text" >
-                                    <span>{{key.text}}</span>
-                                </div>
-                            </div>
-
-                            <!-- 不可删除的导航 -->
-                            <div class="nav-item " v-for="key in notDeletebtn(mainNav)" :key="key.id">
-                                <div class="img mt-20">
-                                    <div>
-                                        <img :src="key.img" alt="">
-                                    </div>
-                                </div>
-                                <div class="text">
-                                    <span>{{key.text}}</span>
-                                </div>
-                            </div>
-
-
-
-                            <div>
-                                <el-upload
-                                    action="#"
-                                    list-type="picture-card"
-                                    :auto-upload="false">
-                                        <i slot="default" class="el-icon-plus"></i>
-                                        <div slot="file" slot-scope="{file}">
-                                        <img
-                                            class="el-upload-list__item-thumbnail"
-                                            :src="file.url" alt=""
-                                        >
-                                        <span class="el-upload-list__item-actions">
-                                            <span
-                                            class="el-upload-list__item-preview"
-                                            @click="handlePictureCardPreview(file)"
-                                            >
-                                            <i class="el-icon-zoom-in"></i>
-                                            </span>
-                                            <span
-                                            v-if="!disabled"
-                                            class="el-upload-list__item-delete"
-                                            @click="handleDownload(file)"
-                                            >
-                                            <i class="el-icon-download"></i>
-                                            </span>
-                                            <span
-                                            v-if="!disabled"
-                                            class="el-upload-list__item-delete"
-                                            @click="handleRemove(file)"
-                                            >
-                                            <i class="el-icon-delete"></i>
-                                            </span>
-                                        </span>
-                                        </div>
-                                </el-upload>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- 快捷导航 -->
-                    <div class="quickNav">
-                        <div class="nav-name">
-                            <span class="wrods">快捷导航&nbsp;&nbsp;</span>
-                            <span class="font-color">(数量限制:2-6个)</span>
-                        </div>
-                        <div class="nav">
-                            <div class="nav-item flex" v-for="key in mainNav" :key="key.id">
-                                <!-- <div class="jian mt-5">
-                                    <div>{{key.delete}}</div>
-                                </div> -->
-                                <div class="img mt-20">
-                                    <div>
-                                        <img :src="key.img" alt="">
-                                    </div>
-                                </div>
-                                <div class="text">
-                                    <span>{{key.text}}</span>
-                                </div>
-                            </div>
-
-                            <el-upload
-                                action="#"
-                                list-type="picture-card"
-                                :auto-upload="false">
-                                    <i slot="default" class="el-icon-plus"></i>
-                                    <div slot="file" slot-scope="{file}">
-                                    <img
-                                        class="el-upload-list__item-thumbnail"
-                                        :src="file.url" alt=""
-                                    >
-                                    <span class="el-upload-list__item-actions">
-                                        <span
-                                        class="el-upload-list__item-preview"
-                                        @click="handlePictureCardPreview(file)"
-                                        >
-                                        <i class="el-icon-zoom-in"></i>
-                                        </span>
-                                        <span
-                                        v-if="!disabled"
-                                        class="el-upload-list__item-delete"
-                                        @click="handleDownload(file)"
-                                        >
-                                        <i class="el-icon-download"></i>
-                                        </span>
-                                        <span
-                                        v-if="!disabled"
-                                        class="el-upload-list__item-delete"
-                                        @click="handleRemove(file)"
-                                        >
-                                        <i class="el-icon-delete"></i>
-                                        </span>
-                                    </span>
-                                    </div>
-                            </el-upload>
-                        </div>
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="nav">
-                        <!-- 上边三个点 -->
-                        <div class="qiuqiu">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-
-
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-                        <div class="xinxi mt-20" >
-                            <img src="" alt="">
-                            <span>消息</span>
-                        </div>
-
-
-                        <!-- 下边三个点 -->
-                        <div class="diandian" >
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-
-                    <div class="main">
-                    </div>
-                </div>
-            </div>      
-
-
-        
+        <!-- 主要内容 -->
+        <div class="waterfall">
+          <!-- 手机端除导航以外的左侧 -->
+          <div class="feeds_col_left">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <!-- 手机端除导航以外的右侧 -->
+          <div class="feeds_col_right">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
-
 <script>
-
-
-export default{
-    data() {
-        return{
-            imageUrl: '',
-            mainNav : [
-                {
-                    id : '1',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
-                },
-                {
-                    id : '2',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
-                },
-                {
-                    id : '3',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
-                },
-                {
-                    id : '4',
-                    img : '',
-                    text : '消息',
-                    delete : '-',
-                },
-                {
-                    id : '5',
-                    img : '',
-                    text : '消息'
-                },
-                {
-                    id : '6',
-                    img : '',
-                    text : '消息'
-                },
-                
-            ],
-            quickNav : [
-                {
-                    id : '1',
-                    img : '',
-                    text : '消息',
-                },
-                {
-                    id : '2',
-                    img : '',
-                    text : '消息',
-                },
-                {
-                    id : '3',
-                    img : '',
-                    text : '消息',
-                },
-                {
-                    id : '4',
-                    img : '',
-                    text : '消息',
-                },
-            ],
-            dialogImageUrl: '',
-            dialogVisible: false,
-            disabled: false
-        }
+import { mapActions } from "vuex";
+import demo from '../../components/demo.vue'
+// import uploada from '../../../public/lib/uploud';
+export default {
+    components:{
+      'el-demo':demo
     },
-    methods: {
-        // 主导航可删除的数据的数组
-        deletebtn(arr){
-            var newarr = [];
-            arr.forEach(fs=>{
-                if(fs.delete){
-                    newarr.push(fs);
-                }
-            })
-            return newarr;
+  data() {
+    return {
+      imageUrl: "",
+      navs: [],
+      dialogImageUrl: "",
+      dialogVisible: false,
+      arr : [1,2],
+    };
+  },
+  methods: {
+//                    列表接口     
+  ...mapActions(["getNavList"]),
+                                    
+  // 所有导航的列表接口
+  async navList() {
+    let res = await this.getNavList();
+    this.navs = res.data.rows;
+  },
+// 子组件传过来的值  通过标签中的@change1事件传过来
+  change1(data){
+    this.navs = data.data.rows;
+  }
+},
+
+
+async created() {
+  await this.navList();
+},
+computed: {
+  //   主导航
+  mainNav: {
+      get() {
+        if (!this.navs.length) return [];
+        return this.navs.filter((item) => item.pid === "1");
+      },
+  },
+  // 快捷导航
+  quickNav: {
+      get() {
+        if (!this.navs.length) return [];
+        return this.navs.filter((item) => item.pid === "2");
+      },
+  },
+  // 总数组
+  newNav() {
+      return [
+        {
+          id:1,
+          title: "主导航",
+          nav: this.mainNav,
         },
-        // 主导航不可删除的数据的数组
-        notDeletebtn(arr){
-            var newarr = [];
-            arr.forEach(fs=>{
-                if(!fs.delete){
-                    newarr.push(fs);
-                }
-            })
-            return newarr;
+        {
+          id:2,
+          title: "快捷导航",
+          nav: this.quickNav,
         },
-        handleRemove(file) {
-            console.log(file);
-        },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        },
-        handleDownload(file) {
-            console.log(file);
-        },
-        // 主导航的删除的点击事件
-        del(a){
-            console.log(a);
-            this.mainNav.forEach((nav,index)=>{
-                if(nav.id == a){
-                    this.mainNav.splice(index,1)
-                }
-            })
-        }
-    },   
-}
+      ];
+  },
+},
+};
 </script>
 
 
 
 
 <style scoped lang="scss">
-.flex{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
+::v-deep .el-upload-list__item {
+  width: 132px;
+  height: 112px;
 }
-.mt-5{
-    margin-top: 5px;
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-::v-deep .is-ready{
-    width: 120px;
-    height: 110px;
+.mt-5 {
+  margin-top: 5px;
 }
-::v-deep .el-upload{
-    width: 120px;
-    height: 110px;
-    border: none;
+::v-deep .is-ready {
+  width: 120px;
+  height: 110px;
 }
-::v-deep .el-upload--picture-card{
-    line-height: 110px;
+::v-deep .el-upload {
+  width: 120px;
+  height: 110px;
+  border: none;
 }
-.bor{
-    border: none;
+::v-deep .el-upload--picture-card {
+  line-height: 110px;
+}
+.bor {
+  border: none;
 }
 .avatar-uploader .el-upload {
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 120px;
-    height: 110px;
-    line-height: 110px;
-    text-align: center;
-  }
-  .avatar {
-    padding: 5px;
-    width: 110px;
-    height: 110px;
-    display: block;
-  }
-.mr-180{
-    margin-right: 180px;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
-.mr-300{
-    margin-right: 300px;
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
 }
-.rightborder{
-    border-right: 1px dashed #ccc;
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 110px;
+  line-height: 110px;
+  text-align: center;
 }
-.mt-50{
-    margin-top: 50px;
+.avatar {
+  padding: 5px;
+  width: 110px;
+  height: 110px;
+  display: block;
 }
-.mt-20{
-    margin-top: 20px;
+.mr-180 {
+  margin-right: 180px;
 }
-.fs-16{
-    font-size: 16px;
-    font-weight: 700;
+.mr-300 {
+  margin-right: 300px;
 }
-.text-color{
-    color: #ccc;
+.mt-20 {
+  margin-top: 20px;
 }
-.wrap{
-    padding: 0 200px;
-    min-width: 1200px;
-     .head{
-         display: flex;
-         justify-content: space-between;
-         & .right-block{
-             height: 16px;
-             width: 8px;
-             background-color: #ff4070;
-             margin-right: 20px;
-         }
-         & div{
-             display: flex;
-             align-items: center;
-         }
+.fs-16 {
+  font-size: 16px;
+  font-weight: 700;
+}
+.text-color {
+  color: #ccc;
+}
+.red-background {
+  background-color: #fa2c19;
+}
+.fs-color {
+  color: white;
+}
+.wrap {
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  margin-right: 100px;
+  .head {
+    display: flex;
+    justify-content: space-between;
+    & .right-block {
+      height: 16px;
+      width: 8px;
+      background-color: #ff4070;
+      margin-right: 20px;
     }
-    .text-tips{
-        margin-top: 35px;
+    & div {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .text-tips {
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .content {
+    & .right {
+      float: right;
+      width: 375px;
+      height: 520px;
+      overflow: scroll;
+      background-color: #f6f6f6;
+
+      & .nav {
+        padding: 20px 10px;
         display: flex;
-        justify-content: space-between;
-    }
-    .content{
-        height: 667px;
-        & .left{
+        //    grid-template-columns: repeat(5,1fr);
+        //    gap:20px 20px;
+        //    align-items: center;
+        //    justify-content: center;
+        align-items: center;
+        justify-content: space-around;
+        & div {
+          height: 50px;
+          & div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          & .img {
+            height: 30px;
+
+            & img {
+              width: 30px;
+              height: 30px;
+            }
+          }
+          & .text {
+            height: 20px;
+          }
+        }
+      }
+
+      & .sec_kill_floor {
+        margin: 10px;
+        background-color: white;
+        border-radius: 5px;
+        & .title_wrap {
+          height: 35px;
+          & .seckill-left-link {
+            width: 200px;
+            height: 35px;
             float: left;
-            width: 50%;
-            height: 100%;
-            // background-color: blue;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
 
-            & .mainNav , & .quickNav{
-                width: 100%;
-                height: 50%;
-
-                & .wrods{
-                    font-size: 18px;
-                    font-weight: 700;
-                }
-
-                & .font-color{
-                    color: #ccc;
-                }
-                
-
-                & .nav-name{
-                    padding: 10px 0;
-                }
-
-                & .nav{
-                    width: 100%;
-
-                    & .nav-item{
-                        float: left;
-                        width: 120px;
-                        height: 110px;
-                        border: 1px dashed #ccc;
-                        padding: 0 5px;
-
-                        & div{
-                            width: 100%;
-                        }
-
-                        & .jian{
-                            height: 20px;
-
-                            & div{
-                                float: right;
-                                width: 20px;
-                                height: 20px;
-                                border-radius: 20px;
-                                background-color: #ccc;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                            }
-                        }
-
-                        & .img{
-                            height: 50px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-
-                            & div{
-                                width: 50px;
-                                height: 50px;
-                                border-radius: 50px;
-
-                                & img{
-                                    width: 100%;
-                                    height: 100%;
-                                }
-                            }
-
-                            
-                        }
-
-                        & .text{
-                            height: 30px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        }
-                        
-                    }
-                }
-
+            & .miaosha {
+              width: 50px;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
+          }
 
-            
-
-        }
-
-
-
-
-        & .right{
+          & .seckill-more-link {
             float: right;
-            width: 375px;
-            height: 667px; 
-            & div{
-                float: left;
+            width: 100px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            & div {
+              float: right;
+              color: #fa2c19;
+              font-size: 12px;
+
+              & .miao {
+                width: 15px;
+                height: 15px;
+                border-radius: 15px;
+                background-color: #fa2c19;
+                color: white;
+                text-align: center;
+                line-height: 15px;
+              }
             }
-
-            & .nav{
-                width: 80px;
-                height: 100%;
-
-                & div{
-                    width: 100%;
-                }
-
-                & .qiuqiu{
-                    padding: 10px 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-around;
-
-                    & div{
-                        width: 13px;
-                        height: 13px;
-                        border-radius: 13px;
-                    }
-                }
-
-                & .xinxi{
-                    height: 70px;
-                    margin-bottom: 10px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-wrap: wrap;
-
-                    & img{
-                        width: 50px;
-                        height: 30px;
-                    }
-                }
-
-                & .mt-20{
-                    margin-top: 20px;
-                }
-
-                & .mb-55{
-                    margin-bottom: 55px;
-                }
-
-                & .diandian{
-                    height: 30px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-around;
-
-                    & div{
-                        width: 3px;
-                        height: 3px;
-                        border-radius: 3px;
-                        background-color: white;
-                    }
-                }
-            }
-
-            & .main{
-                width: 295px;
-                height: 100%;
-                background-color: blueviolet;
-            }
-            
+          }
         }
-        
-    }
-    .pink{
-        background-color: #ff4070;
-    }
-    .ccc{
-        color: #ccc;
-    }
-}
 
+        & .floor-container {
+          padding: 0 5px;
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+
+          & div {
+            float: left;
+            width: 60px;
+            height: 100px;
+            color: #fa2c19;
+            & img {
+              width: 40px;
+              height: 50px;
+            }
+          }
+        }
+      }
+
+      & .waterfall {
+        margin: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        border-radius: 5px;
+
+        //    background-color: violet;
+
+        & div {
+          width: 50%;
+          height: 100%;
+        }
+
+        & .feeds_col_left {
+          border-radius: 5px 0 0 5px;
+
+          & div {
+            width: 94%;
+            margin: 5px;
+            height: 170px;
+            background-color: white;
+          }
+        }
+        & .feeds_col_right {
+          border-radius: 0 5px 5px 0;
+
+          & div {
+            width: 94%;
+            margin: 5px;
+            height: 200px;
+            background-color: white;
+          }
+        }
+      }
+    }
+  }
+  .ccc {
+    color: #ccc;
+  }
+}
 </style>

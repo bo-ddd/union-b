@@ -3,7 +3,7 @@
     <!-- ProductParameters商品参数 -->
     <div class="main">
       <div class="mains">
-      <h1 class="h1">参数项信息</h1>
+      <!-- <h1 class="h1">参数项信息</h1>
       <div class="message">
         <div class="main-top">
           <el-form ref="form" :model="form" label-width="90px">
@@ -19,55 +19,79 @@
   <el-form-item label="参数项必选:">
     <el-checkbox-group v-model="form.required">
       <el-checkbox label="启用" name="type"></el-checkbox>
-      <!-- <p class="span">该属性支持选择多个属性值，比如对一杯奶茶添加布丁，珍珠等多种配料。</p> -->
     </el-checkbox-group>
   </el-form-item>
 </el-form>
         </div>
-      </div>
+      </div> -->
       <h1 class="h1">参数值列表</h1>
       <div class="list">
-        <el-button type="primary" class="button">新增参数值</el-button>
-        <!-- <el-button type="danger" class="button">新增属性值</el-button> -->
+        <el-button type="primary" @click="dialogFormVisible = true" class="button">新增参数</el-button>
+        <el-dialog title="新增参数" :visible.sync="dialogFormVisible">
+  <el-form :model="forms">
+    <el-form-item label="参数名称" :label-width="formLabelWidth">
+      <el-input v-model="forms.name" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="类目" :label-width="formLabelWidth" class="form-money">
+      <el-select v-model="value" filterable placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+  </div>
+</el-dialog>
         <el-table
       :data="tableData"
       style="width: 100%">
-      <el-table-column prop="id" label="id" width="100" align="center">
+      <el-table-column type="index" label="id" width="100" align="center">
       </el-table-column>
       <el-table-column
         prop="name"
-        label="参数值"
+        label="参数"
         align="center"
         >
-        <template>
+        <!-- <template>
           <input type="text" class="property" v-model="name">
-        </template>
+        </template> -->
       </el-table-column>
-      <el-table-column label="加价(元)"  align="center">
-        <template>
+      <el-table-column prop="input" label="参数值"  align="center">
+        <!-- <template>
           <input type="text" class="inp" v-model="input">
-        </template>
+        </template> -->
       </el-table-column>
       <el-table-column
         prop="sort"
         label="排序"
         align="center"
         >
-        <template>
-          <img src="../../assets/images/zhiding.png" class="iconimg">
-          <img src="../../assets/images/xiangshang.png" class="iconimg">
-          <img src="../../assets/images/xiangxia.png" class="iconimg">
-        </template>
+        <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">置顶</el-button>
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">向上</el-button>
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">向下</el-button>
+      </template>
       </el-table-column>
       <el-table-column
         prop="operate"
         label="操作"
         align="center"
         >
-        <template>
-          <el-button
-          size="mini"
-          type="danger">删除</el-button>
+        <template slot-scope="scope">
+          <el-button size="mini">{{scope.row.redact}}</el-button>
+          <el-button size="mini" type="danger" @click="remove(scope)">{{scope.row.delete}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,37 +103,102 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
       return {
-        input:10,
-        name:'微辣',
+        options: [{
+          value: '选项1',
+          label: '电子'
+        }, {
+          value: '选项2',
+          label: '电器'
+        }, {
+          value: '选项3',
+          label: '服装'
+        }, {
+          value: '选项4',
+          label: '食品'
+        },
+        ],
+        value: '',
+        dialogFormVisible: false,
+        formLabelWidth: '120px',
+        forms: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        // input:10,
+        // name:'微辣',
         form: {
           name: '',
           choice: '',
           required: '',
         },
         tableData: [{
-            id: '1',
+            delete:'删除',
+            redact:'编辑',
+            name:'上市时间',
+            input:'2018年12月'
           }, {
-            id: '2',
+           
+            delete:'删除',
+            redact:'编辑',
+            name:'机身尺寸',
+            input:'384x262x25毫米'
           }, {
-            id: '3',
+           
+            delete:'删除',
+            redact:'编辑',
+            name:'电源适配器',
+            input:'100V-240V 120W 自适应交流电源适配器'
           }, {
-            id: '4',
+            
+            delete:'删除',
+            redact:'编辑',
+            name:'电池类型',
+            input:'4芯锂电池'
           },
           {
-            id: '5',
+           
+            delete:'删除',
+            redact:'编辑',
+            name:'颜色',
+            input:'黑色'
           },
           {
-            id: '6',
+            
+            delete:'删除',
+            redact:'编辑',
+            name:'内存类型',
+            input:'DDR4'
           }
           ]
       }
     },
     methods: {
-      
-  }
+      ...mapActions(["getAttributeList"]),
+       handleEdit(index, row) {
+        console.log(index, row);
+      },
+      handleDelete(index, row) {
+        console.log(index, row);
+      },
+      remove(data){
+        console.log(data.$index);
+       this.tableData.splice(data.$index,1) 
+      }
+  },
+  async created(){
+    let getAttributeList = await this.getAttributeList();
+    console.log(getAttributeList);
+  } 
 }
 </script>
 
@@ -129,8 +218,6 @@ export default {
 }
 .h1{
   margin: 20px 0;
-  // display: flex;
-  // align-items: center;
 }
 .top{
   margin-top: 20px;
@@ -171,7 +258,6 @@ export default {
     line-height: 60px;
   }
   .el-form-item {
-    // margin-top: 20px;
     margin-bottom: 0px;
 }
 .middle{
@@ -179,5 +265,8 @@ export default {
 }
 ::v-deep .el-table__header-wrapper{
   font-size: 17px;
+}
+.form-money{
+  margin:20px 0;
 }
 </style>

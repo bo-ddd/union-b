@@ -2,7 +2,6 @@
 <div class="home">
     <el-container>
         <el-aside :width="isCollapse?'60px':'220px'">
-            <el-checkbox v-model="isCollapse" class="switch"></el-checkbox>
             <div class="aside_main">
                 <el-menu class="menu el-menu-vertical-demo" collapse-transition unique-opened :router="true" :default-active="$route.path" @open="handleOpen" @close="handleClose" :collapse="isCollapse" active-text-color="#ff6f93">
                     <div class="logobox">
@@ -15,7 +14,7 @@
                             <span>{{ link.meta.title }}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path" v-show='!children.meta.flag'>
+                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path" v-show='!children.meta.flag' @click="show = !show">
                                 <span>{{ children.meta.title }}</span>
                             </el-menu-item>
                         </el-menu-item-group>
@@ -26,14 +25,18 @@
         <el-container>
             <el-header>
                 <div class="top_left">
+                    <i :class="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'" @click="isCollapse = !isCollapse"></i>
                     <span class="fw-b fs-20">{{ $route.meta.title }}</span>
                 </div>
-                <i class="el-icon-bell"></i>
+                <i class="el-icon-bell fs-20 fw-b"></i>
                 <div class="top_right">
                     <div class="avatorbox">
-                        <img class="avator" src="../assets/logo.png" alt="">
+                        <div class="imgbox">
+                            <img class="avator" :src="avatorImg" alt="">
+                        </div>
+                        <span>{{userInfo.avatorName}}</span>
                     </div>
-                    <span>苏苏喂苏苏</span>
+                    <el-link type="primary" plain size='small' @click="logout" :underline="false">退出</el-link>
                 </div>
             </el-header>
             <el-main>
@@ -45,22 +48,47 @@
 </template>
 
 <script>
+import '@/assets/theme.scss'
+import changeColor from "../assets/js/changeColor.js"
 import {
-    mapGetters
+    mapGetters,
+    mapActions
 } from 'vuex';
 export default {
     data() {
         return {
-            isCollapse: false
+            isCollapse: false,
+            show: true,
+            userInfo: '',
+            avatorImg: '',
         };
     },
     methods: {
+        ...mapActions(["getUserInfo", "userLogout"]),
         handleOpen() {},
-        handleClose() {}
+        handleClose() {},
+        async logout() {
+            let res = await this.userLogout()
+            if (res.status == 1) {
+                sessionStorage.clear('token');
+                this.$router.push({
+                    name: 'Login'
+                })
+            }
+        }
     },
     computed: {
         ...mapGetters(['routes'])
     },
+    async created() {
+        let theme=localStorage.getItem("theme");
+        if(theme){
+          changeColor(theme);
+        }
+        let res = await this.getUserInfo();
+        this.userInfo = res.data[0]
+        this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
+    }
 }
 </script>
 
@@ -70,6 +98,7 @@ export default {
     height: 100vh;
     color: #0a0a0a;
     min-width: 1100px;
+    overflow: hidden;
 
     ::-webkit-scrollbar {
         width: 0px;
@@ -89,16 +118,9 @@ export default {
         color: #333;
         text-align: center;
         height: 100vh;
-        position: relative;
         overflow-x: hidden;
 
-        & .switch {
-            position: absolute;
-            top: 50vh;
-            right: 0px;
-        }
-
-        .el-menu {
+        & .el-menu {
             border: none;
         }
 
@@ -109,13 +131,14 @@ export default {
         ::v-deep .el-submenu__title.is-active {
             outline: 0;
             background-color: var(--color) !important;
+            color: var(--textcolor) !important;
         }
 
         & .logobox {
             padding: 20px 20px 10px 20px;
             display: grid;
             grid-template-columns: 1fr 3fr;
-            width: 150px;
+            width: 180px;
 
             & .logo {
                 width: 25px;
@@ -138,26 +161,41 @@ export default {
 
     & .el-header {
         display: grid;
-        grid-template-columns: 30fr 1fr 5fr;
+        grid-template-columns: 30fr 1fr 6fr;
         box-shadow: 2px 0 2px #e7d0d0;
         background-color: #ffffff;
         font-size: 16px;
         align-items: center;
 
+        & .top_left {
+            & i {
+                font-size: 20px;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+        }
+
         & .top_right {
             display: flex;
+            justify-content: space-around;
+            align-items: center;
 
             & .avatorbox {
-                width: 25px;
-                height: 25px;
-                border-radius: 25px;
-                overflow: hidden;
-                margin-right: 10px;
+                display: flex;
 
-                & .avator {
+                & .imgbox {
                     width: 25px;
+                    height: 25px;
+                    border-radius: 25px;
+                    overflow: hidden;
+                    margin-right: 10px;
+
+                    & .avator {
+                        width: 25px;
+                    }
                 }
             }
+
         }
 
     }

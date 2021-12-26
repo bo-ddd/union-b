@@ -51,6 +51,8 @@ export default {
         pictureUrl: route,
         pid: pid,
       });
+      // 往父组件传的值
+      this.$emit('change1',await this.getNavList());
     },
 
     // 删除导航的接口
@@ -58,6 +60,8 @@ export default {
       await this.deleteNav({
         id: id,
       });
+      // 往父组件传的值
+      this.$emit('change1',await this.getNavList());
     },
 
     // 导航删除的点击事件
@@ -72,6 +76,9 @@ export default {
       let res =  await this.uploadImage(formdata);
       await this.addNav(this.type.id,res.data,name);
     },
+  },
+  created(){
+    
   },
 };
 </script>

@@ -164,7 +164,7 @@ export default {
     /**
      * @description 删除类目接口
      * @params {
-     * id     //要删除类目的id
+     * id:[ ]   要删除id,   数组里面有几个删除几个
      * } 
      */
     deleteCategory(params) {
@@ -203,7 +203,7 @@ export default {
     /**
      * @description 删除规格接口
      * @params {
-     *  id     //要删除类目的id
+     *  id:[ ]   要删除规格id,   数组里面有几个删除几个
      * } 
      */
     deleteSpecification(params) {
@@ -227,7 +227,7 @@ export default {
     /**
      * @description 删除商品接口 
      * @params {
-     *  id     要删除删除的id
+     *  id:[ ]   要删除id,   数组里面有几个删除几个
      * } 
      */
     deleteProduct(params) {
@@ -258,9 +258,7 @@ export default {
     /**
      * @description 删除属性接口
      * @params {
-     * value     : [String]     商品的属性或者是参数
-     * type      : [Number]     类型 1 属性  2参数
-     * productId : [Number]     商品id
+     * id:[ ]   要删除属性id,   数组里面有几个删除几个
      * } 
      */
     deleteAttribute(params) {

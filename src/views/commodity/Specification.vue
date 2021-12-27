@@ -3,11 +3,20 @@
     <div class="wrap_interior">
       <div class="tit">商品规格</div>
       <div class="addspebut">
-        <el-button
-          type="primary"
-          @click="addspecification, (dialogaddFormVisible = true)"
-          >添加规格</el-button
-        >
+        <div class="footer_left">
+          <el-button
+            type="primary"
+            @click="addspecification, (dialogaddFormVisible = true)"
+            >添加规格</el-button
+          >
+          <!-- <el-button type="primary">保存排序</el-button> -->
+          <el-button
+            type="primary"
+            class="batch_del_btn"
+            @click="multipleRemove()"
+            >批量删除</el-button
+          >
+        </div>
         <div class="">
           <el-input
             placeholder="请输入内容"
@@ -40,7 +49,8 @@
               <el-input v-model="form1.name" autocomplete="off"></el-input>
             </el-form-item> -->
             <el-form-item label="类目id" :label-width="formLabelWidth">
-              <el-input v-model="form1.cid" autocomplete="off"></el-input>
+              <!-- <el-input v-model="form1.cid" autocomplete="off"></el-input> -->
+              <el-select placeholder="请选择" class="sel"> </el-select>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -58,7 +68,6 @@
         tooltip-effect="dark"
         :data="table"
         style="width: 97%"
-        @select="checkBoxData"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
@@ -69,14 +78,12 @@
           @click="checkedclick()"
         >
         </el-table-column>
-        <el-table-column label="id" align="center" prop="id" sortable>
-        </el-table-column>
+        <el-table-column label="id" align="center" prop="id"> </el-table-column>
         <el-table-column
           label="规格名称"
           align="center"
           prop="title"
           show-overflow-tooltip
-          sortable
         >
         </el-table-column>
         <el-table-column
@@ -84,16 +91,15 @@
           prop="productCategory"
           show-overflow-tooltip
           align="center"
-          sortable
         >
         </el-table-column>
-        <el-table-column
-          label="操作"
-          show-overflow-tooltip
-          align="center"
-          :formatter="formatter"
-          sortable
-        >
+        <!-- <el-table-column label="排序" show-overflow-tooltip align="center">
+          <template slot-scope="scoped">
+            <el-link type="primary" @click="ascendingOrder(scoped.row)">升序</el-link>
+            <el-link class="ml-10" type="primary">降序</el-link>
+          </template>
+        </el-table-column> -->
+        <el-table-column label="操作" show-overflow-tooltip align="center">
           <template slot-scope="scope">
             <el-button
               type="primary"
@@ -135,7 +141,7 @@
             <el-button
               i
               class="el-icon-delete cell2"
-              @click.native.prevent="deleteRow(scope.$index, arr)"
+              @click="deleteData(scope.row)"
               type="text"
             >
             </el-button>
@@ -143,31 +149,22 @@
         </el-table-column>
       </el-table>
       <div class="footer">
-        <div class="footer_left">
-          <el-button type="primary">保存排序</el-button>
-          <el-button
-            type="primary"
-            class="batch_del_btn"
-            @click="MultipleRemove()"
-            >批量删除</el-button
+        <div class="footer_right">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="renderDynamic.length"
+            background
           >
-        </div>
-          <div class="footer_right">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page.sync="currentPage"
-              :page-sizes="[10, 20, 30, 40, 50]"
-              :page-size="100"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="renderDynamic.length"
-              background
-            >
-            </el-pagination>
-          </div>
+          </el-pagination>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -184,7 +181,7 @@ export default {
       select: "",
       currentPage1: 1,
       currentPage4: 1,
-      pageSize1: 45,
+      pageSize1: 50,
       pageNum1: "",
       options: [
         {
@@ -223,6 +220,8 @@ export default {
       table: [],
       pageSize: 10, //每页条数
       renderDynamic: [],
+      cacheArr: [],
+      arr4: [],
     };
   },
   watch: {
@@ -240,8 +239,13 @@ export default {
     /**
      * getSpecificationList获取所有的类目接口
      * createSpecification 添加规格接口
+     * deleteSpecification 删除规格接口
      */
-    ...mapActions(["getSpecificationList", "createSpecification"]),
+    ...mapActions([
+      "getSpecificationList",
+      "createSpecification",
+      "deleteSpecification",
+    ]),
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -251,9 +255,9 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
+    // handleSelectionChange(val) {
+    //   this.multipleSelection = val;
+    // },
     //添加规格
     async addspecification() {
       let res = await this.createSpecification({
@@ -264,27 +268,83 @@ export default {
       this.spelist();
     },
     //批量删除
-    MultipleRemove() {
-      this.deleteDataArr1.forEach((item) => {
-        this.arr.splice(this.arr.indexOf(item), 1);
+    multipleRemove() {
+      // console.log(this.renderDynamic);
+      for (let i = 0; i < this.renderDynamic.length; i++) {
+        if (!this.cacheArr.includes(this.renderDynamic[i])) {
+          this.cacheArr.push(this.renderDynamic[i]);
+        } else {
+          let temp = this.cacheArr.indexOf(this.renderDynamic[i]);
+          this.cacheArr.splice(temp, 1);
+        }
+      }
+      this.cacheArr.forEach((item) => {
+        this.table.splice(this.table.indexOf(item), 1);
       });
     },
-    checkBoxData: function (selection) {
-      this.deleteDataArr1 = selection;
+    checkBoxData: function (selection, row) {
+      this.renderDynamic.push(row);
+    },
+    handleSelectionChange(val) {
+      if (!val.length) {
+        this.renderDynamic = [];
+      } else {
+        val.forEach((item) => {
+          this.renderDynamic.push(item);
+        });
+      }
     },
     //单个修改
     editListData() {
       console.log("单个修改成功");
     },
-    //单个删除
-    deleteRow(index, rows) {
-      rows.splice(index, 1);
+    /**
+     * @description 删除当前行
+     */
+    async deleteData(row) {
+      for (var i = 0; i < this.renderDynamic.length; i++) {
+        let el = this.renderDynamic[i];
+        if (row.id == el.id) {
+          //从第I个开始删除一个
+          this.renderDynamic.splice(i, 1);
+        }
+      }
+      //重新渲染页面
+      this.spelist(this.renderDynamic);
+      let res = await this.deleteSpecification({
+        id: row.id,
+      });
+      console.log(res);
     },
-    //保存排序
-    formatter(row) {
-      return row.address;
-    },
-    //获取所有类目规格
+
+    /**
+     * 升序
+     */
+    // async ascendingOrder(row) {
+    //   console.log(row);
+    //   let res = {};
+    //   var formatData = (row) => {
+    //     this.renderDynamic.reverse()
+    //     for (let i = 0; i < this.renderDynamic.length; i++) {
+    //       let item = this.renderDynamic[i];
+    //       if (item.id == row.id) {
+    //         // console.log(item);
+    //         res.i = i;
+    //         res.currentData = item; //当前的数据；
+    //         res.preData = this.renderDynamic[i - 1]; //上一个数据；
+    //         break;
+    //       }
+    //     }
+    //     // console.log(formatData);
+    //     return res;
+    //   };
+    //   let aaa= formatData(row);
+    //   console.log(aaa);
+    // },
+
+    /**
+     * 获取所有类目规格
+     * */
     async spelist() {
       let res = await this.getSpecificationList({
         pagination: false,
@@ -294,15 +354,9 @@ export default {
       console.log(res);
       // this.pageSize1 = res.data.count.slice();
       this.renderDynamic = res.data.rows.slice();
+
       this.handleSizeChange(10);
     },
-    //批量删除（查看是否选中）
-    // checkedclick() {
-    //   //把符合条件的数据放到一个数组里，然后用splice删除
-    //   if(this.checked == true){
-    //     this.deleteDataArr2.push()
-    //   }
-    // },
     //分页
     //分页有多少条
     handleSizeChange(val) {
@@ -321,32 +375,10 @@ export default {
       }
       this.table = arr;
     },
-
-    // handleSizeChange(val) {
-    //   console.log(`每页 ${val} 条`);
-    //   this.pageSize1 = val;
-    //   this.handleCurrentChange(0);
-    // },
-    // handleCurrentChange(val) {
-    //   console.log(`当前页: ${val}`);
-    //   this.pageNum1 = val;
-    //   this.table = this.Num();
-    // },
-    // Num() {
-    //   // console.log(this.offSize + this.pageSize);
-    //   console.log(this.offSize);
-    //   let res = this.arr.slice(this.offSize, this.offSize + this.pageSize);
-    //   return res;
-    // },
   },
   async created() {
     this.spelist();
   },
-  // computed: {
-  //   offSize() {
-  //     return this.pageSize || 10 * (this.pageNum1 - 1);
-  //   },
-  // },
 };
 </script>
 
@@ -385,11 +417,10 @@ export default {
     align-items: center;
     background-color: #ffffff;
     & .footer_right {
-      margin-left: 25px;
       display: flex;
       justify-content: center;
-      width: 80%;
-      justify-content: space-between;
+      align-items: center;
+      width: 100%;
       & .block {
         display: flex;
         align-items: center;
@@ -429,5 +460,8 @@ export default {
 }
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
+}
+.ml-10 {
+  margin-left: 10px;
 }
 </style>

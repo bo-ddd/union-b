@@ -4,9 +4,10 @@
       <el-button type="primary" @click="dialogFormVisible = true">新增单位</el-button>
       <div>
         <el-select v-model="value" filterable placeholder="请选择">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" aria-selected="selected"></el-option>
         </el-select>
-        <el-input v-model="input" placeholder="请输入内容" suffix-icon="el-icon-search"></el-input>
+        <el-input v-model="Interludes" placeholder="请输入内容" suffix-icon="el-icon-search"></el-input>
+        <el-button type="primary" @click="Interlude">查询</el-button>
       </div>
     </div>
     <div class="table">
@@ -24,8 +25,8 @@
         </el-table-column>
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-link :type="type" class="operation">{{scope.row.disable ? '已启用' : '已禁用'}}</el-link>
-            <el-link :type="types" class="operation" @click="Disable(scope.row)">{{scope.row.disable ? '禁用' : '启用'}}</el-link>
+            <el-link type="primary" v-if="scope.row.disable" @click="Disable(scope.row)">启用</el-link>
+            <el-link type="danger" v-else @click="Disable(scope.row)">禁用</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -55,7 +56,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>                                            
       </div>
     </el-dialog>
   </div>
@@ -70,7 +71,6 @@ export default {
       types:'',
       currentPage: 1,
       pageSize:'',
-      input: "",
       table:[],
       dialogFormVisible: false,
       formLabelWidth: "120px",
@@ -82,28 +82,22 @@ export default {
       tableData: [],
       options: [{
           value: "选项1",
-          label: "序号",
-        },
-        {
-          value: "选项2",
           label: "单位名称",
-        },
-        {
-          value: "选项3",
-          label: "类目",
         }],
-      value: "",
+      value: "选项1",
+      Interludes:''
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","deleteUnitlibrary"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch"]),
     /**
      * @description 置顶的方法
      */
     async Topping(ord) {
-      var num = ord.ord;
+      var num = ord.id;
+      console.log(num);
       let res = await this.unitlibraryStick({
-        ord:num
+        id:num
       })
       console.log(res);
       this.List();
@@ -111,50 +105,92 @@ export default {
     /**
      * @description 升序的方法
      */
-    async raise(ord) {
-      let num = this.tableData[ord.index-2].ord;
-        let res = await this.unitlibraryOrders({
-          currentDataord:ord.ord,
-          preDataord:num
+    async raise(row) {
+      var formatData = (row) => {
+        let res = {};
+          for (let i = 0; i < this.tableData.length; i++) {
+            let item = this.tableData[i];
+            if (item.id == row.id) {
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.tableData[i - 1]; //上一个数据；
+              break;
+            }
+          }
+        return res;
+      };
+      let obj = formatData(row);
+      if(obj.i){
+          let ord = obj.currentData.ord;
+          obj.currentData.ord = obj.preData.ord;
+          obj.preData.ord = ord;
+        this.ordSort(this.tableData);
+        let res = await this.unitlibraryOrders([
+            obj.currentData.id,
+            obj.preData.id,
+        ]);
+        console.log(res)
+      }else{
+        this.$message("已经是第一个了不能再升序了")
+      }
+    },
+    /**
+     * @description 根据ord进行排序完成后 重新渲染页面
+     */
+    ordSort(arr) {
+      arr.sort((a, b) => {
+        let num1 = a.ord;
+        let num2 = b.ord;
+        return num2 - num1;
+      });
+        this.tableData.forEach((item,index)=>{
+          item.index = index+1;
         })
-        console.log(res);
-        this.List();
+      this.table = arr;
     },
     /**
      * @description 降序的方法
      */
-    async Down(ord) {
-      let num = this.tableData[ord.index].ord;
-      let res = await this.unitlibraryOrders({
-        currentDataord:ord.ord,
-        preDataord:num
-    //  * currentDataord     [nmber] 当前的类目
-    //  * preDataord            [number]要跟交换的类目
-      })
-      console.log(res);
-      this.List();
+    async Down(row) {
+      var formatData = (row) => {
+        let res = {};
+          for (let i = 0; i < this.tableData.length; i++) {
+            let item = this.tableData[i];
+            if (item.id == row.id) {
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.tableData[i + 1]; //上一个数据；
+              break;
+            }
+          }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj);
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        this.ordSort(this.tableData);
+          let res = await this.unitlibraryOrders([
+           obj.currentData.id,
+           obj.preData.id,
+          ]);
+        console.log(res)
     },
     /**
      * @description 禁用的方法
      */
     async Disable(ord) {
-      console.log(ord);
       let num = ord.id
-      let res = await this.deleteUnitlibrary({
-        id:num
+      let disable = ord.disable ? 0 : 1 ;
+      let res = await this.disableUnitlibrary({
+        id : num,
+        disable : disable
       });
       console.log(res);
-      this.List();
-    },
-    /**
-     * @description 排序的方法
-     */
-    mySort(tableData) {
-      tableData.sort((a, b) => {
-        var num1 = a.ord;
-        var num2 = b.ord;
-        return num1 - num2;
-      });
+      if(res.status){
+        ord.disable  == 1 ? ord.disable = 0 : ord.disable = 1
+      }
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -191,13 +227,11 @@ export default {
         //  * pageNum   [number]    每页多少条数据  默认是10条
         //  * pageSize  [number]    这是第几页      默认是第1页
       });
+      console.log(res)
       this.tableData = res.data.rows;
       this.tableData.forEach((item,index)=>{
         item.index = index+1;
-        this.type = item.disable ? 'primary' : 'danger'
-        this.types = item.disable ? 'danger' : 'primary'
       })
-      // this.mySort(this.tableData);
       this.handleSizeChange(10);
     },
     /**
@@ -222,7 +256,16 @@ export default {
       }
       this.table = arr;
     },
-
+    /**
+     *  @description 查询
+     */
+    async Interlude(){
+      console.log(this.Interludes);
+      let res = await this.unitlibraryFuzzySearch({
+        title : this.Interludes
+      })
+      console.log(res);
+    }
   },
   created() {
     this.List();

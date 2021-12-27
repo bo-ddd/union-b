@@ -11,7 +11,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>{{allData.storeCount || 888}}</h3>
+            <h3>{{ allData.storeCount || 888 }}</h3>
             <span>平台商家总数</span>
           </div>
         </div>
@@ -24,7 +24,7 @@
             />
           </div>
           <div class="ml-5">
-            <h3>{{allData.goodsCount || 8888}}</h3>
+            <h3>{{ allData.goodsCount || 8888 }}</h3>
             <span>平台商品总数</span>
           </div>
         </div>
@@ -90,12 +90,7 @@
       </div>
       <div class="echarts_rank">
         <h4>成交量排行榜</h4>
-        <el-table
-          :data="tableData"
-          stripe
-          style="width: 100%"
-          id="#out-table"
-        >
+        <el-table :data="tableData" stripe style="width: 100%" id="#out-table">
           <el-table-column prop="date" label="类目"> </el-table-column>
           <el-table-column prop="name" label="名称"> </el-table-column>
           <el-table-column prop="address" label="销售量"> </el-table-column>
@@ -114,7 +109,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      allData:[],
+      allData: [],
       tableData: [
         {
           date: "家电",
@@ -169,13 +164,13 @@ export default {
         legend: {
           data: ["去年同期", "今年"],
         },
-        grid:{
-        bottom:'1%',
-        left:'5%',
-        right:'5%',
+        grid: {
+          bottom: "1%",
+          left: "5%",
+          right: "5%",
         },
         toolbox: {
-          center:['20%','50%'],
+          center: ["20%", "50%"],
           show: true,
           feature: {
             dataView: { show: true, readOnly: false },
@@ -245,7 +240,7 @@ export default {
             name: "品类分布",
             type: "pie",
             radius: ["40%", "70%"],
-            center:['30%','60%'],
+            center: ["30%", "60%"],
             avoidLabelOverlap: true,
             data: [
               { value: 1048, name: "电器" },
@@ -274,7 +269,7 @@ export default {
         grid: {
           left: "3%",
           right: "4%",
-          bottom:'1%',
+          bottom: "1%",
           containLabel: true,
         },
         xAxis: [

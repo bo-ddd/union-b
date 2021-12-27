@@ -1,19 +1,5 @@
 <template>
    <div class="warp">
-    <!-- <div class="main-t">
-      <div class="main-t_left">
-        <h3>实时数据</h3>
-        <span>更新时间</span>
-        <span class="date">2019-12-19 13:21:25</span>
-      </div>
-      <div>
-        <el-cascader :options="options">
-          <template slot-scope="{ data }">
-            <span>{{ data.label }}</span>
-          </template>
-        </el-cascader>
-      </div>
-    </div> -->
     <div class="main_c">
       <div class="main_c-left">
         <h3>成交统计</h3>

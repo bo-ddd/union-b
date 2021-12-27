@@ -98,7 +98,7 @@ export default {
      * @description 上传图片
      * @params {
      * file:  <stream>  上传的流 
-     * type:[Number]   1：banner   
+     * type:[Number]  //1.banner图 2.导航图 3.类目图 4.许可证  5.推荐商品  6.文章
      * } 
      */
     uploadImage(params) {
@@ -164,7 +164,7 @@ export default {
     /**
      * @description 删除类目接口
      * @params {
-     * id     //要删除类目的id
+     * id:[ ]   要删除id,   数组里面有几个删除几个
      * } 
      */
     deleteCategory(params) {
@@ -173,8 +173,7 @@ export default {
     /**
      * @description 商品类目排序接口
      * @params {
-     * currentDataord     [nmber] 当前的类目
-     * preDataord         [number]要跟交换的类目
+     * [当前类目的id,要交换类目的id ]
      * } 
      */
     categoryOrders(params) {
@@ -204,7 +203,7 @@ export default {
     /**
      * @description 删除规格接口
      * @params {
-     *  id     //要删除类目的id
+     *  id:[ ]   要删除规格id,   数组里面有几个删除几个
      * } 
      */
     deleteSpecification(params) {
@@ -228,7 +227,7 @@ export default {
     /**
      * @description 删除商品接口 
      * @params {
-     *  id     要删除删除的id
+     *  id:[ ]   要删除id,   数组里面有几个删除几个
      * } 
      */
     deleteProduct(params) {
@@ -259,9 +258,7 @@ export default {
     /**
      * @description 删除属性接口
      * @params {
-     * value     : [String]     商品的属性或者是参数
-     * type      : [Number]     类型 1 属性  2参数
-     * productId : [Number]     商品id
+     * id:[ ]   要删除属性id,   数组里面有几个删除几个
      * } 
      */
     deleteAttribute(params) {
@@ -302,8 +299,7 @@ export default {
     /**
      * @description 商品单位排序接口
      * @params {
-     * currentDataord     [nmber] 当前的类目
-     * preDataord            [number]要跟交换的类目
+     * [当前单位的id,要交换单位的id ]
      * } 
      */
     unitlibraryOrders(params) {
@@ -312,12 +308,40 @@ export default {
     /**
      * @description 商品单位置顶接口
      * @params {
-     * ord : [number]  要置顶单位的ord
+     *  id    //要置顶单位的id
      * } 
      */
     unitlibraryStick(params) {
         return axios.post('/unitlibrary/stick', params, postConfig)
     },
+    /**
+     * @description 商品属性置顶接口 
+     * @params {
+     *  id     //要置顶的属性id
+     * } 
+     */
+    attributeStick(params) {
+        return axios.post('/attribute/stick', params, postConfig)
+    },
+    /**
+     * @description 商品属性排序接口
+     * @params {
+     * [当前类目的id,要交换类目的id ]  数组
+     * } 
+     */
+    attributeOrders(params) {
+        return axios.post('/attribute/orders', params, postConfig)
+    },
+    /**
+     * @description 单位模糊查询接口 /unitlibrary/fuzzySearch
+     * @params {
+     * title : [String]     单位名称
+     * } 
+     */
+    unitlibraryFuzzySearch(params) {
+        return axios.post('/unitlibrary/fuzzySearch', params, postConfig)
+    },
+
 
 
     //数据中心

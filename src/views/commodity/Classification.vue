@@ -6,16 +6,18 @@
           <div @click="jump" class="add-classification">
             <el-button type="primary">+ 新增分类</el-button>
           </div>
-          <div class="batch-association">
+          <!-- <div class="batch-association">
             <el-button type="primary">批量关联</el-button>
-          </div>
+          </div> -->
         </div>
         <el-table
+          v-loading="loading"
+           element-loading-text="拼命加载中"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
           :data="table"
           ref="table"
           border
           row-key="id"
-     
           style="width: 97%"
           @select="select"
           @select-all="selectAll"
@@ -92,6 +94,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      loading:true,
       checked: true,
       size: "",
       currentPage: 1,
@@ -101,7 +104,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getCategoryList","categoryOrders"]),
+    ...mapActions(["getCategoryList","categoryOrders","deleteCategory"]),
         setChildren(children, type) {
       // 编辑多个子层级
       children.map((j) => {
@@ -201,29 +204,28 @@ export default {
     async commodityInfo() {
       let res = await this.getCategoryList({});
          console.log(res);
+       if(res.status==1){
+          this.loading = false ;
       let data = res.data.rows.slice();
       let target = this.format(data);
       target.forEach((el) => {
-        el.createdAt = getTime(el.createdAt);
-        if (el.child.length) {
-          el.child.forEach((item) => {
-            item.association = "规格";
-            item.createdAt = getTime(item.createdAt);
-          });
-        }
+          el.association = "";
       });
       this.renderDynamic = target;
       this.handleSizeChange(10);
+       }
     },
     format(target) {
       let res = target.slice();
       res.forEach((item) => {
         item.child = item.child || [];
+        item.association = "规格";
         let p = res.find((type) => item.pid == type.id);
         if (item.pid && p) {
           p.child = p.child || [];
           p.child.push(item);
         }
+           item.createdAt = getTime(item.createdAt);
         item.category = p ? p.category + "=>" + item.title : item.title;
       });
       return res.filter((type) => type.pid === null);
@@ -266,7 +268,7 @@ export default {
             let item = this.renderDynamic[i];
             if (item.id == row.id) {
               // console.log(item);
-              res.i = i;
+              res.i = i; 
               res.currentData = item; //当前的数据；
               res.preData = this.renderDynamic[i - 1]; //上一个数据；
               break;
@@ -282,10 +284,10 @@ export default {
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
         this.ordSort(this.renderDynamic);
-        let res = await this.categoryOrders({
-          currentDataord: obj.currentData.ord,
-          preDataord: obj.preData.ord,
-        });
+        let res = await this.categoryOrders([
+         obj.currentData.id,
+           obj.preData.id,]
+        );
         console.log(res)
       }else{
         this.$message("已经是第一个了不能再升序了")
@@ -362,16 +364,16 @@ export default {
         obj.currentData.ord = obj.preData.ord;
         obj.preData.ord = ord;
         this.ordSort(this.renderDynamic);
-          let res = await this.categoryOrders({
-          currentDataord: obj.currentData.ord,
-          preDataord: obj.preData.ord,
-        });
+          let res = await this.categoryOrders([
+          obj.currentData.id,
+          obj.preData.id]  
+        );
         console.log(res)
-    },
+    }, 
     /**
      * @description 删除当前行
      */
-    deleteData(row) {
+  async deleteData(row) {
       for (var i = 0; i < this.renderDynamic.length; i++) {
         let el = this.renderDynamic[i];
         if (row.ord == el.ord) {
@@ -385,6 +387,10 @@ export default {
         }
       }
       this.ordSort(this.renderDynamic);
+      let res = await this.deleteCategory({
+        id:row.id,
+      })
+      console.log(res)
     },
   },
   created() {

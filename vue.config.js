@@ -31,4 +31,13 @@ module.exports = {
             })
         ],
     },
+    chainWebpack: (config) => {
+        config.externals({
+            'echarts': 'echarts',
+            'vue': 'Vue',
+			'vue-router': 'VueRouter',
+			'vuex':'Vuex',
+			"element-ui": "ELEMENT"
+        });
+    }
 }

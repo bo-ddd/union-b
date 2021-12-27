@@ -39,8 +39,8 @@ module.exports = {
             'vuex': 'Vuex',
             "element-ui": "ELEMENT",
             "FileSaver": "FileSaver",
-            "xlsx": "cptable",
-            "wangeditor":"wangEditor",
+            "xlsx": "XLSX",
+            "wangeditor": "wangEditor",
         });
     }
 }

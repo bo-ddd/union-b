@@ -189,6 +189,10 @@ export default new Vuex.Store({
         updateAdvert(ctx, payload) {
             return Api.updateAdvert(payload);
         },
+        //删除广告接口
+        deleteAdvert(ctx, payload) {
+            return Api.deleteAdvert(payload);
+        },
         //根据Id查询广告
         findIdAdvert(ctx, payload) {
             return Api.findIdAdvert(payload);
@@ -212,6 +216,14 @@ export default new Vuex.Store({
         //新增文章接口
         createArticle(ctx, payload) {
             return Api.createArticle(payload);
+        },
+        //删除文章接口
+        deleteArticle(ctx, payload) {
+            return Api.deleteArticle(payload);
+        },
+        //修改文章接口
+        updateArticle(ctx, payload) {
+            return Api.updateArticle(payload);
         },
         //导航列表接口
         getNavList(ctx, payload) {

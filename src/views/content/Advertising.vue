@@ -3,7 +3,7 @@
     <div class="header">
       <div class="header-left">
          <el-button  icon="el-icon-plus"  @click="openFormDialog" type="primary"
-          >新增商品</el-button
+          >新增广告</el-button
         >
             <el-dialog :visible.sync="dialogFormVisible">
           <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -12,7 +12,7 @@
                 <div class="textleft">
                   <el-form :model="form">
                     <el-form-item
-                      label="物流名称"
+                      label="广告名称"
                       :label-width="formLabelWidth"
                     >
                       <div class="logistics">
@@ -58,9 +58,9 @@
                   <div class="preview">
                     <div class="previewtop">预览</div>
                     <div v-html="article" class="precontent" >
-                    
                     </div>
                   </div>
+                   <el-button type="primary" class="mt-10" @click="release">发布</el-button>
                 </div>
               </div>
             </el-tab-pane>
@@ -69,12 +69,12 @@
                 <div class="textleft">
                   <el-form :model="form">
                     <el-form-item
-                      label="物流名称"
+                      label="广告名称"
                       :label-width="formLabelWidth"
                     >
                       <div class="logistics">
                         <el-input
-                          v-model="form.name"
+                          v-model="title"
                           autocomplete="off"
                         ></el-input>
                         <span class="ml-10">最多可输入100个字符</span>
@@ -122,7 +122,7 @@
                     >
                       <div class="logistics">
                         <el-input
-                          v-model="form.region"
+                          v-model="imgUrl"
                           autocomplete="off"
                         ></el-input>
                         <span class="ml-10">最多可输入100个字符</span>
@@ -154,6 +154,7 @@
                     <div class="previewtop">预览</div>
                       <img width="100%" :src="preview" alt="">
                   </div>
+                     <el-button type="primary" class="mt-10" @click="release">发布</el-button>
                 </div>
               </div>
             </el-tab-pane>
@@ -204,10 +205,11 @@
         </div>
         </div>
             <el-input
-          placeholder="请输入物料ID 物料名称或物料内容"
+          placeholder="请输入广告ID 或广告类型"
           prefix-icon="el-icon-search"
-          v-model="input2"
+          v-model="id"
           class="ipt"
+         
         >
         </el-input>
       </div>
@@ -221,12 +223,12 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column label="ID" width="180">
+        <el-table-column label="ID" width="180" prop="id">
           <template slot-scope="scope">{{ scope.row.date }}</template>
         </el-table-column>
-        <el-table-column prop="name" label="广告物料名称"> </el-table-column>
+        <el-table-column prop="title" label="广告物料名称"> </el-table-column>
         <el-table-column
-          prop="address"
+          prop="imgUrl"
           label="广告物料预览"
           show-overflow-tooltip
         >
@@ -247,7 +249,7 @@
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="240">
           <template slot-scope="scope">
-            <el-button   @click="handleEdit(scope.$index, scope.row)" type="primary"
+            <el-button   @click="handleEdit(scope.row)" type="primary"
               >修改</el-button
             >
             <el-button  @click="deleteRow(scope.$index, tableData)" type="primary"
@@ -260,8 +262,11 @@
   <!--修改信息-->
     <el-dialog title="修改" :visible.sync="dialogFormVisiblefix">
   <el-form :model="form">
-    <el-form-item label="物料名称" :label-width="formLabelWidth">
-      <el-input v-model="form.name" autocomplete="off"></el-input>
+    <el-form-item label="广告名称" :label-width="formLabelWidth">
+      <el-input v-model="title" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="图片路径" :label-width="formLabelWidth">
+      <el-input v-model="imgUrl" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item label="尺寸" :label-width="formLabelWidth">
       <el-input v-model="form.region" autocomplete="off"></el-input>
@@ -269,7 +274,7 @@
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisiblefix = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisiblefix = false">确 定</el-button>
+    <el-button type="primary" @click="confirmRevise">确 定</el-button>
   </div>
 </el-dialog>
 
@@ -279,12 +284,12 @@
 <script>
 import E from "wangeditor";
 import {mapActions} from "vuex";
+import uploadMap from "../../../public/lib/uploud";
 export default {
   data() {
     return {
-       dialogImageUrl: '',
-        dialogVisible: false,
-      input2: "",
+      dialogImageUrl: '',
+      dialogVisible: false,
       input1: "",
       radio: "1",
       activeName: "first",
@@ -295,22 +300,22 @@ export default {
       tableData: [
         {
           date: "000001",
-          name: "这是一个图片连接",
-          address: "上海市普陀区金沙江路 1518 弄",
+          title: "这是一个图片连接",
+          imgUrl: "上海市普陀区金沙江路 1518 弄",
           size:"800*400",
           type:"图片"
         },
         {
           date: "000002",
-          name: "这是一个图片连接",
-          address: "上海市普陀区金沙江路 1518 弄",
+          title: "这是一个图片连接",
+          imgUrl: "上海市普陀区金沙江路 1518 弄",
           size:"800*400",
           type:"图片"
         },
         {
           date: "000003",
-          name: "这是一个图片连接",
-          address: "上海市普陀区金沙江路 1518 弄",
+          title: "这是一个图片连接",
+          imgUrl: "上海市普陀区金沙江路 1518 弄",
           size:"800*400",
           type:"图片"
         },
@@ -350,10 +355,13 @@ export default {
         date1: "",
         date2: "",
         delivery: false,
-        type: [],
         resource: "",
         desc: "",
       },
+       title:"",//广告标题
+        imgUrl:"",//图片路径
+        type: [],//图片类型
+        id:"",
       formLabelWidth: "120px",
       article: null,
     };
@@ -363,17 +371,44 @@ export default {
     this.getAds()
   },
   methods: {
-    ...mapActions(["getAdvertList","uploadImage"]),
+    ...mapActions(["getAdvertList","uploadImage","createAdvert","updateAdvert","findIdAdvert"]),
    async getAds(){
     let res=await this.getAdvertList();
     // this.rows=res.data.rows;
     console.log(res);
     },
-    
-    handleEdit(index, row) {
-      this.dialogFormVisiblefix = true;
-      console.log(index, row);
+    //新增广告管理信息
+  async release(){
+    let newAdvertising =await this.createAdvert({
+       title: this.title,
+       imgUrl:this.imgUrl,
+    });
+    console.log(newAdvertising);
+    this.getAds();
     },
+    //修改广告管理信息
+    handleEdit(a) {
+      this.dialogFormVisiblefix = true;
+      this.id = a.date;
+    },
+   async confirmRevise(){
+       let modifyAdvert = await this.updateAdvert({
+          id:this.id,
+          title:this.title,
+          imgUrl:this.imgUrl,
+    });
+    console.log(modifyAdvert);
+    this.dialogFormVisiblefix = false;
+      this.getAds();
+    },
+    //查询广告管理信息
+   async  queryAdver(){
+    let queryAdvertion=await this.findIdAdvert({
+      id:this.id
+    });
+    console.log(queryAdvertion);
+    },
+    //删除广告管理信息
     deleteRow(index, rows) {
       rows.splice(index, 1);
     },
@@ -393,8 +428,15 @@ export default {
       this.preview = file.url
       this.dialogVisible = true;
     },
-     uploadImg(a){
-      console.log(a);
+    async uploadImg(file){
+      console.log(file);
+      let name =file.file.name.substring(0,file.file.name.indexOf('.'));
+      console.log(name);
+      let formdata=uploadMap(file.file,1);
+      console.log(formdata);
+    let res=  await this.uploadImage(formdata);
+    this.imgUrl=res.data;
+     
     },
     //文件状态改变时，(上传文件或失败都会调用)
     fileChange(a){
@@ -405,6 +447,7 @@ export default {
     openFormDialog() {
       this.dialogFormVisible = true;
       this.initEditor();
+
     },
     initEditor() {
       this.cont++;
@@ -510,6 +553,10 @@ export default {
     height: 40px;
     line-height: 40px;
     padding-left: 10px;
+  }
+  & .mt-10{
+  margin-left: 10px;
+  margin-top: 20px;
   }
 }
 .imagedeBox{

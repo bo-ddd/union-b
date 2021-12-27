@@ -154,6 +154,10 @@ export default new Vuex.Store({
         attributeOrders(ctx, payload) {
             return Api.attributeOrders(payload);
         },
+        //单位模糊查询接口
+        unitlibraryFuzzySearch(ctx, payload) {
+            return Api.unitlibraryFuzzySearch(payload);
+        },
 
 
 

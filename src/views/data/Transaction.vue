@@ -104,26 +104,8 @@
 </template>
 
 <script>
-import * as echarts from "echarts/core";
-import {
-  GridComponent,
-  TooltipComponent,
-  LegendComponent,
-  ToolboxComponent,
-} from "echarts/components";
-import { BarChart } from "echarts/charts";
-import { PieChart } from "echarts/charts";
-import { CanvasRenderer } from "echarts/renderers";
+import * as echarts from "echarts";
 import { mapActions } from "vuex";
-echarts.use([
-  GridComponent,
-  BarChart,
-  CanvasRenderer,
-  PieChart,
-  TooltipComponent,
-  LegendComponent,
-  ToolboxComponent,
-]);
 export default {
   data() {
     return {

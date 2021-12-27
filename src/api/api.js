@@ -500,6 +500,45 @@ export default {
     deleteNav(params) {
         return axios.post('/navigation/delete', params, postConfig)
     },
+    /**
+     * @description 获取商品Id以及名称
+     * @params 无
+     */
+    superProductTradeName(params) {
+        return axios.post('/superProduct/tradeName', params, postConfig)
+    },
+    /**
+     * @description 根据商品Id获取图片
+     * @params {
+     * id:[number]  商品的id
+     * }
+     */
+    superProductTradeImg(params) {
+        return axios.post('/superProduct/tradeImg', params, postConfig)
+    },
+    /**
+     * @description 新增推荐商品 
+     * @params {
+     * superNname  : [string]  '商品名称',
+     * serialNumber:[number] '商品的id',
+     * regionId:[string]    '展示区域  1,2,3'  
+     * }
+     */
+    createSuperProduct(params) {
+        return axios.post('/superProduct/create', params, postConfig)
+    },
+    /**
+     * @description 更改推荐商品
+     * @params {
+     * id:[number]   '被更改的id',
+     * superNname  : [string]  '商品名称',
+     * serialNumber:[number] '商品的id',
+     * regionId:[string]    '展示区域  1,2,3'  
+     * }
+     */
+    updateSuperProduct(params) {
+        return axios.post('/superProduct/update', params, postConfig)
+    },
 
 
     //订单管理

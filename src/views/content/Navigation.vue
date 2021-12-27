@@ -19,7 +19,7 @@
     <div class="content">
       <div class="left">
         <!-- 主导航 -->
-        <div class="mainNav" v-for="key in newNav" :key="key.title">
+        <div class="mainNav" v-for="key in newNav" :key="key.id">
           <!-- <div class="nav-name">
             <span class="wrods">{{ key.title }}&nbsp;&nbsp;</span>
             <span class="font-color">(数量限制:2-6个)</span>
@@ -53,7 +53,7 @@
                 </el-dialog>
             </div> -->
           <!-- </div> -->
-          <el-demo :type="key.id" :content='key'></el-demo>
+          <el-demo :type="key" @change1='change1'></el-demo>
         </div>
       </div>
 
@@ -136,73 +136,45 @@ export default {
       navs: [],
       dialogImageUrl: "",
       dialogVisible: false,
+      arr : [1,2],
     };
   },
   methods: {
-//                     上传图片       列表接口     新增导航       删除导航    
-    ...mapActions(["uploadImage", "getNavList", "createNav", "deleteNav"]),
+//                    列表接口     
+  ...mapActions(["getNavList"]),
                                     
-    // 所有导航的列表接口
-    async navList() {
-      let res = await this.getNavList();
-      this.navs = res.data.rows;
-    },
-    fff(aaa){
-      console.log(aaa);
-    },
-
-    // 新增导航的接口   pid 1/2  主导航/快捷导航   route  路径    contenr  内容
-    // async addNav(pid, route, content) {
-    //   await this.createNav({
-    //     pictureName: content,
-    //     pictureUrl: route,
-    //     pid: pid,
-    //   });
-    // },
-
-    // 删除导航的接口
-    // async removeNav(id) {
-    //   await this.deleteNav({
-    //     id: id,
-    //   });
-    //   this.navList();
-    // },
-
-    // 导航删除的点击事件
-    // async del(a) {
-    //   await this.removeNav(a);
-    // },
-
-    // 主导航的http事件   参数file
-    // async uploadNav() {
-    //     // let name = file.file.name.substring(0,file.file.name.indexOf('.'));
-    //     // let formdata = uploada(file.file,4)
-    //     // let res =  await this.uploadImage(formdata);
-    //     // await this.addNav(num,res.data,name);
-    //     // this.navList();
-    //     console.log(arguments[0],arguments[1]);
-    // },
+  // 所有导航的列表接口
+  async navList() {
+    let res = await this.getNavList();
+    this.navs = res.data.rows;
   },
-  async created() {
-    await this.navList();
-  },
-  computed: {
-    //   主导航
-    mainNav: {
+// 子组件传过来的值  通过标签中的@change1事件传过来
+  change1(data){
+    this.navs = data.data.rows;
+  }
+},
+
+
+async created() {
+  await this.navList();
+},
+computed: {
+  //   主导航
+  mainNav: {
       get() {
         if (!this.navs.length) return [];
         return this.navs.filter((item) => item.pid === "1");
       },
-    },
-    // 快捷导航
-    quickNav: {
+  },
+  // 快捷导航
+  quickNav: {
       get() {
         if (!this.navs.length) return [];
         return this.navs.filter((item) => item.pid === "2");
       },
-    },
-    // 总数组
-    newNav() {
+  },
+  // 总数组
+  newNav() {
       return [
         {
           id:1,
@@ -215,8 +187,8 @@ export default {
           nav: this.quickNav,
         },
       ];
-    },
   },
+},
 };
 </script>
 
@@ -321,87 +293,6 @@ export default {
     justify-content: space-between;
   }
   .content {
-    & .left {
-      float: left;
-      // background-color: blue;
-
-      & .mainNav{
-        & .wrods {
-          font-size: 18px;
-          font-weight: 700;
-        }
-
-        & .font-color {
-          color: #ccc;
-        }
-
-        & .nav-name {
-          padding: 10px 0;
-        }
-
-        & .nav {
-          width: 100%;
-
-          & .nav-item {
-            float: left;
-            width: 120px;
-            height: 110px;
-            border: 1px dashed #ccc;
-            padding: 0 5px;
-
-            & div {
-              width: 100%;
-            }
-
-            & .jian {
-              height: 20px;
-
-              & div {
-                float: right;
-                width: 20px;
-                height: 20px;
-                border-radius: 20px;
-                background-color: #ccc;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                & div {
-                  width: 60%;
-                  height: 5px;
-                  background-color: white;
-                }
-              }
-            }
-
-            & .img {
-              height: 50px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-
-              & div {
-                width: 50px;
-                height: 50px;
-                border-radius: 50px;
-
-                & img {
-                  width: 100%;
-                  height: 100%;
-                }
-              }
-            }
-
-            & .text {
-              height: 30px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
-          }
-        }
-      }
-    }
     & .right {
       float: right;
       width: 375px;

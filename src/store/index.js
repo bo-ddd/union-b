@@ -225,6 +225,22 @@ export default new Vuex.Store({
         deleteNav(ctx, payload) {
             return Api.deleteNav(payload);
         },
+        //获取商品Id以及名称
+        superProductTradeName(ctx, payload) {
+            return Api.superProductTradeName(payload);
+        },
+        //根据商品Id获取图片
+        superProductTradeImg(ctx, payload) {
+            return Api.superProductTradeImg(payload);
+        },
+        //新增推荐商品
+        createSuperProduct(ctx, payload) {
+            return Api.createSuperProduct(payload);
+        },
+        //更改推荐商品
+        updateSuperProduct(ctx, payload) {
+            return Api.updateSuperProduct(payload);
+        },
 
 
         //订单管理

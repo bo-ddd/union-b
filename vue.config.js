@@ -39,7 +39,8 @@ module.exports = {
             'vuex': 'Vuex',
             "element-ui": "ELEMENT",
             "FileSaver": "FileSaver",
-            "xlsx": "XLSX"
+            "xlsx": "XLSX",
+            "wangeditor": "wangEditor",
         });
     }
 }

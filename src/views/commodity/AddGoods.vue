@@ -67,7 +67,7 @@
                 <el-input
                   type="text"
                   placeholder="请填写商品标题（不超过60个字符）"
-                  maxlength="60"
+                  maxlength="30"
                   v-model="text"
                   show-word-limit
                 >
@@ -105,11 +105,11 @@
                 </el-form-item>
                 <el-form-item label="平台价">
                   <el-input
-                  placeholder="请填写商品平台价"
-                  v-model="commodityPlatformPrice"
-                  show-word-limit
-                >
-                </el-input>
+                    placeholder="请填写商品平台价"
+                    v-model="commodityPlatformPrice"
+                    show-word-limit
+                  >
+                  </el-input>
                 </el-form-item>
                 <el-form-item label="重量">
                   <el-input
@@ -258,43 +258,14 @@
                     action=""
                     list-type="picture-card"
                     id="file"
+                    :http-request="customUpload"
+                    :before-upload="beforeAvatarUpload"
+                    :on-exceed="handleExceed"
+                    :limit="2"
                     name="file"
-                    :http-request="customUpload1"
                   >
-                    <i slot="default" class="el-icon-plus"></i>
-                    <div slot="file" slot-scope="{ file }">
-                      <img
-                        class="el-upload-list__item-thumbnail"
-                        :src="file.url"
-                        alt=""
-                      />
-                      <span class="el-upload-list__item-actions">
-                        <span
-                          class="el-upload-list__item-preview"
-                          @click="handlePictureCardPreview(file)"
-                        >
-                          <i class="el-icon-zoom-in"></i>
-                        </span>
-                        <span
-                          v-if="!disabled"
-                          class="el-upload-list__item-delete"
-                          @click="handleDownload(file)"
-                        >
-                          <i class="el-icon-download"></i>
-                        </span>
-                        <span
-                          v-if="!disabled"
-                          class="el-upload-list__item-delete"
-                          @click="handleRemove(file)"
-                        >
-                          <i class="el-icon-delete"></i>
-                        </span>
-                      </span>
-                    </div>
+                    <i class="el-icon-plus"></i>
                   </el-upload>
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" />
-                  </el-dialog>
                 </div>
               </el-form-item>
               <el-form-item label="商品详情">
@@ -307,43 +278,14 @@
                   action=""
                   list-type="picture-card"
                   id="file"
+                  :http-request="customUpload1"
+                  :before-upload="beforeAvatarUpload"
+                  :on-exceed="handleExceed1"
                   name="file"
-                  :http-request="customUpload"
+                  :limit="20"
                 >
-                  <i slot="default" class="el-icon-plus"></i>
-                  <div slot="file" slot-scope="{ file }">
-                    <img
-                      class="el-upload-list__item-thumbnail"
-                      :src="file.url"
-                      alt=""
-                    >
-                    <span class="el-upload-list__item-actions">
-                      <span
-                        class="el-upload-list__item-preview"
-                        @click="handlePictureCardPreview(file)"
-                      >
-                        <i class="el-icon-zoom-in"></i>
-                      </span>
-                      <span
-                        v-if="!disabled"
-                        class="el-upload-list__item-delete"
-                        @click="handleDownload(file)"
-                      >
-                        <i class="el-icon-download"></i>
-                      </span>
-                      <span
-                        v-if="!disabled"
-                        class="el-upload-list__item-delete"
-                        @click="handleRemove(file)"
-                      >
-                        <i class="el-icon-delete"></i>
-                      </span>
-                    </span>
-                  </div>
+                  <i class="el-icon-plus"></i>
                 </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                  <img width="100%" :src="dialogImageUrl" alt="" />
-                </el-dialog>
               </el-form-item>
             </el-form>
           </div>
@@ -351,9 +293,9 @@
       </div>
     </div>
     <div class="preservation">
-      <el-button plain type="primary" @click="preservation">保存</el-button>
+      <el-button plain type="primary">保存</el-button>
       <el-button plain type="primary">预览</el-button>
-      <el-button plain type="primary">发布</el-button>
+      <el-button plain type="primary" @click="preservation">发布</el-button>
     </div>
     <el-dialog
       title=""
@@ -433,9 +375,9 @@ export default {
         },
       ],
       text: "",
-      productDescription:"",
-      commodityPlatformPrice:"",
-      sellingPriceGoods:"",
+      productDescription: "",
+      commodityPlatformPrice: "",
+      sellingPriceGoods: "",
       brand: "",
       brandList: [
         {
@@ -481,7 +423,9 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
-      src:'',
+      disabled1: false,
+      src: "",
+      src1:"",
 
       tableData: [
         {
@@ -548,23 +492,37 @@ export default {
       let file = this.$refs.file.files[0]; //this.$refs.file.files[0] 获取到上传的文件
       console.log(file);
     },
-    handleRemove(file) {
-      console.log(file.raw);
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg" || "png" || "jpg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error("请上传图片!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 2 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
     },
-    handleDownload(file) {
-      console.log(file);
+    handleExceed1(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 20 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
     },
-
     async customUpload(val) {
       let formData = new FormData();
       formData.append("file", val.file);
       formData.append("type", 3);
       // console.log(val.file);
-      let res = await this.uploadImage(formData);
+        let res = await this.uploadImage(formData);
       console.log(res);
       this.src = res.data
     },
@@ -575,15 +533,6 @@ export default {
       // console.log(val.file);
       // let res = await this.uploadImage(formData);
       // console.log(res);
-    },
-    arraySpanMethod({ rowIndex, columnIndex }) {
-      if (rowIndex % 2 === 0) {
-        if (columnIndex === 0) {
-          return [1, 2];
-        } else if (columnIndex === 1) {
-          return [0, 0];
-        }
-      }
     },
     objectSpanMethod({ rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -613,12 +562,12 @@ export default {
     async preservation() {
       let res = await this.createProduct({
         cid: 1,
-        title: "暖宝宝",
+        title: this.text,
         keywords: "日用类",
         bannerImg: this.src,
-        platformPrice: 10,
-        desc: "这是一个暖宝宝",
-        realPrice: 12,
+        platformPrice: this.commodityPlatformPrice,
+        desc: this.productDescription,
+        realPrice: this.sellingPriceGoods,
       });
       console.log(res);
     },
@@ -709,18 +658,20 @@ export default {
 .preservation {
   display: flex;
   justify-content: center;
-  border-top: 1px solid #ff4370;
+  border-top: 1px solid var(--color);
   padding: 20px 0px;
 }
 
 ::v-deep .product_picture {
   & > div > div:nth-of-type(1) > div:nth-of-type(1) {
     display: flex;
+    flex-wrap: wrap;
   }
 }
 ::v-deep .product_details {
   & > div > div:nth-of-type(1) {
     display: flex;
+    flex-wrap: wrap;
   }
 }
 ::v-deep .product_details {

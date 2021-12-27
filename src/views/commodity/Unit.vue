@@ -11,20 +11,21 @@
     </div>
     <div class="table">
       <el-table :data="table" style="width: 100%" :header-cell-style="{ background: '#f7f8fa' }">
-        <el-table-column prop="ord" label="序号"> </el-table-column>
+        <el-table-column prop="index" label="序号"> </el-table-column>
         <el-table-column prop="title" label="单位名称"> </el-table-column>
         <el-table-column prop="categoryTitle" label="类目"> </el-table-column>
         <el-table-column prop="storeTitle" label="店铺"> </el-table-column>
         <el-table-column label="排序">
           <template slot-scope="scope">
-            <el-link type="primary" class="link" @click="Topping(scope.row.ord)">置顶</el-link>
-            <el-link type="primary" class="link" @click="raise(scope.row.ord)">升序</el-link>
-            <el-link type="primary" class="link" @click="Down(scope.row.ord)">降序</el-link>
+            <el-link type="primary" class="link" @click="Topping(scope.row)">置顶</el-link>
+            <el-link type="primary" class="link" @click="raise(scope.row)">升序</el-link>
+            <el-link type="primary" class="link" @click="Down(scope.row)">降序</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-link type="primary" @click="Disable(scope.row.ord)">禁用</el-link>
+            <el-link type="primary" v-if="scope.row.disable" @click="Disable(scope.row)">启用</el-link>
+            <el-link type="danger" v-else @click="Disable(scope.row)">禁用</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -65,6 +66,8 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      type:'',
+      types:'',
       currentPage: 1,
       pageSize:'',
       input: "",
@@ -93,46 +96,108 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary"]),
     /**
      * @description 置顶的方法
      */
-    Topping(ord) {
-      if (ord == 1) return;
-      console.log(ord);
-      console.log(ord - 1);
+    async Topping(ord) {
+      var num = ord.id;
+      console.log(num);
+      let res = await this.unitlibraryStick({
+        id:num
+      })
+      console.log(res);
+      this.List();
     },
     /**
      * @description 升序的方法
      */
-    raise(ord) {
-      if (ord == 1) return;
-      console.log(ord);
-      console.log(ord - 1);
+    async raise(row) {
+      var formatData = (row) => {
+        let res = {};
+          for (let i = 0; i < this.tableData.length; i++) {
+            let item = this.tableData[i];
+            if (item.id == row.id) {
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.tableData[i - 1]; //上一个数据；
+              break;
+            }
+          }
+        return res;
+      };
+      let obj = formatData(row);
+      if(obj.i){
+          let ord = obj.currentData.ord;
+          obj.currentData.ord = obj.preData.ord;
+          obj.preData.ord = ord;
+        this.ordSort(this.tableData);
+        let res = await this.unitlibraryOrders([
+            obj.currentData.id,
+            obj.preData.id,
+        ]);
+        console.log(res)
+      }else{
+        this.$message("已经是第一个了不能再升序了")
+      }
+    },
+    /**
+     * @description 根据ord进行排序完成后 重新渲染页面
+     */
+    ordSort(arr) {
+      arr.sort((a, b) => {
+        let num1 = a.ord;
+        let num2 = b.ord;
+        return num2 - num1;
+      });
+        this.tableData.forEach((item,index)=>{
+          item.index = index+1;
+        })
+      this.table = arr;
     },
     /**
      * @description 降序的方法
      */
-    Down(ord) {
-      if (ord == 10) return;
-      console.log(ord);
-      console.log(ord + 1);
+    async Down(row) {
+      var formatData = (row) => {
+        let res = {};
+          for (let i = 0; i < this.tableData.length; i++) {
+            let item = this.tableData[i];
+            if (item.id == row.id) {
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.tableData[i + 1]; //上一个数据；
+              break;
+            }
+          }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj);
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        this.ordSort(this.tableData);
+          let res = await this.unitlibraryOrders([
+           obj.currentData.id,
+           obj.preData.id,
+          ]);
+        console.log(res)
     },
     /**
      * @description 禁用的方法
      */
-    Disable(ord) {
-      console.log(ord);
-    },
-    /**
-     * @description 排序的方法
-     */
-    mySort(tableData) {
-      tableData.sort((a, b) => {
-        var num1 = a.ord;
-        var num2 = b.ord;
-        return num1 - num2;
+    async Disable(ord) {
+      let num = ord.id
+      let disable = ord.disable ? 0 : 1 ;
+      let res = await this.disableUnitlibrary({
+        id : num,
+        disable : disable
       });
+      console.log(res);
+      if(res.status){
+        ord.disable  == 1 ? ord.disable = 0 : ord.disable = 1
+      }
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -163,16 +228,17 @@ export default {
      */
     async List() {
       let res = await this.getUnitlibraryList({
-        pagination: true, 
+        pagination: true,
         pageNum:1,
-        pageSize:20, 
-        //  pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
-        //  pageNum   [number]    这是第几页      默认是第1页
-        //  pageSize  [number]    每页多少条数据  默认是10条
+        pageSize:100,
+        //  * pageNum   [number]    每页多少条数据  默认是10条
+        //  * pageSize  [number]    这是第几页      默认是第1页
       });
-      console.log(res);
+      console.log(res)
       this.tableData = res.data.rows;
-      this.mySort(this.tableData)
+      this.tableData.forEach((item,index)=>{
+        item.index = index+1;
+      })
       this.handleSizeChange(10);
     },
     /**

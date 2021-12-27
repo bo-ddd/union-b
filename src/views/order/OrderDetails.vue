@@ -178,7 +178,6 @@ export default {
       grid-template-columns: 70% 10% 10% 10%;
       background:rgb(244,244,244);
       font-size:12px;
-
     }
 
     & .details-data{

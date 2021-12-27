@@ -36,7 +36,7 @@
                         </div>
                         <span>{{userInfo.avatorName}}</span>
                     </div>
-                    <el-link type="primary" plain size='small' @click="logout" :underline="false">退出登录</el-link>
+                    <el-link type="primary" plain size='small' @click="logout" :underline="false">退出</el-link>
                 </div>
             </el-header>
             <el-main>
@@ -86,7 +86,6 @@ export default {
           changeColor(theme);
         }
         let res = await this.getUserInfo();
-        console.log(res.data)
         this.userInfo = res.data[0]
         this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
     }

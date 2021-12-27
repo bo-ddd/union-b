@@ -6,9 +6,9 @@
           <div @click="jump" class="add-classification">
             <el-button type="primary">+ 新增分类</el-button>
           </div>
-          <div class="batch-association">
+          <!-- <div class="batch-association">
             <el-button type="primary">批量关联</el-button>
-          </div>
+          </div> -->
         </div>
         <el-table
           :data="table"
@@ -101,7 +101,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getCategoryList","categoryOrders"]),
+    ...mapActions(["getCategoryList","categoryOrders","deleteCategory"]),
         setChildren(children, type) {
       // 编辑多个子层级
       children.map((j) => {
@@ -200,8 +200,8 @@ export default {
      */
     async commodityInfo() {
       let res = await this.getCategoryList({});
+         console.log(res);
       let data = res.data.rows.slice();
-      console.log(data);
       let target = this.format(data);
       target.forEach((el) => {
         el.createdAt = getTime(el.createdAt);
@@ -248,7 +248,6 @@ export default {
       };
       //获取当前层所有额数据；
       var formatData = (row) => {
-        
         let res = {};
         if (row.pid) {
           let childData = fn(row);
@@ -267,7 +266,7 @@ export default {
             let item = this.renderDynamic[i];
             if (item.id == row.id) {
               // console.log(item);
-              res.i = i;
+              res.i = i; 
               res.currentData = item; //当前的数据；
               res.preData = this.renderDynamic[i - 1]; //上一个数据；
               break;
@@ -277,19 +276,21 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj);
-      let ord = obj.currentData.ord;
+      console.log(obj)
+      if(obj.i){
+          let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
-      console.log(obj.currentData.ord)
-      console.log(obj.preData.ord)
-      this.ordSort(this.renderDynamic);
-      let res = await this.categoryOrders({
-        currentDataord: obj.currentData.ord,
-        preDataord: obj.preData.ord,
-      });
-      console.log(res);
-    },
+        this.ordSort(this.renderDynamic);
+        let res = await this.categoryOrders([
+         obj.currentData.id,
+           obj.preData.id,]
+        );
+        console.log(res)
+      }else{
+        this.$message("已经是第一个了不能再升序了")
+      }
+    },  
     /**
      * @description 根据ord进行排序完成后 重新渲染页面
      */
@@ -313,7 +314,7 @@ export default {
     /**
      * @description 当前行下降一位
      */
-    sescendingOrder(row) {
+  async sescendingOrder(row) {
       var fn = (row) => {
         console.log(row);
         if (row.child.length) {
@@ -329,8 +330,8 @@ export default {
       //获取当前层所有额数据；
       var formatData = (row) => {
         let res = {};
+             let childData = fn(row);
         if (row.pid) {
-          let childData = fn(row);
           for (let i = 0; i < childData.length; i++) {
             let item = childData[i];
             if (item.id == row.id) {
@@ -357,15 +358,20 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
-      let ord = obj.currentData.ord;
-      obj.currentData.ord = obj.preData.ord;
-      obj.preData.ord = ord;
-      this.ordSort(this.renderDynamic);
-    },
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        this.ordSort(this.renderDynamic);
+          let res = await this.categoryOrders([
+          obj.currentData.id,
+          obj.preData.id]  
+        );
+        console.log(res)
+    }, 
     /**
      * @description 删除当前行
      */
-    deleteData(row) {
+  async deleteData(row) {
       for (var i = 0; i < this.renderDynamic.length; i++) {
         let el = this.renderDynamic[i];
         if (row.ord == el.ord) {
@@ -379,6 +385,10 @@ export default {
         }
       }
       this.ordSort(this.renderDynamic);
+      let res = await this.deleteCategory({
+        id:row.id,
+      })
+      console.log(res)
     },
   },
   created() {

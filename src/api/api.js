@@ -62,6 +62,18 @@ export default {
         return axios.post('/user/info', params, postConfig)
     },
     /**
+     * @description  更改用户信息 
+     * @params {
+     * avatorName : [string],     //非必填    用户名字
+     * avatorImg  : [string],     //非必填    用户头像
+     * phone      : [string],     //非必填    用户电话
+     * identityId : [number]      //非必填    用户身份
+     * }
+     * */
+    updateUserInfo(params) {
+        return axios.post('/userInfo/update', params, postConfig)
+    },
+    /**
      * @description  退出登录接口
      * @params 没有参数  必须登录
      * */
@@ -86,20 +98,13 @@ export default {
      * @description 上传图片
      * @params {
      * file:  <stream>  上传的流 
-     * type:[Number]   1：banner   
+     * type:[Number]  //1.banner图 2.导航图 3.类目图 4.许可证  
      * } 
      */
     uploadImage(params) {
         // params   FormDate()
         // params.append('type',1);
         return axios.post('/upload/image', params, uploadConfig)
-    },
-    /**
-     * @description 生成rsa公钥接口 
-     * @params 无
-     */
-    getRSAPublicKey(params) {
-        return axios.post('user/generateRSAPublicKey', params, postConfig)
     },
     /**
      * @description 身份列表接口 
@@ -157,10 +162,18 @@ export default {
         return axios.post('/category/create', params, postConfig)
     },
     /**
+     * @description 删除类目接口
+     * @params {
+     * id     //要删除类目的id
+     * } 
+     */
+    deleteCategory(params) {
+        return axios.post('/category/delete', params, postConfig)
+    },
+    /**
      * @description 商品类目排序接口
      * @params {
-     * currentDataord     [nmber] 当前的类目
-     * preDataord         [number]要跟交换的类目
+     * [当前类目的id,要交换类目的id ]
      * } 
      */
     categoryOrders(params) {
@@ -188,6 +201,15 @@ export default {
         return axios.post('/specification/create', params, postConfig)
     },
     /**
+     * @description 删除规格接口
+     * @params {
+     *  id     //要删除类目的id
+     * } 
+     */
+    deleteSpecification(params) {
+        return axios.post('/specification/delete', params, postConfig)
+    },
+    /**
      * @description 添加商品接口 
      * @params {
      * cid           : [Number],     商品类目标识
@@ -201,6 +223,15 @@ export default {
      */
     createProduct(params) {
         return axios.post('/product/create;', params, postConfig)
+    },
+    /**
+     * @description 删除商品接口 
+     * @params {
+     *  id     要删除删除的id
+     * } 
+     */
+    deleteProduct(params) {
+        return axios.post('/product/delete;', params, postConfig)
     },
     /**
      * @description 商品属性接口
@@ -225,6 +256,17 @@ export default {
         return axios.post('/attribute/create', params, postConfig)
     },
     /**
+     * @description 删除属性接口
+     * @params {
+     * value     : [String]     商品的属性或者是参数
+     * type      : [Number]     类型 1 属性  2参数
+     * productId : [Number]     商品id
+     * } 
+     */
+    deleteAttribute(params) {
+        return axios.post('/attribute/delete', params, postConfig)
+    },
+    /**
      * @description 商品单位接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
@@ -247,10 +289,19 @@ export default {
         return axios.post('/unitlibrary/create', params, postConfig)
     },
     /**
+     * @description 禁用商品单位接口
+     * @params {
+     * id     //要禁用单位的id
+     * disable  //改成禁用还是可以使用  1可以使用    0是禁用
+     * } 
+     */
+    disableUnitlibrary(params) {
+        return axios.post('/unitlibrary/disable', params, postConfig)
+    },
+    /**
      * @description 商品单位排序接口
      * @params {
-     * currentDataord     [nmber] 当前的类目
-     * preDataord            [number]要跟交换的类目
+     * [当前单位的id,要交换单位的id ]
      * } 
      */
     unitlibraryOrders(params) {
@@ -259,12 +310,31 @@ export default {
     /**
      * @description 商品单位置顶接口
      * @params {
-     * ord : [number]  要置顶单位的ord
+     *  id    //要置顶单位的id
      * } 
      */
     unitlibraryStick(params) {
         return axios.post('/unitlibrary/stick', params, postConfig)
     },
+    /**
+     * @description 商品属性置顶接口 
+     * @params {
+     *  id     //要置顶的属性id
+     * } 
+     */
+    attributeStick(params) {
+        return axios.post('/attribute/stick', params, postConfig)
+    },
+    /**
+     * @description 商品属性排序接口
+     * @params {
+     * [当前类目的id,要交换类目的id ]  数组
+     * } 
+     */
+    attributeOrders(params) {
+        return axios.post('/attribute/orders', params, postConfig)
+    },
+
 
 
     //数据中心
@@ -306,6 +376,37 @@ export default {
      */
     getAdvertList(params) {
         return axios.post('/advert/list', params, postConfig)
+    },
+    /**
+     * @description 新增广告接口 
+     * @params {
+     * title : [string]     广告标题
+     * imgUrl:[string]  图片路径
+     * type:[number] 图片类型   1代表首屏广告
+     * } 
+     */
+    createAdvert(params) {
+        return axios.post('/advert/create', params, postConfig)
+    },
+    /**
+     * @description 更改广告接口 
+     * @params {
+     * title : [string]     广告标题
+     * imgUrl:[string]  图片路径
+     * type:[number] 图片类型   1代表首屏广告
+     * } 
+     */
+    updateAdvert(params) {
+        return axios.post('/advert/update', params, postConfig)
+    },
+    /**
+     * @description 根据Id查询广告 
+     * @params {
+     * id : [number]    必填    广告id
+     * } 
+     */
+    findIdAdvert(params) {
+        return axios.post('/advert/findId', params, postConfig)
     },
     /**
      * @description 优品展示接口
@@ -454,6 +555,7 @@ export default {
     /**
      * @description 意见反馈接口
      * @params {
+     * roleId [number]   角色Id   选填  默认不传   传的话 返回的是申请角色为角色Id的数据
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
      * pageNum   [number]    每页多少条数据  默认是10条
      * pageSize  [number]    这是第几页      默认是第1页

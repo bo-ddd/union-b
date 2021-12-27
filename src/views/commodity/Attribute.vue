@@ -62,10 +62,16 @@
         <el-table
       :data="tableData"
       style="width: 100%">
-      <el-table-column type="index" label="id" width="100" align="center">
+      <!-- <el-table-column type="index" label="id" width="100" align="center">
+      </el-table-column> -->
+      <el-table-column
+        prop="id"
+        label="id"
+        width="100"
+        align="center">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="value"
         label="属性"
         align="center"
         >
@@ -73,7 +79,7 @@
           <input type="text" class="property" v-model="name">
         </template> -->
       </el-table-column>
-      <el-table-column prop="input" label="属性值"  align="center">
+      <el-table-column prop="productTitle" label="属性值"  align="center">
         <!-- <template>
           <input type="text" class="inp" v-model="input">
         </template> -->
@@ -86,13 +92,13 @@
         <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">置顶</el-button>
+          @click="delData(scope.$index, scope.row)">置顶</el-button>
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">向上</el-button>
+          @click="upLayer(scope.$index,scope.row)">向上</el-button>
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">向下</el-button>
+          @click="downLayer(scope.$index, scope.row)">向下</el-button>
       </template>
       </el-table-column>
       <el-table-column
@@ -164,31 +170,10 @@ export default {
           required: '',
         },
         tableData: [{
-            name:'型号',
-            input:'FX86'
-          }, {
-            name:'分辨率',
-            input:'1920*1080'
-          }, {
-            name:'尺寸',
-            input:'15.6英寸'
-          }, {
-            name:'刷新率',
-            input:'60HZ (1/秒)'
-          },
-          {
-            name:'显卡',
-            input:'独立显卡'
-          },
-          {
-            name:'运行内存',
-            input:'8G'
-          },
-          {
-            name:'硬盘容量',
-            input:'256G'
-          }
-          ]
+            id:'',
+            productTitle:'',
+            value:''
+          },]
       }
     },
     methods: {
@@ -196,12 +181,48 @@ export default {
        handleEdit(index, row) {
         console.log(index, row);
       },
-      handleDelete(index, row) {
-        console.log(index, row);
-      },
-      remove(data){
+     async upLayer(index, row) {
+     var that = this;
+     if (index == 0) {
+       that.$message({
+         message: "处于顶端，不能继续上移",
+         type: "warning"
+       });
+     } else {
+       let upDate = that.tableData[index - 1];
+       that.tableData.splice(index - 1, 1);
+       that.tableData.splice(index, 0, upDate);
+       console.log(row);
+      //  let getAttributeList = await this.getAttributeList();
+      // console.log(getAttributeList);
+     }
+   },
+    async downLayer(index, row) {
+     var that = this;
+     if (index + 1 === that.tableData.length) {
+       that.$message({
+         message: "处于末端，不能继续下移",
+         type: "warning"
+       });
+     } else {
+       let downDate = that.tableData[index + 1];
+       that.tableData.splice(index + 1, 1);
+       that.tableData.splice(index, 0, downDate);
+       console.log(row);
+      //  let getAttributeList = await this.getAttributeList();
+      //  console.log(getAttributeList);
+     }
+   },
+  //   async delData(index){
+  //       var returnTop=vp.dataList[index];
+  //       vtable.dataList.splice(index,1)
+  //       vtable.dataList.unshift(returnTop);
+  //  },
+      async remove(data){
         console.log(data.$index);
-       this.tableData.splice(data.$index,1) 
+        this.tableData.splice(data.$index,1) 
+        // let getAttributeList = await this.getAttributeList();
+        // console.log(getAttributeList);
       },
   async confirm(){
     this.dialogFormVisible = false;
@@ -218,11 +239,12 @@ export default {
     });
     console.log(res);
   },
-  async created(){
-    let getAttributeList = this.getAttributeList();
-    console.log(getAttributeList);
-  }
   },
+  async created(){
+    let res = await this.getAttributeList();
+    this.tableData = res.data.rows;
+    console.log(res);
+  }
 }
 </script>
 

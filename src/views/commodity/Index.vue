@@ -10,9 +10,13 @@
               class="demo-form-inline"
             >
               <el-form-item label="商品状态">
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select
+                  v-model="commodityStatusValue"
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in commodityStatus"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -21,9 +25,13 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="商品类型">
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select
+                  v-model="salesTypeValue"
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in salesType"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -52,7 +60,7 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="primary">查询</el-button>
+            <el-button type="primary" @click="query">查询</el-button>
             <el-button type="primary">重置</el-button>
           </div>
         </div>
@@ -68,15 +76,15 @@
       <div>
         <el-table
           ref="multipleTable"
-          :data="Num()"
+          :data="articles()"
           tooltip-effect="dark"
           style="width: 100%"
           stripe
           @select="checkBoxData"
-          @selection-change="handleSelectionChange"
+          @select-all="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
         >
-          <el-table-column type="selection" width="55" id="ydes"></el-table-column>
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column label="条码" width="90">
             <template slot-scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
@@ -179,15 +187,33 @@ export default {
   data() {
     return {
       checked: false,
+      commodityStatusValue: "",
+      commodityStatus: [
+        {
+          value: "销售中",
+          label: "销售中",
+        },
+        {
+          value: "已售空",
+          label: "已售空",
+        },
+      ],
+      salesTypeValue: "",
+      salesType: [
+        {
+          value: "孕产妇用品",
+          label: "孕产妇用品",
+        },
+        {
+          value: "婴幼儿用品",
+          label: "婴幼儿用品",
+        },
+      ],
       value: "",
       options: [
         {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
+          value: "选项一",
+          label: "0000",
         },
       ],
       input1: "",
@@ -217,11 +243,11 @@ export default {
           code: "20160503",
           name: "舒克儿童牙膏",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -233,7 +259,7 @@ export default {
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -241,7 +267,7 @@ export default {
           code: "20160503",
           name: "阿迪达斯运动鞋",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
@@ -253,11 +279,11 @@ export default {
           code: "20160503",
           name: "三只松鼠_手撕面包",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -269,7 +295,7 @@ export default {
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -281,7 +307,7 @@ export default {
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -289,7 +315,7 @@ export default {
           code: "20160503",
           name: "南极人袜子",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
@@ -301,11 +327,11 @@ export default {
           code: "20160503",
           name: "乡巴佬鹌鹑蛋",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -313,11 +339,11 @@ export default {
           code: "20160503",
           name: "书箱收纳箱",
           address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
+          classify: "婴幼儿用品",
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -329,7 +355,7 @@ export default {
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -341,7 +367,7 @@ export default {
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -353,7 +379,7 @@ export default {
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
         {
@@ -365,13 +391,13 @@ export default {
           money: "159.00",
           inventory: "4647",
           sales: "464",
-          state: "销售中",
+          state: "已售空",
           date: "2019-08-12",
         },
       ],
       deleteDataArr: [],
       arr3: [],
-      arr4:[],
+      arr4: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
@@ -653,10 +679,11 @@ export default {
       table: [],
       pageNum: "",
       num: "",
+      cacheArr: [],
     };
   },
   methods: {
-    ...mapActions(["getProductList"]),
+    ...mapActions(["getProductList", "deleteProduct"]),
     handleSizeChange(val) {
       this.pageSize = val;
       // console.log(this.pageSize);
@@ -673,11 +700,43 @@ export default {
     },
     offSize() {
       this.num = this.pageSize * (this.pageNum - 1);
-      this.Num();
+      this.articles();
     },
-    Num() {
+    articles(val) {
+      // console.log(val);
+      if (!val) {
+        return this.tableData.slice(this.num, this.num + this.pageSize);
+      } else {
+        return val;
+      }
+    },
+    query() {
       // console.log(this.tableData);
-      return this.tableData.slice(this.num, this.num + this.pageSize);
+      // return this.tableData.slice(this.num, this.num + this.pageSize);
+      console.log(this.tableData);
+      if (!this.commodityStatusValue && !this.salesTypeValue) {
+        this.tableData.slice(this.num, this.num + this.pageSize);
+      } else if (this.commodityStatusValue && !this.salesTypeValue) {
+        console.log(
+          this.tableData.filter((item) => {
+            // item.state == this.commodityStatusValue;
+            console.log(item);
+          })
+        );
+      } else if (!this.commodityStatusValue && this.salesTypeValue) {
+        console.log(
+          this.tableData.filter((item) => {
+            item.classify == this.classify;
+          })
+        );
+      } else {
+        console.log(
+          this.tableData.filter((item) => {
+            item.classify == this.classify &&
+              item.state == this.commodityStatusValue;
+          })
+        );
+      }
     },
     skip() {
       this.$router.push({
@@ -689,43 +748,36 @@ export default {
       // console.log(data);
       this.form = data.row;
     },
-    remove(indexArr) {
-      // console.log(indexArr[0].row);
+    async remove(indexArr) {
       this.tableData.splice(this.tableData.indexOf(indexArr[0].row), 1);
-      // if (!this.tableData.length % 10) {
-      //   this.handleCurrentChange();
-      // }
+      // let res = await this.deleteProduct({
+      //   id: indexArr[0].row.id,
+      // });
+      // console.log(res);
     },
     multipleRemove() {
-      this.deleteDataArr = [...new Set(this.deleteDataArr)]
-      // console.log(this.deleteDataArr);
-      this.deleteDataArr.forEach((item) => {
+      for (let i = 0; i < this.arr4.length; i++) {
+        if (!this.cacheArr.includes(this.arr4[i])) {
+          this.cacheArr.push(this.arr4[i]);
+        } else {
+          let temp = this.cacheArr.indexOf(this.arr4[i]);
+          this.cacheArr.splice(temp, 1);
+        }
+      }
+      this.cacheArr.forEach((item) => {
         this.tableData.splice(this.tableData.indexOf(item), 1);
       });
-      this.deleteDataArr = [];
-      // console.log(this.tableData);
     },
-    checkBoxData: function (selection) {
-      // console.log(selection);
-      // this.deleteDataArr = selection;
-      selection.forEach((item) => {
-        this.arr3.push(this.tableData[this.tableData.indexOf(item)]);
-      });
-      this.arr3 = [...new Set(this.arr3)];
-      // console.log(this.arr3);
+    checkBoxData: function (selection, row) {
+      this.arr4.push(row);
     },
     handleSelectionChange(val) {
-      // console.log(val);
-      if (val) {
-        // this.deleteDataArr = []
-        val.forEach(item => {
-          // console.log(item);
-          this.deleteDataArr.push(item);
-        });
-        this.deleteDataArr = [...new Set(this.deleteDataArr)]
-        console.log(this.deleteDataArr);
+      if (!val.length) {
+        this.arr4 = [];
       } else {
-        this.$refs.multipleTable.clearSelection();
+        val.forEach((item) => {
+          this.arr4.push(item);
+        });
       }
     },
   },

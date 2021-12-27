@@ -17,8 +17,6 @@
         <div class="center-content">
           <span class="content-img">文章照片</span>
           <div class="chuan">
-          <!-- <input class="content-img" type="file" name="file" ref="file" />
-          <button class="button-img" @click="upload2">上传</button> -->
           <el-upload class="photoWall"
   action=""
   :http-request="imgAdd"
@@ -56,7 +54,7 @@
       <div class="bottom">
         <div class="bottom-content">
           <el-button>返回</el-button>
-          <el-button type="primary" class="addArticle">添加</el-button>
+          <el-button type="primary" class="addArticle" @click="addArticle">添加</el-button>
         </div>
       </div>
     </div>
@@ -65,7 +63,7 @@
 
 <script>
 import { mapActions } from "vuex";
-// import addImg from '../../../public/lib/uploud'
+import addImg from '../../../public/lib/uploud'
 export default {
   data() {
     return {
@@ -79,21 +77,18 @@ export default {
       item: {},
     };
   },
-  async created() {
-    let id = await this.getUserInfo();
-    this.authorId = id.data.id;
-  },
+  
+   
   methods: {
     ...mapActions(["createArticle", "getUserInfo","uploadImage"]), 
-    imgAdd(){},
-    // async upload2(){
-    //         let formData = new FormData();
-    //         formData.append('file',this.$refs.file.files[0]);
-    //         formData.append('type',2); 
-    //         let res  =  await this.uploadImage(formData);
-    //         console.log(res);                                
-    //     },
-    async addArticl(){
+    async imgAdd(a){
+      let res = addImg(a.file,6);
+      // console.log(res);
+      let b = await this.uploadImage(res);
+      console.log(b);
+      this.articleImg = b.data;
+    },
+    async addArticle(){
       let add = await this.createArticle({
         articleTitle: this.articleTitle,
         articleImg: this.articleImg,
@@ -101,10 +96,6 @@ export default {
         authorId: this.authorId,
       });
       console.log(add);
-      // console.log(this.articleTitle);
-      // console.log(this.articleImg);
-      // console.log(this.articleContent);
-      // console.log(this.authorId);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -113,6 +104,11 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
+  },
+  async created() {
+    let id = await this.getUserInfo();
+    console.log(id.data.id);
+    this.authorId = id.data.id;
   },
 };
 </script>

@@ -1,5 +1,5 @@
 const isProduction = process.env.NODE_ENV === 'production'
-let serveUrl = isProduction ? 'http://127.0.0.1:7001' :  '/api';
+let serveUrl = isProduction ? 'http://8.131.89.181:7001' :  '/api';
 
 
 export const postConfig = {

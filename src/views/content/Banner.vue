@@ -16,7 +16,7 @@
               <span>图片信息</span>
           </template>
       </el-table-column>
-      <el-table-column prop="address" label="地址">
+      <el-table-column prop="address" label="路由">
       </el-table-column>
       <el-table-column width='200'>
           <template slot="header">

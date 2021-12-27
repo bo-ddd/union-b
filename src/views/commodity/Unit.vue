@@ -24,8 +24,8 @@
         </el-table-column>
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <el-link :type="type" class="operation">{{scope.row.disable ? '已启用' : '已禁用'}}</el-link>
-            <el-link :type="types" class="operation" @click="Disable(scope.row.ord)">{{scope.row.disable ? '禁用' : '启用'}}</el-link>
+            <el-link type="primary" v-if="scope.row.disable" @click="Disable(scope.row)">启用</el-link>
+            <el-link type="danger" v-else @click="Disable(scope.row)">禁用</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -96,14 +96,15 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary"]),
     /**
      * @description 置顶的方法
      */
     async Topping(ord) {
-      var num = ord.ord;
+      var num = ord.id;
+      console.log(num);
       let res = await this.unitlibraryStick({
-        ord:num
+        id:num
       })
       console.log(res);
       this.List();
@@ -111,45 +112,92 @@ export default {
     /**
      * @description 升序的方法
      */
-    async raise(ord) {
-      let num = this.tableData[ord.index-2].ord;
-        let res = await this.unitlibraryOrders({
-          currentDataord:ord.ord,
-          preDataord:num
+    async raise(row) {
+      var formatData = (row) => {
+        let res = {};
+          for (let i = 0; i < this.tableData.length; i++) {
+            let item = this.tableData[i];
+            if (item.id == row.id) {
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.tableData[i - 1]; //上一个数据；
+              break;
+            }
+          }
+        return res;
+      };
+      let obj = formatData(row);
+      if(obj.i){
+          let ord = obj.currentData.ord;
+          obj.currentData.ord = obj.preData.ord;
+          obj.preData.ord = ord;
+        this.ordSort(this.tableData);
+        let res = await this.unitlibraryOrders([
+            obj.currentData.id,
+            obj.preData.id,
+        ]);
+        console.log(res)
+      }else{
+        this.$message("已经是第一个了不能再升序了")
+      }
+    },
+    /**
+     * @description 根据ord进行排序完成后 重新渲染页面
+     */
+    ordSort(arr) {
+      arr.sort((a, b) => {
+        let num1 = a.ord;
+        let num2 = b.ord;
+        return num2 - num1;
+      });
+        this.tableData.forEach((item,index)=>{
+          item.index = index+1;
         })
-        console.log(res);
-        this.List();
+      this.table = arr;
     },
     /**
      * @description 降序的方法
      */
-    async Down(ord) {
-      let num = this.tableData[ord.index].ord;
-      let res = await this.unitlibraryOrders({
-        currentDataord:ord.ord,
-        preDataord:num
-    //  * currentDataord     [nmber] 当前的类目
-    //  * preDataord            [number]要跟交换的类目
-      })
-      console.log(res);
-      this.List();
+    async Down(row) {
+      var formatData = (row) => {
+        let res = {};
+          for (let i = 0; i < this.tableData.length; i++) {
+            let item = this.tableData[i];
+            if (item.id == row.id) {
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.tableData[i + 1]; //上一个数据；
+              break;
+            }
+          }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj);
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        this.ordSort(this.tableData);
+          let res = await this.unitlibraryOrders([
+           obj.currentData.id,
+           obj.preData.id,
+          ]);
+        console.log(res)
     },
     /**
      * @description 禁用的方法
      */
-    Disable(ord) {
-      console.log(ord);
-      this.List();
-    },
-    /**
-     * @description 排序的方法
-     */
-    mySort(tableData) {
-      tableData.sort((a, b) => {
-        var num1 = a.ord;
-        var num2 = b.ord;
-        return num1 - num2;
+    async Disable(ord) {
+      let num = ord.id
+      let disable = ord.disable ? 0 : 1 ;
+      let res = await this.disableUnitlibrary({
+        id : num,
+        disable : disable
       });
+      console.log(res);
+      if(res.status){
+        ord.disable  == 1 ? ord.disable = 0 : ord.disable = 1
+      }
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -186,12 +234,10 @@ export default {
         //  * pageNum   [number]    每页多少条数据  默认是10条
         //  * pageSize  [number]    这是第几页      默认是第1页
       });
-      console.log(res.data);
+      console.log(res)
       this.tableData = res.data.rows;
       this.tableData.forEach((item,index)=>{
         item.index = index+1;
-        this.type = item.disable ? 'primary' : 'danger'
-        this.types = item.disable ? 'danger' : 'primary'
       })
       this.handleSizeChange(10);
     },
@@ -217,7 +263,6 @@ export default {
       }
       this.table = arr;
     },
-
   },
   created() {
     this.List();

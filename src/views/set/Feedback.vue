@@ -37,13 +37,13 @@
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible" ref="file">
-              <img width="100%" :src="form.img_url" value="10" alt="" />
+              <img width="100%" :src="form.imgUrl" value="10" alt="" />
             </el-dialog>
           </div>
         </div>
       </div>
       <div class="footer">
-        <el-button round>取消</el-button>
+        <el-button round @click="Cancel">取消</el-button>
         <el-button type="primary" @click="onSubmit" round>提交</el-button>
       </div>
     </div>
@@ -80,6 +80,12 @@ export default {
       let res = await this.uploadImage(a);
       this.form.imgUrl.push(res.data);
       console.log(res.data);
+    },
+
+    // 取消点击事件
+    Cancel() {
+      this.form.title = "";
+      this.form.content = "";
     },
 
     // 提交点击事件

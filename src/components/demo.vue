@@ -74,7 +74,7 @@ export default {
     // 主导航的http事件   参数file
     async httpRequest(file) {
       let name = file.file.name.substring(0,file.file.name.indexOf('.'));
-      let formdata = uploada(file.file,4);
+      let formdata = uploada(file.file,2);
       let res =  await this.uploadImage(formdata);
       await this.addNav(this.type.id,res.data,name);
     },

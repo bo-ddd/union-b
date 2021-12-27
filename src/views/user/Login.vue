@@ -26,6 +26,9 @@
               maxlength="15"
               show-password
             ></el-input>
+            <el-checkbox class="remember" v-model="form.checked"
+              >记住密码</el-checkbox
+            >
             <div class="input-bao">
               <div>
                 <el-input
@@ -78,6 +81,7 @@ export default {
         username: "",
         password: "",
         captcha: "",
+        checked: false,
       },
       captchaSrc: "",
     };
@@ -209,6 +213,16 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   async created() {
     // 进页面直接调用验证码
     this.generatorCaptcha();
+
+    // 账号信息自动填充到登录输入框中(取cookie)
+    let username = window.atob(this.getCookie("username"));
+    let password = window.atob(this.getCookie("password"));
+    // 如果存在赋值给表单，并且将记住密码勾选
+    if (username) {
+      this.form.username = username;
+      this.form.password = password;
+      this.form.checked = true;
+    }
   },
 
   mounted() {
@@ -343,5 +357,11 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   float: right;
   position: relative;
   right: 78px;
+}
+
+.remember {
+  width: 80px;
+  position: relative;
+  left: 210px;
 }
 </style>

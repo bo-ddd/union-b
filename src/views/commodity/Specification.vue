@@ -49,8 +49,8 @@
               <el-input v-model="form1.name" autocomplete="off"></el-input>
             </el-form-item> -->
             <el-form-item label="类目id" :label-width="formLabelWidth">
-              <!-- <el-input v-model="form1.cid" autocomplete="off"></el-input> -->
-              <el-select placeholder="请选择" class="sel"> </el-select>
+              <el-input v-model="form1.cid" autocomplete="off"></el-input>
+              <!-- <el-select placeholder="请选择" class="sel"></el-select> -->
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">

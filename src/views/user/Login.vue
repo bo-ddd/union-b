@@ -228,6 +228,9 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   mounted() {
     // 绑定监听事件
     window.addEventListener("keydown", this.keyDown);
+
+    // 页面加载调用获取cookie值
+    this.getCookie();
   },
 
   destroyed() {

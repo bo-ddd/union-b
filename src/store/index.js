@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from '@/api/api'
 import { routes } from '@/router'
+import data from '../assets/js/getToken'
+console.log(data);
 Vue.use(Vuex)
 
 let getRoutes = function() {
@@ -143,6 +145,14 @@ export default new Vuex.Store({
         //商品单位置顶接口
         unitlibraryStick(ctx, payload) {
             return Api.unitlibraryStick(payload);
+        },
+        //商品属性置顶接口
+        attributeStick(ctx, payload) {
+            return Api.attributeStick(payload);
+        },
+        //商品属性排序接口
+        attributeOrders(ctx, payload) {
+            return Api.attributeOrders(payload);
         },
 
 

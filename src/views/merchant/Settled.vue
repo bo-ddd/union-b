@@ -10,19 +10,13 @@
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="名称" :rules="[{required: true}]">
-                    <el-input class="el-input"></el-input>
-                </el-form-item>
                 <el-form-item label="身份" :rules="[{required: true}]">
-                    <el-radio-group v-model="radio" >
+                    <el-radio-group v-model="role">
                         <el-radio v-for="item in radioList" :key="item.id" :label="item.id">{{item.identityName}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="描述" :rules="[{required: true}]">
-                    <el-input class="el-input"></el-input>
-                </el-form-item>
                 <el-form-item label="上传资格证书" :rules="[{required: true}]" class="img">
-                    <el-upload action="" list-type="picture-card" :http-request="upload" :before-upload="text" >
+                    <el-upload action="" list-type="picture-card" :http-request="upload2" :before-upload="text">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                     <el-dialog :visible.sync="dialogVisible2">
@@ -30,7 +24,7 @@
                     </el-dialog>
                 </el-form-item>
                 <el-form-item label="上传营业执照" :rules="[{required: true}]" class="img">
-                    <el-upload action="" list-type="picture-card" :http-request="upload" :before-upload="text" >
+                    <el-upload action="" list-type="picture-card" :http-request="upload" :before-upload="text">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                     <el-dialog :visible.sync="dialogVisible">
@@ -38,6 +32,9 @@
                     </el-dialog>
                 </el-form-item>
             </el-form>
+        </div>
+        <div class="bottom">
+            <el-button type="primary" @click="submit">提交</el-button>
         </div>
     </div>
 </div>
@@ -51,33 +48,33 @@ export default {
     data() {
         return {
             options: [{
-                value: '选项1',
+                value: '平台',
                 label: '平台'
             }, {
-                value: '选项2',
+                value: '商家',
                 label: '商家'
             }],
-            value: '',
-            radio:2,
-            radioList:[],
+            value: '平台',
+            role: 2,
+            radioList: [],
             dialogImageUrl: '',
             dialogVisible: false,
             dialogImageUrl2: '',
             dialogVisible2: false,
-            businessUrl:'',
-            qualificationsUrl:'',
+            businessUrl: '',
+            qualificationsUrl: '',
         }
     },
     methods: {
-        ...mapActions(["uploadImage","getIdentityList"]),
+        ...mapActions(["uploadImage", "getIdentityList", "createSettled"]),
         text(val) {
             const isJPG = val.type === "image/jpeg" || "image/png";
-            const isLt2M = val.size / 1024 / 1024 < 2;
+            const isLt2M = val.size / 1024 / 1024 < 1;
             if (!isJPG) {
-                this.$message.error("上传头像图片只能是 JPG 格式!")
+                this.$message.error("上传头像图片只能是 png 格式!")
             }
             if (!isLt2M) {
-                this.$message.error("上传头像大小不能超过 2MB!")
+                this.$message.error("上传头像大小不能超过 1M!")
             }
             return isJPG && isLt2M;
         },
@@ -86,19 +83,47 @@ export default {
             formData.append('file', val.file);
             formData.append('type', 4);
             let res = await this.uploadImage(formData);
-            if (res.status) {
-                this.businessUrl= res.data
+            if (res.status === 1) {
+                this.businessUrl = res.data
+            }else{
+                this.$message.error(res.msg);
+                this.businessUrl = null
             }
             console.log(this.businessUrl)
         },
-        async getIdentList(){
+        async upload2(val) {
+            let formData = new FormData();
+            formData.append('file', val.file);
+            formData.append('type', 4);
+            let res = await this.uploadImage(formData);
+            if (res.status === 1) {
+                this.qualificationsUrl = res.data
+            }else{
+                this.$message.error(res.msg)
+                this.qualificationsUrl = null
+            }
+            console.log(this.qualificationsUrl)
+        },
+        async getIdentList() {
             let res = await this.getIdentityList()
             if (res.status) {
                 this.radioList = res.data.rows
             }
+        },
+        async submit() {
+            let res = await this.createSettled({
+                role: this.role,
+                qualificationsUrl: this.qualificationsUrl,
+                businessUrl: this.businessUrl
+            })
+            if (res.status) {
+                this.$message.success('提交成功')
+            } else {
+                this.$message.error('提交失败,请稍后再试')
+            }
         }
     },
-    created(){
+    created() {
         this.getIdentList()
     }
 }
@@ -133,10 +158,19 @@ export default {
         }
 
         & .information-content {
+            border-bottom: 2px solid var(--color);
+            padding-bottom: 10px;
+
             & .img {
                 width: 100%;
             }
         }
+    }
+
+    & .bottom {
+        width: 100%;
+        padding: 20px 0 10px 0;
+        text-align: center;
     }
 
 }

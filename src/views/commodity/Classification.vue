@@ -6,9 +6,9 @@
           <div @click="jump" class="add-classification">
             <el-button type="primary">+ 新增分类</el-button>
           </div>
-          <div class="batch-association">
+          <!-- <div class="batch-association">
             <el-button type="primary">批量关联</el-button>
-          </div>
+          </div> -->
         </div>
         <el-table
           :data="table"
@@ -101,7 +101,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getCategoryList","categoryOrders"]),
+    ...mapActions(["getCategoryList","categoryOrders","deleteCategory"]),
         setChildren(children, type) {
       // 编辑多个子层级
       children.map((j) => {
@@ -266,7 +266,7 @@ export default {
             let item = this.renderDynamic[i];
             if (item.id == row.id) {
               // console.log(item);
-              res.i = i;
+              res.i = i; 
               res.currentData = item; //当前的数据；
               res.preData = this.renderDynamic[i - 1]; //上一个数据；
               break;
@@ -282,10 +282,10 @@ export default {
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
         this.ordSort(this.renderDynamic);
-        let res = await this.categoryOrders({
-          currentDataord: obj.currentData.ord,
-          preDataord: obj.preData.ord,
-        });
+        let res = await this.categoryOrders([
+         obj.currentData.id,
+           obj.preData.id,]
+        );
         console.log(res)
       }else{
         this.$message("已经是第一个了不能再升序了")
@@ -362,16 +362,16 @@ export default {
         obj.currentData.ord = obj.preData.ord;
         obj.preData.ord = ord;
         this.ordSort(this.renderDynamic);
-          let res = await this.categoryOrders({
-          currentDataord: obj.currentData.ord,
-          preDataord: obj.preData.ord,
-        });
+          let res = await this.categoryOrders([
+          obj.currentData.id,
+          obj.preData.id]  
+        );
         console.log(res)
-    },
+    }, 
     /**
      * @description 删除当前行
      */
-    deleteData(row) {
+  async deleteData(row) {
       for (var i = 0; i < this.renderDynamic.length; i++) {
         let el = this.renderDynamic[i];
         if (row.ord == el.ord) {
@@ -385,6 +385,10 @@ export default {
         }
       }
       this.ordSort(this.renderDynamic);
+      let res = await this.deleteCategory({
+        id:row.id,
+      })
+      console.log(res)
     },
   },
   created() {

@@ -104,15 +104,26 @@
 </template>
 
 <script>
-let echarts = require("echarts/lib/echarts");
-require("echarts/lib/chart/bar");
-require("echarts/lib/chart/pie");
-require("echarts/lib/component/tooltip");
-require("echarts/lib/component/title");
-require("echarts/lib/component/legend");
-require("echarts/lib/component/grid");
-require("echarts/lib/component/toolbox");
+import * as echarts from "echarts/core";
+import {
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+  ToolboxComponent,
+} from "echarts/components";
+import { BarChart } from "echarts/charts";
+import { PieChart } from "echarts/charts";
+import { CanvasRenderer } from "echarts/renderers";
 import { mapActions } from "vuex";
+echarts.use([
+  GridComponent,
+  BarChart,
+  CanvasRenderer,
+  PieChart,
+  TooltipComponent,
+  LegendComponent,
+  ToolboxComponent,
+]);
 export default {
   data() {
     return {

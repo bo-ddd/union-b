@@ -9,7 +9,7 @@
             @click="addspecification, (dialogaddFormVisible = true)"
             >添加规格</el-button
           >
-          <el-button type="primary">保存排序</el-button>
+          <!-- <el-button type="primary">保存排序</el-button> -->
           <el-button
             type="primary"
             class="batch_del_btn"
@@ -49,7 +49,8 @@
               <el-input v-model="form1.name" autocomplete="off"></el-input>
             </el-form-item> -->
             <el-form-item label="类目id" :label-width="formLabelWidth">
-              <el-input v-model="form1.cid" autocomplete="off"></el-input>
+              <!-- <el-input v-model="form1.cid" autocomplete="off"></el-input> -->
+              <el-select placeholder="请选择" class="sel"> </el-select>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -92,12 +93,12 @@
           align="center"
         >
         </el-table-column>
-        <el-table-column label="排序" show-overflow-tooltip align="center">
-          <template>
-            <i class="el-icon-sort-up"></i>
-            <i class="el-icon-sort-down"></i>
+        <!-- <el-table-column label="排序" show-overflow-tooltip align="center">
+          <template slot-scope="scoped">
+            <el-link type="primary" @click="ascendingOrder(scoped.row)">升序</el-link>
+            <el-link class="ml-10" type="primary">降序</el-link>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="操作" show-overflow-tooltip align="center">
           <template slot-scope="scope">
             <el-button
@@ -180,7 +181,7 @@ export default {
       select: "",
       currentPage1: 1,
       currentPage4: 1,
-      pageSize1: 45,
+      pageSize1: 50,
       pageNum1: "",
       options: [
         {
@@ -219,6 +220,8 @@ export default {
       table: [],
       pageSize: 10, //每页条数
       renderDynamic: [],
+      cacheArr: [],
+      arr4: [],
     };
   },
   watch: {
@@ -252,9 +255,9 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
+    // handleSelectionChange(val) {
+    //   this.multipleSelection = val;
+    // },
     //添加规格
     async addspecification() {
       let res = await this.createSpecification({
@@ -266,38 +269,53 @@ export default {
     },
     //批量删除
     multipleRemove() {
-      this.deleteDataArr = [...new Set(this.deleteDataArr)];
+      // console.log(this.renderDynamic);
+      for (let i = 0; i < this.renderDynamic.length; i++) {
+        if (!this.cacheArr.includes(this.renderDynamic[i])) {
+          this.cacheArr.push(this.renderDynamic[i]);
+        } else {
+          let temp = this.cacheArr.indexOf(this.renderDynamic[i]);
+          this.cacheArr.splice(temp, 1);
+        }
+      }
+      this.cacheArr.forEach((item) => {
+        this.table.splice(this.table.indexOf(item), 1);
+      });
     },
-    checkBoxData: function (selection) {
-      console.log(selection);
+    checkBoxData: function (selection, row) {
+      this.renderDynamic.push(row);
+    },
+    handleSelectionChange(val) {
+      if (!val.length) {
+        this.renderDynamic = [];
+      } else {
+        val.forEach((item) => {
+          this.renderDynamic.push(item);
+        });
+      }
     },
     //单个修改
     editListData() {
       console.log("单个修改成功");
     },
     /**
-     * 删除当前行
+     * @description 删除当前行
      */
-    deleteData() {
-      // for (var i = 0; i < this.renderDynamic.length; i++) {
-      //   let el = this.renderDynamic[i];
-      //   if (row.ord == el.ord) {
-      //     this.renderDynamic.splice(i, 1);
-      //   } else {
-      //     for (var j = 0; j < el.child.length; j++) {
-      //       if (row.ord == el.child[j].ord) {
-      //         el.child.splice(j, 1);
-      //       }
-      //     }
-      //   }
-      // }
-      // this.ordSort(this.renderDynamic);
+    async deleteData(row) {
+      for (var i = 0; i < this.renderDynamic.length; i++) {
+        let el = this.renderDynamic[i];
+        if (row.id == el.id) {
+          //从第I个开始删除一个
+          this.renderDynamic.splice(i, 1);
+        }
+      }
+      //重新渲染页面
+      this.spelist(this.renderDynamic);
+      let res = await this.deleteSpecification({
+        id: row.id,
+      });
+      console.log(res);
     },
-
-    //保存排序
-    // formatter(row) {
-    //   return row.address;
-    // },
 
     /**
      * 升序
@@ -306,6 +324,7 @@ export default {
     //   console.log(row);
     //   let res = {};
     //   var formatData = (row) => {
+    //     this.renderDynamic.reverse()
     //     for (let i = 0; i < this.renderDynamic.length; i++) {
     //       let item = this.renderDynamic[i];
     //       if (item.id == row.id) {
@@ -316,12 +335,16 @@ export default {
     //         break;
     //       }
     //     }
-    //     console.log(formatData)
+    //     // console.log(formatData);
     //     return res;
     //   };
+    //   let aaa= formatData(row);
+    //   console.log(aaa);
     // },
 
-    //获取所有类目规格
+    /**
+     * 获取所有类目规格
+     * */
     async spelist() {
       let res = await this.getSpecificationList({
         pagination: false,
@@ -437,5 +460,8 @@ export default {
 }
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
+}
+.ml-10 {
+  margin-left: 10px;
 }
 </style>

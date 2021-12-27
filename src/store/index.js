@@ -22,17 +22,23 @@ export default new Vuex.Store({
     state: {
         needReCategoryList: true,
         categorylist: {},
+        needGetTradeData: true,
+        tradeData: {}
         routes: getRoutes()
     },
     mutations: {
         // ctx.commit('NEED_GETCATEGORYLIST',false)
         NEED_GETCATEGORYLIST: (state, payload) => state.needReCategoryList = payload,
         CATEGORY_LIST: (state, payload) => state.categorylist = payload,
+        NEED_GETGETTRADEDATA: (state, payload) => state.needGetTradeData = payload,
+        TRADEDATA: (state, payload) => state.tradeData = payload
     },
     getters: {
         routes: state => state.routes,
         needReCategoryList: state => state.needReCategoryList,
-        categorylist: state => state.categorylist
+        categorylist: state => state.categorylist,
+        tradeData: state => state.tradeData,
+        needGetTradeData: state => state.needGetTradeData
     },
     actions: {
         //登录
@@ -181,7 +187,15 @@ export default new Vuex.Store({
         //数据中心
         //交易数据接口
         getTradeData(ctx, payload) {
-            return Api.getTradeData(payload);
+            if (ctx.state.needGetTradeData) {
+                return Api.getTradeData(payload).then(res => {
+                    ctx.commit('NEED_GETGETTRADEDATA', false);
+                    ctx.commit('TRADEDATA', res);
+                    return res
+                })
+            } else {
+                return ctx.state.tradeData
+            }
         },
         //数据排行接口
         getRankingData(ctx, payload) {

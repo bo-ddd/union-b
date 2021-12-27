@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
-// const isProduction = process.env.NODE_ENV === 'production'
+    // const isProduction = process.env.NODE_ENV === 'production'
 
 module.exports = {
     devServer: {
@@ -31,4 +31,16 @@ module.exports = {
             })
         ],
     },
+    chainWebpack: (config) => {
+        config.externals({
+            'echarts': 'echarts',
+            'vue': 'Vue',
+            'vue-router': 'VueRouter',
+            'vuex': 'Vuex',
+            "element-ui": "ELEMENT",
+            "FileSaver": "FileSaver",
+            "xlsx": "XLSX",
+            "wangeditor": "wangEditor",
+        });
+    }
 }

@@ -6,29 +6,33 @@
           <div @click="jump" class="add-classification">
             <el-button type="primary">+ 新增分类</el-button>
           </div>
-          <div class="batch-association">
+          <!-- <div class="batch-association">
             <el-button type="primary">批量关联</el-button>
-          </div>
+          </div> -->
         </div>
+        
         <el-table
+          v-loading="loading"
+          element-loading-text="拼命加载中"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
           :data="table"
           ref="table"
           border
           row-key="id"
-     
           style="width: 97%"
           @select="select"
           @select-all="selectAll"
           :tree-props="{children: 'child'}"
           :header-cell-style="{ background: '#fafafa' }"
         >
-          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column align="center" type="selection" width="55"> </el-table-column>
           <el-table-column
+          align="center"
             label="分类名称"
             prop="title"
             width="200"
           ></el-table-column>
-          <el-table-column label="关联" width="200">
+          <el-table-column label="关联" width="200" align="center">
             <template slot-scope="scope">
               <el-link type="primary">品牌</el-link>
               <el-link class="ml-10" type="primary">{{
@@ -37,16 +41,16 @@
             </template>
           </el-table-column>
           <el-table-column
+           align="center"
             label="创建日期"
-            width="200"
+            width="400"
             show-overflow-tooltip
             sortable
           >
-            <template slot-scope="scope">{{ scope.row.createdAt }}</template>
+            <template slot-scope="scope">{{scope.row.createdTime }}</template>
           </el-table-column>
-          <el-table-column prop="num" label="数量" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column label="操作" show-overflow-tooltip>
+        
+          <el-table-column label="操作" show-overflow-tooltip align="center">
             <template slot-scope="scope">
               <el-link type="primary" @click="ascendingOrder(scope.row)"
                 >升序</el-link
@@ -92,6 +96,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      loading:true,
       checked: true,
       size: "",
       currentPage: 1,
@@ -200,30 +205,29 @@ export default {
      */
     async commodityInfo() {
       let res = await this.getCategoryList({});
-         console.log(res);
+        console.log(res);
+       if(res.status==1){
+       this.loading = false ;
       let data = res.data.rows.slice();
       let target = this.format(data);
       target.forEach((el) => {
-        el.createdAt = getTime(el.createdAt);
-        if (el.child.length) {
-          el.child.forEach((item) => {
-            item.association = "规格";
-            item.createdAt = getTime(item.createdAt);
-          });
-        }
+          el.association = "";
       });
       this.renderDynamic = target;
       this.handleSizeChange(10);
+       }
     },
     format(target) {
       let res = target.slice();
       res.forEach((item) => {
         item.child = item.child || [];
+        item.association = "规格";
         let p = res.find((type) => item.pid == type.id);
         if (item.pid && p) {
           p.child = p.child || [];
           p.child.push(item);
         }
+           item.createdTime = getTime(item.createdAt);
         item.category = p ? p.category + "=>" + item.title : item.title;
       });
       return res.filter((type) => type.pid === null);
@@ -310,6 +314,7 @@ export default {
         return num2 - num1;
       });
       this.table = arr;
+      this.handleSizeChange(10);
     },
     /**
      * @description 当前行下降一位
@@ -386,7 +391,7 @@ export default {
       }
       this.ordSort(this.renderDynamic);
       let res = await this.deleteCategory({
-        id:row.id,
+        id:[row.id],
       })
       console.log(res)
     },

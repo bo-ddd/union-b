@@ -4,10 +4,8 @@ export default class Axios extends axios {
         super();
     }
     post(){
-        super.post(arguments)
+        Axios.post('/user/getToken').then(res=>{
+            sessionStorage.setItem('token',res.data)
+        })
     }
 }
-
-new Axios.post('/user/getToken').then(res=>{
-    console.log(res);
-})

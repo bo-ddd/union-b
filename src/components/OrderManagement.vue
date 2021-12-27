@@ -121,6 +121,7 @@
         ref="checkTable"
         stripe
         style="width: 100%"
+        id="out-table"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="45"> </el-table-column>
@@ -154,7 +155,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-table
+      <!-- <el-table
         :data="cacheExport"
         ref="checkTable"
         stripe
@@ -184,7 +185,7 @@
             <el-button type="text" @click="seeDetails"> 查看 </el-button>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
       <div class="block">
         <el-pagination
           @size-change="handleSizeChange"
@@ -346,7 +347,6 @@ export default {
 
     exportExcel() {
       /* 从表生成工作簿对象 */
-      console.log(this.cacheExport);
       var xlsxParam = { raw: true };
       let wb = XLSX.utils.table_to_book(
         document.querySelector("#out-table"),

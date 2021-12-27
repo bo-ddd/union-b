@@ -25,7 +25,7 @@
 
         <!-- 快递公司 -->
         <div class="select">
-          <span class="mr-10" >快递公司</span>
+          <span class="mr-10">快递公司</span>
           <el-select
             size="small"
             v-model="expressSelect"
@@ -45,30 +45,30 @@
         </div>
 
         <!-- 供应商 -->
-       <div class="select">
+        <div class="select">
           <span class="mr-10 w-60">供应商</span>
           <el-input v-model="storeTitle" placeholder="请输入"></el-input>
         </div>
 
         <!-- 采购商 -->
         <div class="select">
-         <span class="mr-10 w-60">采购商</span>
+          <span class="mr-10 w-60">采购商</span>
           <el-input v-model="avatorName" placeholder="请输入"></el-input>
         </div>
 
         <!-- 收货人 -->
         <div class="select">
-         <span class="mr-10 w-60">收货人</span>
+          <span class="mr-10 w-60">收货人</span>
           <el-input v-model="consigneeVal" placeholder="请输入"></el-input>
         </div>
 
         <!-- 支付方式 -->
         <div class="select">
-          <span class="mr-10 ">支付方式</span>
+          <span class="mr-10">支付方式</span>
           <el-select
             size="small"
             v-model="paymentStatusSelect"
-             @change="getPaymentStatusId(paymentStatusSelect)"
+            @change="getPaymentStatusId(paymentStatusSelect)"
             placeholder="请选择"
           >
             <el-option
@@ -98,15 +98,17 @@
             </el-option>
           </el-select>
         </div> -->
-       
-       <!-- 订单编号 -->
+
+        <!-- 订单编号 -->
         <div class="select">
           <span class="mr-10 w-80">订单编号</span>
           <el-input v-model="orderId" placeholder="请输入"></el-input>
         </div>
       </div>
       <div class="top-r">
-        <el-button type="primary" @click="querySelectOrderStatus(),queryOrder()"
+        <el-button
+          type="primary"
+          @click="querySelectOrderStatus(), queryOrder()"
           >查询</el-button
         >
         <el-button type="primary" @click="resetOrderStatus">重置</el-button>
@@ -119,6 +121,7 @@
         ref="checkTable"
         stripe
         style="width: 100%"
+        id="out-table"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="45"> </el-table-column>
@@ -152,7 +155,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-table
+      <!-- <el-table
         :data="cacheExport"
         ref="checkTable"
         stripe
@@ -182,19 +185,17 @@
             <el-button type="text" @click="seeDetails"> 查看 </el-button>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
       <div class="block">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage4"
+          :current-page.sync="pageNum"
           :page-sizes="[10, 20, 30, 40, 50]"
-          :page-size="100"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="
-            $route.meta.title == '全部订单'
-              ? allOrder.length
-              : order.length
+            $route.meta.title == '全部订单' ? allOrder.length : order.length
           "
           background
         >
@@ -218,12 +219,19 @@ export default {
     });
   },
   async created() {
-    await this.getOrderListData();
+    // 获取订单状态列表；
     await this.getOrderStatusListData();
-    await this.getPaymentListData();
-    await this.getExpressListData();
+    // 获取支付状态列表
+    this.getPaymentListData();
+    // 获取快递列表
+    this.getExpressListData();
+    // 获取订单列表
+    await this.getOrderListData();
+    // 更新订单状态
     this.updateOrderStatus();
+    //
     this.handleCurrentChange(1);
+    
   },
   methods: {
     ...mapActions([
@@ -232,18 +240,17 @@ export default {
       "getOrderStatusList",
       "getPaymentList",
       "getPaymentList",
-      "getExpressList"
+      "getExpressList",
     ]),
 
     /**
      * @description 获取快递
-     * **/ 
-    async getExpressListData(){
+     * **/
+    async getExpressListData() {
       let res = await this.getExpressList();
-      if(res.status == 1){
+      if (res.status == 1) {
         this.express = res.data.rows;
       }
-      console.log(res);
     },
 
     /**
@@ -270,33 +277,31 @@ export default {
 
     /**
      * @description 拿到支付方式的ID
-     * **/ 
-    getPaymentStatusId(value){
-      this.paymentStatus.forEach(item=>{
-        if(item.paymentName == value){
+     * **/
+    getPaymentStatusId(value) {
+      this.paymentStatus.forEach((item) => {
+        if (item.paymentName == value) {
           this.paymentStatusId = item.id;
         }
-      })
+      });
     },
 
     /**
      * @description 根据条件查询
-     * **/ 
-    async queryOrder(){
+     * **/
+    async queryOrder() {
       let obj = {};
-      if(this.paymentStatusId) obj.paymentId = parseInt(this.paymentStatusId);
-      if(this.orderStatusId) obj.orderStatus = parseInt(this.orderStatusId);
-      if(this.orderId) obj.orderId = parseInt(this.orderId);
-      if(this.expressId) obj.expressId = parseInt(this.expressId);
-      if(this.storeTitle) obj.storeTitle = this.storeTitle;
-      if(this.avatorName) obj.avatorName = this.avatorName;
-      if(this.consigneeVal) obj.consignee = this.consigneeVal;
+      if (this.paymentStatusId) obj.paymentId = parseInt(this.paymentStatusId);
+      if (this.orderStatusId) obj.orderStatus = parseInt(this.orderStatusId);
+      if (this.orderId) obj.orderId = parseInt(this.orderId);
+      if (this.expressId) obj.expressId = parseInt(this.expressId);
+      if (this.storeTitle) obj.storeTitle = this.storeTitle;
+      if (this.avatorName) obj.avatorName = this.avatorName;
+      if (this.consigneeVal) obj.consignee = this.consigneeVal;
       let res = await this.getOrderList(obj);
-      console.log(obj)
-      if(res.status == 1){
+      if (res.status == 1) {
         this.allOrderList = res.data.rows;
       }
-      console.log(res)
     },
 
     /**
@@ -310,7 +315,6 @@ export default {
           this.orderStatus[i].disabled = false;
         }
       }
-      console.log(res);
     },
 
     /**
@@ -338,14 +342,11 @@ export default {
       let res = await this.getOrderList();
       if (res.status == 1) {
         this.allOrder = res.data.rows;
-        console.log(this.allOrder);
-        console.log(res);
       }
     },
 
     exportExcel() {
       /* 从表生成工作簿对象 */
-      console.log(this.cacheExport);
       var xlsxParam = { raw: true };
       let wb = XLSX.utils.table_to_book(
         document.querySelector("#out-table"),
@@ -376,7 +377,7 @@ export default {
 
     /**
      * @description 拿到所有选中的行的值
-     * **/ 
+     * **/
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.cacheExport = this.multipleSelection;
@@ -416,24 +417,27 @@ export default {
      * @description 订单状态选择
      *
      * **/
-    updateOrderStatus() {
-      let val = "";
+    async updateOrderStatus() {
       for (let i = 0; i < this.orderStatus.length; i++) {
         if (this.$route.meta.title != "全部订单") {
           if (!this.$route.meta.title.includes(this.orderStatus[i].status)) {
             this.orderStatus[i].disabled = true;
           } else {
             this.orderStatusSelect = this.orderStatus[i].status;
-            val = this.orderStatus[i].status;
+            this.orderStatusId = parseInt(this.orderStatus[i].id);
           }
         }
       }
 
-      this.allOrder.forEach((item) => {
-        if (item.orderStatus == val) {
-          this.order.push(item);
-        } else if (val == "全部订单") this.order.push(item);
-      });
+      // this.allOrder.forEach((item) => {
+      //   console.log(item.orderStatus == val);
+      //   if (item.orderStatus == val) {
+      //     this.order.push(item);
+      //   } else if (val == "全部订单") {
+      //     this.order.push(item);
+      //   }
+      // });
+
     },
 
     /**
@@ -448,20 +452,31 @@ export default {
     /**
      * @description 分页的当前页有多少条
      * **/
-    handleCurrentChange(val) {
+    async handleCurrentChange(val) {
+      this.pageNum = val;
       this.cacheExport = this.multipleSelection;
 
-      let arr = [];
-      let arr1 = [];
-      for (
-        let i = val * this.pageSize - this.pageSize;
-        i < val * this.pageSize;
-        i++
-      ) {
-        if (this.order[i] != undefined) arr.push(this.order[i]);
-        if (this.allOrder[i] != undefined) arr1.push(this.allOrder[i]);
+      let obj = {};
+      console.log(this.orderStatusId);
+      if(this.orderStatusId) obj.orderStatus = this.orderStatusId;
+      obj.pageNum = this.pageNum;
+      obj.pageSize = this.pageSize;
+      let res = await this.getOrderList(obj);
+      if (res.status) {
+        this.allOrderList = res.data.rows;
       }
-      this.allOrderList = this.$route.meta.title == "全部订单" ? arr1 : arr;
+
+      // let arr = [];
+      // let arr1 = [];
+      // for (
+      //   let i = val * this.paging.pageSize - this.paging.pageSize;
+      //   i < val * this.paging.pageSize;
+      //   i++
+      // ) {
+      //   if (this.order[i] != undefined) arr.push(this.order[i]);
+      //   if (this.allOrder[i] != undefined) arr1.push(this.allOrder[i]);
+      // }
+      // this.allOrderList = this.$route.meta.title == "全部订单" ? arr1 : arr;
       console.log(`当前页: ${val}`);
     },
 
@@ -478,21 +493,20 @@ export default {
   data() {
     return {
       orderStatusId: 0,
-      paymentStatusId:0,
-      expressId:0,
-      storeTitle:"",
-      avatorName:"",
+      paymentStatusId: 0,
+      expressId: 0,
+      storeTitle: "",
+      avatorName: "",
       orderId: "",
-      consigneeVal:"",
+      consigneeVal: "",
       cacheExport: [],
       multipleSelection: [],
       allOrderList: [],
-      pageSize: 10,
 
       orderStatus: [],
       paymentStatus: [],
       orderType: [],
-      express:[],
+      express: [],
       orderNo: [
         {
           value: "选项1",
@@ -517,12 +531,13 @@ export default {
           label: "收货人",
         },
       ],
-      currentPage4: 1,
+        pageNum: 1,
+        pageSize: 10,
       orderStatusSelect: "全部",
       paymentStatusSelect: "全部",
       orderTypeSelect: "全部",
       orderNoSelect: "全部",
-      expressSelect:"全部",
+      expressSelect: "全部",
       allOrder: [],
       order: [],
     };
@@ -543,20 +558,19 @@ export default {
     display: flex;
     align-items: center;
 
-    & .w-60{
-      width:60px
+    & .w-60 {
+      width: 60px;
     }
-    & .w-80{
-      width:80px
+    & .w-80 {
+      width: 80px;
     }
-
 
     & .el-icon-arrow-down:before {
       padding-left: 15px !important;
     }
 
-    & ::v-deep .el-input{
-      font-size:20px !important;
+    & ::v-deep .el-input {
+      font-size: 20px !important;
       // width:0 !important;
     }
 
@@ -606,7 +620,7 @@ export default {
     & .top-r {
       display: flex;
       justify-content: flex-end;
-      height:40px;
+      height: 40px;
 
       & ::v-deep .el-button {
         width: 8vw;

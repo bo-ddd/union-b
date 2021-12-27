@@ -1,5 +1,5 @@
 const isProduction = process.env.NODE_ENV === 'production'
-let serveUrl = isProduction ? 'http://8.131.89.181:7001' :  '/api';
+let serveUrl = isProduction ? 'http://8.131.89.181:7001' : '/api';
 
 
 export const postConfig = {
@@ -10,7 +10,6 @@ export const postConfig = {
         "X-Requested-With": "XMLHttpRequest",
     },
     timeout: 5000,
-    withCredentials: true
 }
 export const uploadConfig = {
     url: "",
@@ -19,7 +18,6 @@ export const uploadConfig = {
         "Content-Type": "multipart/form-data",
         "X-Requested-With": "XMLHttpRequest",
     },
-    withCredentials: true,
     timeout: 5000
 }
 
@@ -29,6 +27,5 @@ export const getConfig = {
     headers: {
         "X-Requested-With": "XMLHttpRequest"
     },
-    withCredentials: true,
     timeout: 5000
 };

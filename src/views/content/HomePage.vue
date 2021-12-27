@@ -14,9 +14,9 @@
             </div>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="姓名">
+      <el-table-column prop="name" label="图片名字">
       </el-table-column>
-      <el-table-column prop="describe" label="描述">
+      <el-table-column prop="describe" label="图片描述">
       </el-table-column>
       <el-table-column prop="address" label="供应商">
       </el-table-column>
@@ -47,24 +47,25 @@
                         <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
                 </el-form-item>
-                <el-form-item label="活动区域">
+                <el-form-item label="图片名字">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                <el-form-item label="图片描述">
+                    <el-input v-model="form.describe" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            <el-button type="primary"  @click="submit">确 定</el-button>
         </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-// import upload from '../../../public/lib/uploud';
+import { mapActions } from "vuex";
+import upload from '../../../public/lib/uploud';
 export default {
     data(){
         return{
@@ -96,22 +97,30 @@ export default {
             dialogFormVisible: false,
             form : {
                 name : '',
+                describe: '',
+                imgUrl : '',
             },
             dialogImageUrl: '',
             dialogVisible: false
         }
     },
     methods :{
-        openLayer (a) {
-            this.dialogFormVisible = true;
-            this.dialogImageUrl = '';
-            console.log(a);
-        },
-        uploadimg (a) {
-            // let res = upload(a.file,1);
-            console.log(a);
-        }
+//
+    ...mapActions(["uploadImage"]),
+    openLayer (a) {
+        console.log(a);
+        this.dialogFormVisible = true;
+    },
+    async uploadimg (a) {
+        let res = upload(a.file,5);
+        let b = await this.uploadImage(res);
+        this.form.imgUrl = b.data;
+    },
+    submit(){
+        this.dialogFormVisible = false;
     }
+}
+
 }
 </script>
 

@@ -46,25 +46,25 @@
 
         <!-- 供应商 -->
        <div class="select">
-          <span class="mr-10">供应商</span>
+          <span class="mr-10 w-60">供应商</span>
           <el-input v-model="storeTitle" placeholder="请输入"></el-input>
         </div>
 
         <!-- 采购商 -->
         <div class="select">
-         <span class="mr-10">采购商</span>
+         <span class="mr-10 w-60">采购商</span>
           <el-input v-model="avatorName" placeholder="请输入"></el-input>
         </div>
 
         <!-- 收货人 -->
         <div class="select">
-         <span class="mr-10">收货人</span>
+         <span class="mr-10 w-60">收货人</span>
           <el-input v-model="consigneeVal" placeholder="请输入"></el-input>
         </div>
 
         <!-- 支付方式 -->
         <div class="select">
-          <span class="mr-10">支付方式</span>
+          <span class="mr-10 ">支付方式</span>
           <el-select
             size="small"
             v-model="paymentStatusSelect"
@@ -101,7 +101,7 @@
        
        <!-- 订单编号 -->
         <div class="select">
-          <span class="mr-10">订单编号</span>
+          <span class="mr-10 w-80">订单编号</span>
           <el-input v-model="orderId" placeholder="请输入"></el-input>
         </div>
       </div>
@@ -374,6 +374,9 @@ export default {
       return wbout;
     },
 
+    /**
+     * @description 拿到所有选中的行的值
+     * **/ 
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.cacheExport = this.multipleSelection;
@@ -386,8 +389,15 @@ export default {
       this.orderStatusSelect = "全部";
       this.paymentStatusSelect = "全部";
       this.orderTypeSelect = "全部";
+      this.expressSelect = "全部";
       this.orderNoSelect = "订单编号";
+      this.orderStatusId = 0;
+      this.paymentStatusId = 0;
+      this.expressId = 0;
       this.orderId = "";
+      this.storeTitle = "";
+      this.avatorName = "";
+      this.consigneeVal = "";
     },
 
     /**
@@ -530,9 +540,15 @@ export default {
   }
   & .top {
     padding: 15px;
-    // display: grid;
-    // grid-template-columns: 80% 20%;
     display: flex;
+    align-items: center;
+
+    & .w-60{
+      width:60px
+    }
+    & .w-80{
+      width:80px
+    }
 
 
     & .el-icon-arrow-down:before {
@@ -541,12 +557,12 @@ export default {
 
     & ::v-deep .el-input{
       font-size:20px !important;
-      // width:0% !important;
+      // width:0 !important;
     }
 
     & ::v-deep .el-input__inner {
       font-size: 13px;
-      // height: 25px !important;
+      height: 25px !important;
       width: 8vw;
       padding: 6px;
     }
@@ -590,6 +606,7 @@ export default {
     & .top-r {
       display: flex;
       justify-content: flex-end;
+      height:40px;
 
       & ::v-deep .el-button {
         width: 8vw;

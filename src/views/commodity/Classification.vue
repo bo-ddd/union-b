@@ -205,7 +205,8 @@ export default {
       let res = await this.getCategoryList({});
          console.log(res);
        if(res.status==1){
-          this.loading = false ;
+         setTimeout(()=>{
+       this.loading = false ;
       let data = res.data.rows.slice();
       let target = this.format(data);
       target.forEach((el) => {
@@ -213,6 +214,7 @@ export default {
       });
       this.renderDynamic = target;
       this.handleSizeChange(10);
+         },500)
        }
     },
     format(target) {
@@ -312,6 +314,7 @@ export default {
         return num2 - num1;
       });
       this.table = arr;
+      this.handleSizeChange(10);
     },
     /**
      * @description 当前行下降一位
@@ -388,7 +391,7 @@ export default {
       }
       this.ordSort(this.renderDynamic);
       let res = await this.deleteCategory({
-        id:row.id,
+        id:[row.id],
       })
       console.log(res)
     },

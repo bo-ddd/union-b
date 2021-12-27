@@ -1,16 +1,16 @@
 <template>
   <div id="wrap">
-    <el-table :data="tableData" stripe style="width: 100% " >
+    <el-table :data="data" stripe style="width: 100% " >
       <el-table-column prop="date" width='150'>
            <template slot="header">
                 <span>图标</span>
             </template>
-             <template >
+            <template>
                 <i class="el-icon-plus addBorder"></i>
             </template>
       </el-table-column>
-      <el-table-column prop="date" >
-           <template slot="header" >
+      <el-table-column prop="date">
+           <template slot="header">
                 <span>名称</span>
             </template>
              <template slot-scope="scope">
@@ -33,8 +33,8 @@
                 {{scope.row.date}}
             </template>
       </el-table-column>
-      <el-table-column prop="date"  width="150">
-           <template slot="header" >
+      <el-table-column prop="date" width="150">
+           <template slot="header">
                 <span>操作</span>
             </template>
              <template slot-scope="scope">
@@ -83,7 +83,8 @@
                 <div class="ddd">
 
                     <el-upload
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action=""
+                        :http-request='upload'
                         list-type="picture-card"
                         :on-preview="handlePictureCardPreview"
                         :on-remove="handleRemove">
@@ -334,12 +335,15 @@ export default {
         // 获取所有数据
         async getData(){
             let res = await this.getQuickList({});
-            this.data = res;
+            this.data = res.data.rows;
+            console.log(this.data);
+        },
+        upload(){
+
         }
     },
     async created(){
         this.getData();
-        console.log(this.data);
     },
     mounted() {
         this.restaurants = this.loadAll();

@@ -407,6 +407,15 @@ export default {
         return axios.post('/advert/update', params, postConfig)
     },
     /**
+     * @description 删除广告的接口 
+     * @params {
+     * 	id : [number] 必填 广告的id;
+     * } 
+     */
+    deleteAdvert(params) {
+        return axios.post('/advert/delete', params, postConfig)
+    },
+    /**
      * @description 根据Id查询广告 
      * @params {
      * id : [number]    必填    广告id
@@ -470,6 +479,26 @@ export default {
         return axios.post('/article/create', params, postConfig)
     },
     /**
+     * @description 删除文章的接口
+     * @params {
+     * id : [number] 必填 文章的id;
+     * } 
+     */
+    deleteArticle(params) {
+        return axios.post('/article/delete', params, postConfig)
+    },
+    /**
+     * @description 修改文章的接口
+     * @params {
+     * id : [number] 必填 文章的id;
+     * articleTitle:[string]  "文章标题",
+     * articleContent:[string] "文章内容"
+     * } 
+     */
+    updateArticle(params) {
+        return axios.post('/article/update', params, postConfig)
+    },
+    /**
      * @description 导航列表接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
@@ -499,6 +528,45 @@ export default {
      */
     deleteNav(params) {
         return axios.post('/navigation/delete', params, postConfig)
+    },
+    /**
+     * @description 获取商品Id以及名称
+     * @params 无
+     */
+    superProductTradeName(params) {
+        return axios.post('/superProduct/tradeName', params, postConfig)
+    },
+    /**
+     * @description 根据商品Id获取图片
+     * @params {
+     * id:[number]  商品的id
+     * }
+     */
+    superProductTradeImg(params) {
+        return axios.post('/superProduct/tradeImg', params, postConfig)
+    },
+    /**
+     * @description 新增推荐商品 
+     * @params {
+     * superNname  : [string]  '商品名称',
+     * serialNumber:[number] '商品的id',
+     * regionId:[string]    '展示区域  1,2,3'  
+     * }
+     */
+    createSuperProduct(params) {
+        return axios.post('/superProduct/create', params, postConfig)
+    },
+    /**
+     * @description 更改推荐商品
+     * @params {
+     * id:[number]   '被更改的id',
+     * superNname  : [string]  '商品名称',
+     * serialNumber:[number] '商品的id',
+     * regionId:[string]    '展示区域  1,2,3'  
+     * }
+     */
+    updateSuperProduct(params) {
+        return axios.post('/superProduct/update', params, postConfig)
     },
 
 

@@ -38,7 +38,7 @@
         :page-sizes="[10, 15, 20, 25]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="tableData.length">
+        :total="aaa">
         </el-pagination>
       </div>
     </div>
@@ -67,6 +67,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      aaa:'',
       type:'',
       types:'',
       currentPage: 1,
@@ -95,6 +96,10 @@ export default {
      */
     async Topping(ord) {
       var num = ord.id;
+      if(ord.index == 1){
+        this.$message('已经是第一个')
+        return  
+      }
       console.log(num);
       let res = await this.unitlibraryStick({
         id:num
@@ -147,11 +152,16 @@ export default {
           item.index = index+1;
         })
       this.table = arr;
+      this.handleSizeChange(10);
     },
     /**
      * @description 降序的方法
      */
     async Down(row) {
+      if(row.index == this.tableData.length){
+        this.$message("已经是最后一个")
+        return
+      }
       var formatData = (row) => {
         let res = {};
           for (let i = 0; i < this.tableData.length; i++) {
@@ -229,6 +239,7 @@ export default {
       });
       console.log(res)
       this.tableData = res.data.rows;
+      this.aaa = this.tableData.length;
       this.tableData.forEach((item,index)=>{
         item.index = index+1;
       })
@@ -264,7 +275,21 @@ export default {
       let res = await this.unitlibraryFuzzySearch({
         title : this.Interludes
       })
-      console.log(res);
+      if(this.Interludes){
+        var num = res.data.rows;
+        num.index = ''
+        num.forEach((item,index)=>{
+          item.index = index + 1;
+        })
+        this.table = num;
+        this.aaa = this.table.length;
+        console.log(num);
+        this.Interludes = null
+      }else{
+        this.table = this.tableData
+        this.aaa = this.table.length;
+        this.handleCurrentChange(1)
+      }
     }
   },
   created() {
@@ -288,8 +313,8 @@ export default {
     display: flex;
     justify-content: space-between;
     & .el-input {
-      text-indent: 10px;
       width: 200px;
+      margin: 0 20px;
     }
   }
   & .table {

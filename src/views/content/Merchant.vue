@@ -2,9 +2,7 @@
   <div class="wrap">
     <div class="wrap_recommend">
       <div class="preservation">
-        <el-button plain @click="dialogFormVisible = true"
-          >添加</el-button
-        >
+        <el-button plain @click="dialogFormVisible = true">添加</el-button>
         <el-button plain class="issuebtn">发布</el-button>
       </div>
       <div>
@@ -105,17 +103,19 @@
       </div>
 
       <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[6, 10]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="20"
-          class="page"
-        >
-        </el-pagination>
+        <!-- <div class="footer_right">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="renderDynamic.length"
+            background
+          >
+          </el-pagination>
+        </div> -->
       </div>
     </div>
   </div>
@@ -243,24 +243,36 @@ export default {
       ],
       dialogFormVisible: false,
       form: {
+        code: "",
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+        address: "",
+        classify: "",
+        money: "",
+        inventory: "",
+        sales: "",
+        state: "",
+        date: "",
       },
       formLabelWidth: "120px",
     };
   },
   methods: {
+    //分页有多少条
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+      this.handleCurrentChange(1);
     },
+    //分页的当前页有多少条
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      let arr = [];
+      for (
+        let i = val * this.pageSize - this.pageSize;
+        i < val * this.pageSize;
+        i++
+      ) {
+        if (this.renderDynamic[i] != undefined) arr.push(this.renderDynamic[i]);
+      }
+      this.table = arr;
     },
   },
 };
@@ -286,6 +298,12 @@ export default {
       justify-content: center;
       align-items: center;
       padding: 20px 0px;
+      & .footer_right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
     }
   }
 }

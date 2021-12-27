@@ -407,6 +407,15 @@ export default {
         return axios.post('/advert/update', params, postConfig)
     },
     /**
+     * @description 删除广告的接口 
+     * @params {
+     * 	id : [number] 必填 广告的id;
+     * } 
+     */
+    deleteAdvert(params) {
+        return axios.post('/advert/delete', params, postConfig)
+    },
+    /**
      * @description 根据Id查询广告 
      * @params {
      * id : [number]    必填    广告id
@@ -468,6 +477,26 @@ export default {
      */
     createArticle(params) {
         return axios.post('/article/create', params, postConfig)
+    },
+    /**
+     * @description 删除文章的接口
+     * @params {
+     * id : [number] 必填 文章的id;
+     * } 
+     */
+    deleteArticle(params) {
+        return axios.post('/article/delete', params, postConfig)
+    },
+    /**
+     * @description 修改文章的接口
+     * @params {
+     * id : [number] 必填 文章的id;
+     * articleTitle:[string]  "文章标题",
+     * articleContent:[string] "文章内容"
+     * } 
+     */
+    updateArticle(params) {
+        return axios.post('/article/update', params, postConfig)
     },
     /**
      * @description 导航列表接口

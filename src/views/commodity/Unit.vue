@@ -4,9 +4,10 @@
       <el-button type="primary" @click="dialogFormVisible = true">新增单位</el-button>
       <div>
         <el-select v-model="value" filterable placeholder="请选择">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" aria-selected="selected"></el-option>
         </el-select>
-        <el-input v-model="input" placeholder="请输入内容" suffix-icon="el-icon-search"></el-input>
+        <el-input v-model="Interludes" placeholder="请输入内容" suffix-icon="el-icon-search"></el-input>
+        <el-button type="primary" @click="Interlude">查询</el-button>
       </div>
     </div>
     <div class="table">
@@ -55,7 +56,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>                                            
       </div>
     </el-dialog>
   </div>
@@ -70,7 +71,6 @@ export default {
       types:'',
       currentPage: 1,
       pageSize:'',
-      input: "",
       table:[],
       dialogFormVisible: false,
       formLabelWidth: "120px",
@@ -82,21 +82,14 @@ export default {
       tableData: [],
       options: [{
           value: "选项1",
-          label: "序号",
-        },
-        {
-          value: "选项2",
           label: "单位名称",
-        },
-        {
-          value: "选项3",
-          label: "类目",
         }],
-      value: "",
+      value: "选项1",
+      Interludes:''
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch"]),
     /**
      * @description 置顶的方法
      */
@@ -263,6 +256,16 @@ export default {
       }
       this.table = arr;
     },
+    /**
+     *  @description 查询
+     */
+    async Interlude(){
+      console.log(this.Interludes);
+      let res = await this.unitlibraryFuzzySearch({
+        title : this.Interludes
+      })
+      console.log(res);
+    }
   },
   created() {
     this.List();

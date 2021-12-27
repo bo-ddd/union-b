@@ -6,9 +6,9 @@
           <div @click="jump" class="add-classification">
             <el-button type="primary">+ 新增分类</el-button>
           </div>
-          <div class="batch-association">
+          <!-- <div class="batch-association">
             <el-button type="primary">批量关联</el-button>
-          </div>
+          </div> -->
         </div>
         <el-table
           :data="table"

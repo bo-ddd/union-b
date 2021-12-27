@@ -125,7 +125,6 @@
 <script>
 import { mapActions } from "vuex";
 import demo from '../../components/demo.vue'
-// import uploada from '../../../public/lib/uploud';
 export default {
     components:{
       'el-demo':demo
@@ -136,11 +135,10 @@ export default {
       navs: [],
       dialogImageUrl: "",
       dialogVisible: false,
-      arr : [1,2],
     };
   },
   methods: {
-//                    列表接口     
+//                 列表接口     
   ...mapActions(["getNavList"]),
                                     
   // 所有导航的列表接口

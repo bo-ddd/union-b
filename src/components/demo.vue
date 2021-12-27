@@ -51,8 +51,9 @@ export default {
         pictureUrl: route,
         pid: pid,
       });
+      let navdata = await this.getNavList();
       // 往父组件传的值
-      this.$emit('change1',await this.getNavList());
+      this.$emit('change1',navdata);
     },
 
     // 删除导航的接口
@@ -60,8 +61,9 @@ export default {
       await this.deleteNav({
         id: id,
       });
+      let navdata = await this.getNavList();
       // 往父组件传的值
-      this.$emit('change1',await this.getNavList());
+      this.$emit('change1',navdata);
     },
 
     // 导航删除的点击事件
@@ -72,7 +74,7 @@ export default {
     // 主导航的http事件   参数file
     async httpRequest(file) {
       let name = file.file.name.substring(0,file.file.name.indexOf('.'));
-      let formdata = uploada(file.file,4);
+      let formdata = uploada(file.file,2);
       let res =  await this.uploadImage(formdata);
       await this.addNav(this.type.id,res.data,name);
     },

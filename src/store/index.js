@@ -189,6 +189,10 @@ export default new Vuex.Store({
         updateAdvert(ctx, payload) {
             return Api.updateAdvert(payload);
         },
+        //删除广告接口
+        deleteAdvert(ctx, payload) {
+            return Api.deleteAdvert(payload);
+        },
         //根据Id查询广告
         findIdAdvert(ctx, payload) {
             return Api.findIdAdvert(payload);
@@ -213,6 +217,14 @@ export default new Vuex.Store({
         createArticle(ctx, payload) {
             return Api.createArticle(payload);
         },
+        //删除文章接口
+        deleteArticle(ctx, payload) {
+            return Api.deleteArticle(payload);
+        },
+        //修改文章接口
+        updateArticle(ctx, payload) {
+            return Api.updateArticle(payload);
+        },
         //导航列表接口
         getNavList(ctx, payload) {
             return Api.getNavList(payload);
@@ -224,6 +236,22 @@ export default new Vuex.Store({
         //删除导航展示
         deleteNav(ctx, payload) {
             return Api.deleteNav(payload);
+        },
+        //获取商品Id以及名称
+        superProductTradeName(ctx, payload) {
+            return Api.superProductTradeName(payload);
+        },
+        //根据商品Id获取图片
+        superProductTradeImg(ctx, payload) {
+            return Api.superProductTradeImg(payload);
+        },
+        //新增推荐商品
+        createSuperProduct(ctx, payload) {
+            return Api.createSuperProduct(payload);
+        },
+        //更改推荐商品
+        updateSuperProduct(ctx, payload) {
+            return Api.updateSuperProduct(payload);
         },
 
 

@@ -23,7 +23,7 @@ export default new Vuex.Store({
         needReCategoryList: true,
         categorylist: {},
         needGetTradeData: true,
-        tradeData: {}
+        tradeData: {},
         routes: getRoutes()
     },
     mutations: {

@@ -20,12 +20,20 @@ let getRoutes = function() {
 
 export default new Vuex.Store({
     state: {
+        needReCategoryList: true,
+        categorylist: {},
         routes: getRoutes()
+    },
+    mutations: {
+        // ctx.commit('NEED_GETCATEGORYLIST',false)
+        NEED_GETCATEGORYLIST: (state, payload) => state.needReCategoryList = payload,
+        CATEGORY_LIST: (state, payload) => state.categorylist = payload,
     },
     getters: {
         routes: state => state.routes,
+        needReCategoryList: state => state.needReCategoryList,
+        categorylist: state => state.categorylist
     },
-    mutations: {},
     actions: {
         //登录
         userLogin(ctx, payload) {
@@ -80,7 +88,16 @@ export default new Vuex.Store({
         },
         //商品类目接口
         getCategoryList(ctx, payload) {
-            return Api.getCategoryList(payload);
+            if (ctx.state.needReCategoryList) {
+                return Api.getCategoryList(payload).then(res => {
+                    //commit到mutations里面
+                    ctx.commit('NEED_GETCATEGORYLIST', false);
+                    ctx.commit('CATEGORY_LIST', res);
+                    return res;
+                })
+            } else {
+                return ctx.state.categorylist;
+            }
         },
         //添加类目接口
         createCategory(ctx, payload) {

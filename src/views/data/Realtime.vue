@@ -1,19 +1,5 @@
 <template>
    <div class="warp">
-    <!-- <div class="main-t">
-      <div class="main-t_left">
-        <h3>实时数据</h3>
-        <span>更新时间</span>
-        <span class="date">2019-12-19 13:21:25</span>
-      </div>
-      <div>
-        <el-cascader :options="options">
-          <template slot-scope="{ data }">
-            <span>{{ data.label }}</span>
-          </template>
-        </el-cascader>
-      </div>
-    </div> -->
     <div class="main_c">
       <div class="main_c-left">
         <h3>成交统计</h3>
@@ -104,28 +90,7 @@
 </template>
 
 <script>
-import * as echarts from "echarts/core";
-import {
-  GridComponent,
-  TooltipComponent,
-  LegendComponent,
-  TitleComponent
-} from "echarts/components";
-import { BarChart } from "echarts/charts";
-import { PieChart } from "echarts/charts";
-import { LineChart } from "echarts/charts";
-import { CanvasRenderer } from "echarts/renderers";
-echarts.use([
-  GridComponent,
-  BarChart,
-  LineChart,
-  CanvasRenderer,
-  PieChart,
-  TooltipComponent,
-  LegendComponent,
-  TitleComponent
-]);
-
+import * as echarts from "echarts";
 export default {
   data() {
     return {

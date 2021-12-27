@@ -90,9 +90,10 @@
             <el-button
               class="que"
               type="primary"
-              @click="(dialogFormVisible = false), third - left()"
+              @click="(dialogFormVisible = false)"
               >确 定</el-button
             >
+            <!-- , third - left() -->
           </div>
         </el-dialog>
       </div>
@@ -313,7 +314,7 @@ export default {
   },
   async created(){
     this.list();
-    this.lableAll();
+    // this.lableAll();
   },
   methods:{
       ...mapActions(["getLableList","createLable"]),
@@ -321,7 +322,14 @@ export default {
         let listAll = await this.getLableList();
         console.log(listAll);
       },
+      
       async addArticle(){
+        let newLable = [];
+        if(lableAll.content == newLable.content){
+          console.log('该标签已创建');
+        }else{
+          console.log('该标签创建成功');
+        }
         let lableAll = await this.createLable({
           lableName:this.lableName,
         });

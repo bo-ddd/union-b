@@ -30,7 +30,7 @@
           移除
         </el-button>
         <el-button class="button"
-          @click.native.prevent=""
+          @click="see"
           type="text"
           >
           查看
@@ -53,13 +53,31 @@ import { mapActions } from "vuex";
         let allList = await this.getArticleList();
         console.log(allList);
       },
+      async see(){
+        window.location.href = './Details'
+      },
         deleteRow(index, rows) {
         rows.splice(index, 1);
       }
     },
     data() {
       return {
-        tableData:[]
+        tableData:[{
+          date:'2021-12-24',
+          name:'新通知',
+          address:'最新通知'
+        },
+        {
+          date:'2021-12-24',
+          name:'新通知',
+          address:'最新通知'
+        },
+        {
+          date:'2021-12-24',
+          name:'新通知',
+          address:'最新通知'
+        },
+        ]
       }
     },
   }

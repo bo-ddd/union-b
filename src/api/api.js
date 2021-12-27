@@ -98,7 +98,7 @@ export default {
      * @description 上传图片
      * @params {
      * file:  <stream>  上传的流 
-     * type:[Number]  //1.banner图 2.导航图 3.类目图 4.许可证  
+     * type:[Number]  //1.banner图 2.导航图 3.类目图 4.许可证  5.推荐商品  6.文章
      * } 
      */
     uploadImage(params) {
@@ -333,6 +333,15 @@ export default {
      */
     attributeOrders(params) {
         return axios.post('/attribute/orders', params, postConfig)
+    },
+    /**
+     * @description 单位模糊查询接口 /unitlibrary/fuzzySearch
+     * @params {
+     * title : [String]     单位名称
+     * } 
+     */
+    unitlibraryFuzzySearch(params) {
+        return axios.post('/unitlibrary/fuzzySearch', params, postConfig)
     },
 
 

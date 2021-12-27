@@ -69,12 +69,12 @@ export default {
         ...mapActions(["uploadImage", "getIdentityList", "createSettled"]),
         text(val) {
             const isJPG = val.type === "image/jpeg" || "image/png";
-            const isLt2M = val.size / 1024 / 1024 < 2;
+            const isLt2M = val.size / 1024 / 1024 < 1;
             if (!isJPG) {
-                this.$message.error("上传头像图片只能是 JPG 格式!")
+                this.$message.error("上传头像图片只能是 png 格式!")
             }
             if (!isLt2M) {
-                this.$message.error("上传头像大小不能超过 2MB!")
+                this.$message.error("上传头像大小不能超过 1M!")
             }
             return isJPG && isLt2M;
         },
@@ -83,10 +83,11 @@ export default {
             formData.append('file', val.file);
             formData.append('type', 4);
             let res = await this.uploadImage(formData);
-            if (res.status) {
+            if (res.status === 1) {
                 this.businessUrl = res.data
             }else{
-                this.$message.error(res.message)
+                this.$message.error(res.msg);
+                this.businessUrl = null
             }
             console.log(this.businessUrl)
         },
@@ -95,10 +96,11 @@ export default {
             formData.append('file', val.file);
             formData.append('type', 4);
             let res = await this.uploadImage(formData);
-            if (res.status) {
+            if (res.status === 1) {
                 this.qualificationsUrl = res.data
             }else{
-                this.$message.error(res.message)
+                this.$message.error(res.msg)
+                this.qualificationsUrl = null
             }
             console.log(this.qualificationsUrl)
         },

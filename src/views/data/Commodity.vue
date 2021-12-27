@@ -277,9 +277,6 @@ export default {
                 { type: "min", name: "Min" },
               ],
             },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
-            },
           },
           {
             name: "Evaporation",
@@ -290,9 +287,6 @@ export default {
                 { name: "Max", value: 182.2, xAxis: 7, yAxis: 183 },
                 { name: "Min", value: 2.3, xAxis: 11, yAxis: 3 },
               ],
-            },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
             },
           },
         ],
@@ -343,46 +337,59 @@ export default {
 <style lang="scss" scoped>
 .warp {
   min-width: 1100px;
-  height: 80vh;
-}
-
-.class {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1%;
-  &>div{
-    color: white;
-    background: var(--color);
-    padding: 4.5% 6%;
-    border-radius: 5px;
+  & .class {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1%;
+    & > div{
+      color: white;
+      background: var(--color);
+      padding: 4.5% 6%;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+    & .fen {
+      background: #409EFF;
+      padding: 5% 3.5%;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  & .filter {
+    margin: 1% 0;
+    border-radius: 3px;
+    background: white;
     display: flex;
     justify-content: space-between;
+    padding: 0.5% 1%;
+    font-size: 14px;
+    & > div {
+      display: flex;
+      align-items: center;
+    }
   }
-  & .fen {
-    background: #409EFF;
-    padding: 5% 3.5%;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-
-.type {
-  height: 25vh;
-}
-.filter {
-  margin: 1% 0;
-  border-radius: 3px;
-  background: white;
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5% 1%;
-  & > div {
-    display: flex;
-    align-items: center;
+  & .bottom{
+    & .bottom-s,
+    & .bottom-b{
+      display: grid;
+      grid-template-columns: repeat(4, 24.25%);
+      gap: 1% 1%;
+      & > div {
+        margin: 0 0 4% 0;
+        padding: 3%;
+        background: white;
+        border: 1px solid white;
+        border-radius: 5px;
+        & .type {
+          height: 25vh;
+        }
+      }
+    }
   }
 }
 
@@ -390,27 +397,11 @@ export default {
   display: flex;
   align-items: center;
 }
-.bottom{
-  height: 100%;
-}
-.bottom-s,
-.bottom-b{
-  display: grid;
-  grid-template-columns: repeat(4, 24.25%);
-  gap: 1% 1%;
-  & > div {
-    margin: 0 0 4% 0;
-    padding: 3%;
-    background: white;
-    border: 1px solid white;
-    border-radius: 5px;
-  }
+.bottom-b>div{
+  height: 32vh;
 }
 ::v-deep .el-cascader .el-input .el-input__inner{
   margin-left: 10%;
-}
-.filter {
-  font-size: 14px;
 }
 ::v-deep .el-table .el-table__cell {
   padding: 0 !important;

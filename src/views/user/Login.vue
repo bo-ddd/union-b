@@ -11,54 +11,67 @@
             <span class="title">登录XXX管理系统</span>
           </div>
           <div class="main-con">
-            <el-input
-              v-model="form.username"
-              class="inputa"
-              placeholder="请输入用户名 / 账号"
-              maxlength="15"
-              clearable
-            ></el-input>
-            <el-input
-              v-model="form.password"
-              class="inputb"
-              name="password"
-              placeholder="请输入密码"
-              maxlength="15"
-              show-password
-            ></el-input>
-            <el-checkbox class="remember" v-model="form.checked"
-              >记住密码</el-checkbox
-            >
-            <div class="input-bao">
-              <div>
+            <el-form ref="form" :model="form" label-width="80px">
+              <el-form-item>
                 <el-input
-                  v-model="form.captcha"
-                  class="inputc"
-                  placeholder="请输入验证码"
-                  maxlength="4"
+                  v-model="form.username"
+                  class="inputa"
+                  placeholder="请输入用户名 / 账号"
+                  maxlength="15"
                   clearable
                 ></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-input
+                  v-model="form.password"
+                  class="inputb"
+                  name="password"
+                  placeholder="请输入密码"
+                  maxlength="15"
+                  show-password
+                ></el-input>
+              </el-form-item>
+              <div class="input-bao">
+                <div>
+                  <el-input
+                    v-model="form.captcha"
+                    class="inputc"
+                    placeholder="请输入验证码"
+                    maxlength="4"
+                    clearable
+                  ></el-input>
+                </div>
+                <div class="captcha">
+                  <img
+                    style="height: 43px"
+                    :src="captchaSrc"
+                    @click="generatorCaptcha"
+                    alt=""
+                    srcset=""
+                  />
+                </div>
               </div>
-              <div class="captcha">
-                <img
-                  style="height: 43px"
-                  :src="captchaSrc"
-                  @click="generatorCaptcha"
-                  alt=""
-                  srcset=""
-                />
-              </div>
-            </div>
+              <!-- <el-form-item> -->
+              <el-checkbox
+                label="记住密码"
+                class="remember"
+                v-model="form.checked"
+              ></el-checkbox>
+              <!-- </el-form-item> -->
+            </el-form>
           </div>
           <div class="main-foot">
-            <el-button
-              type="primary"
-              @click="submit"
-              @keyup.enter="submit"
-              round
-            >
-              登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
-            </el-button>
+            <el-form>
+              <el-form-item>
+                <el-button
+                  type="primary"
+                  @click="submit"
+                  @keyup.enter="submit"
+                  round
+                  >登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</el-button
+                >
+              </el-form-item>
+            </el-form>
           </div>
           <div class="glink">
             <el-link :underline="false" type="primary" @click="submitregist"
@@ -142,14 +155,7 @@ export default {
       return flag;
     },
 
-    // 登录点击事件
-    async submit() {
-      let valid = this.validate();
-      if (!valid) {
-        this.generatorCaptcha();
-        return;
-      }
-
+    Encrypt() {
       // 对密码增加rsa（非对称加密）
       var encryptor = new JSEncrypt(); // 创建加密对象实例
       let publicKey = `-----BEGIN PUBLIC KEY-----
@@ -161,7 +167,17 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
       encryptor.setPublicKey(publicKey); //设置公钥
       var rsaPassWord = encryptor.encrypt(this.form.password); // 对内容进行加密
       this.form.password = rsaPassWord;
+    },
 
+    // 登录点击事件
+    async submit() {
+      let valid = this.validate();
+      if (!valid) {
+        this.generatorCaptcha();
+        return;
+      }
+      // 调用加密方法：
+      this.Encrypt();
       //   登录接口
       let { username, password, captcha } = this.form;
       let res = await this.userLogin({
@@ -182,6 +198,10 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
             path: "/",
           });
         }
+
+        sessionStorage.setItem("username", this.form.username);
+        sessionStorage.setItem("password", this.form.password);
+        this.setUserInfo();
       } else {
         this.$message.error(res.msg);
         this.generatorCaptcha();
@@ -207,6 +227,42 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
       this.$router.push({
         path: "/registration",
       });
+    },
+
+    // 执行记住密码功能(存cookie)
+    setUserInfo: function () {
+      // 判断用户是否勾选记住密码，如果勾选，向cookie中储存登录信息
+      // 如果没有勾选，储存信息为空
+      if (this.form.checked) {
+        this.setCookie("username", window.btoa(this.form.username), 7);
+        this.setCookie("password", window.btoa(this.form.password), 7);
+        this.setCookie("checked", this.form.checked, 7);
+      } else {
+        this.setCookie("username", "", -1);
+        this.setCookie("password", "", -1);
+        this.setCookie("checked", this.form.checked, 7);
+      }
+    },
+    setCookie(cName, value, expiredays) {
+      var exdate = new Date();
+      exdate.setDate(exdate.getDate() + expiredays);
+      document.cookie =
+        cName +
+        "=" +
+        value +
+        (expiredays == null ? "" : ";expires=" + exdate.toGMTString());
+    },
+    getCookie(key) {
+      if (document.cookie.length > 0) {
+        var start = document.cookie.indexOf(key + "=");
+        if (start !== -1) {
+          start = start + key.length + 1;
+          var end = document.cookie.indexOf(";", start);
+          if (end == -1) end = document.cookie.length;
+          return unescape(document.cookie.substring(start, end));
+        }
+      }
+      return "";
     },
   },
 
@@ -302,6 +358,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
           display: flex;
           justify-content: center;
           flex-direction: column;
+          margin-top: 5px;
 
           & .el-input {
             width: 80%;
@@ -335,9 +392,8 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
 
         & .main-foot {
           width: 100%;
-          height: 90px;
-          display: flex;
-          align-items: center;
+          height: 60px;
+          margin-top: 25px;
 
           & .el-button {
             width: 80%;
@@ -362,9 +418,19 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   right: 78px;
 }
 
+.el-form-item--mini.el-form-item,
+.el-form-item--small.el-form-item {
+  margin-bottom: 0px;
+}
+
+::v-deep .el-form-item__content {
+  margin-left: 0px !important;
+}
+
 .remember {
   width: 80px;
   position: relative;
-  left: 210px;
+  left: 8px;
+  bottom: 5px;
 }
 </style>

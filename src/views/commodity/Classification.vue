@@ -10,10 +10,11 @@
             <el-button type="primary">批量关联</el-button>
           </div> -->
         </div>
+        
         <el-table
           v-loading="loading"
-           element-loading-text="拼命加载中"
-    element-loading-background="rgba(0, 0, 0, 0.8)"
+          element-loading-text="拼命加载中"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
           :data="table"
           ref="table"
           border
@@ -24,13 +25,14 @@
           :tree-props="{children: 'child'}"
           :header-cell-style="{ background: '#fafafa' }"
         >
-          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column align="center" type="selection" width="55"> </el-table-column>
           <el-table-column
+          align="center"
             label="分类名称"
             prop="title"
             width="200"
           ></el-table-column>
-          <el-table-column label="关联" width="200">
+          <el-table-column label="关联" width="200" align="center">
             <template slot-scope="scope">
               <el-link type="primary">品牌</el-link>
               <el-link class="ml-10" type="primary">{{
@@ -39,16 +41,16 @@
             </template>
           </el-table-column>
           <el-table-column
+           align="center"
             label="创建日期"
-            width="200"
+            width="400"
             show-overflow-tooltip
             sortable
           >
-            <template slot-scope="scope">{{ scope.row.createdAt }}</template>
+            <template slot-scope="scope">{{scope.row.createdTime }}</template>
           </el-table-column>
-          <el-table-column prop="num" label="数量" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column label="操作" show-overflow-tooltip>
+        
+          <el-table-column label="操作" show-overflow-tooltip align="center">
             <template slot-scope="scope">
               <el-link type="primary" @click="ascendingOrder(scope.row)"
                 >升序</el-link
@@ -203,9 +205,8 @@ export default {
      */
     async commodityInfo() {
       let res = await this.getCategoryList({});
-         console.log(res);
+        console.log(res);
        if(res.status==1){
-         setTimeout(()=>{
        this.loading = false ;
       let data = res.data.rows.slice();
       let target = this.format(data);
@@ -214,7 +215,6 @@ export default {
       });
       this.renderDynamic = target;
       this.handleSizeChange(10);
-         },500)
        }
     },
     format(target) {
@@ -227,7 +227,7 @@ export default {
           p.child = p.child || [];
           p.child.push(item);
         }
-           item.createdAt = getTime(item.createdAt);
+           item.createdTime = getTime(item.createdAt);
         item.category = p ? p.category + "=>" + item.title : item.title;
       });
       return res.filter((type) => type.pid === null);

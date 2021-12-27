@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/user/Login.vue'
-import Registration from '../views/user/Registration.vue'
 
 Vue.use(VueRouter)
 
@@ -81,7 +80,7 @@ export const routes = [{
                 path: '/order/index',
                 name: 'Allorders',
                 meta: {
-                    title: '全部订单',
+                    title: '订单管理',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "index" */ '../views/order/Index')
@@ -95,78 +94,6 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "details" */ '../views/order/OrderDetails')
-            },
-            {
-                path: '/order/examine',
-                name: 'Examine',
-                meta: {
-                    title: '待审核订单',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "examine" */ '../views/order/Examine')
-            },
-            {
-                path: '/order/paid',
-                name: 'Paid',
-                meta: {
-                    title: '待支付订单',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "paid" */ '../views/order/Paid')
-            },
-            {
-                path: '/order/shipped',
-                name: 'Shipped',
-                meta: {
-                    title: '待发货订单',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "shipped" */ '../views/order/Shipped')
-            },
-            {
-                path: '/order/received',
-                name: 'Received',
-                meta: {
-                    title: '待收货订单',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "received" */ '../views/order/Received')
-            },
-            {
-                path: '/order/completed',
-                name: 'Completed',
-                meta: {
-                    title: '已完成订单',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "completed" */ '../views/order/Completed')
-            },
-            {
-                path: '/order/cancelled',
-                name: 'Cancelled',
-                meta: {
-                    title: '已取消订单',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "cancelled" */ '../views/order/Cancelled')
-            },
-            {
-                path: '/order/delivery',
-                name: 'Delivery',
-                meta: {
-                    title: '发货管理',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "delivery" */ '../views/order/Delivery')
-            },
-            {
-                path: '/order/abnormal',
-                name: 'Abnormal',
-                meta: {
-                    title: '异常订单',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "abnormal" */ '../views/order/Abnormal')
             }
         ]
     },
@@ -608,7 +535,8 @@ export const routes = [{
     {
         path: '/registration',
         name: 'Registration',
-        component: Registration,
+        component: () =>
+            import ( /* webpackChunkName: "registration" */ '../views/user/Registration.vue'),
         meta: {
             title: '',
         },

@@ -48,10 +48,29 @@
             <!-- <el-form-item label="备注" :label-width="formLabelWidth">
               <el-input v-model="form1.name" autocomplete="off"></el-input>
             </el-form-item> -->
-            <el-form-item label="类目id" :label-width="formLabelWidth">
-              <!-- <el-input v-model="form1.cid" autocomplete="off"></el-input> -->
-              <el-select placeholder="请选择" class="sel"> </el-select>
+            <el-form-item label="类目名称" :label-width="formLabelWidth">
+              <el-input v-model="form1.cid" autocomplete="off"></el-input>
+              <!-- <el-select placeholder="请选择" class="sel"></el-select> -->
             </el-form-item>
+            <!-- <el-form-item label="类目名称" class="classifya">
+              <template>
+                <div class="block">
+                  <span class="demonstration"></span>
+                  <el-cascader
+                    ref="cascader"
+                    :options="options"
+                    @change="getId()"
+                    :props="{
+                      checkStrictly: true,
+                      label: 'title',
+                      children: 'child',
+                      value: 'title',
+                    }"
+                    clearable
+                  ></el-cascader>
+                </div>
+              </template>
+            </el-form-item> -->
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
@@ -72,6 +91,7 @@
         stripe
       >
         <el-table-column
+          :reserve-selection="true"
           type="selection"
           align="center"
           v-model="checked"
@@ -87,7 +107,7 @@
         >
         </el-table-column>
         <el-table-column
-          label="备注"
+          label="商品类目"
           prop="productCategory"
           show-overflow-tooltip
           align="center"
@@ -121,7 +141,7 @@
                     autocomplete="off"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="备注" :label-width="formLabelWidth">
+                <el-form-item label="商品类目" :label-width="formLabelWidth">
                   <el-input v-model="form.remark" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="排列顺序" :label-width="formLabelWidth">
@@ -190,7 +210,7 @@ export default {
         },
         {
           value: "选项2",
-          label: "备注",
+          label: "商品类目",
         },
       ],
       pagination: false,
@@ -341,7 +361,10 @@ export default {
     //   let aaa= formatData(row);
     //   console.log(aaa);
     // },
-
+    getRowKeys(row) {
+      //记录每行的key值
+      return row.id;
+    },
     /**
      * 获取所有类目规格
      * */

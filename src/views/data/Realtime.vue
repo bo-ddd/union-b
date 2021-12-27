@@ -104,7 +104,9 @@
 </template>
 
 <script>
-import * as echarts from "echarts";
+let echarts=require('echarts/lib/echarts')
+require('echarts/lib/chart/pie')
+require('echarts/lib/chart/line')
 export default {
   data() {
     return {

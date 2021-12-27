@@ -11,11 +11,13 @@
           </div> -->
         </div>
         <el-table
+          v-loading="loading"
+           element-loading-text="拼命加载中"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
           :data="table"
           ref="table"
           border
           row-key="id"
-     
           style="width: 97%"
           @select="select"
           @select-all="selectAll"
@@ -92,6 +94,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      loading:true,
       checked: true,
       size: "",
       currentPage: 1,
@@ -201,29 +204,28 @@ export default {
     async commodityInfo() {
       let res = await this.getCategoryList({});
          console.log(res);
+       if(res.status==1){
+          this.loading = false ;
       let data = res.data.rows.slice();
       let target = this.format(data);
       target.forEach((el) => {
-        el.createdAt = getTime(el.createdAt);
-        if (el.child.length) {
-          el.child.forEach((item) => {
-            item.association = "规格";
-            item.createdAt = getTime(item.createdAt);
-          });
-        }
+          el.association = "";
       });
       this.renderDynamic = target;
       this.handleSizeChange(10);
+       }
     },
     format(target) {
       let res = target.slice();
       res.forEach((item) => {
         item.child = item.child || [];
+        item.association = "规格";
         let p = res.find((type) => item.pid == type.id);
         if (item.pid && p) {
           p.child = p.child || [];
           p.child.push(item);
         }
+           item.createdAt = getTime(item.createdAt);
         item.category = p ? p.category + "=>" + item.title : item.title;
       });
       return res.filter((type) => type.pid === null);

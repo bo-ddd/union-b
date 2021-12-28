@@ -51,14 +51,11 @@
       </el-table-column>
       <el-table-column
         prop="value"
-        label="属性值"
+        label="属性名"
         align="center"
         >
-        <!-- <template>
-          <input type="text" class="property" v-model="name">
-        </template> -->
       </el-table-column>
-      <el-table-column prop="productTitle" label="商品名"  align="center">
+      <el-table-column prop="productTitle" label="类目名"  align="center">
         <!-- <template>
           <input type="text" class="inp" v-model="input">
         </template> -->
@@ -96,7 +93,6 @@
     </el-table>
       </div>
       </div>
-      <el-footer><el-button type="primary">保存</el-button></el-footer>
       </div>
   </div>
 </template>
@@ -133,23 +129,12 @@ export default {
         formLabelWidth: '120px',
         forms: {
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        form: {
-          name: '',
-          choice: '',
-          required: '',
         },
         tableData: [{
             id:'',
             productTitle:'',
-            value:''
+            value:'',
+            // values:''
           },]
       }
     },
@@ -166,9 +151,10 @@ export default {
       async apply(){
         let res = await this.getAttributeList();
         this.tableData = res.data.rows;
-        console.log(res);
+        console.log(res.data.rows);
       },
    async ascendingOrder(row) {
+     console.log(row);
       console.log(row.ord)
       //获取当前层所有额数据；
       var formatData = (row) => {
@@ -191,7 +177,6 @@ export default {
           let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
-        // this.ordSort(this.tableData);
         let res = await this.attributeOrders([
          obj.currentData.id,
            obj.preData.id,]
@@ -239,9 +224,8 @@ export default {
           this.tableData.splice(i, 1);
         } 
       }
-      // this.ordSort(this.tableData);
       let res = await this.deleteAttribute({
-        id:row.id,
+        id:[row.id],
       })
       console.log(res)
       this.apply();
@@ -264,9 +248,18 @@ export default {
     this.apply();
   },
 
-  async delData(){
-    let res = await this.attributeStick();
-    console.log(res);
+  async delData(ord){
+    var num = ord.id;
+      if(ord.index == 1){
+        this.$message('已经是第一个')
+        return  
+      }
+      console.log(num);
+      let res = await this.attributeStick({
+        id:num
+      })
+      console.log(res);
+      this.apply();
   }
   },
   async created(){
@@ -325,12 +318,6 @@ export default {
   height: 15px;
   margin: 5px;
 }
-.el-footer {
-    background-color: #ffffff;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
   .el-form-item {
     margin-bottom: 0px;
 }

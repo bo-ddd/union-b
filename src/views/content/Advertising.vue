@@ -217,7 +217,7 @@
     <div class="main">
       <el-table
         ref="multipleTable"
-        :data="tableData"
+        :data="rows"
         tooltip-effect="dark"
         style="width: 100%"
         @selection-change="handleSelectionChange"
@@ -285,6 +285,8 @@
 import E from "wangeditor";
 import {mapActions} from "vuex";
 import uploadMap from "../../../public/lib/uploud";
+console.log('我是e');
+console.log(E);
 export default {
   data() {
     return {
@@ -374,7 +376,7 @@ export default {
     ...mapActions(["getAdvertList","uploadImage","createAdvert","updateAdvert","findIdAdvert"]),
    async getAds(){
     let res=await this.getAdvertList();
-    // this.rows=res.data.rows;
+    this.rows=res.data.rows;
     console.log(res);
     },
     //新增广告管理信息
@@ -389,7 +391,7 @@ export default {
     //修改广告管理信息
     handleEdit(a) {
       this.dialogFormVisiblefix = true;
-      this.id = a.date;
+      this.id = a.id;
     },
    async confirmRevise(){
        let modifyAdvert = await this.updateAdvert({

@@ -260,11 +260,13 @@ export default {
      * getSpecificationList获取所有的类目接口
      * createSpecification 添加规格接口
      * deleteSpecification 删除规格接口
+     * getCategoryList商品类目接口
      */
     ...mapActions([
       "getSpecificationList",
       "createSpecification",
       "deleteSpecification",
+      "getCategoryList",
     ]),
     toggleSelection(rows) {
       if (rows) {
@@ -377,7 +379,6 @@ export default {
       console.log(res);
       // this.pageSize1 = res.data.count.slice();
       this.renderDynamic = res.data.rows.slice();
-
       this.handleSizeChange(10);
     },
     //分页
@@ -401,6 +402,16 @@ export default {
   },
   async created() {
     this.spelist();
+    /**
+     * 商品类目接口方法
+     */
+    let resource = await this.getCategoryList({
+      pagination: false,
+      pageNum: 1,
+      pageSize: 10,
+    });
+    console.log("aaa");
+    console.log(resource);
   },
 };
 </script>

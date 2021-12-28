@@ -39,7 +39,6 @@
 
 <script>
 import * as echarts from "echarts";
-import "echarts-liquidfill";
 export default {
   data() {
     return {};

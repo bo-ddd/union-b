@@ -41,7 +41,7 @@ export default {
     /**
      * @description  验证码
      * */
-    getCaptcha() { return `/api/captcha?${Math.random()}` },
+    getCaptcha() { return `/${postConfig.baseURL}/captcha?${Math.random()}` },
     /**
      * @description  用户注册接口
      * @params {

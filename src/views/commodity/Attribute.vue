@@ -133,18 +133,6 @@ export default {
         formLabelWidth: '120px',
         forms: {
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        form: {
-          name: '',
-          choice: '',
-          required: '',
         },
         tableData: [{
             id:'',
@@ -166,9 +154,10 @@ export default {
       async apply(){
         let res = await this.getAttributeList();
         this.tableData = res.data.rows;
-        console.log(res);
+        console.log(res.data.rows);
       },
    async ascendingOrder(row) {
+     console.log(row);
       console.log(row.ord)
       //获取当前层所有额数据；
       var formatData = (row) => {
@@ -191,7 +180,6 @@ export default {
           let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
-        // this.ordSort(this.tableData);
         let res = await this.attributeOrders([
          obj.currentData.id,
            obj.preData.id,]
@@ -239,9 +227,8 @@ export default {
           this.tableData.splice(i, 1);
         } 
       }
-      // this.ordSort(this.tableData);
       let res = await this.deleteAttribute({
-        id:row.id,
+        id:[row.id],
       })
       console.log(res)
       this.apply();
@@ -265,8 +252,11 @@ export default {
   },
 
   async delData(){
-    let res = await this.attributeStick();
-    console.log(res);
+    
+    // let res = await this.attributeStick({
+    //   id:a.id
+    // });
+    // console.log(res);
   }
   },
   async created(){

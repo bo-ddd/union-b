@@ -59,20 +59,30 @@
 
 <script>
 import { mapActions } from "vuex";
+import {getTime} from '../../assets/until/until'
   export default {
    created(){
      this.list();
+
     },
     methods: {
-      ...mapActions(["getArticleList"]),
+      ...mapActions(["getArticleList","deleteArticle","updateArticle"]),
       async list(){
         let allList = await this.getArticleList();
-        // console.log(allList);
+        allList.data.rows.forEach(fs=>{
+           fs.createdAt = getTime(new Date(fs.createdAt).getTime());
+        })
+          console.log(allList.data.rows);
         this.tableData = allList.data.rows
         console.log(this.tableData);
       },
       async see(){
-        window.location.href = './Details'
+        this.$router.push({
+          path:'./Details'
+        })
+      },
+      async change(){
+        
       },
         deleteRow(index, rows) {
         rows.splice(index, 1);

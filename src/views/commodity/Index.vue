@@ -84,7 +84,7 @@
           @select-all="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
           <el-table-column label="条码" width="90">
             <template slot-scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
@@ -396,7 +396,6 @@ export default {
         },
       ],
       deleteDataArr: [],
-      arr3: [],
       arr4: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -692,7 +691,6 @@ export default {
       this.getList(this.query());
     },
     getList(arr) {
-      // es6过滤得到满足搜索条件的展示数据list
       // console.log(arr);
       this.flag1 = true;
       if (this.flag) {
@@ -725,29 +723,9 @@ export default {
       this.getList(this.query());
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.page = val;
-      console.log(this.arr4);
-      this.cacheArr.forEach((item) => {
-        this.$refs.multipleTable.toggleRowSelection(item, true);
-      });
       this.getList(this.query());
-    },
-    offSize() {
-      this.num = this.pageSize * (this.pageNum - 1);
-      this.articles();
-    },
-    articles(val) {
-      if (!val) {
-        this.table = this.tableData.slice(this.num, this.num + this.pageSize);
-        // this.tablelength = this.tableData.length;
-      } /*  else {
-        console.log(val);
-        this.table = val;
-        // this.tablelength = this.table.length;
-        this.handleSizeChange(10);
-        this.handleCurrentChange(1);
-      } */
     },
     query(flag) {
       let arr = [];
@@ -778,8 +756,10 @@ export default {
       }
     },
     reset() {
+      this.commodityStatusValue=''
+      this.salesTypeValue = ''
       this.flag1 = true;
-      this.getList(this.tableData);
+      this.getList(this.query());
     },
     skip() {
       this.$router.push({
@@ -1006,29 +986,6 @@ input:-ms-input-placeholder {
 ::v-deep .mains .el-input:nth-of-type(2) {
   width: 120px;
 }
-// ::v-deep .el-pagination__jump{
-//   margin: 0px;
-// }
-// ::v-deep .cell {
-//   font-weight: 700;
-// }
-// ::v-deep .el-input {
-//   width: 100% !important;
-// }
-// ::v-deep .el-select {
-//   width: 70% !important;
-// }
-// ::v-deep .el-input__icon {
-//   line-height: 32px;
-// }
-// ::v-deep .el-input__inner {
-//   height: 32px;
-//   line-height: 32px;
-//   font-weight: 700;
-// }
-// ::v-deep .el-input--suffix {
-//   width: 70% !important;
-// }
 .el-form--inline .el-form-item {
   margin-right: -90px;
 }

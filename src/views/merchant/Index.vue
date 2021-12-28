@@ -77,8 +77,8 @@ export default {
             typeArr: ['审核已通过', '审核未通过', '待审核'],
             currentPage: 1,
             total:null,
-            pageSize:null,
-            pageNum:null
+            pageSize:10,
+            pageNum:1
         }
     },
     methods: {
@@ -112,12 +112,12 @@ export default {
                 });
         },
         handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
             this.pageSize = val
+            this.getList()
         },
         handleCurrentChange(val) {
-            console.log(`当前页: ${val}`);
             this.pageNum = val
+            this.getList()
         },
         jump() {
             this.$router.push({
@@ -131,7 +131,11 @@ export default {
             return this.typeArr[type - 1]
         },
         async getList() {
-            let res = await this.getSettledList();
+            let res = await this.getSettledList({
+                pagination:true,
+                pageNum:this.pageNum,
+                pageSize:this.pageSize
+            });
             if (res.status) {
                 this.tableData = res.data.rows
             }

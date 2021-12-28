@@ -91,10 +91,10 @@
 
 <script>
 import { mapActions } from "vuex";
-import demo from '../../components/demo.vue'
+import uploadData from '../../components/UploadData.vue'
 export default {
     components:{
-      'el-demo':demo
+      'el-demo':uploadData
     },
   data() {
     return {

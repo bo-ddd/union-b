@@ -81,23 +81,6 @@
             </el-option>
           </el-select>
         </div>
-        <!-- <div class="select">
-          <span class="mr-10">订单类型</span>
-          <el-select
-            size="small"
-            v-model="orderTypeSelect"
-            placeholder="请选择"
-          >
-            <el-option
-              size="small"
-              v-for="item in orderType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </div> -->
 
         <!-- 订单编号 -->
         <div class="select">
@@ -155,37 +138,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <el-table
-        :data="cacheExport"
-        ref="checkTable"
-        stripe
-        style="width: 100%"
-        id="out-table"
-        class="hide"
-      >
-        <el-table-column type="selection" width="45"> </el-table-column>
-        <el-table-column prop="orderId" label="订单编号" align="center">
-        </el-table-column>
-        <el-table-column prop="totalPrice" label="实付金额" align="center">
-        </el-table-column>
-        <el-table-column prop="expressName" label="快递公司" align="center">
-        </el-table-column>
-        <el-table-column prop="storeTitle" label="供应商" align="center">
-        </el-table-column>
-        <el-table-column prop="avatorName" label="采购商" align="center">
-        </el-table-column>
-        <el-table-column prop="consignee" label="收货人" align="center">
-        </el-table-column>
-        <el-table-column prop="paymentName" label="支付方式" align="center">
-        </el-table-column>
-        <el-table-column prop="orderStatus" label="订单状态" align="center">
-        </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template>
-            <el-button type="text" @click="seeDetails"> 查看 </el-button>
-          </template>
-        </el-table-column>
-      </el-table> -->
       <div class="block">
         <el-pagination
           @size-change="handleSizeChange"
@@ -194,9 +146,7 @@
           :page-sizes="[10, 20, 30, 40, 50]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="
-            $route.meta.title == '全部订单' ? allOrder.length : order.length
-          "
+          :total="allOrderList.length"
           background
         >
         </el-pagination>
@@ -209,6 +159,52 @@ import { mapActions } from "vuex";
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
 export default {
+  data() {
+    return {
+      orderStatusId: 0,
+      paymentStatusId: 0,
+      expressId: 0,
+      storeTitle: "",
+      avatorName: "",
+      orderId: "",
+      consigneeVal: "",
+      cacheExport: [],
+      multipleSelection: [],
+      allOrderList: [],
+
+      orderStatus: [],
+      paymentStatus: [],
+      orderType: [],
+      express: [],
+      orderNo: [
+        {
+          value: "选项1",
+          label: "订单编号",
+        },
+      ],
+      purchaser: [
+        {
+          value: "选项1",
+          label: "采购商",
+        },
+      ],
+      consignee: [
+        {
+          value: "选项1",
+          label: "收货人",
+        },
+      ],
+        pageNum: 1,
+        pageSize: 10,
+      orderStatusSelect: "全部",
+      paymentStatusSelect: "全部",
+      orderTypeSelect: "全部",
+      orderNoSelect: "全部",
+      expressSelect: "全部",
+      allOrder: [],
+      order: [],
+    };
+  },
   updated() {
     this.$nextTick(() => {
       if (this.cacheExport.length > 0) {
@@ -262,6 +258,11 @@ export default {
           this.orderStatusId = item.id;
         }
       });
+       this.$router.push({
+        query: { orderType: this.orderStatusId },
+        name: "Allorders",
+      });
+      this.getOrderListData();
     },
 
     /**
@@ -311,9 +312,12 @@ export default {
       let res = await this.getOrderStatusList();
       if (res.status == 1) {
         this.orderStatus = res.data.rows;
-        for (let i = 0; i < this.orderStatus.length; i++) {
-          this.orderStatus[i].disabled = false;
-        }
+        // let obj = {
+        //   id:0,
+        //   status:'全部',
+        // }
+        // this.orderStatus.unshift(obj);
+        // console.log(this.orderStatus);
       }
     },
 
@@ -339,9 +343,15 @@ export default {
      * @description 获取所有订单数据
      * **/
     async getOrderListData() {
-      let res = await this.getOrderList();
-      if (res.status == 1) {
-        this.allOrder = res.data.rows;
+      let obj = {};
+      console.log(this.orderStatusId);
+      if(this.orderStatusId) obj.orderStatus = this.orderStatusId;
+      obj.pageNum = this.pageNum;
+      obj.pageSize = this.pageSize;
+      console.log(obj)
+      let res = await this.getOrderList(obj);
+      if (res.status) {
+        this.allOrderList = res.data.rows;
       }
     },
 
@@ -418,16 +428,16 @@ export default {
      *
      * **/
     async updateOrderStatus() {
-      for (let i = 0; i < this.orderStatus.length; i++) {
-        if (this.$route.meta.title != "全部订单") {
-          if (!this.$route.meta.title.includes(this.orderStatus[i].status)) {
-            this.orderStatus[i].disabled = true;
-          } else {
-            this.orderStatusSelect = this.orderStatus[i].status;
-            this.orderStatusId = parseInt(this.orderStatus[i].id);
-          }
-        }
-      }
+      // for (let i = 0; i < this.orderStatus.length; i++) {
+      //   if (this.$route.meta.title != "全部订单") {
+      //     if (!this.$route.meta.title.includes(this.orderStatus[i].status)) {
+      //       this.orderStatus[i].disabled = true;
+      //     } else {
+      //       this.orderStatusSelect = this.orderStatus[i].status;
+      //       this.orderStatusId = parseInt(this.orderStatus[i].id);
+      //     }
+      //   }
+      // }
 
       // this.allOrder.forEach((item) => {
       //   console.log(item.orderStatus == val);
@@ -455,28 +465,6 @@ export default {
     async handleCurrentChange(val) {
       this.pageNum = val;
       this.cacheExport = this.multipleSelection;
-
-      let obj = {};
-      console.log(this.orderStatusId);
-      if(this.orderStatusId) obj.orderStatus = this.orderStatusId;
-      obj.pageNum = this.pageNum;
-      obj.pageSize = this.pageSize;
-      let res = await this.getOrderList(obj);
-      if (res.status) {
-        this.allOrderList = res.data.rows;
-      }
-
-      // let arr = [];
-      // let arr1 = [];
-      // for (
-      //   let i = val * this.paging.pageSize - this.paging.pageSize;
-      //   i < val * this.paging.pageSize;
-      //   i++
-      // ) {
-      //   if (this.order[i] != undefined) arr.push(this.order[i]);
-      //   if (this.allOrder[i] != undefined) arr1.push(this.allOrder[i]);
-      // }
-      // this.allOrderList = this.$route.meta.title == "全部订单" ? arr1 : arr;
       console.log(`当前页: ${val}`);
     },
 
@@ -490,58 +478,7 @@ export default {
       });
     },
   },
-  data() {
-    return {
-      orderStatusId: 0,
-      paymentStatusId: 0,
-      expressId: 0,
-      storeTitle: "",
-      avatorName: "",
-      orderId: "",
-      consigneeVal: "",
-      cacheExport: [],
-      multipleSelection: [],
-      allOrderList: [],
-
-      orderStatus: [],
-      paymentStatus: [],
-      orderType: [],
-      express: [],
-      orderNo: [
-        {
-          value: "选项1",
-          label: "订单编号",
-        },
-      ],
-      supplier: [
-        {
-          value: "选项1",
-          label: "供应商",
-        },
-      ],
-      purchaser: [
-        {
-          value: "选项1",
-          label: "采购商",
-        },
-      ],
-      consignee: [
-        {
-          value: "选项1",
-          label: "收货人",
-        },
-      ],
-        pageNum: 1,
-        pageSize: 10,
-      orderStatusSelect: "全部",
-      paymentStatusSelect: "全部",
-      orderTypeSelect: "全部",
-      orderNoSelect: "全部",
-      expressSelect: "全部",
-      allOrder: [],
-      order: [],
-    };
-  },
+  
 };
 </script>
 <style lang="scss" scoped>
@@ -571,7 +508,6 @@ export default {
 
     & ::v-deep .el-input {
       font-size: 20px !important;
-      // width:0 !important;
     }
 
     & ::v-deep .el-input__inner {
@@ -624,7 +560,6 @@ export default {
 
       & ::v-deep .el-button {
         width: 8vw;
-        // height: 24.8px;
         text-align: center;
         line-height: 3px;
         padding: 3px;
@@ -633,7 +568,6 @@ export default {
   }
 
   & .bottom {
-    // margin: 15px;
     padding: 15px;
 
     & ::v-deep .hide {

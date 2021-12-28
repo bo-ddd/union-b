@@ -83,11 +83,10 @@ export default {
             formData.append('file', val.file);
             formData.append('type', 4);
             let res = await this.uploadImage(formData);
-            if (res.status === 1) {
+            if (res.status == 1) {
                 this.businessUrl = res.data
-            }else{
+            } else {
                 this.$message.error(res.msg);
-                this.businessUrl = null
             }
             console.log(this.businessUrl)
         },
@@ -96,17 +95,16 @@ export default {
             formData.append('file', val.file);
             formData.append('type', 4);
             let res = await this.uploadImage(formData);
-            if (res.status === 1) {
+            if (res.status == 1) {
                 this.qualificationsUrl = res.data
-            }else{
+            } else {
                 this.$message.error(res.msg)
-                this.qualificationsUrl = null
             }
             console.log(this.qualificationsUrl)
         },
         async getIdentList() {
             let res = await this.getIdentityList()
-            if (res.status) {
+            if (res.status == 1) {
                 this.radioList = res.data.rows
             }
         },
@@ -116,7 +114,7 @@ export default {
                 qualificationsUrl: this.qualificationsUrl,
                 businessUrl: this.businessUrl
             })
-            if (res.status) {
+            if (res.status == 1) {
                 this.$message.success('提交成功')
             } else {
                 this.$message.error('提交失败,请稍后再试')

@@ -32,7 +32,7 @@
             prop="title"
             width="200"
           ></el-table-column>
-          <el-table-column label="关联" width="200" align="center">
+          <el-table-column label="关联"  align="center">
             <template slot-scope="scope">
               <el-link type="primary">品牌</el-link>
               <el-link class="ml-10" type="primary">{{
@@ -43,7 +43,7 @@
           <el-table-column
            align="center"
             label="创建日期"
-            width="400"
+            width="350"
             show-overflow-tooltip
             sortable
           >

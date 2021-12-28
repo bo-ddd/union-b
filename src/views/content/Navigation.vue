@@ -1,6 +1,5 @@
 <template>
   <div class="wrap">
-      <!-- <el-rows :type="primary" :key="">asdasd</el-rows> -->
     <div class="head">
       <div>
         <div class="right-block"></div>
@@ -20,7 +19,7 @@
       <div class="left">
         <!-- 主导航 -->
         <div class="mainNav" v-for="key in newNav" :key="key.id">
-          <el-demo :type="key" @change1='change1'></el-demo>
+          <el-uploadData :type="key" @change1='change1'></el-uploadData>
         </div>
       </div>
 
@@ -94,7 +93,7 @@ import { mapActions } from "vuex";
 import uploadData from '../../components/UploadData.vue'
 export default {
     components:{
-      'el-demo':uploadData
+      'el-uploadData':uploadData
     },
   data() {
     return {
@@ -268,10 +267,6 @@ computed: {
       & .nav {
         padding: 20px 10px;
         display: flex;
-        //    grid-template-columns: repeat(5,1fr);
-        //    gap:20px 20px;
-        //    align-items: center;
-        //    justify-content: center;
         align-items: center;
         justify-content: space-around;
         & div {
@@ -371,8 +366,6 @@ computed: {
         flex-wrap: wrap;
         border-radius: 5px;
 
-        //    background-color: violet;
-
         & div {
           width: 50%;
           height: 100%;
@@ -400,9 +393,6 @@ computed: {
         }
       }
     }
-  }
-  .ccc {
-    color: #ccc;
   }
 }
 </style>

@@ -30,7 +30,7 @@
 
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisible1">
+    <el-dialog :visible.sync="dialogFormVisible">
         <div class="modifydata">
             <el-form :model="form">
                 <el-form-item label="图片">
@@ -60,40 +60,12 @@
         </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogFormVisible2">
-        <div class="modifydata">
-            <el-form :model="form">
-                <el-form-item label="图片">
-                    <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
-                    <el-upload
-                        action=""
-                        list-type="picture-card"
-                        :http-request='uploadimg'
-                        >
-                        <i class="el-icon-plus"></i>
-                    </el-upload>
-                    <el-dialog :visible.sync="dialogVisible">
-                        <img width="100%" :src="dialogImageUrl" alt="">
-                    </el-dialog>
-                </el-form-item>
-                <el-form-item label="图片信息">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="图片路由">
-                    <el-input v-model="form.describe" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-        </div>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary"  @click="submit">确 定</el-button>
-        </div>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
+import uploadImg from '../../../public/lib/uploud';
+import { mapActions } from "vuex";
 export default {
     data(){
         return{
@@ -114,26 +86,36 @@ export default {
                 name: '王小虎',
                 address: '上海市普陀区金沙江路 1516 弄'
             }],
-            dialogFormVisible1: false,
-            dialogFormVisible2: false,
+            dialogFormVisible: false,
             form : {
                 name : '',
             },
+            title : '',
         }
     },
     methods :{
+        ...mapActions(["uploadImage"]),
         openLayer (a) {
-            this.dialogFormVisible1 = true;
+            this.title = 2;
+            this.dialogFormVisible = true;
             console.log(a);
         },
-        uploadimg(a){
-            console.log(a);
+        async uploadimg(a){
+            if(this.title ==1){
+                // console.log('创建按钮');
+                let res = uploadImg(a.file,5);
+                let twores = await this.uploadImage(res);
+                console.log(twores);
+            }else{
+                console.log('修改按钮');
+            }
         },
         modify(){
-            this.dialogFormVisible1 = false;
+            this.dialogFormVisible = false;
         },
         submit(){
-            this.dialogFormVisible2 = true;
+            this.title = 1;
+            this.dialogFormVisible = true;
         }
     }
 }

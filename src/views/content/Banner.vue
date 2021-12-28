@@ -1,6 +1,6 @@
 <template>
   <div id="wrap">
-    <el-button type="primary" @click="submit">主要按钮</el-button>
+    <el-button type="primary" @click="submit">创建banner图</el-button>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="date"  width='200'>
           <template slot="header">
@@ -89,6 +89,7 @@ export default {
             dialogFormVisible: false,
             form : {
                 name : '',
+                describe : '',
             },
             title : '',
         }
@@ -103,9 +104,9 @@ export default {
         async uploadimg(a){
             if(this.title ==1){
                 // console.log('创建按钮');
-                let res = uploadImg(a.file,5);
+                let res = uploadImg(a.file,1); 
                 let twores = await this.uploadImage(res);
-                console.log(twores);
+                console.log(twores.data);
             }else{
                 console.log('修改按钮');
             }

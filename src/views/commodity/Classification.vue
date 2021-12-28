@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="wrap">
-      <div class="content">
+      <div class="content"  
+             v-loading="loading"
+          element-loading-text="拼命加载中"
+          element-loading-background="rgba(0, 0, 0, 0.8)">
         <div class="new-module">
           <div @click="jump" class="add-classification">
             <el-button type="primary">+ 新增分类</el-button>
@@ -12,9 +15,6 @@
         </div>
 
         <el-table
-          v-loading="loading"
-          element-loading-text="拼命加载中"
-          element-loading-background="rgba(0, 0, 0, 0.8)"
           :data="table"
           ref="table"
           border
@@ -27,47 +27,19 @@
         >
           <el-table-column align="center" type="selection" width="55">
           </el-table-column>
-          <el-table-column
-            align="center"
-            label="分类名称"
-            prop="title"
-            width="200"
-          ></el-table-column>
+          <el-table-column align="center" label="分类名称" prop="title" width="200"></el-table-column>
           <el-table-column label="关联" align="center">
             <template slot-scope="scope">
               <el-link type="primary">品牌</el-link>
-              <el-link class="ml-10" type="primary">{{
-                scope.row.association || ""
-              }}</el-link>
+              <el-link class="ml-10" type="primary">{{scope.row.association || ""}}</el-link>
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            label="创建日期"
-            width="350"
-            show-overflow-tooltip
-            sortable
-          >
-            <template slot-scope="scope">{{ scope.row.createdTime }}</template>
-          </el-table-column>
-
+          <el-table-column  align="center"  label="创建日期"  width="300"  show-overflow-tooltip  sortable > 
+            <template slot-scope="scope">{{ scope.row.createdTime }}</template></el-table-column>
           <el-table-column label="操作" show-overflow-tooltip align="center">
             <template slot-scope="scope">
-              <el-link type="primary" @click="ascendingOrder(scope.row)"
-                >升序</el-link
-              >
-              <el-link
-                class="ml-10"
-                type="primary"
-                @click="sescendingOrder(scope.row)"
-                >降序</el-link
-              >
-              <el-link
-                class="ml-10"
-                type="danger"
-                @click="deleteData(scope.row)"
-                >删除</el-link
-              >
+              <el-link type="primary" @click="ascendingOrder(scope.row)">升序</el-link>
+                <el-link  class="ml-10"  type="primary"  @click="sescendingOrder(scope.row)">降序</el-link><el-link  class="ml-10"  type="danger"  @click="deleteData(scope.row)"  >删除</el-link>
             </template>
           </el-table-column>
         </el-table>
@@ -280,18 +252,23 @@ export default {
         }
         return res;
       };
+      console.log(this.renderData)
       let obj = formatData(row);
       console.log(obj);
       if (obj.i) {
+          this.loading = true;
         let ord = obj.currentData.ord;
         obj.currentData.ord = obj.preData.ord;
         obj.preData.ord = ord;
-        this.ordSort(this.renderData);
         let res = await this.categoryOrders([
           obj.currentData.id,
           obj.preData.id,
         ]);
         console.log(res);
+        if(res.status==1){
+          this.ordSort(this.renderData);
+            this.loading = false;
+        }
       } else {
         this.$message("已经是第一个了不能再升序了");
       }
@@ -364,12 +341,16 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
+        this.loading = true;
       let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
-      this.ordSort(this.renderData);
       let res = await this.categoryOrders([obj.currentData.id, obj.preData.id]);
       console.log(res);
+      if(res.status==1){
+            this.ordSort(this.renderData);
+          this.loading = false;
+      }
     },
     /**
      * @description 删除当前行

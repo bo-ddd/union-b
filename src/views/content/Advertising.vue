@@ -204,14 +204,17 @@
           </div>
         </div>
         </div>
-            <el-input
+        <div>
+        <el-input
           placeholder="请输入广告ID 或广告类型"
           prefix-icon="el-icon-search"
           v-model="id"
           class="ipt"
-         
         >
         </el-input>
+        <el-button type="primary" @click="queryAdver">查询</el-button>
+
+        </div>
       </div>
     </div>
     <div class="main">
@@ -285,8 +288,6 @@
 import E from "wangeditor";
 import {mapActions} from "vuex";
 import uploadMap from "../../../public/lib/uploud";
-console.log('我是e');
-console.log(E);
 export default {
   data() {
     return {
@@ -299,30 +300,6 @@ export default {
       count:"",
       pageCount:"",
       rows:[],
-      tableData: [
-        {
-          date: "000001",
-          title: "这是一个图片连接",
-          imgUrl: "上海市普陀区金沙江路 1518 弄",
-          size:"800*400",
-          type:"图片"
-        },
-        {
-          date: "000002",
-          title: "这是一个图片连接",
-          imgUrl: "上海市普陀区金沙江路 1518 弄",
-          size:"800*400",
-          type:"图片"
-        },
-        {
-          date: "000003",
-          title: "这是一个图片连接",
-          imgUrl: "上海市普陀区金沙江路 1518 弄",
-          size:"800*400",
-          type:"图片"
-        },
-       
-      ],
       multipleSelection: [],
       options: [
         {
@@ -391,13 +368,15 @@ export default {
     //修改广告管理信息
     handleEdit(a) {
       this.dialogFormVisiblefix = true;
+      this.title=a.id;
+      this.imgUrl=a.imgUrl;
       this.id = a.id;
     },
    async confirmRevise(){
-       let modifyAdvert = await this.updateAdvert({
-          id:this.id,
-          title:this.title,
-          imgUrl:this.imgUrl,
+      let modifyAdvert = await this.updateAdvert({
+        id:this.id,
+        title:this.title,
+        imgUrl:this.imgUrl,
     });
     console.log(modifyAdvert);
     this.dialogFormVisiblefix = false;
@@ -409,6 +388,8 @@ export default {
       id:this.id
     });
     console.log(queryAdvertion);
+    this.rows = [queryAdvertion.data]
+    console.log(this.rows);
     },
     //删除广告管理信息
     deleteRow(index, rows) {

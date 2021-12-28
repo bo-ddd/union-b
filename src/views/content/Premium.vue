@@ -14,12 +14,12 @@
   </el-select>
 </div>
     <div class="block">
-         <el-button type="primary">查询</el-button>
+         <el-button type="primary" @click="inquirygoods">查询</el-button>
          <el-button  type="primary">重置</el-button>
     </div>
          </div>
          <div class="header-center">
-             <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible3 = true">新增优品</el-button>
+             <el-button type="primary" icon="el-icon-plus" @click="getshopping">新增优品</el-button>
          </div>
      </div>
     <div class="main">
@@ -128,6 +128,16 @@
     </el-option>
   </el-select>
     </el-form-item>
+    <el-form-item label="商品图片" :label-width="formLabelWidth">
+     <el-select v-model="value" placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+    </el-form-item>
     <el-form-item label="展示区域" :label-width="formLabelWidth">
       <el-select v-model="form.region" placeholder="请选择活动区域">
         <el-option label="区域一" value="shanghai"></el-option>
@@ -137,7 +147,7 @@
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisible3 = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisible3 = false">确 定</el-button>
+    <el-button type="primary" @click="newProducts">确 定</el-button>
   </div>
 </el-dialog>
   </div>
@@ -217,6 +227,10 @@ export default {
         dialogVisible: false,
         disabled: false,
         num : 0,
+        superName:"",//商品名称
+        serialNumber:[],//商品的id
+        regionld:"",//展示区域
+        id:""//商品id
       };
     },
     created () {
@@ -318,7 +332,7 @@ export default {
 this.getpremium()
     },
     methods: {
-         ...mapActions(["getSuperList"]),
+         ...mapActions(["getSuperList","superProductTradeName","superProductTradeImg","createSuperProduct","updateSuperProduct"]),
       //已选省区
         gettext(value){
           // this.checkedlist.push(value[this.num]);
@@ -343,7 +357,40 @@ this.getpremium()
           console.log(file.url);
           this.dialogImageUrl = file.url;
           this.dialogVisible = true;
-        }
+        },
+        //新增推荐优品
+       async newProducts(){
+          this.dialogFormVisible3 = false;
+      
+          //新增优品
+        let suproduct= await this.createSuperProduct({
+            superName:this.superName,
+            serialNumber:this.serialNumber,
+            regionld:this.regionld
+        });
+        console.log(suproduct);
+        },
+       async getshopping(){
+          this.dialogFormVisible3 = true;
+          //获取商品名称及ID
+              let getgoods=await this.superProductTradeName();
+              console.log(getgoods);
+             let getImage=await this.superProductTradeImg({
+               id:this.id
+             });
+             console.log(getImage);
+        },
+        //查询商品
+        async inquirygoods(){
+         let inquiry= await this.updateSuperProduct({
+           id:this.id,
+           superName:this.superName,
+           serialNumber:this.serialNumber,
+           regionld:this.regionld
+         });
+         console.log(inquiry);
+         }
+        
     }
   }
 </script>

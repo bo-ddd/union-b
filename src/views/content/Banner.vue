@@ -1,5 +1,6 @@
 <template>
   <div id="wrap">
+    <el-button type="primary" @click="submit">主要按钮</el-button>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="date"  width='200'>
           <template slot="header">
@@ -29,10 +30,10 @@
 
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisible">
+    <el-dialog :visible.sync="dialogFormVisible1">
         <div class="modifydata">
             <el-form :model="form">
-                <el-form-item label="活动名称">
+                <el-form-item label="图片">
                     <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
                     <el-upload
                         action=""
@@ -45,10 +46,40 @@
                         <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
                 </el-form-item>
-                <el-form-item label="图片名字">
+                <el-form-item label="图片信息">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="图片描述">
+                <el-form-item label="图片路由">
+                    <el-input v-model="form.describe" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+            <el-button type="primary"  @click="modify">确 定</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="dialogFormVisible2">
+        <div class="modifydata">
+            <el-form :model="form">
+                <el-form-item label="图片">
+                    <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
+                    <el-upload
+                        action=""
+                        list-type="picture-card"
+                        :http-request='uploadimg'
+                        >
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                        <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                </el-form-item>
+                <el-form-item label="图片信息">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片路由">
                     <el-input v-model="form.describe" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
@@ -58,6 +89,7 @@
             <el-button type="primary"  @click="submit">确 定</el-button>
         </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -82,7 +114,8 @@ export default {
                 name: '王小虎',
                 address: '上海市普陀区金沙江路 1516 弄'
             }],
-            dialogFormVisible: false,
+            dialogFormVisible1: false,
+            dialogFormVisible2: false,
             form : {
                 name : '',
             },
@@ -90,11 +123,17 @@ export default {
     },
     methods :{
         openLayer (a) {
-            this.dialogFormVisible = true;
+            this.dialogFormVisible1 = true;
             console.log(a);
         },
         uploadimg(a){
             console.log(a);
+        },
+        modify(){
+            this.dialogFormVisible1 = false;
+        },
+        submit(){
+            this.dialogFormVisible2 = true;
         }
     }
 }

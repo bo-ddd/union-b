@@ -284,6 +284,18 @@ export default new Vuex.Store({
         updateSuperProduct(ctx, payload) {
             return Api.updateSuperProduct(payload);
         },
+        //banner列表
+        getBannerList(ctx, payload) {
+            return Api.getBannerList(payload);
+        },
+        //更改banner
+        updateBanner(ctx, payload) {
+            return Api.updateBanner(payload);
+        },
+        //增加banner
+        createBanner(ctx, payload) {
+            return Api.createBanner(payload);
+        },
 
 
         //订单管理

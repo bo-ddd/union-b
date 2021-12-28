@@ -56,6 +56,7 @@
                 label="记住密码"
                 class="remember"
                 v-model="form.checked"
+                @click="Rememberpass"
               ></el-checkbox>
               <!-- </el-form-item> -->
             </el-form>
@@ -155,6 +156,21 @@ export default {
       return flag;
     },
 
+    // 记住密码点击事件
+    Rememberpass() {
+      this.setUserInfo();
+
+      // 账号信息自动填充到登录输入框中(取cookie)
+      let username = this.getCookie("username");
+      let password = this.getCookie("password");
+      // 如果存在赋值给表单，并且将记住密码勾选
+      if (username) {
+        this.form.username = username;
+        this.form.password = password;
+        this.form.checked = true;
+      }
+    },
+
     Encrypt() {
       // 对密码增加rsa（非对称加密）
       var encryptor = new JSEncrypt(); // 创建加密对象实例
@@ -178,6 +194,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
       }
       // 调用加密方法：
       this.Encrypt();
+
       //   登录接口
       let { username, password, captcha } = this.form;
       let res = await this.userLogin({
@@ -186,6 +203,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         captcha,
       });
       console.log(res);
+
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
         this.$message.success(res.msg);
@@ -199,9 +217,8 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
           });
         }
 
-        sessionStorage.setItem("username", this.form.username);
-        sessionStorage.setItem("password", this.form.password);
-        this.setUserInfo();
+        // sessionStorage.setItem("username", this.form.username);
+        // sessionStorage.setItem("password", this.form.password);
       } else {
         this.$message.error(res.msg);
         this.generatorCaptcha();
@@ -233,15 +250,17 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
     setUserInfo: function () {
       // 判断用户是否勾选记住密码，如果勾选，向cookie中储存登录信息
       // 如果没有勾选，储存信息为空
-      if (this.form.checked) {
-        this.setCookie("username", window.btoa(this.form.username), 7);
-        this.setCookie("password", window.btoa(this.form.password), 7);
-        this.setCookie("checked", this.form.checked, 7);
-      } else {
-        this.setCookie("username", "", -1);
-        this.setCookie("password", "", -1);
-        this.setCookie("checked", this.form.checked, 7);
-      }
+      // if (this.form.checked) {
+      //   this.form.username = this.setCookie("username", this.form.username, 7);
+      //   this.form.password = this.setCookie("password", this.form.password, 7);
+      //   this.form.checked = this.setCookie("checked", this.form.checked, 7);
+      //   console.log(this.form.username);
+      //   console.log(this.form.password);
+      // } else {
+      //   this.form.username = this.setCookie("username", "", -1);
+      //   this.form.password = this.setCookie("password", "", -1);
+      //   this.form.checked = this.setCookie("checked", this.form.checked, 7);
+      // }
     },
     setCookie(cName, value, expiredays) {
       var exdate = new Date();
@@ -270,15 +289,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
     // 进页面直接调用验证码
     this.generatorCaptcha();
 
-    // 账号信息自动填充到登录输入框中(取cookie)
-    let username = window.atob(this.getCookie("username"));
-    let password = window.atob(this.getCookie("password"));
-    // 如果存在赋值给表单，并且将记住密码勾选
-    if (username) {
-      this.form.username = username;
-      this.form.password = password;
-      this.form.checked = true;
-    }
+    console.log(this.cookie);
   },
 
   mounted() {

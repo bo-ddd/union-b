@@ -1,8 +1,10 @@
 <template>
   <div id="wrap">
-    <el-button type="primary" @click="submit">创建banner图</el-button>
+    <el-button type="primary" @click="createBan">创建banner图</el-button>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date"  width='200'>
+      <el-table-column prop="id" label="id" width='200'>
+      </el-table-column>
+      <el-table-column prop="date" width='200'>
           <template slot="header">
               <span>图片</span>
           </template>
@@ -91,32 +93,34 @@ export default {
                 name : '',
                 describe : '',
             },
-            title : '',
+            imgUrl : '',
+            id : '',
         }
     },
     methods :{
-        ...mapActions(["uploadImage"]),
+        //                上传图片      创建banner图
+        ...mapActions(["uploadImage","createBanner"]),
+        // 编辑的点击事件
         openLayer (a) {
-            this.title = 2;
             this.dialogFormVisible = true;
-            console.log(a);
+            this.form.name=a.row.name;
+            this.form.describe = a.row.address;
+            this.id = a.row.id;
         },
+        // 上传的http事件
         async uploadimg(a){
-            if(this.title ==1){
-                // console.log('创建按钮');
-                let res = uploadImg(a.file,1); 
-                let twores = await this.uploadImage(res);
-                console.log(twores.data);
-            }else{
-                console.log('修改按钮');
-            }
+            let b = uploadImg(a.file,1);
+            let c = await this.uploadImage(b);
+            this.imgUrl = c.data;
         },
+        // 模态框中的确定事件
         modify(){
             this.dialogFormVisible = false;
         },
-        submit(){
-            this.title = 1;
+        createBan(){
             this.dialogFormVisible = true;
+            this.form.name = '';
+            this.form.describe = '';
         }
     }
 }

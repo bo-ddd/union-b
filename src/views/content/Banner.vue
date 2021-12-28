@@ -1,5 +1,6 @@
 <template>
   <div id="wrap">
+    <el-button type="primary" @click="submit">主要按钮</el-button>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="date"  width='200'>
           <template slot="header">
@@ -16,7 +17,7 @@
               <span>图片信息</span>
           </template>
       </el-table-column>
-      <el-table-column prop="address" label="地址">
+      <el-table-column prop="address" label="路由">
       </el-table-column>
       <el-table-column width='200'>
           <template slot="header">
@@ -29,17 +30,66 @@
 
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisible">
-            <div class="flex">
-                <span>打开方式</span>
-                <el-radio v-model="radio" label="1" class="ml-20">当前标签页打开</el-radio>
-                <el-radio v-model="radio" label="2">新开标签页打开</el-radio>
-            </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
+    <el-dialog :visible.sync="dialogFormVisible1">
+        <div class="modifydata">
+            <el-form :model="form">
+                <el-form-item label="图片">
+                    <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
+                    <el-upload
+                        action=""
+                        list-type="picture-card"
+                        :http-request='uploadimg'
+                        >
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                        <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                </el-form-item>
+                <el-form-item label="图片信息">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片路由">
+                    <el-input v-model="form.describe" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+            <el-button type="primary"  @click="modify">确 定</el-button>
+        </div>
     </el-dialog>
+
+    <el-dialog :visible.sync="dialogFormVisible2">
+        <div class="modifydata">
+            <el-form :model="form">
+                <el-form-item label="图片">
+                    <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
+                    <el-upload
+                        action=""
+                        list-type="picture-card"
+                        :http-request='uploadimg'
+                        >
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                        <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                </el-form-item>
+                <el-form-item label="图片信息">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片路由">
+                    <el-input v-model="form.describe" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary"  @click="submit">确 定</el-button>
+        </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -64,29 +114,49 @@ export default {
                 name: '王小虎',
                 address: '上海市普陀区金沙江路 1516 弄'
             }],
-            dialogFormVisible: false,
+            dialogFormVisible1: false,
+            dialogFormVisible2: false,
             form : {
                 name : '',
             },
-            radio: '1',
         }
     },
     methods :{
         openLayer (a) {
-            this.dialogFormVisible = true;
+            this.dialogFormVisible1 = true;
             console.log(a);
+        },
+        uploadimg(a){
+            console.log(a);
+        },
+        modify(){
+            this.dialogFormVisible1 = false;
+        },
+        submit(){
+            this.dialogFormVisible2 = true;
         }
     }
 }
 </script>
 
 <style lang='scss' scoped>
+.modifydata{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+
+    & div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
 .ml-20{
     margin-left: 20px;
 }
 // 模态框最外面的div
 ::v-deep .el-dialog{
-    width: 30%;
+    width: 25%;
 }
 .flex{
     display: flex;

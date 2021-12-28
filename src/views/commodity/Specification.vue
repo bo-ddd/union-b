@@ -9,7 +9,7 @@
             @click="addspecification, (dialogaddFormVisible = true)"
             >添加规格</el-button
           >
-          <el-button type="primary">保存排序</el-button>
+          <!-- <el-button type="primary">保存排序</el-button> -->
           <el-button
             type="primary"
             class="batch_del_btn"
@@ -48,9 +48,29 @@
             <!-- <el-form-item label="备注" :label-width="formLabelWidth">
               <el-input v-model="form1.name" autocomplete="off"></el-input>
             </el-form-item> -->
-            <el-form-item label="类目id" :label-width="formLabelWidth">
+            <el-form-item label="类目名称" :label-width="formLabelWidth">
               <el-input v-model="form1.cid" autocomplete="off"></el-input>
+              <!-- <el-select placeholder="请选择" class="sel"></el-select> -->
             </el-form-item>
+            <!-- <el-form-item label="类目名称" class="classifya">
+              <template>
+                <div class="block">
+                  <span class="demonstration"></span>
+                  <el-cascader
+                    ref="cascader"
+                    :options="options"
+                    @change="getId()"
+                    :props="{
+                      checkStrictly: true,
+                      label: 'title',
+                      children: 'child',
+                      value: 'title',
+                    }"
+                    clearable
+                  ></el-cascader>
+                </div>
+              </template>
+            </el-form-item> -->
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
@@ -71,6 +91,7 @@
         stripe
       >
         <el-table-column
+          :reserve-selection="true"
           type="selection"
           align="center"
           v-model="checked"
@@ -86,18 +107,18 @@
         >
         </el-table-column>
         <el-table-column
-          label="备注"
+          label="商品类目"
           prop="productCategory"
           show-overflow-tooltip
           align="center"
         >
         </el-table-column>
-        <el-table-column label="排序" show-overflow-tooltip align="center">
-          <template>
-            <i class="el-icon-sort-up"></i>
-            <i class="el-icon-sort-down"></i>
+        <!-- <el-table-column label="排序" show-overflow-tooltip align="center">
+          <template slot-scope="scoped">
+            <el-link type="primary" @click="ascendingOrder(scoped.row)">升序</el-link>
+            <el-link class="ml-10" type="primary">降序</el-link>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="操作" show-overflow-tooltip align="center">
           <template slot-scope="scope">
             <el-button
@@ -120,7 +141,7 @@
                     autocomplete="off"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="备注" :label-width="formLabelWidth">
+                <el-form-item label="商品类目" :label-width="formLabelWidth">
                   <el-input v-model="form.remark" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="排列顺序" :label-width="formLabelWidth">
@@ -180,7 +201,7 @@ export default {
       select: "",
       currentPage1: 1,
       currentPage4: 1,
-      pageSize1: 45,
+      pageSize1: 50,
       pageNum1: "",
       options: [
         {
@@ -189,7 +210,7 @@ export default {
         },
         {
           value: "选项2",
-          label: "备注",
+          label: "商品类目",
         },
       ],
       pagination: false,
@@ -219,6 +240,8 @@ export default {
       table: [],
       pageSize: 10, //每页条数
       renderDynamic: [],
+      cacheArr: [],
+      arr4: [],
     };
   },
   watch: {
@@ -237,11 +260,13 @@ export default {
      * getSpecificationList获取所有的类目接口
      * createSpecification 添加规格接口
      * deleteSpecification 删除规格接口
+     * getCategoryList商品类目接口
      */
     ...mapActions([
       "getSpecificationList",
       "createSpecification",
       "deleteSpecification",
+      "getCategoryList",
     ]),
     toggleSelection(rows) {
       if (rows) {
@@ -252,9 +277,9 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
+    // handleSelectionChange(val) {
+    //   this.multipleSelection = val;
+    // },
     //添加规格
     async addspecification() {
       let res = await this.createSpecification({
@@ -266,38 +291,53 @@ export default {
     },
     //批量删除
     multipleRemove() {
-      this.deleteDataArr = [...new Set(this.deleteDataArr)];
+      // console.log(this.renderDynamic);
+      for (let i = 0; i < this.renderDynamic.length; i++) {
+        if (!this.cacheArr.includes(this.renderDynamic[i])) {
+          this.cacheArr.push(this.renderDynamic[i]);
+        } else {
+          let temp = this.cacheArr.indexOf(this.renderDynamic[i]);
+          this.cacheArr.splice(temp, 1);
+        }
+      }
+      this.cacheArr.forEach((item) => {
+        this.table.splice(this.table.indexOf(item), 1);
+      });
     },
-    checkBoxData: function (selection) {
-      console.log(selection);
+    checkBoxData: function (selection, row) {
+      this.renderDynamic.push(row);
+    },
+    handleSelectionChange(val) {
+      if (!val.length) {
+        this.renderDynamic = [];
+      } else {
+        val.forEach((item) => {
+          this.renderDynamic.push(item);
+        });
+      }
     },
     //单个修改
     editListData() {
       console.log("单个修改成功");
     },
     /**
-     * 删除当前行
+     * @description 删除当前行
      */
-    deleteData() {
-      // for (var i = 0; i < this.renderDynamic.length; i++) {
-      //   let el = this.renderDynamic[i];
-      //   if (row.ord == el.ord) {
-      //     this.renderDynamic.splice(i, 1);
-      //   } else {
-      //     for (var j = 0; j < el.child.length; j++) {
-      //       if (row.ord == el.child[j].ord) {
-      //         el.child.splice(j, 1);
-      //       }
-      //     }
-      //   }
-      // }
-      // this.ordSort(this.renderDynamic);
+    async deleteData(row) {
+      for (var i = 0; i < this.renderDynamic.length; i++) {
+        let el = this.renderDynamic[i];
+        if (row.id == el.id) {
+          //从第I个开始删除一个
+          this.renderDynamic.splice(i, 1);
+        }
+      }
+      //重新渲染页面
+      this.spelist(this.renderDynamic);
+      let res = await this.deleteSpecification({
+        id: row.id,
+      });
+      console.log(res);
     },
-
-    //保存排序
-    // formatter(row) {
-    //   return row.address;
-    // },
 
     /**
      * 升序
@@ -306,6 +346,7 @@ export default {
     //   console.log(row);
     //   let res = {};
     //   var formatData = (row) => {
+    //     this.renderDynamic.reverse()
     //     for (let i = 0; i < this.renderDynamic.length; i++) {
     //       let item = this.renderDynamic[i];
     //       if (item.id == row.id) {
@@ -316,12 +357,19 @@ export default {
     //         break;
     //       }
     //     }
-    //     console.log(formatData)
+    //     // console.log(formatData);
     //     return res;
     //   };
+    //   let aaa= formatData(row);
+    //   console.log(aaa);
     // },
-
-    //获取所有类目规格
+    getRowKeys(row) {
+      //记录每行的key值
+      return row.id;
+    },
+    /**
+     * 获取所有类目规格
+     * */
     async spelist() {
       let res = await this.getSpecificationList({
         pagination: false,
@@ -331,7 +379,6 @@ export default {
       console.log(res);
       // this.pageSize1 = res.data.count.slice();
       this.renderDynamic = res.data.rows.slice();
-
       this.handleSizeChange(10);
     },
     //分页
@@ -355,6 +402,16 @@ export default {
   },
   async created() {
     this.spelist();
+    /**
+     * 商品类目接口方法
+     */
+    let resource = await this.getCategoryList({
+      pagination: false,
+      pageNum: 1,
+      pageSize: 10,
+    });
+    console.log("aaa");
+    console.log(resource);
   },
 };
 </script>
@@ -437,5 +494,8 @@ export default {
 }
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
+}
+.ml-10 {
+  margin-left: 10px;
 }
 </style>

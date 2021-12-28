@@ -185,13 +185,13 @@ export default {
         let res = await this.getCategoryList({});
        let data =res.data.rows.slice();
         this.arr = data;
-       let target = this.format(data)
+       let target = this.format(data);
        this.options = target
       },
        format(target) {
       let res = target.slice();
       res.forEach((item) => {
-        item.child = item.child || [];
+        // item.child = item.child || [];
         let p = res.find((type) => item.pid == type.id);
         if (item.pid && p) {
           p.child = p.child || [];

@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
-// const isProduction = process.env.NODE_ENV === 'production'
+    // const isProduction = process.env.NODE_ENV === 'production'
 
 module.exports = {
     devServer: {
@@ -12,7 +12,7 @@ module.exports = {
         //替换结果为 localhost:8080/user/info
         proxy: {
             '/api': {
-                target: 'http://192.168.1.32:7001', //填写服务端的接口地址；
+                target: 'http://localhost:7001', //填写服务端的接口地址；
                 pathRewrite: {
                     '^/api': ''
                 }
@@ -31,4 +31,16 @@ module.exports = {
             })
         ],
     },
+    chainWebpack: (config) => {
+        config.externals({
+            'echarts': 'echarts',
+            'vue': 'Vue',
+            'vue-router': 'VueRouter',
+            'vuex': 'Vuex',
+            "element-ui": "ELEMENT",
+            "FileSaver": "FileSaver",
+            "xlsx": "XLSX",
+            "wangeditor": "wangEditor",
+        });
+    }
 }

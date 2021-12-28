@@ -10,7 +10,7 @@
             <el-button type="primary">批量关联</el-button>
           </div> -->
         </div>
-        
+
         <el-table
           v-loading="loading"
           element-loading-text="拼命加载中"
@@ -22,17 +22,18 @@
           style="width: 97%"
           @select="select"
           @select-all="selectAll"
-          :tree-props="{children: 'child'}"
+          :tree-props="{ children: 'child' }"
           :header-cell-style="{ background: '#fafafa' }"
         >
-          <el-table-column align="center" type="selection" width="55"> </el-table-column>
+          <el-table-column align="center" type="selection" width="55">
+          </el-table-column>
           <el-table-column
-          align="center"
+            align="center"
             label="分类名称"
             prop="title"
             width="200"
           ></el-table-column>
-          <el-table-column label="关联"  align="center">
+          <el-table-column label="关联" align="center">
             <template slot-scope="scope">
               <el-link type="primary">品牌</el-link>
               <el-link class="ml-10" type="primary">{{
@@ -41,15 +42,15 @@
             </template>
           </el-table-column>
           <el-table-column
-           align="center"
+            align="center"
             label="创建日期"
             width="350"
             show-overflow-tooltip
             sortable
           >
-            <template slot-scope="scope">{{scope.row.createdTime }}</template>
+            <template slot-scope="scope">{{ scope.row.createdTime }}</template>
           </el-table-column>
-        
+
           <el-table-column label="操作" show-overflow-tooltip align="center">
             <template slot-scope="scope">
               <el-link type="primary" @click="ascendingOrder(scope.row)"
@@ -80,7 +81,7 @@
             :page-sizes="[10, 20, 30, 40, 50]"
             :page-size="100"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="renderDynamic.length"
+            :total="renderData.length"
             background
           >
           </el-pagination>
@@ -96,79 +97,79 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      loading:true,
+      loading: true,
       checked: true,
       size: "",
       currentPage: 1,
       table: [],
       pageSize: 10,
-      renderDynamic: [],
+      renderData: [],
     };
   },
   methods: {
-    ...mapActions(["getCategoryList","categoryOrders","deleteCategory"]),
-        setChildren(children, type) {
+    ...mapActions(["getCategoryList", "categoryOrders", "deleteCategory"]),
+    setChildren(children, type) {
       // 编辑多个子层级
       children.map((j) => {
-        this.toggleSelection(j, type)
+        this.toggleSelection(j, type);
         if (j.child) {
-          this.setChildren(j.child, type)
+          this.setChildren(j.child, type);
         }
-      })
+      });
     },
-        // 选中父节点时，子节点一起选中取消
+    // 选中父节点时，子节点一起选中取消
     select(selection, row) {
       if (
         selection.some((el) => {
-          return row.id === el.id
+          return row.id === el.id;
         })
       ) {
         if (row.child) {
           // 解决子组件没有被勾选到
-          this.setChildren(row.child, true)
+          this.setChildren(row.child, true);
         }
       } else {
         if (row.childList) {
-          this.setChildren(row.child, false)
+          this.setChildren(row.child, false);
         }
       }
     },
     toggleSelection(row, select) {
       if (row) {
         this.$nextTick(() => {
-          this.$refs.table && this.$refs.table.toggleRowSelection(row, select)
-        })
+          this.$refs.table && this.$refs.table.toggleRowSelection(row, select);
+        });
       }
     },
     // 选择全部
     selectAll(selection) {
       // tabledata第一层只要有在selection里面就是全选
       const isSelect = selection.some((el) => {
-        const tableDataIds = this.table.map((j) => j.id)
-        return tableDataIds.includes(el.id)
-      })
+        const tableDataIds = this.table.map((j) => j.id);
+        return tableDataIds.includes(el.id);
+      });
       // tableDate第一层只要有不在selection里面就是全不选
       const isCancel = !this.table.every((el) => {
-        const selectIds = selection.map((j) => j.id)
-        return selectIds.includes(el.id)
-      })
+        const selectIds = selection.map((j) => j.id);
+        return selectIds.includes(el.id);
+      });
       if (isSelect) {
         selection.map((el) => {
           if (el.child) {
             // 解决子组件没有被勾选到
-            this.setChildren(el.child, true)
+            this.setChildren(el.child, true);
           }
-        })
+        });
       }
       if (isCancel) {
         this.table.map((el) => {
           if (el.child) {
             // 解决子组件没有被勾选到
-            this.setChildren(el.child, false)
+            this.setChildren(el.child, false);
           }
-        })
+        });
       }
-      this.$emit('handleSelect', this.table)
+      this.$emit("handleSelect", this.table);
     },
     /**
      * @description 跳转到新增分类页面
@@ -196,7 +197,7 @@ export default {
         i < val * this.pageSize;
         i++
       ) {
-        if (this.renderDynamic[i] != undefined) arr.push(this.renderDynamic[i]);
+        if (this.renderData[i] != undefined) arr.push(this.renderData[i]);
       }
       this.table = arr;
     },
@@ -205,17 +206,17 @@ export default {
      */
     async commodityInfo() {
       let res = await this.getCategoryList({});
-        console.log(res);
-       if(res.status==1){
-       this.loading = false ;
-      let data = res.data.rows.slice();
-      let target = this.format(data);
-      target.forEach((el) => {
+      console.log(res);
+      if (res.status == 1) {
+        this.loading = false;
+        let data = res.data.rows.slice();
+        let target = this.format(data);
+        target.forEach((el) => {
           el.association = "";
-      });
-      this.renderDynamic = target;
-      this.handleSizeChange(10);
-       }
+        });
+        this.renderData = target;
+        this.handleSizeChange(10);
+      }
     },
     format(target) {
       let res = target.slice();
@@ -227,7 +228,7 @@ export default {
           p.child = p.child || [];
           p.child.push(item);
         }
-           item.createdTime = getTime(item.createdAt);
+        item.createdTime = getTime(item.createdAt);
         item.category = p ? p.category + "=>" + item.title : item.title;
       });
       return res.filter((type) => type.pid === null);
@@ -236,16 +237,16 @@ export default {
      * @description 当前行上升一位
      */
     async ascendingOrder(row) {
-      console.log(row.ord)
+      console.log(row.ord);
       //返回当前行所在的父级中所有的数据；
       var fn = (row) => {
         console.log(row);
         if (row.child.length) {
           return row.child;
         } else {
-          for (var i = 0; i < this.renderDynamic.length; i++) {
-            if (this.renderDynamic[i].id == row.pid) {
-              return this.renderDynamic[i].child;
+          for (var i = 0; i < this.renderData.length; i++) {
+            if (this.renderData[i].id == row.pid) {
+              return this.renderData[i].child;
             }
           }
         }
@@ -266,13 +267,13 @@ export default {
             }
           }
         } else {
-          for (let i = 0; i < this.renderDynamic.length; i++) {
-            let item = this.renderDynamic[i];
+          for (let i = 0; i < this.renderData.length; i++) {
+            let item = this.renderData[i];
             if (item.id == row.id) {
               // console.log(item);
-              res.i = i; 
+              res.i = i;
               res.currentData = item; //当前的数据；
-              res.preData = this.renderDynamic[i - 1]; //上一个数据；
+              res.preData = this.renderData[i - 1]; //上一个数据；
               break;
             }
           }
@@ -280,21 +281,21 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj)
-      if(obj.i){
-          let ord = obj.currentData.ord;
-      obj.currentData.ord = obj.preData.ord;
-      obj.preData.ord = ord;
-        this.ordSort(this.renderDynamic);
+      console.log(obj);
+      if (obj.i) {
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        this.ordSort(this.renderData);
         let res = await this.categoryOrders([
-         obj.currentData.id,
-           obj.preData.id,]
-        );
-        console.log(res)
-      }else{
-        this.$message("已经是第一个了不能再升序了")
+          obj.currentData.id,
+          obj.preData.id,
+        ]);
+        console.log(res);
+      } else {
+        this.$message("已经是第一个了不能再升序了");
       }
-    },  
+    },
     /**
      * @description 根据ord进行排序完成后 重新渲染页面
      */
@@ -319,15 +320,15 @@ export default {
     /**
      * @description 当前行下降一位
      */
-  async sescendingOrder(row) {
+    async sescendingOrder(row) {
       var fn = (row) => {
         console.log(row);
         if (row.child.length) {
           return row.child;
         } else {
-          for (var i = 0; i < this.renderDynamic.length; i++) {
-            if (this.renderDynamic[i].id == row.pid) {
-              return this.renderDynamic[i].child;
+          for (var i = 0; i < this.renderData.length; i++) {
+            if (this.renderData[i].id == row.pid) {
+              return this.renderData[i].child;
             }
           }
         }
@@ -335,7 +336,7 @@ export default {
       //获取当前层所有额数据；
       var formatData = (row) => {
         let res = {};
-             let childData = fn(row);
+        let childData = fn(row);
         if (row.pid) {
           for (let i = 0; i < childData.length; i++) {
             let item = childData[i];
@@ -348,13 +349,13 @@ export default {
             }
           }
         } else {
-          for (let i = 0; i < this.renderDynamic.length; i++) {
-            let item = this.renderDynamic[i];
+          for (let i = 0; i < this.renderData.length; i++) {
+            let item = this.renderData[i];
             if (item.id == row.id) {
               // console.log(item);
               res.i = i;
               res.currentData = item; //当前的数据；
-              res.preData = this.renderDynamic[i + 1]; //上一个数据；
+              res.preData = this.renderData[i + 1]; //上一个数据；
               break;
             }
           }
@@ -363,24 +364,21 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
-        let ord = obj.currentData.ord;
-        obj.currentData.ord = obj.preData.ord;
-        obj.preData.ord = ord;
-        this.ordSort(this.renderDynamic);
-          let res = await this.categoryOrders([
-          obj.currentData.id,
-          obj.preData.id]  
-        );
-        console.log(res)
-    }, 
+      let ord = obj.currentData.ord;
+      obj.currentData.ord = obj.preData.ord;
+      obj.preData.ord = ord;
+      this.ordSort(this.renderData);
+      let res = await this.categoryOrders([obj.currentData.id, obj.preData.id]);
+      console.log(res);
+    },
     /**
      * @description 删除当前行
      */
-  async deleteData(row) {
-      for (var i = 0; i < this.renderDynamic.length; i++) {
-        let el = this.renderDynamic[i];
+    async deleteData(row) {
+      for (var i = 0; i < this.renderData.length; i++) {
+        let el = this.renderData[i];
         if (row.ord == el.ord) {
-          this.renderDynamic.splice(i, 1);
+          this.renderData.splice(i, 1);
         } else {
           for (var j = 0; j < el.child.length; j++) {
             if (row.ord == el.child[j].ord) {
@@ -389,11 +387,11 @@ export default {
           }
         }
       }
-      this.ordSort(this.renderDynamic);
+      this.ordSort(this.renderData);
       let res = await this.deleteCategory({
-        id:[row.id],
-      })
-      console.log(res)
+        id: [row.id],
+      });
+      console.log(res);
     },
   },
   created() {

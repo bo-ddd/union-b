@@ -533,7 +533,7 @@ export default {
       console.log(val.file);
       let res = await this.uploadImage(formData);
       console.log(res);
-      this.src1 = res.data
+      this.src1 = res.data;
     },
     objectSpanMethod({ rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -566,14 +566,15 @@ export default {
       // console.log(Number(this.commodityPlatformPrice) );
       // console.log(+this.sellingPriceGoods);
       let res = await this.createProduct({
-  "cid": 2,
-  "title": "景天阳",
-  "keywords": "日用类",
-  "bannerImg": "http://unier.oss-cn-beijing.aliyuncs.com/category/1c82e33a-9724-4f34-844f-5f922c1fd486.jpg",
-  "platformPrice": 1,
-  "desc": "这是一个景天阳",
-  "realPrice": 1
-});
+        cid: 2,
+        title: "景天阳",
+        keywords: "日用类",
+        bannerImg:
+          "http://unier.oss-cn-beijing.aliyuncs.com/category/1c82e33a-9724-4f34-844f-5f922c1fd486.jpg",
+        platformPrice: 1,
+        desc: "这是一个景天阳",
+        realPrice: 1,
+      });
       console.log(res);
     },
   },

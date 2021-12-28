@@ -109,6 +109,10 @@ export default new Vuex.Store({
         createCategory(ctx, payload) {
             return Api.createCategory(payload);
         },
+        //删除类目接口
+        deleteCategory(ctx, payload) {
+            return Api.deleteCategory(payload);
+        },
         //商品类目排序接口
         categoryOrders(ctx, payload) {
             return Api.categoryOrders(payload);
@@ -121,17 +125,29 @@ export default new Vuex.Store({
         createSpecification(ctx, payload) {
             return Api.createSpecification(payload);
         },
+        //删除规格接口
+        deleteSpecification(ctx, payload) {
+            return Api.deleteSpecification(payload);
+        },
         //添加商品接口
         createProduct(ctx, payload) {
             return Api.createProduct(payload);
+        },
+        //删除商品接口
+        deleteProduct(ctx, payload) {
+            return Api.deleteProduct(payload);
         },
         //商品属性接口
         getAttributeList(ctx, payload) {
             return Api.getAttributeList(payload);
         },
-        //商品属性接口
+        //添加属性接口
         createAttribute(ctx, payload) {
             return Api.createAttribute(payload);
+        },
+        //删除属性接口
+        deleteAttribute(ctx, payload) {
+            return Api.deleteAttribute(payload);
         },
         //商品单位接口
         getUnitlibraryList(ctx, payload) {
@@ -141,6 +157,10 @@ export default new Vuex.Store({
         createUnitlibrary(ctx, payload) {
             return Api.createUnitlibrary(payload);
         },
+        //删除单位接口
+        disableUnitlibrary(ctx, payload) {
+            return Api.disableUnitlibrary(payload);
+        },
         //商品单位排序接口
         unitlibraryOrders(ctx, payload) {
             return Api.unitlibraryOrders(payload);
@@ -148,6 +168,18 @@ export default new Vuex.Store({
         //商品单位置顶接口
         unitlibraryStick(ctx, payload) {
             return Api.unitlibraryStick(payload);
+        },
+        //商品属性置顶接口
+        attributeStick(ctx, payload) {
+            return Api.attributeStick(payload);
+        },
+        //商品属性排序接口
+        attributeOrders(ctx, payload) {
+            return Api.attributeOrders(payload);
+        },
+        //单位模糊查询接口
+        unitlibraryFuzzySearch(ctx, payload) {
+            return Api.unitlibraryFuzzySearch(payload);
         },
 
 
@@ -180,6 +212,22 @@ export default new Vuex.Store({
         getAdvertList(ctx, payload) {
             return Api.getAdvertList(payload);
         },
+        //新增广告接口
+        createAdvert(ctx, payload) {
+            return Api.createAdvert(payload);
+        },
+        //更改广告接口
+        updateAdvert(ctx, payload) {
+            return Api.updateAdvert(payload);
+        },
+        //删除广告接口
+        deleteAdvert(ctx, payload) {
+            return Api.deleteAdvert(payload);
+        },
+        //根据Id查询广告
+        findIdAdvert(ctx, payload) {
+            return Api.findIdAdvert(payload);
+        },
         //优品展示接口
         getSuperList(ctx, payload) {
             return Api.getSuperList(payload);
@@ -200,6 +248,14 @@ export default new Vuex.Store({
         createArticle(ctx, payload) {
             return Api.createArticle(payload);
         },
+        //删除文章接口
+        deleteArticle(ctx, payload) {
+            return Api.deleteArticle(payload);
+        },
+        //修改文章接口
+        updateArticle(ctx, payload) {
+            return Api.updateArticle(payload);
+        },
         //导航列表接口
         getNavList(ctx, payload) {
             return Api.getNavList(payload);
@@ -212,12 +268,32 @@ export default new Vuex.Store({
         deleteNav(ctx, payload) {
             return Api.deleteNav(payload);
         },
+        //获取商品Id以及名称
+        superProductTradeName(ctx, payload) {
+            return Api.superProductTradeName(payload);
+        },
+        //根据商品Id获取图片
+        superProductTradeImg(ctx, payload) {
+            return Api.superProductTradeImg(payload);
+        },
+        //新增推荐商品
+        createSuperProduct(ctx, payload) {
+            return Api.createSuperProduct(payload);
+        },
+        //更改推荐商品
+        updateSuperProduct(ctx, payload) {
+            return Api.updateSuperProduct(payload);
+        },
 
 
         //订单管理
         //订单列表接口
         getOrderList(ctx, payload) {
             return Api.getOrderList(payload);
+        },
+        //获取快递接口
+        getExpressList(ctx, payload) {
+            return Api.getExpressList(payload);
         },
         //订单详情接口
         getOrderDetail(ctx, payload) {

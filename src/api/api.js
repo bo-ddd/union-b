@@ -41,7 +41,7 @@ export default {
     /**
      * @description  验证码
      * */
-    getCaptcha() { return `/api/captcha?${Math.random()}` },
+    getCaptcha() { return `${postConfig.baseURL}/captcha?${Math.random()}` },
     /**
      * @description  用户注册接口
      * @params {
@@ -222,7 +222,7 @@ export default {
      * } 
      */
     createProduct(params) {
-        return axios.post('/product/create;', params, postConfig)
+        return axios.post('/product/create', params, postConfig)
     },
     /**
      * @description 删除商品接口 
@@ -231,7 +231,7 @@ export default {
      * } 
      */
     deleteProduct(params) {
-        return axios.post('/product/delete;', params, postConfig)
+        return axios.post('/product/delete', params, postConfig)
     },
     /**
      * @description 商品属性接口

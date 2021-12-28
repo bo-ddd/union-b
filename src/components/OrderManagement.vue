@@ -4,7 +4,7 @@
       <div class="top-l">
         <!-- 订单状态 -->
         <div class="select">
-          <span class="mr-10" @click="updateOrderStatus">订单状态</span>
+          <span class="mr-10" >订单状态</span>
           <el-select
             size="small"
             v-model="orderStatusSelect"
@@ -91,7 +91,7 @@
       <div class="top-r">
         <el-button
           type="primary"
-          @click="querySelectOrderStatus(), queryOrder()"
+          @click="queryOrder"
           >查询</el-button
         >
         <el-button type="primary" @click="resetOrderStatus">重置</el-button>
@@ -171,7 +171,6 @@ export default {
       cacheExport: [],
       multipleSelection: [],
       allOrderList: [],
-
       orderStatus: [],
       paymentStatus: [],
       orderType: [],
@@ -223,8 +222,6 @@ export default {
     this.getExpressListData();
     // 获取订单列表
     await this.getOrderListData();
-    // 更新订单状态
-    this.updateOrderStatus();
     //
     this.handleCurrentChange(1);
     
@@ -258,11 +255,6 @@ export default {
           this.orderStatusId = item.id;
         }
       });
-       this.$router.push({
-        query: { orderType: this.orderStatusId },
-        name: "Allorders",
-      });
-      this.getOrderListData();
     },
 
     /**
@@ -312,12 +304,11 @@ export default {
       let res = await this.getOrderStatusList();
       if (res.status == 1) {
         this.orderStatus = res.data.rows;
-        // let obj = {
-        //   id:0,
-        //   status:'全部',
-        // }
-        // this.orderStatus.unshift(obj);
-        // console.log(this.orderStatus);
+        let obj = {
+          id:0,
+          status:'全部',
+        }
+        this.orderStatus.unshift(obj);
       }
     },
 
@@ -348,7 +339,6 @@ export default {
       if(this.orderStatusId) obj.orderStatus = this.orderStatusId;
       obj.pageNum = this.pageNum;
       obj.pageSize = this.pageSize;
-      console.log(obj)
       let res = await this.getOrderList(obj);
       if (res.status) {
         this.allOrderList = res.data.rows;
@@ -409,45 +399,6 @@ export default {
       this.storeTitle = "";
       this.avatorName = "";
       this.consigneeVal = "";
-    },
-
-    /**
-     * @description 查询所有选中的状态
-     * **/
-    querySelectOrderStatus() {
-      console.log(this.orderStatus);
-      console.log(this.orderStatusSelect);
-      console.log(this.paymentStatusSelect);
-      console.log(this.orderTypeSelect);
-      console.log(this.orderNoSelect);
-      console.log(this.orderId);
-    },
-
-    /**
-     * @description 订单状态选择
-     *
-     * **/
-    async updateOrderStatus() {
-      // for (let i = 0; i < this.orderStatus.length; i++) {
-      //   if (this.$route.meta.title != "全部订单") {
-      //     if (!this.$route.meta.title.includes(this.orderStatus[i].status)) {
-      //       this.orderStatus[i].disabled = true;
-      //     } else {
-      //       this.orderStatusSelect = this.orderStatus[i].status;
-      //       this.orderStatusId = parseInt(this.orderStatus[i].id);
-      //     }
-      //   }
-      // }
-
-      // this.allOrder.forEach((item) => {
-      //   console.log(item.orderStatus == val);
-      //   if (item.orderStatus == val) {
-      //     this.order.push(item);
-      //   } else if (val == "全部订单") {
-      //     this.order.push(item);
-      //   }
-      // });
-
     },
 
     /**

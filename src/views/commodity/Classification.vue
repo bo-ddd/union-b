@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="wrap">
-      <div class="content">
+      <div class="content"  
+             v-loading="loading"
+          element-loading-text="拼命加载中"
+          element-loading-background="rgba(0, 0, 0, 0.8)">
         <div class="new-module">
           <div @click="jump" class="add-classification">
             <el-button type="primary">+ 新增分类</el-button>
@@ -12,9 +15,6 @@
         </div>
 
         <el-table
-          v-loading="loading"
-          element-loading-text="拼命加载中"
-          element-loading-background="rgba(0, 0, 0, 0.8)"
           :data="table"
           ref="table"
           border
@@ -178,6 +178,7 @@ export default {
      */
     async commodityInfo() {
       let res = await this.getCategoryList({});
+      console.log(res);
       if (res.status == 1) {
         this.loading = false;
         let data = res.data.rows.slice();
@@ -185,7 +186,6 @@ export default {
         target.forEach((el) => {
           el.association = "";
         });
-         console.log(target);
         this.renderData = target;
         this.handleSizeChange(10);
       }
@@ -252,10 +252,11 @@ export default {
         }
         return res;
       };
+      console.log(this.renderData)
       let obj = formatData(row);
       console.log(obj);
-        this.ordSort(this.renderData);
       if (obj.i) {
+          this.loading = true;
         let ord = obj.currentData.ord;
         obj.currentData.ord = obj.preData.ord;
         obj.preData.ord = ord;
@@ -264,6 +265,10 @@ export default {
           obj.preData.id,
         ]);
         console.log(res);
+        if(res.status==1){
+          this.ordSort(this.renderData);
+            this.loading = false;
+        }
       } else {
         this.$message("已经是第一个了不能再升序了");
       }
@@ -287,7 +292,6 @@ export default {
         return num2 - num1;
       });
       this.table = arr;
-      console.log(this.table)
       this.handleSizeChange(10);
     },
     /**
@@ -337,12 +341,16 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
+        this.loading = true;
       let ord = obj.currentData.ord;
       obj.currentData.ord = obj.preData.ord;
       obj.preData.ord = ord;
-      this.ordSort(this.renderData);
       let res = await this.categoryOrders([obj.currentData.id, obj.preData.id]);
       console.log(res);
+      if(res.status==1){
+            this.ordSort(this.renderData);
+          this.loading = false;
+      }
     },
     /**
      * @description 删除当前行

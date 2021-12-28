@@ -817,4 +817,9 @@ export default {
     text-align: center;
     line-height: 60px;
   }
+  .el-tag--small {
+    height: 30px;
+    padding: 0 10px;
+    line-height: 30px;
+}
 </style>

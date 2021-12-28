@@ -60,8 +60,8 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="primary" @click="query">查询</el-button>
-            <el-button type="primary">重置</el-button>
+            <el-button type="primary" @click="query(flag1)">查询</el-button>
+            <el-button type="primary" @click="reset">重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
@@ -76,7 +76,7 @@
       <div>
         <el-table
           ref="multipleTable"
-          :data="articles()"
+          :data="table"
           tooltip-effect="dark"
           style="width: 100%"
           stripe
@@ -130,11 +130,11 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page.sync="currentPage"
+            :current-page.sync="page"
             :page-sizes="[10, 20, 30]"
-            :page-size="pageSize"
+            :page-size="limit"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.length"
+            :total="tablelength"
             class="page"
           >
           </el-pagination>
@@ -674,69 +674,112 @@ export default {
         ],
       },
       formLabelWidth: "120px",
-      currentPage: 1,
-      pageSize: 10,
+      page: 1,
+      limit: 10,
       table: [],
       pageNum: "",
       num: "",
       cacheArr: [],
+      tablelength: 20,
+      flag: false,
+      flag1: true,
     };
   },
+
   methods: {
     ...mapActions(["getProductList", "deleteProduct"]),
+    pageList() {
+      this.getList(this.query());
+    },
+    getList(arr) {
+      // es6过滤得到满足搜索条件的展示数据list
+      // console.log(arr);
+      this.flag1 = true;
+      if (this.flag) {
+        // console.log(this.table);
+        this.table = arr.filter(
+          (item, index) =>
+            index < this.page * this.limit &&
+            index >= this.limit * (this.page - 1)
+        ); //根据页数显示相应的内容
+        this.tablelength = arr.length;
+      } else {
+        var list = this.tableData.filter((item) =>
+          arr.forEach((element) => {
+            item.name.includes(element);
+          })
+        );
+        // 搜索符号条件的内容
+        // console.log(list);
+        this.table = list.filter(
+          (item, index) =>
+            index < this.page * this.limit &&
+            index >= this.limit * (this.page - 1)
+        ); //根据页数显示相应的内容
+        this.tablelength = list.length;
+      }
+    },
     handleSizeChange(val) {
-      this.pageSize = val;
-      // console.log(this.pageSize);
-      // this.handleCurrentChange(1);
-      //  console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
+      this.limit = val;
+      this.getList(this.query());
     },
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
-      this.pageNum = val;
-      this.offSize();
-      this.tableData.forEach((item) => {
-        item["checked"] = false;
+      console.log(`当前页: ${val}`);
+      this.page = val;
+      console.log(this.arr4);
+      this.cacheArr.forEach((item) => {
+        this.$refs.multipleTable.toggleRowSelection(item, true);
       });
+      this.getList(this.query());
     },
     offSize() {
       this.num = this.pageSize * (this.pageNum - 1);
       this.articles();
     },
     articles(val) {
-      // console.log(val);
       if (!val) {
-        return this.tableData.slice(this.num, this.num + this.pageSize);
+        this.table = this.tableData.slice(this.num, this.num + this.pageSize);
+        // this.tablelength = this.tableData.length;
+      } /*  else {
+        console.log(val);
+        this.table = val;
+        // this.tablelength = this.table.length;
+        this.handleSizeChange(10);
+        this.handleCurrentChange(1);
+      } */
+    },
+    query(flag) {
+      let arr = [];
+      if (!this.commodityStatusValue && !this.salesTypeValue) {
+        arr = this.tableData;
+        this.flag = true;
+      } else if (this.commodityStatusValue && !this.salesTypeValue) {
+        arr = this.tableData.filter((item) => {
+          return item.state == this.commodityStatusValue;
+        });
+      } else if (!this.commodityStatusValue && this.salesTypeValue) {
+        arr = this.tableData.filter((item) => {
+          return item.classify == this.salesTypeValue;
+        });
       } else {
-        return val;
+        arr = this.tableData.filter((item) => {
+          return (
+            item.classify == this.salesTypeValue &&
+            item.state == this.commodityStatusValue
+          );
+        });
+      }
+      if (flag) {
+        this.flag1 = false;
+        return this.pageList();
+      } else {
+        return arr;
       }
     },
-    query() {
-      // console.log(this.tableData);
-      // return this.tableData.slice(this.num, this.num + this.pageSize);
-      console.log(this.tableData);
-      if (!this.commodityStatusValue && !this.salesTypeValue) {
-        this.tableData.slice(this.num, this.num + this.pageSize);
-      } else if (this.commodityStatusValue && !this.salesTypeValue) {
-        console.log(
-          this.tableData.filter((item) => {
-            // item.state == this.commodityStatusValue;
-            console.log(item);
-          })
-        );
-      } else if (!this.commodityStatusValue && this.salesTypeValue) {
-        console.log(
-          this.tableData.filter((item) => {
-            item.classify == this.classify;
-          })
-        );
-      } else {
-        console.log(
-          this.tableData.filter((item) => {
-            item.classify == this.classify &&
-              item.state == this.commodityStatusValue;
-          })
-        );
-      }
+    reset() {
+      this.flag1 = true;
+      this.getList(this.tableData);
     },
     skip() {
       this.$router.push({
@@ -750,12 +793,15 @@ export default {
     },
     async remove(indexArr) {
       this.tableData.splice(this.tableData.indexOf(indexArr[0].row), 1);
+      this.table.splice(this.table.indexOf(indexArr[0].row), 1);
+      this.getList(this.query());
       // let res = await this.deleteProduct({
       //   id: indexArr[0].row.id,
       // });
       // console.log(res);
     },
     multipleRemove() {
+      console.log(this.arr4);
       for (let i = 0; i < this.arr4.length; i++) {
         if (!this.cacheArr.includes(this.arr4[i])) {
           this.cacheArr.push(this.arr4[i]);
@@ -764,12 +810,17 @@ export default {
           this.cacheArr.splice(temp, 1);
         }
       }
+      // console.log(this.cacheArr);
       this.cacheArr.forEach((item) => {
         this.tableData.splice(this.tableData.indexOf(item), 1);
+        this.table.splice(this.table.indexOf(item), 1);
       });
+      this.getList(this.query());
+      // console.log(this);
     },
     checkBoxData: function (selection, row) {
       this.arr4.push(row);
+      // console.log(this.arr4);
     },
     handleSelectionChange(val) {
       if (!val.length) {
@@ -777,13 +828,13 @@ export default {
       } else {
         val.forEach((item) => {
           this.arr4.push(item);
+          this.$refs.multipleTable.toggleRowSelection(item, true);
         });
       }
     },
   },
   async created() {
-    this.handleSizeChange(10);
-    this.handleCurrentChange(1);
+    this.pageList();
     // let res = await this.getProductList({
     // })
     // console.log(res);

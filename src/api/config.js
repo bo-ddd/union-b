@@ -1,4 +1,6 @@
-let serveUrl = '/api';
+const isProduction = process.env.NODE_ENV === 'production'
+let serveUrl = isProduction ? 'http://8.131.89.181:7001' : '/api';
+
 
 export const postConfig = {
     url: "",
@@ -7,7 +9,7 @@ export const postConfig = {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
     },
-    timeout: 5000
+    timeout: 5000,
 }
 export const uploadConfig = {
     url: "",

@@ -337,6 +337,8 @@ export default {
 <style lang="scss" scoped>
 .warp {
   min-width: 1100px;
+  height: 100%;
+  overflow: hidden;
   & .class {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -374,6 +376,7 @@ export default {
     }
   }
   & .bottom{
+    height: 100%;
     & .bottom-s,
     & .bottom-b{
       display: grid;
@@ -398,8 +401,13 @@ export default {
   align-items: center;
 }
 .bottom-b>div{
-  height: 32vh;
+  height: 100%;
+  margin: 0 !important;
 }
+.bottom-b{
+  height: 100%;
+}
+
 ::v-deep .el-cascader .el-input .el-input__inner{
   margin-left: 10%;
 }

@@ -60,8 +60,8 @@
             </el-form>
           </div>
           <div class="query">
-            <el-button type="primary" @click="query">查询</el-button>
-            <el-button type="primary">重置</el-button>
+            <el-button type="primary" @click="query(flag1)">查询</el-button>
+            <el-button type="primary" @click="reset">重置</el-button>
           </div>
         </div>
         <div class="commodity_operation">
@@ -76,7 +76,7 @@
       <div>
         <el-table
           ref="multipleTable"
-          :data="articles()"
+          :data="table"
           tooltip-effect="dark"
           style="width: 100%"
           stripe
@@ -84,7 +84,7 @@
           @select-all="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
           <el-table-column label="条码" width="90">
             <template slot-scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
@@ -130,11 +130,11 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page.sync="currentPage"
+            :current-page.sync="page"
             :page-sizes="[10, 20, 30]"
-            :page-size="pageSize"
+            :page-size="limit"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.length"
+            :total="tablelength"
             class="page"
           >
           </el-pagination>
@@ -396,7 +396,6 @@ export default {
         },
       ],
       deleteDataArr: [],
-      arr3: [],
       arr4: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -674,69 +673,93 @@ export default {
         ],
       },
       formLabelWidth: "120px",
-      currentPage: 1,
-      pageSize: 10,
+      page: 1,
+      limit: 10,
       table: [],
       pageNum: "",
       num: "",
       cacheArr: [],
+      tablelength: 20,
+      flag: false,
+      flag1: true,
     };
   },
+
   methods: {
     ...mapActions(["getProductList", "deleteProduct"]),
+    pageList() {
+      this.getList(this.query());
+    },
+    getList(arr) {
+      // console.log(arr);
+      this.flag1 = true;
+      if (this.flag) {
+        // console.log(this.table);
+        this.table = arr.filter(
+          (item, index) =>
+            index < this.page * this.limit &&
+            index >= this.limit * (this.page - 1)
+        ); //根据页数显示相应的内容
+        this.tablelength = arr.length;
+      } else {
+        var list = this.tableData.filter((item) =>
+          arr.forEach((element) => {
+            item.name.includes(element);
+          })
+        );
+        // 搜索符号条件的内容
+        // console.log(list);
+        this.table = list.filter(
+          (item, index) =>
+            index < this.page * this.limit &&
+            index >= this.limit * (this.page - 1)
+        ); //根据页数显示相应的内容
+        this.tablelength = list.length;
+      }
+    },
     handleSizeChange(val) {
-      this.pageSize = val;
-      // console.log(this.pageSize);
-      // this.handleCurrentChange(1);
-      //  console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
+      this.limit = val;
+      this.getList(this.query());
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`);
-      this.pageNum = val;
-      this.offSize();
-      this.tableData.forEach((item) => {
-        item["checked"] = false;
-      });
+      this.page = val;
+      this.getList(this.query());
     },
-    offSize() {
-      this.num = this.pageSize * (this.pageNum - 1);
-      this.articles();
-    },
-    articles(val) {
-      // console.log(val);
-      if (!val) {
-        return this.tableData.slice(this.num, this.num + this.pageSize);
-      } else {
-        return val;
-      }
-    },
-    query() {
-      // console.log(this.tableData);
-      // return this.tableData.slice(this.num, this.num + this.pageSize);
-      console.log(this.tableData);
+    query(flag) {
+      let arr = [];
       if (!this.commodityStatusValue && !this.salesTypeValue) {
-        this.tableData.slice(this.num, this.num + this.pageSize);
+        arr = this.tableData;
+        this.flag = true;
       } else if (this.commodityStatusValue && !this.salesTypeValue) {
-        console.log(
-          this.tableData.filter((item) => {
-            // item.state == this.commodityStatusValue;
-            console.log(item);
-          })
-        );
+        arr = this.tableData.filter((item) => {
+          return item.state == this.commodityStatusValue;
+        });
       } else if (!this.commodityStatusValue && this.salesTypeValue) {
-        console.log(
-          this.tableData.filter((item) => {
-            item.classify == this.classify;
-          })
-        );
+        arr = this.tableData.filter((item) => {
+          return item.classify == this.salesTypeValue;
+        });
       } else {
-        console.log(
-          this.tableData.filter((item) => {
-            item.classify == this.classify &&
-              item.state == this.commodityStatusValue;
-          })
-        );
+        arr = this.tableData.filter((item) => {
+          return (
+            item.classify == this.salesTypeValue &&
+            item.state == this.commodityStatusValue
+          );
+        });
       }
+      if (flag) {
+        this.flag1 = false;
+        return this.pageList();
+      } else {
+        return arr;
+      }
+    },
+    reset() {
+      this.commodityStatusValue=''
+      this.salesTypeValue = ''
+      this.flag1 = true;
+      this.getList(this.query());
     },
     skip() {
       this.$router.push({
@@ -750,12 +773,15 @@ export default {
     },
     async remove(indexArr) {
       this.tableData.splice(this.tableData.indexOf(indexArr[0].row), 1);
+      this.table.splice(this.table.indexOf(indexArr[0].row), 1);
+      this.getList(this.query());
       // let res = await this.deleteProduct({
       //   id: indexArr[0].row.id,
       // });
       // console.log(res);
     },
     multipleRemove() {
+      console.log(this.arr4);
       for (let i = 0; i < this.arr4.length; i++) {
         if (!this.cacheArr.includes(this.arr4[i])) {
           this.cacheArr.push(this.arr4[i]);
@@ -764,12 +790,17 @@ export default {
           this.cacheArr.splice(temp, 1);
         }
       }
+      // console.log(this.cacheArr);
       this.cacheArr.forEach((item) => {
         this.tableData.splice(this.tableData.indexOf(item), 1);
+        this.table.splice(this.table.indexOf(item), 1);
       });
+      this.getList(this.query());
+      // console.log(this);
     },
     checkBoxData: function (selection, row) {
       this.arr4.push(row);
+      // console.log(this.arr4);
     },
     handleSelectionChange(val) {
       if (!val.length) {
@@ -777,13 +808,13 @@ export default {
       } else {
         val.forEach((item) => {
           this.arr4.push(item);
+          this.$refs.multipleTable.toggleRowSelection(item, true);
         });
       }
     },
   },
   async created() {
-    this.handleSizeChange(10);
-    this.handleCurrentChange(1);
+    this.pageList();
     // let res = await this.getProductList({
     // })
     // console.log(res);
@@ -955,29 +986,6 @@ input:-ms-input-placeholder {
 ::v-deep .mains .el-input:nth-of-type(2) {
   width: 120px;
 }
-// ::v-deep .el-pagination__jump{
-//   margin: 0px;
-// }
-// ::v-deep .cell {
-//   font-weight: 700;
-// }
-// ::v-deep .el-input {
-//   width: 100% !important;
-// }
-// ::v-deep .el-select {
-//   width: 70% !important;
-// }
-// ::v-deep .el-input__icon {
-//   line-height: 32px;
-// }
-// ::v-deep .el-input__inner {
-//   height: 32px;
-//   line-height: 32px;
-//   font-weight: 700;
-// }
-// ::v-deep .el-input--suffix {
-//   width: 70% !important;
-// }
 .el-form--inline .el-form-item {
   margin-right: -90px;
 }

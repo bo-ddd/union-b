@@ -425,7 +425,7 @@ export default {
       disabled: false,
       disabled1: false,
       src: "",
-      src1:"",
+      src1: "",
 
       tableData: [
         {
@@ -522,17 +522,18 @@ export default {
       formData.append("file", val.file);
       formData.append("type", 3);
       // console.log(val.file);
-        let res = await this.uploadImage(formData);
+      let res = await this.uploadImage(formData);
       console.log(res);
-      this.src = res.data
+      this.src = res.data;
     },
     async customUpload1(val) {
       let formData = new FormData();
       formData.append("file", val.file);
       formData.append("type", 3);
-      // console.log(val.file);
-      // let res = await this.uploadImage(formData);
-      // console.log(res);
+      console.log(val.file);
+      let res = await this.uploadImage(formData);
+      console.log(res);
+      this.src1 = res.data;
     },
     objectSpanMethod({ rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -560,14 +561,19 @@ export default {
         checkedCount > 0 && checkedCount < this.cities.length;
     },
     async preservation() {
+      // console.log(this.text);
+      // console.log(this.src);
+      // console.log(Number(this.commodityPlatformPrice) );
+      // console.log(+this.sellingPriceGoods);
       let res = await this.createProduct({
-        cid: 1,
-        title: this.text,
+        cid: 2,
+        title: "景天阳",
         keywords: "日用类",
-        bannerImg: this.src,
-        platformPrice: this.commodityPlatformPrice,
-        desc: this.productDescription,
-        realPrice: this.sellingPriceGoods,
+        bannerImg:
+          "http://unier.oss-cn-beijing.aliyuncs.com/category/1c82e33a-9724-4f34-844f-5f922c1fd486.jpg",
+        platformPrice: 1,
+        desc: "这是一个景天阳",
+        realPrice: 1,
       });
       console.log(res);
     },

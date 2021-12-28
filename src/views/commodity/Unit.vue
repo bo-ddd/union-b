@@ -72,6 +72,7 @@ export default {
       types:'',
       currentPage: 1,
       pageSize:'',
+      pageNum:'',
       table:[],
       dialogFormVisible: false,
       formLabelWidth: "120px",
@@ -95,6 +96,10 @@ export default {
      * @description 置顶的方法
      */
     async Topping(ord) {
+      if(ord.disable == 0){
+        this.$message('已经被禁用')
+        return
+      }
       var num = ord.id;
       if(ord.index == 1){
         this.$message('已经是第一个')
@@ -111,6 +116,10 @@ export default {
      * @description 升序的方法
      */
     async raise(row) {
+      if(row.disable == 0){
+        this.$message('已经被禁用')
+        return
+      }
       var formatData = (row) => {
         let res = {};
           for (let i = 0; i < this.tableData.length; i++) {
@@ -152,12 +161,16 @@ export default {
           item.index = index+1;
         })
       this.table = arr;
-      this.handleSizeChange(10);
+       this.handleCurrentChange(this.pageNum);
     },
     /**
      * @description 降序的方法
      */
     async Down(row) {
+      if(row.disable == 0){
+        this.$message('已经被禁用')
+        return
+      }
       if(row.index == this.tableData.length){
         this.$message("已经是最后一个")
         return
@@ -257,6 +270,7 @@ export default {
      * @description 分页的当前页有多少条
      * **/
     handleCurrentChange(val) {
+      this.pageNum = val;
       let arr = [];
       for (
         let i = val * this.pageSize - this.pageSize;

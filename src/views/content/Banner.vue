@@ -1,5 +1,6 @@
 <template>
   <div id="wrap">
+    <el-button type="primary" @click="submit">主要按钮</el-button>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="date"  width='200'>
           <template slot="header">
@@ -32,7 +33,7 @@
     <el-dialog :visible.sync="dialogFormVisible">
         <div class="modifydata">
             <el-form :model="form">
-                <el-form-item label="活动名称">
+                <el-form-item label="图片">
                     <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
                     <el-upload
                         action=""
@@ -45,23 +46,26 @@
                         <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
                 </el-form-item>
-                <el-form-item label="图片名字">
+                <el-form-item label="图片信息">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="图片描述">
+                <el-form-item label="图片路由">
                     <el-input v-model="form.describe" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary"  @click="submit">确 定</el-button>
+            <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+            <el-button type="primary"  @click="modify">确 定</el-button>
         </div>
     </el-dialog>
+
   </div>
 </template>
 
 <script>
+import uploadImg from '../../../public/lib/uploud';
+import { mapActions } from "vuex";
 export default {
     data(){
         return{
@@ -86,15 +90,32 @@ export default {
             form : {
                 name : '',
             },
+            title : '',
         }
     },
     methods :{
+        ...mapActions(["uploadImage"]),
         openLayer (a) {
+            this.title = 2;
             this.dialogFormVisible = true;
             console.log(a);
         },
-        uploadimg(a){
-            console.log(a);
+        async uploadimg(a){
+            if(this.title ==1){
+                // console.log('创建按钮');
+                let res = uploadImg(a.file,5);
+                let twores = await this.uploadImage(res);
+                console.log(twores);
+            }else{
+                console.log('修改按钮');
+            }
+        },
+        modify(){
+            this.dialogFormVisible = false;
+        },
+        submit(){
+            this.title = 1;
+            this.dialogFormVisible = true;
         }
     }
 }

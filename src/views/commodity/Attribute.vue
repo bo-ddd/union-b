@@ -3,27 +3,6 @@
     <!-- ProductParameters商品属性 -->
     <div class="main">
       <div class="mains">
-      <!-- <h1 class="h1">属性项信息</h1>
-      <div class="message">
-        <div class="main-top">
-          <el-form ref="form" :model="form" label-width="90px">
-  <el-form-item label="属性项名称:" class="top">
-    <el-input v-model="form.name" class="el-input__inners"></el-input>
-  </el-form-item>
-  <el-form-item label="属性项多选:" class="middle">
-    <el-checkbox-group v-model="form.choice">
-      <el-checkbox label="启用" name="type"></el-checkbox>
-    </el-checkbox-group>
-  </el-form-item>
-
-  <el-form-item label="属性项必选:">
-    <el-checkbox-group v-model="form.required">
-      <el-checkbox label="启用" name="type"></el-checkbox>
-    </el-checkbox-group>
-  </el-form-item>
-</el-form>
-        </div>
-      </div> -->
       <h1 class="h1">属性值列表</h1>
       <div class="list">
         <el-button type="primary" @click="dialogFormVisible = true" class="button">新增属性</el-button>
@@ -43,7 +22,7 @@
     </el-option>
   </el-select>
     </el-form-item>
-    <el-form-item label="类目" :label-width="formLabelWidth" class="form-money">
+    <el-form-item label="商品名" :label-width="formLabelWidth" class="form-money">
       <el-select v-model="values" filterable placeholder="请选择">
     <el-option
       v-for="item in options"
@@ -72,14 +51,11 @@
       </el-table-column>
       <el-table-column
         prop="value"
-        label="属性"
+        label="属性名"
         align="center"
         >
-        <!-- <template>
-          <input type="text" class="property" v-model="name">
-        </template> -->
       </el-table-column>
-      <el-table-column prop="productTitle" label="属性值"  align="center">
+      <el-table-column prop="productTitle" label="类目名"  align="center">
         <!-- <template>
           <input type="text" class="inp" v-model="input">
         </template> -->
@@ -92,13 +68,11 @@
         <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="delData(scope.$index, scope.row)">置顶</el-button>
+          @click="delData(scope.row)">置顶</el-button>
+        <el-button size="mini" @click="ascendingOrder(scope.row)">向上</el-button>
         <el-button
           size="mini"
-          @click="upLayer(scope.$index,scope.row)">向上</el-button>
-        <el-button
-          size="mini"
-          @click="downLayer(scope.$index, scope.row)">向下</el-button>
+          @click="sescendingOrder(scope.row)">向下</el-button>
       </template>
       </el-table-column>
       <el-table-column
@@ -113,13 +87,12 @@
         <el-button
           size="mini"
           type="danger"
-          @click="remove(scope)">删除</el-button>
+          @click="deleteData(scope.row)">删除</el-button>
       </template>
       </el-table-column>
     </el-table>
       </div>
       </div>
-      <el-footer><el-button type="primary">保存</el-button></el-footer>
       </div>
   </div>
 </template>
@@ -156,74 +129,108 @@ export default {
         formLabelWidth: '120px',
         forms: {
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        form: {
-          name: '',
-          choice: '',
-          required: '',
         },
         tableData: [{
             id:'',
             productTitle:'',
-            value:''
+            value:'',
+            // values:''
           },]
       }
     },
     methods: {
-      ...mapActions(["createAttribute","getAttributeList"]),
+      ...mapActions(["createAttribute","getAttributeList","attributeOrders","deleteAttribute","getProductList","attributeStick"]),
        handleEdit(index, row) {
         console.log(index, row);
       },
-     async upLayer(index, row) {
-     var that = this;
-     if (index == 0) {
-       that.$message({
-         message: "处于顶端，不能继续上移",
-         type: "warning"
-       });
-     } else {
-       let upDate = that.tableData[index - 1];
-       that.tableData.splice(index - 1, 1);
-       that.tableData.splice(index, 0, upDate);
-       console.log(row);
-      //  let getAttributeList = await this.getAttributeList();
-      // console.log(getAttributeList);
-     }
-   },
-    async downLayer(index, row) {
-     var that = this;
-     if (index + 1 === that.tableData.length) {
-       that.$message({
-         message: "处于末端，不能继续下移",
-         type: "warning"
-       });
-     } else {
-       let downDate = that.tableData[index + 1];
-       that.tableData.splice(index + 1, 1);
-       that.tableData.splice(index, 0, downDate);
-       console.log(row);
-      //  let getAttributeList = await this.getAttributeList();
-      //  console.log(getAttributeList);
-     }
-   },
-  //   async delData(index){
-  //       var returnTop=vp.dataList[index];
-  //       vtable.dataList.splice(index,1)
-  //       vtable.dataList.unshift(returnTop);
-  //  },
-      async remove(data){
-        console.log(data.$index);
-        this.tableData.splice(data.$index,1) 
-        // let getAttributeList = await this.getAttributeList();
-        // console.log(getAttributeList);
+      async getList(){
+        let res = await this.getProductList();
+        console.log(res);
       },
+
+      async apply(){
+        let res = await this.getAttributeList();
+        this.tableData = res.data.rows;
+        console.log(res.data.rows);
+      },
+   async ascendingOrder(row) {
+     console.log(row);
+      console.log(row.ord)
+      //获取当前层所有额数据；
+      var formatData = (row) => {
+        let res = {};
+          for (let i = 0; i < this.tableData.length; i++) {
+            let item = this.tableData[i];
+            if (item.id == row.id) {
+              // console.log(item);
+              res.i = i; 
+              res.currentData = item; //当前的数据；
+              res.preData = this.tableData[i - 1]; //上一个数据；
+              break;
+            }
+        }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj)
+      if(obj.i){
+          let ord = obj.currentData.ord;
+      obj.currentData.ord = obj.preData.ord;
+      obj.preData.ord = ord;
+        let res = await this.attributeOrders([
+         obj.currentData.id,
+           obj.preData.id,]
+        );
+        console.log(res)
+      }else{
+        this.$message("处于顶端，不能继续上移")
+      }
+      this.apply();
+    },  
+
+    async sescendingOrder(row) {
+      //获取当前层所有额数据；
+      var formatData = (row) => {
+        let res = {};
+          for (let i = 0; i < this.tableData.length; i++) {
+            let item = this.tableData[i];
+            if (item.id == row.id) {
+              // console.log(item);
+              res.i = i;
+              res.currentData = item; //当前的数据；
+              res.preData = this.tableData[i + 1]; //上一个数据；
+              break;
+            }
+          }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj);
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+          let res = await this.attributeOrders([
+          obj.currentData.id,
+          obj.preData.id]  
+        );
+        console.log(res)
+        this.apply();
+    }, 
+      
+      async deleteData(row) {
+      for (var i = 0; i < this.tableData.length; i++) {
+        let el = this.tableData[i];
+        if (row.ord == el.ord) {
+          this.tableData.splice(i, 1);
+        } 
+      }
+      let res = await this.deleteAttribute({
+        id:[row.id],
+      })
+      console.log(res)
+      this.apply();
+    },
+
   async confirm(){
     this.dialogFormVisible = false;
     this.option.forEach(item =>{
@@ -238,12 +245,26 @@ export default {
       productId: Number(this.values)
     });
     console.log(res);
+    this.apply();
   },
+
+  async delData(ord){
+    var num = ord.id;
+      if(ord.index == 1){
+        this.$message('已经是第一个')
+        return  
+      }
+      console.log(num);
+      let res = await this.attributeStick({
+        id:num
+      })
+      console.log(res);
+      this.apply();
+  }
   },
   async created(){
-    let res = await this.getAttributeList();
-    this.tableData = res.data.rows;
-    console.log(res);
+    this.apply();
+    this.getList();
   }
 }
 </script>
@@ -297,12 +318,6 @@ export default {
   height: 15px;
   margin: 5px;
 }
-.el-footer {
-    background-color: #ffffff;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
   .el-form-item {
     margin-bottom: 0px;
 }

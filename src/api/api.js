@@ -41,7 +41,7 @@ export default {
     /**
      * @description  验证码
      * */
-    getCaptcha() { return `/api/captcha?${Math.random()}` },
+    getCaptcha() { return `${postConfig.baseURL}/captcha?${Math.random()}` },
     /**
      * @description  用户注册接口
      * @params {
@@ -222,7 +222,7 @@ export default {
      * } 
      */
     createProduct(params) {
-        return axios.post('/product/create;', params, postConfig)
+        return axios.post('/product/create', params, postConfig)
     },
     /**
      * @description 删除商品接口 
@@ -231,7 +231,7 @@ export default {
      * } 
      */
     deleteProduct(params) {
-        return axios.post('/product/delete;', params, postConfig)
+        return axios.post('/product/delete', params, postConfig)
     },
     /**
      * @description 商品属性接口
@@ -567,6 +567,40 @@ export default {
      */
     updateSuperProduct(params) {
         return axios.post('/superProduct/update', params, postConfig)
+    },
+    /**
+     * @description banner列表 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getBannerList(params) {
+        return axios.post('/banner/list', params, postConfig)
+    },
+    /**
+     * @description 更改banner 
+     * @params {
+     * id:[number]       'banner的id'
+     * imgUrl:[string]   '图片路径'，
+     * imgDescription:[string]  '图片描述',
+     * route:[string]     '路由'
+     * }
+     */
+    updateBanner(params) {
+        return axios.post('/banner/update', params, postConfig)
+    },
+    /**
+     * @description 增加banner  
+     * @params {
+     * imgUrl:[string]   '图片路径'，
+     * imgDescription:[string]  '图片描述',
+     * route:[string]     '路由'
+     * }
+     */
+    createBanner(params) {
+        return axios.post('/banner/create', params, postConfig)
     },
 
 

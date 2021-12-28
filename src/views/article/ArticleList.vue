@@ -4,24 +4,34 @@
     :data="tableData"
     style="width: 100%"
    >
+   <el-table-column
+      prop="id"
+      label="id"
+      width="100">
+    </el-table-column>
     <el-table-column
-      prop="date"
+      prop="createdAt"
       label="创建日期"
-      width="300">
+      width="230">
     </el-table-column>
     <el-table-column
-      prop="name"
+      prop="articleTitle"
       label="文章标题"
-      width="300">
+      width="230">
     </el-table-column>
     <el-table-column
-      prop="address"
+      prop="articleContent"
       label="文章内容">
+    </el-table-column>
+    <el-table-column
+      prop="updatedAt"
+      label="更改日期"
+      width="230">
     </el-table-column>
      <el-table-column
       fixed="right"
       label="操作"
-      width="200">
+      width="230">
       <template slot-scope="scope">
         <el-button class="button"
           @click.native.prevent="deleteRow(scope.$index, tableData)"
@@ -34,6 +44,12 @@
           type="text"
           >
           查看
+        </el-button>
+        <el-button class="button"
+          @click="change"
+          type="text"
+          >
+          更改
         </el-button>
       </template>
     </el-table-column>
@@ -51,7 +67,9 @@ import { mapActions } from "vuex";
       ...mapActions(["getArticleList"]),
       async list(){
         let allList = await this.getArticleList();
-        console.log(allList);
+        // console.log(allList);
+        this.tableData = allList.data.rows
+        console.log(this.tableData);
       },
       async see(){
         window.location.href = './Details'
@@ -62,22 +80,7 @@ import { mapActions } from "vuex";
     },
     data() {
       return {
-        tableData:[{
-          date:'2021-12-24',
-          name:'新通知',
-          address:'最新通知'
-        },
-        {
-          date:'2021-12-24',
-          name:'新通知',
-          address:'最新通知'
-        },
-        {
-          date:'2021-12-24',
-          name:'新通知',
-          address:'最新通知'
-        },
-        ]
+        tableData:[],
       }
     },
   }

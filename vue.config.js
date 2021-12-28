@@ -40,7 +40,7 @@ module.exports = {
             "element-ui": "ELEMENT",
             "FileSaver": "FileSaver",
             "xlsx": "cptable",
-            "wangeditor":"wangEditor",
+            "E":"wangEditor",
         });
     }
 }

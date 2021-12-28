@@ -20,13 +20,10 @@ let getRoutes = function() {
 
 export default new Vuex.Store({
     state: {
-<<<<<<< HEAD
         needReCategoryList: true,
         categorylist: {},
         needGetTradeData: true,
         tradeData: {},
-=======
->>>>>>> a8d4e76da38a1eb178c037d0094406694a208cc3
         routes: getRoutes()
     },
     getters: {

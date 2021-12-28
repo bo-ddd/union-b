@@ -20,39 +20,6 @@
       <div class="left">
         <!-- 主导航 -->
         <div class="mainNav" v-for="key in newNav" :key="key.id">
-          <!-- <div class="nav-name">
-            <span class="wrods">{{ key.title }}&nbsp;&nbsp;</span>
-            <span class="font-color">(数量限制:2-6个)</span>
-          </div> -->
-          <!-- <div class="nav">
-            <div class="nav-item" v-for="key in key.nav" :key="key.id">
-              <div class="jian mt-5" @click="del(key.id)">
-                <div><div></div></div>
-              </div>
-              <div class="img">
-                <div>
-                  <img :src="key.pictureUrl" alt="" />
-                </div>
-              </div>
-              <div class="text">
-                <span>{{ key.pictureName }}</span>
-              </div>
-            </div> -->
-
-            <!-- 上传图片的 -->
-            <!-- <div>
-                <el-upload
-                    action=""
-                    list-type="picture-card"
-                    :http-request="uploadNav"
-                >
-                <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" />
-                </el-dialog>
-            </div> -->
-          <!-- </div> -->
           <el-demo :type="key" @change1='change1'></el-demo>
         </div>
       </div>

@@ -4,7 +4,7 @@
       <div class="content"  
              v-loading="loading"
           element-loading-text="拼命加载中"
-          element-loading-background="rgba(0, 0, 0, 0.8)">
+          element-loading-background="rgba(255, 255, 255, 0.8)">
         <div class="new-module">
           <div @click="jump" class="add-classification">
             <el-button type="primary">+ 新增分类</el-button>
@@ -209,7 +209,6 @@ export default {
      * @description 当前行上升一位
      */
     async ascendingOrder(row) {
-      console.log(row.ord);
       //返回当前行所在的父级中所有的数据；
       var fn = (row) => {
         console.log(row);
@@ -242,7 +241,6 @@ export default {
           for (let i = 0; i < this.renderData.length; i++) {
             let item = this.renderData[i];
             if (item.id == row.id) {
-              // console.log(item);
               res.i = i;
               res.currentData = item; //当前的数据；
               res.preData = this.renderData[i - 1]; //上一个数据；
@@ -252,9 +250,7 @@ export default {
         }
         return res;
       };
-      console.log(this.renderData)
       let obj = formatData(row);
-      console.log(obj);
       if (obj.i) {
           this.loading = true;
         let ord = obj.currentData.ord;
@@ -264,10 +260,9 @@ export default {
           obj.currentData.id,
           obj.preData.id,
         ]);
-        console.log(res);
         if(res.status==1){
           this.ordSort(this.renderData);
-            this.loading = false;
+          this.loading = false;
         }
       } else {
         this.$message("已经是第一个了不能再升序了");
@@ -299,7 +294,6 @@ export default {
      */
     async sescendingOrder(row) {
       var fn = (row) => {
-        console.log(row);
         if (row.child.length) {
           return row.child;
         } else {
@@ -318,7 +312,6 @@ export default {
           for (let i = 0; i < childData.length; i++) {
             let item = childData[i];
             if (item.id == row.id) {
-              // console.log(item);
               res.i = i;
               res.currentData = item; //当前的数据；
               res.preData = childData[i + 1]; //上一个数据；
@@ -329,7 +322,6 @@ export default {
           for (let i = 0; i < this.renderData.length; i++) {
             let item = this.renderData[i];
             if (item.id == row.id) {
-              // console.log(item);
               res.i = i;
               res.currentData = item; //当前的数据；
               res.preData = this.renderData[i + 1]; //上一个数据；
@@ -340,16 +332,19 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj);
+      if(obj.currentData.pid&&obj.i==fn(row).length-1||!obj.currentData.pid&&obj.i==this.renderData.length-1){
+          this.$message("已经是最后一个了不能再降序了")
+        }else {
         this.loading = true;
-      let ord = obj.currentData.ord;
-      obj.currentData.ord = obj.preData.ord;
-      obj.preData.ord = ord;
-      let res = await this.categoryOrders([obj.currentData.id, obj.preData.id]);
-      console.log(res);
-      if(res.status==1){
-            this.ordSort(this.renderData);
-          this.loading = false;
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        let res = await this.categoryOrders([obj.currentData.id, obj.preData.id]);
+        if(res.status==1){
+              this.ordSort(this.renderData);
+            this.loading = false;
+        }
+
       }
     },
     /**

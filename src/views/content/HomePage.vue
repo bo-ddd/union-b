@@ -1,5 +1,7 @@
 <template>
   <div id="wrap">
+    <el-button type="primary" @click="createData">创建推荐内容</el-button>
+
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="id"  width='200'>
         <template slot="header">
@@ -25,12 +27,14 @@
             <span>详情</span>
         </template>
         <template slot-scope="scope">
-            <el-link type="primary" @click="openLayer(scope)">编辑</el-link>
+            <el-link type="primary" @click="openLayer(scope.row)">编辑</el-link>
+            <el-link type="primary" @click="deleteRow(scope.row)" class="ml-10">删除</el-link>
         </template>
       </el-table-column>
 
     </el-table>
 
+    <!-- 编辑的模态框 -->
     <el-dialog :visible.sync="dialogFormVisible">
         <div class="modifydata">
             <el-form :model="form">
@@ -38,6 +42,7 @@
                     <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
                     <el-upload
                         action=""
+                        ref="my-upload"
                         list-type="picture-card"
                         :http-request='uploadimg'
                         >
@@ -53,13 +58,17 @@
                 <el-form-item label="图片描述">
                     <el-input v-model="form.describe" autocomplete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="供应商" v-show="flag">
+                    <el-input v-model="form.describe" autocomplete="off"></el-input>
+                </el-form-item>
             </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button @click="cancel">取 消</el-button>
             <el-button type="primary"  @click="submit">确 定</el-button>
         </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -94,37 +103,63 @@ export default {
                 describe : '红色',
                 address: '上海市普陀区金沙江路 1516 弄'
             }],
-            dialogFormVisible: false,
+            dialogFormVisible: false,    // 模态框状态  flase 不显示 true显示
             form : {
                 name : '',
                 describe: '',
                 imgUrl : '',
+                supplier : '',   // 供应商
             },
             dialogImageUrl: '',
-            dialogVisible: false
+            dialogVisible: false,
+            flag : false,
         }
     },
     methods :{
-//
+//                   图片接口
     ...mapActions(["uploadImage"]),
+    // 创建按钮的点击事件
+    createData(){
+        this.flag = true;
+        this.dialogFormVisible = true;
+    },
+    // 修改本行的事件
     openLayer (a) {
         console.log(a);
         this.dialogFormVisible = true;
+        this.flag = false;
     },
+    // 删除本行的点击事件
+    deleteRow(a){
+        console.log(a.id);
+    },
+    // 上传的http事件
     async uploadimg (a) {
         let res = upload(a.file,5);
         let b = await this.uploadImage(res);
         this.form.imgUrl = b.data;
     },
+    // 模态框中的确定事件
     submit(){
+        this.$refs['my-upload'].clearFiles();
         this.dialogFormVisible = false;
-    }
+    },
+    // 模态框的取消事件
+    cancel(){
+        this.$refs['my-upload'].clearFiles();
+        this.dialogFormVisible = false;
+    },
+    
+    
 }
 
 }
 </script>
 
 <style lang='scss' scoped>
+.ml-10{
+    margin-left: 10px;
+}
 ::v-deep .el-form-item{
     display: flex;
     align-items: center;

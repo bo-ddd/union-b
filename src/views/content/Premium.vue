@@ -129,12 +129,12 @@
   </el-select>
     </el-form-item>
     <el-form-item label="商品图片" :label-width="formLabelWidth">
-     <el-select v-model="value" placeholder="请选择">
+     <el-select v-model="getgoods" placeholder="请选择">
     <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+      v-for="item in getgoods"
+      :key="item.id"
+      :label="item.title"
+      :value="item.id">
     </el-option>
   </el-select>
     </el-form-item>

@@ -1,8 +1,10 @@
 <template>
   <div id="wrap">
-    <el-button type="primary" @click="submit">主要按钮</el-button>
+    <el-button type="primary" @click="createBan">创建banner图</el-button>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date"  width='200'>
+      <el-table-column prop="id" label="id" width='200'>
+      </el-table-column>
+      <el-table-column prop="date" width='200'>
           <template slot="header">
               <span>图片</span>
           </template>
@@ -30,7 +32,7 @@
 
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisible1">
+    <el-dialog :visible.sync="dialogFormVisible">
         <div class="modifydata">
             <el-form :model="form">
                 <el-form-item label="图片">
@@ -60,40 +62,12 @@
         </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogFormVisible2">
-        <div class="modifydata">
-            <el-form :model="form">
-                <el-form-item label="图片">
-                    <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
-                    <el-upload
-                        action=""
-                        list-type="picture-card"
-                        :http-request='uploadimg'
-                        >
-                        <i class="el-icon-plus"></i>
-                    </el-upload>
-                    <el-dialog :visible.sync="dialogVisible">
-                        <img width="100%" :src="dialogImageUrl" alt="">
-                    </el-dialog>
-                </el-form-item>
-                <el-form-item label="图片信息">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="图片路由">
-                    <el-input v-model="form.describe" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-        </div>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary"  @click="submit">确 定</el-button>
-        </div>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
+import uploadImg from '../../../public/lib/uploud';
+import { mapActions } from "vuex";
 export default {
     data(){
         return{
@@ -114,26 +88,39 @@ export default {
                 name: '王小虎',
                 address: '上海市普陀区金沙江路 1516 弄'
             }],
-            dialogFormVisible1: false,
-            dialogFormVisible2: false,
+            dialogFormVisible: false,
             form : {
                 name : '',
+                describe : '',
             },
+            imgUrl : '',
+            id : '',
         }
     },
     methods :{
+        //                上传图片      创建banner图
+        ...mapActions(["uploadImage","createBanner"]),
+        // 编辑的点击事件
         openLayer (a) {
-            this.dialogFormVisible1 = true;
-            console.log(a);
+            this.dialogFormVisible = true;
+            this.form.name=a.row.name;
+            this.form.describe = a.row.address;
+            this.id = a.row.id;
         },
-        uploadimg(a){
-            console.log(a);
+        // 上传的http事件
+        async uploadimg(a){
+            let b = uploadImg(a.file,1);
+            let c = await this.uploadImage(b);
+            this.imgUrl = c.data;
         },
+        // 模态框中的确定事件
         modify(){
-            this.dialogFormVisible1 = false;
+            this.dialogFormVisible = false;
         },
-        submit(){
-            this.dialogFormVisible2 = true;
+        createBan(){
+            this.dialogFormVisible = true;
+            this.form.name = '';
+            this.form.describe = '';
         }
     }
 }

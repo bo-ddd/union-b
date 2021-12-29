@@ -9,7 +9,7 @@
           class="demo-ruleForm"
         >
           <el-form-item label="分类名称" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
+            <el-input v-model="ruleForm.name" class="classify-name"></el-input>
           </el-form-item>
           <el-form-item label="上级分类" prop="pid" class="classifya">
             <template>
@@ -140,7 +140,7 @@
       </div>
       <div class="footer">
         <el-button type="primary" class="submit" @click="submit"
-          >确定</el-button
+          >确定新增</el-button
         >
       </div>
     </div>
@@ -263,10 +263,13 @@ export default {
   }
   & .footer {
     display: flex;
-    justify-content: center;
-    border-top: 1px solid var(--color);
+    justify-content:flex-start;
+    // border-top: 1px solid var(--color);
     background-color: #fff;
     padding: 15px 0px;
+    & .submit{
+      margin-left: 155px;
+    }
   }
 }
 ::v-deep .el-form-item__label {
@@ -280,5 +283,8 @@ export default {
   & .el-input__inner {
     border: none;
   }
+}
+.classify-name{
+  width:199px;
 }
 </style>

@@ -158,7 +158,7 @@ export default {
 
     // 记住密码点击事件
     Rememberpass() {
-      this.setUserInfo();
+      // this.setUserInfo();
 
       // 账号信息自动填充到登录输入框中(取cookie)
       let username = this.getCookie("username");
@@ -171,8 +171,8 @@ export default {
       }
     },
 
+    // 对密码增加rsa（非对称加密）
     Encrypt() {
-      // 对密码增加rsa（非对称加密）
       var encryptor = new JSEncrypt(); // 创建加密对象实例
       let publicKey = `-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnZIdkAWLgkux1eMT1mSwyOb7V
@@ -192,6 +192,9 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         this.generatorCaptcha();
         return;
       }
+      // this.setUserInfo();
+      this.getCookie(this.form.username);
+
       // 调用加密方法：
       this.Encrypt();
 
@@ -207,6 +210,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
         this.$message.success(res.msg);
+
         if (localStorage.getItem("from")) {
           this.$router.push({
             path: localStorage.getItem("from"),
@@ -229,6 +233,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
           message: res.msg,
         });
       }
+      this.form.password = "";
     },
 
     // 按回车键登录
@@ -251,12 +256,13 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
       // 判断用户是否勾选记住密码，如果勾选，向cookie中储存登录信息
       // 如果没有勾选，储存信息为空
       // if (this.form.checked) {
+      //   console.log(this.form.username);
+      //   console.log(this.form.password);
       //   this.form.username = this.setCookie("username", this.form.username, 7);
       //   this.form.password = this.setCookie("password", this.form.password, 7);
       //   this.form.checked = this.setCookie("checked", this.form.checked, 7);
-      //   console.log(this.form.username);
-      //   console.log(this.form.password);
-      // } else {
+      // }
+      //  else {
       //   this.form.username = this.setCookie("username", "", -1);
       //   this.form.password = this.setCookie("password", "", -1);
       //   this.form.checked = this.setCookie("checked", this.form.checked, 7);

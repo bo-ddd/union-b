@@ -100,17 +100,29 @@ export default {
         this.$message('已经被禁用')
         return
       }
-      var num = ord.id;
       if(ord.index == 1){
         this.$message('已经是第一个')
         return  
       }
-      console.log(num);
+      console.log(this.table);
+      for(let i=0;i<this.tableData.length;i++){
+        if(ord == this.tableData[i]){
+          this.tableData.splice(i,1)
+        }
+      }
+      console.log(this.pageNum);
+      this.tableData.unshift(ord)
+      for(let i=0;i<this.tableData.length;i++){
+        this.tableData[i].index = i+1;
+      }
+      this.table = this.tableData;
+      this.handleCurrentChange(this.pageNum)
+       var num = ord.id;
       let res = await this.unitlibraryStick({
         id:num
       })
+      // this.List();
       console.log(res);
-      this.List();
     },
     /**
      * @description 升序的方法
@@ -189,7 +201,6 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj);
         let ord = obj.currentData.ord;
         obj.currentData.ord = obj.preData.ord;
         obj.preData.ord = ord;
@@ -280,12 +291,13 @@ export default {
         if (this.tableData[i] != undefined) arr.push(this.tableData[i]);
       }
       this.table = arr;
+      console.log(arr);
+      console.log(this.table);
     },
     /**
      *  @description 查询
      */
     async Interlude(){
-      console.log(this.Interludes);
       let res = await this.unitlibraryFuzzySearch({
         title : this.Interludes
       })
@@ -296,13 +308,13 @@ export default {
           item.index = index + 1;
         })
         this.table = num;
+        this.tableData = num;
         this.aaa = this.table.length;
-        console.log(num);
         this.Interludes = null
       }else{
         this.table = this.tableData
         this.aaa = this.table.length;
-        this.handleCurrentChange(1)
+        this.handleCurrentChange(this.pageNum)
       }
     }
   },

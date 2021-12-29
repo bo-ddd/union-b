@@ -1,6 +1,8 @@
 <template>
   <div id="wrap">
-    <el-table :data="data" stripe style="width: 100% " >
+    <el-button type="primary" @click="create">创建</el-button>
+
+    <el-table :data="tableData" stripe style="width: 100% " >
       <el-table-column prop="date" width='150'>
            <template slot="header">
                 <span>图标</span>
@@ -42,6 +44,7 @@
             </template>
       </el-table-column>
     </el-table>
+
     <el-dialog :visible.sync="dialogFormVisible" >
         <template>
             <div class="title">
@@ -86,8 +89,7 @@
                         action=""
                         :http-request='upload'
                         list-type="picture-card"
-                        :on-preview="handlePictureCardPreview"
-                        :on-remove="handleRemove">
+                        >
                         <i class="el-icon-plus"></i>
                         </el-upload>
                         <el-dialog :visible.sync="dialogVisible">
@@ -239,14 +241,6 @@ export default {
     },
     methods: {
         ...mapActions(['getQuickList']),
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePictureCardPreview(file) {
-            console.log(file.url);
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        },
         // 操作下编辑的点击事件 
         edit(a){
             console.log(a);
@@ -343,7 +337,7 @@ export default {
         }
     },
     async created(){
-        this.getData();
+        // this.getData();
     },
     mounted() {
         this.restaurants = this.loadAll();

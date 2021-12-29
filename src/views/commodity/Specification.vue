@@ -6,7 +6,7 @@
         <div class="footer_left">
           <el-button
             type="primary"
-            @click="addspecification, (dialogaddFormVisible = true)"
+            @click="addspecification, (dialogaddFormVisible = true), submit"
             >添加规格</el-button
           >
           <!-- <el-button type="primary">保存排序</el-button> -->
@@ -45,19 +45,16 @@
             <el-form-item label="规格名称" :label-width="formLabelWidth">
               <el-input v-model="form1.title" autocomplete="off"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="类目名称" :label-width="formLabelWidth">
+            <el-form-item label="商品类目" :label-width="formLabelWidth">
               <el-input v-model="form1.cid" autocomplete="off"></el-input>
-              <el-select placeholder="请选择" class="sel">
-                
-              </el-select>
-            </el-form-item> -->
-            <el-form-item label="类目名称" prop="pid" class="classifya">
+            </el-form-item>
+            <el-form-item label="商品类目" prop="pid" class="classifya">
               <template>
                 <div class="block">
                   <span class="demonstration"></span>
                   <el-cascader
-                    ref="cascader"
-                    :options="options"
+                    :ref="cascader"
+                    :options1="options1"
                     @change="getId()"
                     :props="{
                       checkStrictly: true,
@@ -118,8 +115,9 @@
               type="primary"
               i
               class="el-icon-edit cell1"
-              @click="editListData, (dialogFormVisible = true)"
+              @click="getCommodityDat(scope)"
             ></el-button>
+
             <el-dialog title="修改此行数据" :visible.sync="dialogFormVisible">
               <el-form :model="form">
                 <el-form-item label="id" :label-width="formLabelWidth">
@@ -145,27 +143,13 @@
                 >
               </div>
             </el-dialog>
+
             <el-button
+              type="text"
+              @click="open(), deleteData(scope.row)"
               i
               class="el-icon-delete cell2"
-              @click="dialogVisible = true"
-              type="text"
-            >
-            </el-button>
-            <el-dialog
-              title="提示"
-              :visible.sync="dialogVisible"
-              width="30%"
-              :before-close="handleClose"
-            >
-              <span>确定要删除此行数据</span>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="deleteData(scope),dialogVisible = false"
-                  >确 定</el-button
-                >
-              </span>
-            </el-dialog>
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -190,6 +174,7 @@
 
 <script>
 import { mapActions } from "vuex";
+// import Task from "@/assets/js/Task";
 export default {
   data() {
     return {
@@ -204,7 +189,9 @@ export default {
       currentPage4: 1,
       pageSize1: 50,
       pageNum1: "",
+
       options1: [],
+      tasks: [],
       options: [
         {
           value: "选项1",
@@ -226,19 +213,21 @@ export default {
         serialId: "",
         speName: "",
         remark: "",
-        sortOrder: "",
       },
       form1: {
         title: "",
         cid: "",
         name: "",
       },
+      ruleForm: {
+        name: "",
+        pid: "",
+      },
       dialogVisible: false,
       dialogFormVisible: false,
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
       multipleSelection: [],
-
       currentPage: 1,
       table: [],
       pageSize: 10, //每页条数
@@ -294,8 +283,11 @@ export default {
     async addspecification() {
       let res = await this.createSpecification({
         title: this.form1.title,
-        cid: Number(this.form1.cid),
+        // cid: Number(this.form1.cid),
+        cid: this.option,
       });
+      console.log("ccc");
+      console.log(this.item);
       console.log(res);
       this.spelist();
     },
@@ -305,7 +297,7 @@ export default {
     async deleteData(row) {
       for (var i = 0; i < this.renderDynamic.length; i++) {
         let el = this.renderDynamic[i];
-        if (row.row.id == el.id) {
+        if (row.id == el.id) {
           //从第I个开始删除一个
           this.renderDynamic.splice(i, 1);
         }
@@ -313,7 +305,7 @@ export default {
       //重新渲染页面
       this.spelist();
       let del = await this.deleteSpecification({
-        id: [row.row.id],
+        id: [row.id],
       });
       console.log(del);
     },
@@ -349,16 +341,20 @@ export default {
       return row.id;
     },
     //单个修改
-    // async editListData() {
-    //   let editdatalist=await this.();
-    // },
+    getCommodityDat(data) {
+      this.dialogFormVisible = true;
+      this.form.serialId = data.row.id;
+      this.form.speName = data.row.title;
+      this.form.remark = data.row.productCategory;
+      console.log(this.form);
+      this.spelist();
+    },
     /**
      * 获取所有类目规格
      * */
     async spelist() {
       let res = await this.getSpecificationList();
       console.log(res);
-      // this.pageSize1 = res.data.count.slice();
       this.renderDynamic = res.data.rows.slice();
       this.handleSizeChange(10);
     },
@@ -380,21 +376,83 @@ export default {
       }
       this.table = arr;
     },
+    getId() {
+      let res = this.$refs["cascader"].getCheckedNodes();
+      this.ruleForm.pid = res[0].data.id;
+    },
+    async submit() {
+      let res = await this.createSpecification({
+        title: this.ruleForm.name,
+        pid: this.ruleForm.pid == "" ? null : this.ruleForm.pid,
+      });
+      console.log(res);
+    },
+    async getClassifyInfo() {
+      let res = await this.getCategoryList({});
+      let data = res.data.rows.slice();
+      this.arr = data;
+      let target = this.format(data);
+      this.options1 = target;
+      console.log('aa');
+      console.log(res);
+    },
+    format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
     /**
      * 商品类目接口方法
      */
-    async categoryList() {
-      let resource = await this.getCategoryList({
-        pagination: false,
-        pageNum: 1,
-        pageSize: 10,
-      });
-      console.log("aaa");
-      console.log(resource);
+    // async categoryList() {
+    //   let resource = await this.getCategoryList();
+    //   console.log("aaasdadf");
+    //   console.log(resource);
+    //   resource.data.rows.forEach((item) => {
+    // this.option.push(item.title);
+    // this.option.label = item.title;
+    // this.option.value = item.id;
+    // });
+    // console.log(this.option);
+    // let resource = await this.getCategoryList();
+    // console.log(resource);
+    // console.log("aaa");
+    // console.log(resource.data.rows);
+    // let task = new Task(resource.data.rows);
+    // this.tasks = task.data.rows;
+    // console.log(this.tasks);
+    // console.log(this.option);
+    // },
+    open() {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
   async created() {
     this.spelist();
+    this.getClassifyInfo();
   },
 };
 </script>

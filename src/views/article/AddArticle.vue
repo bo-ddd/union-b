@@ -63,7 +63,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import addImg from '../../../public/lib/uploud'
+import addImg from '../../../public/lib/uploud';
 export default {
   data() {
     return {
@@ -80,7 +80,7 @@ export default {
   
    
   methods: {
-    ...mapActions(["createArticle", "getUserInfo","uploadImage","getArticleList"]), 
+    ...mapActions(["createArticle", "getUserInfo","uploadImage"]), 
     async imgAdd(a){
       let res = addImg(a.file,6);
       // console.log(res);
@@ -114,7 +114,7 @@ export default {
     let id = await this.getUserInfo();
     console.log(id.data[0].id);
     this.authorId = id.data[0].id;
-     this.list();
+    
   },
 };
 </script>

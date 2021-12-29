@@ -29,6 +29,7 @@
           </template>
           <template slot-scope="scope">
               <el-link type="primary" @click="openLayer(scope)">编辑</el-link>
+              <el-link type="primary" @click="open(scope)" class="ml-10">删除</el-link>
           </template>
       </el-table-column>
 
@@ -42,6 +43,7 @@
                         action=""
                         :file-list='arr'
                         list-type="picture-card"
+                        ref="my-upload"
                         :http-request='uploadimg'
                         >
                         <i class="el-icon-plus"></i>
@@ -59,7 +61,7 @@
             </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button @click="cancelUpload">取 消</el-button>
             <el-button type="primary"  @click="modify">确 定</el-button>
         </div>
     </el-dialog>
@@ -81,6 +83,7 @@ export default {
             },
             imgUrl : '',
             id : '',
+            arr:[]
         }
     },
     methods :{
@@ -106,6 +109,7 @@ export default {
         },
         // 模态框中的确定事件
         async modify(){
+            // 没有id证明是要创建的  否则就是需要修改的
             if(!this.id){
                 await this.createBanner({
                     imgUrl : this.imgUrl,
@@ -122,17 +126,38 @@ export default {
             }
             this.getBanners();
             this.dialogFormVisible = false;
-            
         },
-        // 创建banner图
+        // 模态框的取消事件
+        cancelUpload(){
+            this.$refs['my-upload'].clearFiles();
+            this.dialogFormVisible = false;
+        },
+        // 创建banner的点击事件
         createBan(){
             this.id = '';
             this.dialogFormVisible = true;
             this.form.name = '';
             this.form.describe = '';
         },
-
-    },
+        open(a) {
+            console.log(a.row.id);
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                 }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
+                });
+            }
+        },
     async created(){
         this.getBanners();
     }
@@ -140,6 +165,9 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.ml-10{
+    margin-left: 10px;
+}
 .modifydata{
     width: 100%;
     height: 100%;
@@ -182,4 +210,3 @@ export default {
     }
 }
 </style>
-

@@ -348,6 +348,15 @@ export default new Vuex.Store({
             return Api.getSettledList(payload);
         },
 
+        //店铺管理
+        //店铺列表接口
+        getStoreList(ctx, payload) {
+            return Api.getStoreList(payload);
+        },
+        //店铺详情接口
+        getStoreDetail(ctx, payload) {
+            return Api.getStoreDetail(payload);
+        },
     },
     modules: {}
 })

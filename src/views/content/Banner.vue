@@ -87,8 +87,8 @@ export default {
         }
     },
     methods :{
-        //                上传图片    创建banner    获取banner        更改banner
-        ...mapActions(["uploadImage","createBanner","getBannerList","updateBanner"]),
+        //                上传图片    创建banner    获取banner        更改banner        删除banner
+        ...mapActions(["uploadImage","createBanner","getBannerList","updateBanner","deleteBanner"]),
         // 获取所有的banner图列表
         async getBanners(){
             let res = await this.getBannerList();
@@ -145,11 +145,15 @@ export default {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
+                }).then(async () => {
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
                     });
+                    await this.deleteBanner({
+                        id : Number(a.row.id)
+                    })
+                    this.getBanners();
                  }).catch(() => {
                     this.$message({
                         type: 'info',

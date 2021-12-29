@@ -278,7 +278,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   },
 
   async created() {
-    this.form.checked = Boolean(localStorage.getItem("checked"));
+    this.form.checked = Boolean(JSON.parse(localStorage.getItem("checked")));
     // 进页面直接调用验证码
     this.generatorCaptcha();
     // 将cookie中的值赋值给账号密码
@@ -293,7 +293,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
     window.addEventListener("keydown", this.keyDown);
 
     // 页面加载调用获取cookie值
-    this.getCookie();
+    // this.getCookie();
   },
 
   destroyed() {
@@ -339,6 +339,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
       & .mainpack {
         width: 100%;
         height: 70%;
+
         & .main-top {
           width: 100%;
           height: 110px;
@@ -415,6 +416,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
     }
   }
 }
+
 ::v-deep input::-webkit-input-placeholder {
   color: #717171;
 }

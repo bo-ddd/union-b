@@ -48,7 +48,10 @@
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="类目" :label-width="formLabelWidth">
-          <el-input v-model="form.type" autocomplete="off"></el-input>
+         <el-select v-model="value1" placeholder="请选择">
+          <el-option v-for="item in category" :key="item.title" :label="item.title" :value="item.title">
+          </el-option>
+        </el-select>
         </el-form-item>
         <el-form-item label="店铺" :label-width="formLabelWidth">
           <el-input v-model="form.source" autocomplete="off"></el-input>
@@ -87,11 +90,16 @@ export default {
           label: "单位名称",
         }],
       value: "选项1",
-      Interludes:''
+      Interludes:'',
+      category: [{
+        value: '',
+        label: ''
+      }],
+      value1: ''
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch","getCategoryList"]),
     /**
      * @description 置顶的方法
      */
@@ -243,7 +251,7 @@ export default {
       this.dialogFormVisible = false;
       let res = await this.createUnitlibrary({
         title: this.form.name,
-        cid: Number(this.form.type),
+        cid: Number(this.category.id),
         storeId: Number(this.form.source),
       });
       console.log(res);
@@ -316,10 +324,19 @@ export default {
         this.aaa = this.table.length;
         this.handleCurrentChange(this.pageNum)
       }
+    },
+    /**
+     * @description 商品类目
+     */
+    async Category(){
+      let res = await this.getCategoryList({});
+      this.category = res.data.rows;
+      console.log(this.category);
     }
   },
   created() {
     this.List();
+    this.Category();
   },
 };
 </script>

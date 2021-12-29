@@ -296,6 +296,10 @@ export default new Vuex.Store({
         createBanner(ctx, payload) {
             return Api.createBanner(payload);
         },
+        //删除banner
+        deleteBanner(ctx, payload) {
+            return Api.deleteBanner(payload);
+        },
 
 
         //订单管理

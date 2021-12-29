@@ -602,6 +602,16 @@ export default {
     createBanner(params) {
         return axios.post('/banner/create', params, postConfig)
     },
+    /**
+     * @description 删除banner 
+     * @params {
+     * id:[number] 必填  'banner的id'
+     * }
+     */
+    deleteBanner(params) {
+        return axios.post('/banner/delete', params, postConfig)
+    },
+
 
 
     //订单管理

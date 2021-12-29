@@ -6,7 +6,9 @@
         <div class="footer_left">
           <el-button
             type="primary"
-            @click="addspecification, (dialogaddFormVisible = true)"
+            @click="
+              addspecification, (dialogaddFormVisible = true), categoryList()
+            "
             >添加规格</el-button
           >
           <!-- <el-button type="primary">保存排序</el-button> -->
@@ -45,31 +47,19 @@
             <el-form-item label="规格名称" :label-width="formLabelWidth">
               <el-input v-model="form1.title" autocomplete="off"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="类目名称" :label-width="formLabelWidth">
+            <el-form-item label="规格名称" :label-width="formLabelWidth">
               <el-input v-model="form1.cid" autocomplete="off"></el-input>
-              <el-select placeholder="请选择" class="sel">
-                
+            </el-form-item>
+            <!-- <el-form-item
+              label="商品类目"
+              :label-width="formLabelWidth"
+              class="form-money"
+            >
+              <el-select v-model="form" placeholder="请选择">
+                <el-option v-for="item in option" :key="item" :value="item">
+                </el-option>
               </el-select>
             </el-form-item> -->
-            <el-form-item label="类目名称" prop="pid" class="classifya">
-              <template>
-                <div class="block">
-                  <span class="demonstration"></span>
-                  <el-cascader
-                    ref="cascader"
-                    :options="options"
-                    @change="getId()"
-                    :props="{
-                      checkStrictly: true,
-                      label: 'title',
-                      children: 'child',
-                      value: 'title',
-                    }"
-                    clearable
-                  ></el-cascader>
-                </div>
-              </template>
-            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
@@ -118,8 +108,9 @@
               type="primary"
               i
               class="el-icon-edit cell1"
-              @click="editListData, (dialogFormVisible = true)"
+              @click="getCommodityDat(scope)"
             ></el-button>
+
             <el-dialog title="修改此行数据" :visible.sync="dialogFormVisible">
               <el-form :model="form">
                 <el-form-item label="id" :label-width="formLabelWidth">
@@ -145,27 +136,13 @@
                 >
               </div>
             </el-dialog>
+
             <el-button
+              type="text"
+              @click="open(), deleteData(scope.row)"
               i
               class="el-icon-delete cell2"
-              @click="dialogVisible = true"
-              type="text"
-            >
-            </el-button>
-            <el-dialog
-              title="提示"
-              :visible.sync="dialogVisible"
-              width="30%"
-              :before-close="handleClose"
-            >
-              <span>确定要删除此行数据</span>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="deleteData(scope),dialogVisible = false"
-                  >确 定</el-button
-                >
-              </span>
-            </el-dialog>
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -204,6 +181,7 @@ export default {
       currentPage4: 1,
       pageSize1: 50,
       pageNum1: "",
+      option: [],
       options1: [],
       options: [
         {
@@ -226,7 +204,6 @@ export default {
         serialId: "",
         speName: "",
         remark: "",
-        sortOrder: "",
       },
       form1: {
         title: "",
@@ -305,7 +282,7 @@ export default {
     async deleteData(row) {
       for (var i = 0; i < this.renderDynamic.length; i++) {
         let el = this.renderDynamic[i];
-        if (row.row.id == el.id) {
+        if (row.id == el.id) {
           //从第I个开始删除一个
           this.renderDynamic.splice(i, 1);
         }
@@ -313,7 +290,7 @@ export default {
       //重新渲染页面
       this.spelist();
       let del = await this.deleteSpecification({
-        id: [row.row.id],
+        id: [row.id],
       });
       console.log(del);
     },
@@ -349,16 +326,20 @@ export default {
       return row.id;
     },
     //单个修改
-    // async editListData() {
-    //   let editdatalist=await this.();
-    // },
+    getCommodityDat(data) {
+      this.dialogFormVisible = true;
+      this.form.serialId = data.row.id;
+      this.form.speName = data.row.title;
+      this.form.remark = data.row.productCategory;
+      console.log(this.form);
+      this.spelist();
+    },
     /**
      * 获取所有类目规格
      * */
     async spelist() {
       let res = await this.getSpecificationList();
       console.log(res);
-      // this.pageSize1 = res.data.count.slice();
       this.renderDynamic = res.data.rows.slice();
       this.handleSizeChange(10);
     },
@@ -389,8 +370,52 @@ export default {
         pageNum: 1,
         pageSize: 10,
       });
-      console.log("aaa");
+      console.log("aaasdadf");
       console.log(resource);
+      resource.data.rows.forEach((item) => {
+        this.option.push(item.title);
+      });
+      console.log(this.option);
+
+      // class Task {
+      //   constructor(target) {
+      //     this.target = target.slice();
+      //   }
+      //   /**
+      //    * @description 管理中心页面的任务列表渲染使用
+      //    *  */
+      //   get category() {
+      //     this.target = this.target.slice();
+      //     return this.iterator();
+      //   }
+      //   /**
+      //    * @description 任务中心渲染列表使用
+      //    */
+      //   get data() {
+      //     return this.iterator(
+      //       (item, parent) => item.pid && parent.child.push(item)
+      //     ).filter((task) => task.pid === null);
+      //   }
+      // }
+    },
+    open() {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
   async created() {

@@ -22,16 +22,27 @@
     </el-option>
   </el-select>
     </el-form-item>
-    <el-form-item label="商品名" :label-width="formLabelWidth" class="form-money">
-      <el-select v-model="values" filterable placeholder="请选择">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
-    </el-form-item>
+
+    <el-form-item label="商品名" prop="pid" :label-width="formLabelWidth" class="form-money">
+            <template>
+              <div class="block">
+                <span class="demonstration"></span>
+                <el-cascader
+                  ref="cascader"
+                  :options="options"
+                  @change="getId()"
+                  :props="{
+                    checkStrictly: true,
+                    label: 'title',
+                    children: 'child',
+                    value: 'title',
+                  }"
+                  clearable
+                ></el-cascader>
+              </div>
+            </template>
+          </el-form-item>
+
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -55,10 +66,7 @@
         align="center"
         >
       </el-table-column>
-      <el-table-column prop="productTitle" label="类目名"  align="center">
-        <!-- <template>
-          <input type="text" class="inp" v-model="input">
-        </template> -->
+      <el-table-column prop="productTitle" label="商品名"  align="center">
       </el-table-column>
       <el-table-column
         prop="sort"
@@ -81,13 +89,10 @@
         align="center"
         >
         <template slot-scope="scope">
-        <el-button
-          @click="handleEdit(scope.$index, scope.row)"
-          size="mini">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="deleteData(scope.row)">删除</el-button>
+        <el-button size="mini">编辑</el-button>
+
+        <el-button size="mini" type="danger" @click="deleteData(scope.row)">删除</el-button>
+        <!-- <el-button size="mini" type="danger" @click="open">删除</el-button> -->
       </template>
       </el-table-column>
     </el-table>
@@ -109,40 +114,63 @@ export default {
           value: '2',
           label: '参数'
         }],
-        options: [{
-          value: '1',
-          label: '电子'
-        }, {
-          value: '2',
-          label: '电器'
-        }, {
-          value: '3',
-          label: '服装'
-        }, {
-          value: '4',
-          label: '食品'
-        },
-        ],
+        options: [],
         value: '',
         values:'',
         dialogFormVisible: false,
         formLabelWidth: '120px',
         forms: {
           name: '',
+          pid: "",
         },
         tableData: [{
             id:'',
             productTitle:'',
             value:'',
             // values:''
-          },]
+          }],
+          form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
       }
     },
     methods: {
-      ...mapActions(["createAttribute","getAttributeList","attributeOrders","deleteAttribute","getProductList","attributeStick"]),
-       handleEdit(index, row) {
-        console.log(index, row);
+      ...mapActions(["createAttribute","getAttributeList","attributeOrders","deleteAttribute","getProductList","attributeStick","getCategoryList"]),
+      open() {
+        
       },
+
+      async getClassifyInfo() {
+      let res = await this.getCategoryList({});
+      let data = res.data.rows.slice();
+      this.arr = data;
+      let target = this.format(data);
+      this.options = target;
+    },
+    format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        // item.child = item.child || [];
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
+      getId() {
+      let res = this.$refs["cascader"].getCheckedNodes();
+      this.forms.pid = res[0].data.id;
+    },
       async getList(){
         let res = await this.getProductList();
         console.log(res);
@@ -162,7 +190,6 @@ export default {
           for (let i = 0; i < this.tableData.length; i++) {
             let item = this.tableData[i];
             if (item.id == row.id) {
-              // console.log(item);
               res.i = i; 
               res.currentData = item; //当前的数据；
               res.preData = this.tableData[i - 1]; //上一个数据；
@@ -218,17 +245,27 @@ export default {
     }, 
       
       async deleteData(row) {
-      for (var i = 0; i < this.tableData.length; i++) {
-        let el = this.tableData[i];
-        if (row.ord == el.ord) {
-          this.tableData.splice(i, 1);
-        } 
-      }
-      let res = await this.deleteAttribute({
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+             let res = await this.deleteAttribute({
         id:[row.id],
       })
-      console.log(res)
+      console.log(res);
       this.apply();
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          }); 
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+   
     },
 
   async confirm(){
@@ -242,7 +279,7 @@ export default {
     let res = await this.createAttribute({
       value: this.forms.name,
       type: Number(this.value),
-      productId: Number(this.values)
+      productId: Number(this.forms.pid)
     });
     console.log(res);
     this.apply();
@@ -263,6 +300,7 @@ export default {
   }
   },
   async created(){
+    this.getClassifyInfo();
     this.apply();
     this.getList();
   }

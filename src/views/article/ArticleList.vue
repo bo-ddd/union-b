@@ -79,6 +79,7 @@ import {getTime} from '../../assets/until/until'
       ...mapActions(["getArticleList","deleteArticle","updateArticle"]),
       async list(){
         let allList = await this.getArticleList();
+        console.log(allList);
         allList.data.rows.forEach(fs=>{
           fs.createdAt = getTime(new Date(fs.createdAt).getTime());
         })
@@ -102,11 +103,6 @@ import {getTime} from '../../assets/until/until'
         let updateArticle = await this.updateArticle();
         console.log(updateArticle)                                                                                                                                                                                                                                                                     
       },
-      ellipsis(a){
-        if(a.length>10){
-          return a.substring(0,10);
-        }
-      }
        
     },
   }

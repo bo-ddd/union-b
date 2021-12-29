@@ -24,11 +24,11 @@
      </div>
     <div class="main">
          <el-table
-    :data="tableData"
+    :data="rows"
     stripe
     style="width: 100%">
     <el-table-column
-      prop="name"
+      prop="superName"
       label="名称"
       width="280">
     </el-table-column>
@@ -42,7 +42,7 @@
       label="关联商品数量">
     </el-table-column>
     <el-table-column
-      prop="address"
+      prop="regionId"
       label="展示区域">
     </el-table-column>
     <el-table-column
@@ -53,25 +53,27 @@
     <el-table-column
       label="操作"
       width="120">
-         <el-button type="primary"  @click="dialogFormVisible = true">编辑</el-button>
+        <template slot-scope="scope">
+         <el-button type="primary"  @click="editModify(scope.row)">编辑</el-button>
+           </template>
     </el-table-column>
   </el-table>
     </div>
-
+<!--编辑优品-->
     <el-dialog title="编辑炫萌优品" :visible.sync="dialogFormVisible">
   <el-form :model="form">
     <el-form-item label="视频名称" :label-width="formLabelWidth" class="asterisk">
-        <el-input type="text" placeholder="填写视频名称(不超过60个字符)" v-model="text" maxlength="60" show-word-limit>
+        <el-input type="text" placeholder="填写视频名称(不超过60个字符)" v-model="superName" maxlength="60" show-word-limit>
         </el-input>
     </el-form-item>
     <el-form-item label="视频链接" :label-width="formLabelWidth" class="asterisk">
-    <el-select v-model="value"  placeholder="请填写完整的视频链接">
-        <el-option
+    <el-select v-model="serialNumber"  placeholder="请填写完整的视频链接">
+        <!-- <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value">
-        </el-option>
+        </el-option> -->
   </el-select>
     </el-form-item>
     <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5 asterisk">
@@ -83,7 +85,7 @@
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button type="primary"  @click="dialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+    <el-button type="primary" @click="editPremium">确 定</el-button>
   </div>
 </el-dialog>
 <el-dialog title="请选择省区" :visible.sync="dialogFormVisible1" >
@@ -119,7 +121,7 @@
     </el-form-item>
 
     <el-form-item label="展示区域"  :label-width="formLabelWidth">
-      <el-select v-model="name" multiple  placeholder="请选择活动区域">
+      <el-select v-model="displayArea" multiple  placeholder="请选择活动区域">
            <el-option
       v-for="item in arr"
       :key="item.id"
@@ -144,6 +146,7 @@ export default {
         checkedlist : [], //选择省区
         value: [],
         commodityArr:[],//商品名称
+        displayArea:[],//展示区域
         options: [{
             value: '选项1',
             label: '黄金糕'
@@ -211,7 +214,8 @@ export default {
         superName:"",//商品名称
         serialNumber:[],//商品的id
         regionld:"",//展示区域
-        id:""//商品id
+        id:"",//商品id
+        rows:[]
       };
     },
     //这个是频繁更改需要用到watch然后目的是检测id的更改
@@ -219,7 +223,7 @@ export default {
         id:function(newId,oldId){
           if(newId!=oldId){
             console.log(this.id);
-            // this.getImg();
+            this.getImg();
            let target = this.commodityArr.find((item)=>{
               return item.id == this.id;
             })
@@ -227,7 +231,6 @@ export default {
             console.log(this.superName);
           }
         },
-
     },
     async created () {
         this.arr.push(
@@ -339,6 +342,7 @@ export default {
        async getpremium(){
         let premium=await this.getSuperList()
           console.log(premium);
+          this.rows=premium.data.rows
         },
         //清空已选
         emptySelect(){
@@ -347,13 +351,16 @@ export default {
         //新增推荐优品
        async newProducts(){
           this.dialogFormVisible3 = false;
+          let str = this.displayArea.join(",");
+          console.log(str);
           //新增优品
         let suproduct= await this.createSuperProduct({
             superName:this.superName,
-            serialNumber:this.serialNumber,
-            regionld:this.regionld
+            serialNumber:this.id,
+            regionId:str
         });
         console.log(suproduct);
+         this.getpremium();
         },
        async getshopping(){
           this.dialogFormVisible3 = true;
@@ -368,16 +375,27 @@ export default {
              });
              console.log(getImage);
          },
-        //查询商品
-        // async inquirygoods(){
+        //更改商品
+        editModify(ware){
+          this.dialogFormVisible = true;
+          this.id=ware.id;
+         this.superName=ware.superName;
+         this.serialNumber=ware.serialNumber;
+        //  this.regionId=ware.regionId;
+         console.log(this.checkedlist);
+        },
+        async editPremium(){
+          console.log(this.checkedlist.join(","));
+        //   this.dialogFormVisible = false
         //  let inquiry= await this.updateSuperProduct({
         //    id:this.id,
         //    superName:this.superName,
         //    serialNumber:this.serialNumber,
-        //    regionld:this.regionld
+        //    regionId:this.regionId
         //  });
         //  console.log(inquiry);
-        //  },
+          //  this.getpremium();
+         },
         
     }
   }

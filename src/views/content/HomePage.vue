@@ -56,7 +56,6 @@
                     <el-input v-model="form.describe" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="供应商" v-show="flag">
-                    <!-- <el-input v-model="form.describe" autocomplete="off"></el-input> -->
                     <el-select v-model="value" placeholder="请选择">
                         <el-option
                             v-for="item in suppliers"
@@ -83,31 +82,7 @@ import upload from '../../../public/lib/uploud';
 export default {
     data(){
         return{
-            tableData: [{
-                id : 1,
-                date: '2016-05-02',
-                name: 'oppo',
-                describe : '红色',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                id : 2,
-                date: '2016-05-04',
-                name: 'vivo',
-                describe : '白色',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                id : 3,
-                date: '2016-05-01',
-                name: '华为',
-                describe : '黑色',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                id : 4,
-                date: '2016-05-03',
-                name: '小米',
-                describe : '红色',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
+            tableData: [],
             dialogFormVisible: false,    // 模态框状态  flase 不显示 true显示
             dialogImageUrl: '',
             dialogVisible: false,
@@ -126,7 +101,8 @@ export default {
         ...mapActions(["uploadImage","createHome","deleteHome","updateHome","getHomeList"]),
         // 获取首页推荐的列表
         async getData(){
-            this.tableData = await this.getHomeList();
+            let res = await this.getHomeList();
+            this.tableData = res.data;
         },
         // 创建按钮的点击事件
         createData(){
@@ -153,11 +129,13 @@ export default {
         submit(){
             this.$refs['my-upload'].clearFiles();
             this.dialogFormVisible = false;
-            // if(this.flag){
-                
-            // }else{  
-                
-            // }
+            if(this.flag){
+                console.log(this.form.imgUrl);
+                console.log(this.form.name);
+                console.log(this.form.describe);
+            }else{  
+                console.log('修改本行数据');
+            }
         },
         // 模态框的取消事件
         cancel(){
@@ -165,8 +143,8 @@ export default {
             this.dialogFormVisible = false;
         },
     },
-    created(){
-        this.getData();
+     created(){
+        // this.getData();
     }
 
 

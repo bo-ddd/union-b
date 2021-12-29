@@ -3,10 +3,7 @@
     <el-button type="primary" @click="createData">创建推荐内容</el-button>
 
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="id"  width='200'>
-        <template slot="header">
-            <span>id</span>
-        </template>
+      <el-table-column prop="id" label='id' width='200'>
       </el-table-column>
 
       <el-table-column prop="date"  width='200' label='图片'>
@@ -16,16 +13,17 @@
             </div>
         </template>
       </el-table-column>
+
       <el-table-column prop="name" label="图片名字">
       </el-table-column>
+
       <el-table-column prop="describe" label="图片描述">
       </el-table-column>
+
       <el-table-column prop="address" label="供应商">
       </el-table-column>
-      <el-table-column width='200'>
-        <template slot="header">
-            <span>详情</span>
-        </template>
+
+      <el-table-column width='200' label='详情'>
         <template slot-scope="scope">
             <el-link type="primary" @click="openLayer(scope.row)">编辑</el-link>
             <el-link type="primary" @click="deleteRow(scope.row)" class="ml-10">删除</el-link>
@@ -39,7 +37,6 @@
         <div class="modifydata">
             <el-form :model="form">
                 <el-form-item label="活动名称">
-                    <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
                     <el-upload
                         action=""
                         ref="my-upload"
@@ -59,7 +56,14 @@
                     <el-input v-model="form.describe" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="供应商" v-show="flag">
-                    <el-input v-model="form.describe" autocomplete="off"></el-input>
+                    <el-select v-model="value" placeholder="请选择">
+                        <el-option
+                            v-for="item in suppliers"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
         </div>
@@ -78,85 +82,80 @@ import upload from '../../../public/lib/uploud';
 export default {
     data(){
         return{
-            tableData: [{
-                id : 1,
-                date: '2016-05-02',
-                name: 'oppo',
-                describe : '红色',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                id : 2,
-                date: '2016-05-04',
-                name: 'vivo',
-                describe : '白色',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                id : 3,
-                date: '2016-05-01',
-                name: '华为',
-                describe : '黑色',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                id : 4,
-                date: '2016-05-03',
-                name: '小米',
-                describe : '红色',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
+            tableData: [],
             dialogFormVisible: false,    // 模态框状态  flase 不显示 true显示
+            dialogImageUrl: '',
+            dialogVisible: false,
             form : {
                 name : '',
                 describe: '',
                 imgUrl : '',
                 supplier : '',   // 供应商
             },
-            dialogImageUrl: '',
-            dialogVisible: false,
             flag : false,
+            suppliers : [],    // 供应商的id和名字
         }
     },
     methods :{
-//                   图片接口
-    ...mapActions(["uploadImage"]),
-    // 创建按钮的点击事件
-    createData(){
-        this.flag = true;
-        this.dialogFormVisible = true;
+//                       图片接口     增加推荐接口   删除推荐接口  修改推荐接口   获取推荐列表
+        ...mapActions(["uploadImage","createHome","deleteHome","updateHome","getHomeList"]),
+        // 获取首页推荐的列表
+        async getData(){
+            let res = await this.getHomeList();
+            this.tableData = res.data;
+        },
+        // 创建按钮的点击事件
+        createData(){
+            this.flag = true;
+            this.dialogFormVisible = true;
+        },
+        // 修改本行的事件
+        openLayer (a) {
+            console.log(a);
+            this.dialogFormVisible = true;
+            this.flag = false;
+        },
+        // 删除本行的点击事件
+        deleteRow(a){
+            console.log(a.id);
+        },
+        // 上传的http事件
+        async uploadimg (a) {
+            let res = upload(a.file,5);
+            let b = await this.uploadImage(res);
+            this.form.imgUrl = b.data;
+        },
+        // 模态框中的确定事件
+        submit(){
+            this.$refs['my-upload'].clearFiles();
+            this.dialogFormVisible = false;
+            if(this.flag){
+                console.log(this.form.imgUrl);
+                console.log(this.form.name);
+                console.log(this.form.describe);
+            }else{  
+                console.log('修改本行数据');
+            }
+        },
+        // 模态框的取消事件
+        cancel(){
+            this.$refs['my-upload'].clearFiles();
+            this.dialogFormVisible = false;
+        },
     },
-    // 修改本行的事件
-    openLayer (a) {
-        console.log(a);
-        this.dialogFormVisible = true;
-        this.flag = false;
-    },
-    // 删除本行的点击事件
-    deleteRow(a){
-        console.log(a.id);
-    },
-    // 上传的http事件
-    async uploadimg (a) {
-        let res = upload(a.file,5);
-        let b = await this.uploadImage(res);
-        this.form.imgUrl = b.data;
-    },
-    // 模态框中的确定事件
-    submit(){
-        this.$refs['my-upload'].clearFiles();
-        this.dialogFormVisible = false;
-    },
-    // 模态框的取消事件
-    cancel(){
-        this.$refs['my-upload'].clearFiles();
-        this.dialogFormVisible = false;
-    },
-    
-    
-}
+     created(){
+        // this.getData();
+    }
+
 
 }
 </script>
 
 <style lang='scss' scoped>
+::v-deep .el-input__inner{
+    width: 170px;
+    margin-left: 10px;
+}
 .ml-10{
     margin-left: 10px;
 }

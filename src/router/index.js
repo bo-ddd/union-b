@@ -106,8 +106,17 @@ export const routes = [{
             icon: 'el-icon-office-building'
         },
         children: [{
+                path: '/store/index',
+                name: 'StoreManage',
+                meta: {
+                    title: '查看店铺',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "StoreManage" */ '../views/store/Index')
+            },
+            {
                 path: '/store/mine',
-                name: 'Allorders',
+                name: 'mine',
                 meta: {
                     title: '我的店铺',
                 },
@@ -132,7 +141,7 @@ export const routes = [{
                     flag: "false"
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "update" */ '../views/store/StoreDetails')
+                    import ( /* webpackChunkName: "details" */ '../views/store/StoreDetails')
             },
         ]
     },
@@ -547,6 +556,15 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "password" */ '../views/set/Password')
+            },
+            {
+                path: '/set/info',
+                name: 'UserInfo',
+                meta: {
+                    title: '修改信息',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "info" */ '../views/set/UserInfo')
             },
         ]
     },

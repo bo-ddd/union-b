@@ -300,6 +300,22 @@ export default new Vuex.Store({
         deleteBanner(ctx, payload) {
             return Api.deleteBanner(payload);
         },
+        //首页推荐列表
+        getHomeList(ctx, payload) {
+            return Api.getHomeList(payload);
+        },
+        //新增首页推荐
+        createHome(ctx, payload) {
+            return Api.createHome(payload);
+        },
+        //删除首页推荐
+        deleteHome(ctx, payload) {
+            return Api.deleteHome(payload);
+        },
+        //更改首页推荐
+        updateHome(ctx, payload) {
+            return Api.updateHome(payload);
+        },
 
 
         //订单管理
@@ -356,6 +372,10 @@ export default new Vuex.Store({
         //店铺列表接口
         getStoreList(ctx, payload) {
             return Api.getStoreList(payload);
+        },
+        //我的店铺接口
+        getMineStoreList(ctx, payload) {
+            return Api.getMineStoreList(payload);
         },
         //店铺详情接口
         getStoreDetail(ctx, payload) {

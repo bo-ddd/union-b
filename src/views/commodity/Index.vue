@@ -18,7 +18,7 @@
                   <el-option
                     v-for="item in commodityStatus"
                     :key="item.value"
-                    :label="item.label"
+                    :label="item.value"
                     :value="item.value"
                   >
                   </el-option>
@@ -80,6 +80,7 @@
           tooltip-effect="dark"
           style="width: 100%"
           stripe
+          row-key="getRowKey"
           @select="checkBoxData"
           @select-all="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
@@ -150,7 +151,7 @@
       >
         <el-form :model="form">
           <el-form-item label="商品名称" :label-width="formLabelWidth">
-            <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-input v-model="form.title" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="商品分类" :label-width="formLabelWidth">
             <div class="block">
@@ -163,10 +164,7 @@
             </div>
           </el-form-item>
           <el-form-item label="售价" :label-width="formLabelWidth">
-            <el-input v-model="form.money" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="库存" :label-width="formLabelWidth">
-            <el-input v-model="form.inventory" autocomplete="off"></el-input>
+            <el-input v-model="form.realPrice" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -191,27 +189,9 @@ export default {
     return {
       checked: false,
       commodityStatusValue: "",
-      commodityStatus: [
-        {
-          value: "销售中",
-          label: "销售中",
-        },
-        {
-          value: "已售空",
-          label: "已售空",
-        },
-      ],
+      commodityStatus: [],
       salesTypeValue: "",
-      salesType: [
-        {
-          value: "孕产妇用品",
-          label: "孕产妇用品",
-        },
-        {
-          value: "婴幼儿用品",
-          label: "婴幼儿用品",
-        },
-      ],
+      salesType: [],
       value: "",
       options: [
         {
@@ -228,285 +208,16 @@ export default {
         region: "",
       },
 
-      tableData: [
-       
-      ],
+      tableData: [],
       deleteDataArr: [],
       arr4: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
-        name: "",
-        money: "",
+        title: "",
+        realPrice: "",
         inventory: "",
-        classificationList: [
-          {
-            value: "zhinan",
-            label: "指南",
-            children: [
-              {
-                value: "shejiyuanze",
-                label: "设计原则",
-                children: [
-                  {
-                    value: "yizhi",
-                    label: "一致",
-                  },
-                  {
-                    value: "fankui",
-                    label: "反馈",
-                  },
-                  {
-                    value: "xiaolv",
-                    label: "效率",
-                  },
-                  {
-                    value: "kekong",
-                    label: "可控",
-                  },
-                ],
-              },
-              {
-                value: "daohang",
-                label: "导航",
-                children: [
-                  {
-                    value: "cexiangdaohang",
-                    label: "侧向导航",
-                  },
-                  {
-                    value: "dingbudaohang",
-                    label: "顶部导航",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            value: "zujian",
-            label: "组件",
-            children: [
-              {
-                value: "basic",
-                label: "Basic",
-                children: [
-                  {
-                    value: "layout",
-                    label: "Layout 布局",
-                  },
-                  {
-                    value: "color",
-                    label: "Color 色彩",
-                  },
-                  {
-                    value: "typography",
-                    label: "Typography 字体",
-                  },
-                  {
-                    value: "icon",
-                    label: "Icon 图标",
-                  },
-                  {
-                    value: "button",
-                    label: "Button 按钮",
-                  },
-                ],
-              },
-              {
-                value: "form",
-                label: "Form",
-                children: [
-                  {
-                    value: "radio",
-                    label: "Radio 单选框",
-                  },
-                  {
-                    value: "checkbox",
-                    label: "Checkbox 多选框",
-                  },
-                  {
-                    value: "input",
-                    label: "Input 输入框",
-                  },
-                  {
-                    value: "input-number",
-                    label: "InputNumber 计数器",
-                  },
-                  {
-                    value: "select",
-                    label: "Select 选择器",
-                  },
-                  {
-                    value: "cascader",
-                    label: "Cascader 级联选择器",
-                  },
-                  {
-                    value: "switch",
-                    label: "Switch 开关",
-                  },
-                  {
-                    value: "slider",
-                    label: "Slider 滑块",
-                  },
-                  {
-                    value: "time-picker",
-                    label: "TimePicker 时间选择器",
-                  },
-                  {
-                    value: "date-picker",
-                    label: "DatePicker 日期选择器",
-                  },
-                  {
-                    value: "datetime-picker",
-                    label: "DateTimePicker 日期时间选择器",
-                  },
-                  {
-                    value: "upload",
-                    label: "Upload 上传",
-                  },
-                  {
-                    value: "rate",
-                    label: "Rate 评分",
-                  },
-                  {
-                    value: "form",
-                    label: "Form 表单",
-                  },
-                ],
-              },
-              {
-                value: "data",
-                label: "Data",
-                children: [
-                  {
-                    value: "table",
-                    label: "Table 表格",
-                  },
-                  {
-                    value: "tag",
-                    label: "Tag 标签",
-                  },
-                  {
-                    value: "progress",
-                    label: "Progress 进度条",
-                  },
-                  {
-                    value: "tree",
-                    label: "Tree 树形控件",
-                  },
-                  {
-                    value: "pagination",
-                    label: "Pagination 分页",
-                  },
-                  {
-                    value: "badge",
-                    label: "Badge 标记",
-                  },
-                ],
-              },
-              {
-                value: "notice",
-                label: "Notice",
-                children: [
-                  {
-                    value: "alert",
-                    label: "Alert 警告",
-                  },
-                  {
-                    value: "loading",
-                    label: "Loading 加载",
-                  },
-                  {
-                    value: "message",
-                    label: "Message 消息提示",
-                  },
-                  {
-                    value: "message-box",
-                    label: "MessageBox 弹框",
-                  },
-                  {
-                    value: "notification",
-                    label: "Notification 通知",
-                  },
-                ],
-              },
-              {
-                value: "navigation",
-                label: "Navigation",
-                children: [
-                  {
-                    value: "menu",
-                    label: "NavMenu 导航菜单",
-                  },
-                  {
-                    value: "tabs",
-                    label: "Tabs 标签页",
-                  },
-                  {
-                    value: "breadcrumb",
-                    label: "Breadcrumb 面包屑",
-                  },
-                  {
-                    value: "dropdown",
-                    label: "Dropdown 下拉菜单",
-                  },
-                  {
-                    value: "steps",
-                    label: "Steps 步骤条",
-                  },
-                ],
-              },
-              {
-                value: "others",
-                label: "Others",
-                children: [
-                  {
-                    value: "dialog",
-                    label: "Dialog 对话框",
-                  },
-                  {
-                    value: "tooltip",
-                    label: "Tooltip 文字提示",
-                  },
-                  {
-                    value: "popover",
-                    label: "Popover 弹出框",
-                  },
-                  {
-                    value: "card",
-                    label: "Card 卡片",
-                  },
-                  {
-                    value: "carousel",
-                    label: "Carousel 走马灯",
-                  },
-                  {
-                    value: "collapse",
-                    label: "Collapse 折叠面板",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            value: "ziyuan",
-            label: "资源",
-            children: [
-              {
-                value: "axure",
-                label: "Axure Components",
-              },
-              {
-                value: "sketch",
-                label: "Sketch Templates",
-              },
-              {
-                value: "jiaohu",
-                label: "组件交互文档",
-              },
-            ],
-          },
-        ],
+        classificationList: [],
       },
       formLabelWidth: "120px",
       page: 1,
@@ -515,7 +226,7 @@ export default {
       pageNum: "",
       num: "",
       cacheArr: [],
-      tablelength: 20,
+      tablelength: 0,
       flag: false,
       flag1: true,
     };
@@ -534,9 +245,21 @@ export default {
         } else if (item.status == 2) {
           item.status = "已上架";
         }
+        if (item.status && item.categoryTitle) {
+          this.commodityStatus.push({
+            label: item.status,
+            value: item.status,
+          });
+          this.salesType.push({
+            label: item.categoryTitle,
+            value: item.categoryTitle,
+          });
+        }
         item.createdAt = this.time(item.createdAt);
       });
-      console.log(this.tableData);
+      this.commodityStatus = [...new Set(this.commodityStatus)];
+
+      // console.log(this.tableData);
       this.pageList();
     },
     time(time) {
@@ -545,29 +268,8 @@ export default {
       let month = d.getMonth() + 1;
       let date = d.getDate();
       date = date > 9 ? date : "0" + date;
-      // let hours = d.getHours();
-      // hours = hours > 9 ? hours : "0" + hours;
-      // let day = ["七", "一", "二", "三", "四", "五", "六"][d.getDay()];
-      // let minutes = d.getMinutes();
-      // minutes = minutes > 9 ? minutes : "0" + minutes;
-      // let seconds = d.getSeconds();
-      // seconds = seconds > 9 ? seconds : "0" + seconds;
-      return (
-        year +
-        "-" +
-        month +
-        "-" +
-        date +
-        " " /* +
-        "  星期" +
-        day +
-        "-" +
-        hours +
-        ":" +
-        minutes +
-        ":" +
-        seconds */
-      );
+
+      return year + "-" + month + "-" + date + " ";
     },
     pageList() {
       this.getList(this.query());
@@ -611,23 +313,24 @@ export default {
     },
     query(flag) {
       let arr = [];
+      // console.log(this.commodityStatusValue);
       if (!this.commodityStatusValue && !this.salesTypeValue) {
         arr = this.tableData;
         // console.log(this.tableData);
         this.flag = true;
       } else if (this.commodityStatusValue && !this.salesTypeValue) {
         arr = this.tableData.filter((item) => {
-          return item.state == this.commodityStatusValue;
+          return item.status == this.commodityStatusValue;
         });
       } else if (!this.commodityStatusValue && this.salesTypeValue) {
         arr = this.tableData.filter((item) => {
-          return item.classify == this.salesTypeValue;
+          return item.categoryTitle == this.salesTypeValue;
         });
       } else {
         arr = this.tableData.filter((item) => {
           return (
-            item.classify == this.salesTypeValue &&
-            item.state == this.commodityStatusValue
+            item.categoryTitle == this.salesTypeValue &&
+            item.status == this.commodityStatusValue
           );
         });
       }
@@ -654,7 +357,27 @@ export default {
       // console.log(data);
       this.form = data.row;
     },
-    async remove(indexArr) {
+    remove(indexArr) {
+      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.delete(indexArr);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    async delete(indexArr) {
       this.tableData.splice(this.tableData.indexOf(indexArr[0].row), 1);
       this.table.splice(this.table.indexOf(indexArr[0].row), 1);
       this.getList(this.query());
@@ -662,10 +385,33 @@ export default {
         id: [indexArr[0].row.id],
       });
       console.log(res);
-      // console.log([indexArr[0].row.id]);
     },
-   async multipleRemove() {
-      let arr  =[]
+    multipleRemove() {
+      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.multipleDelete();
+          if (!this.cacheArr.length) {
+            this.$message("您未选中任何要删除的数据");
+            return;
+          }
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    async multipleDelete() {
+      let arr = [];
       for (let i = 0; i < this.arr4.length; i++) {
         if (!this.cacheArr.includes(this.arr4[i])) {
           this.cacheArr.push(this.arr4[i]);
@@ -677,28 +423,32 @@ export default {
       this.cacheArr.forEach((item) => {
         this.tableData.splice(this.tableData.indexOf(item), 1);
         this.table.splice(this.table.indexOf(item), 1);
-        arr.push(item.id)
+        arr.push(item.id);
       });
       this.getList(this.query());
+      // console.log(this.cacheArr);
+      this.$refs.multipleTable.clearSelection();
       let res = await this.deleteProduct({
         id: arr,
       });
       console.log(res);
-      // console.log(arr);
+      console.log(arr);
     },
     checkBoxData: function (selection, row) {
       this.arr4.push(row);
-      // console.log(this.arr4);
     },
     handleSelectionChange(val) {
+      this.multipleSelection = val;
       if (!val.length) {
         this.arr4 = [];
       } else {
         val.forEach((item) => {
           this.arr4.push(item);
-          this.$refs.multipleTable.toggleRowSelection(item, true);
         });
       }
+    },
+    getRowKey(row) {
+      return row.id;
     },
   },
   async created() {

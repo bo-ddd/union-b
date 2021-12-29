@@ -1,25 +1,27 @@
 <template>
   <div id="wrap">
     <el-button type="primary" @click="createBan">创建banner图</el-button>
+
+
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="id" label="id" width='200'>
       </el-table-column>
-      <el-table-column prop="date" width='200'>
+      <el-table-column width='200'>
           <template slot="header">
               <span>图片</span>
           </template>
-          <template>
+          <template slot-scope="scope">
               <div class="img">
-
+                <img :src="scope.row.imgUrl" alt="">
               </div>
           </template>
       </el-table-column>
-      <el-table-column prop="name" label="姓名">
+      <el-table-column prop="imgDescription" label="姓名">
           <template slot="header">
               <span>图片信息</span>
           </template>
       </el-table-column>
-      <el-table-column prop="address" label="路由">
+      <el-table-column prop="route" label="路由">
       </el-table-column>
       <el-table-column width='200'>
           <template slot="header">
@@ -36,9 +38,9 @@
         <div class="modifydata">
             <el-form :model="form">
                 <el-form-item label="图片">
-                    <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
                     <el-upload
                         action=""
+                        :file-list='arr'
                         list-type="picture-card"
                         :http-request='uploadimg'
                         >
@@ -57,7 +59,7 @@
             </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+            <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary"  @click="modify">确 定</el-button>
         </div>
     </el-dialog>
@@ -71,23 +73,7 @@ import { mapActions } from "vuex";
 export default {
     data(){
         return{
-            tableData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
+            tableData: [],
             dialogFormVisible: false,
             form : {
                 name : '',
@@ -98,8 +84,13 @@ export default {
         }
     },
     methods :{
-        //                上传图片      创建banner图
-        ...mapActions(["uploadImage","createBanner"]),
+        //                上传图片    创建banner    获取banner        更改banner
+        ...mapActions(["uploadImage","createBanner","getBannerList","updateBanner"]),
+        // 获取所有的banner图列表
+        async getBanners(){
+            let res = await this.getBannerList();
+            this.tableData = res.data.rows
+        },
         // 编辑的点击事件
         openLayer (a) {
             this.dialogFormVisible = true;
@@ -114,14 +105,36 @@ export default {
             this.imgUrl = c.data;
         },
         // 模态框中的确定事件
-        modify(){
+        async modify(){
+            if(!this.id){
+                await this.createBanner({
+                    imgUrl : this.imgUrl,
+                    imgDescription : this.form.name,
+                    route : this.form.describe,
+                })
+            }else{
+                await this.updateBanner({
+                    id : this.id,
+                    imgUrl : this.imgUrl,
+                    imgDescription : this.form.name,
+                    route : this.form.describe,
+                })
+            }
+            this.getBanners();
             this.dialogFormVisible = false;
+            
         },
+        // 创建banner图
         createBan(){
+            this.id = '';
             this.dialogFormVisible = true;
             this.form.name = '';
             this.form.describe = '';
-        }
+        },
+
+    },
+    async created(){
+        this.getBanners();
     }
 }
 </script>
@@ -162,6 +175,11 @@ export default {
     height: 60px;
     border: 1px solid #ccc;
     margin: 0 auto;
+
+    & img{
+        width: 100%;
+        height: 100%;
+    }
 }
 </style>
 

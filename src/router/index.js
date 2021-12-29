@@ -102,7 +102,7 @@ export const routes = [{
         name: 'Store',
         component: Home,
         meta: {
-            title: '我的店铺',
+            title: '店铺管理',
             icon: 'el-icon-office-building'
         },
         children: [{
@@ -123,7 +123,17 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "update" */ '../views/store/UpdateStore')
-            }
+            },
+            {
+                path: '/store/details',
+                name: 'StoreDetails',
+                meta: {
+                    title: '店铺详情',
+                    flag: "false"
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "update" */ '../views/store/StoreDetails')
+            },
         ]
     },
     {
@@ -431,7 +441,7 @@ export const routes = [{
                 path: '/supplier/label',
                 name: 'SuppLabel',
                 meta: {
-                    title: '标签管理',
+                    title: '管理权限',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "label" */ '../views/supplier/Label')
@@ -468,7 +478,7 @@ export const routes = [{
                 path: '/merchant/label',
                 name: 'MerLabel',
                 meta: {
-                    title: '标签管理',
+                    title: '权限管理',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "label" */ '../views/merchant/Label')

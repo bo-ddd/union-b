@@ -404,7 +404,7 @@ export default {
      * } 
      */
     updateAdvert(params) {
-        return axios.post('/advert/refuse', params, postConfig)
+        return axios.post('/advert/update', params, postConfig)
     },
     /**
      * @description 删除广告的接口 
@@ -611,6 +611,51 @@ export default {
     deleteBanner(params) {
         return axios.post('/banner/delete', params, postConfig)
     },
+    /**
+     * @description 首页推荐列表 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getHomeList(params) {
+        return axios.post('/homeRecommend/list', params, postConfig)
+    },
+    /**
+     * @description 新增首页推荐  
+     * @params {
+     * imgUrl:[string] 必填 图片路径,
+     * imgName:[string]必填 图片名称,
+     * imgDecription:[string] 必填 图片描述,
+     * storeId:[number] 摆摊  店铺id
+     * } 
+     */
+    createHome(params) {
+        return axios.post('/homeRecommend/create', params, postConfig)
+    },
+    /**
+     * @description 删除首页推荐 
+     * @params {
+     * id : [number]  必填  '首页推荐的id'
+     * } 
+     */
+    deleteHome(params) {
+        return axios.post('/homeRecommend/delete', params, postConfig)
+    },
+    /**
+     * @description 更改首页推荐
+     * @params {
+     * id : [number]  必填  '首页推荐的id',
+     * imgUrl:[string] 必填 图片路径,
+     * imgName:[string]必填 图片名称,
+     * imgDecription:[string] 必填 图片描述,
+     * storeId:[number] 摆摊  店铺id
+     * } 
+     */
+    updateHome(params) {
+        return axios.post('/homeRecommend/update', params, postConfig)
+    },
 
 
 
@@ -749,6 +794,17 @@ export default {
      */
     getStoreList(params) {
         return axios.post('/store/list', params, postConfig)
+    },
+    /**
+     * @description 我的店铺列表 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getMineStoreList(params) {
+        return axios.post('/store/mineStore', params, postConfig)
     },
     /**
      * @description 店铺详情接口 /store/detail

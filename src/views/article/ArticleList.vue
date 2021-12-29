@@ -33,24 +33,25 @@
       label="操作"
       width="230">
       <template slot-scope="scope">
-        <el-button class="button"
-          @click.native.prevent="deleteRow(scope.$index, tableData)"
+         <el-button class="button"
+          @click="remove(scope.row)"
           type="text"
           >
           移除
         </el-button>
         <el-button class="button"
-          @click="see"
+          @click="find(scope.row)"
           type="text"
           >
           查看
         </el-button>
         <el-button class="button"
-          @click="change"
+          @click="update"
           type="text"
           >
           更改
         </el-button>
+        
       </template>
     </el-table-column>
   </el-table>
@@ -61,37 +62,52 @@
 import { mapActions } from "vuex";
 import {getTime} from '../../assets/until/until'
   export default {
+    data() {
+      return{
+        id :'',
+        articleTitle:'我是标题',
+        articleContent:'我是内容',
+        tableData:[],
+
+      }
+    },
    created(){
      this.list();
-
+    
     },
     methods: {
       ...mapActions(["getArticleList","deleteArticle","updateArticle"]),
       async list(){
         let allList = await this.getArticleList();
         allList.data.rows.forEach(fs=>{
-           fs.createdAt = getTime(new Date(fs.createdAt).getTime());
+          fs.createdAt = getTime(new Date(fs.createdAt).getTime());
         })
-          console.log(allList.data.rows);
-        this.tableData = allList.data.rows
-        console.log(this.tableData);
+        this.tableData = allList.data.rows;
       },
-      async see(){
-        this.$router.push({
-          path:'./Details'
+      async remove(target){
+        let deleteArticle = await this.deleteArticle({id :target.id });
+        console.log(deleteArticle)
+        this.list();
+      },
+      async find(target){
+        console.log(target);
+        this.$router.push({ 
+          path:'./Details',
+          query:{
+            target:target,
+          }
         })
       },
-      async change(){
-        
+      async update(){
+        let updateArticle = await this.updateArticle();
+        console.log(updateArticle)                                                                                                                                                                                                                                                                     
       },
-        deleteRow(index, rows) {
-        rows.splice(index, 1);
+      ellipsis(a){
+        if(a.length>10){
+          return a.substring(0,10);
+        }
       }
-    },
-    data() {
-      return {
-        tableData:[],
-      }
+       
     },
   }
 </script>

@@ -98,6 +98,35 @@ export const routes = [{
         ]
     },
     {
+        path: '/store',
+        name: 'Store',
+        component: Home,
+        meta: {
+            title: '我的店铺',
+            icon: 'el-icon-office-building'
+        },
+        children: [{
+                path: '/store/mine',
+                name: 'Allorders',
+                meta: {
+                    title: '我的店铺',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "mine" */ '../views/store/Mine')
+            },
+            {
+                path: '/store/update',
+                name: 'UpdateStore',
+                meta: {
+                    title: '修改信息',
+                    flag: "false"
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "update" */ '../views/store/UpdateStore')
+            }
+        ]
+    },
+    {
         path: '/commodity',
         name: 'Commodity',
         component: Home,
@@ -397,15 +426,6 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "index" */ '../views/supplier/Index')
-            },
-            {
-                path: '/supplier/settled',
-                name: 'SupplierSettled',
-                meta: {
-                    title: '新增供应商',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "settled" */ '../views/supplier/Settled')
             },
             {
                 path: '/supplier/label',

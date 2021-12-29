@@ -103,7 +103,7 @@
       </div>
 
       <div class="block">
-        <!-- <div class="footer_right">
+        <div class="footer_right">
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -115,7 +115,7 @@
             background
           >
           </el-pagination>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -129,7 +129,8 @@ export default {
       currentPage2: 5,
       currentPage3: 5,
       currentPage4: 4,
-      tableData: [
+      renderDynamic:[],
+      table: [
         {
           code: "20160503",
           name: "十月结晶一次性产妇纸",
@@ -257,6 +258,7 @@ export default {
     };
   },
   methods: {
+   //分页
     //分页有多少条
     handleSizeChange(val) {
       this.pageSize = val;

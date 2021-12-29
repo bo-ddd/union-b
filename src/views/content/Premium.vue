@@ -8,7 +8,7 @@
     <el-option
       v-for="item in options"
       :key="item.value"
-      :label="item.label"
+      :label="item.superName"
       :value="item.value">
     </el-option>
   </el-select>
@@ -74,33 +74,12 @@
         </el-option>
   </el-select>
     </el-form-item>
-    <el-form-item label="排序" :label-width="formLabelWidth" >
-      <el-input v-model="form.name" autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="上传封面" :label-width="formLabelWidth" class="asterisk">
-
-        <el-upload
-          action=""
-          list-type="picture-card" 
-          :on-preview="handlePictureCardPreview"
-          :on-remove="handleRemove">
-          <i class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
-
-
-    </el-form-item>
     <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5 asterisk">
         <el-button type="primary"  @click="dialogFormVisible1 = true">添加省区</el-button>
     </el-form-item>
     <span class="pattern">已选省区:
       <span v-for="key in checkedlist" :key="key">{{key}}&nbsp;&nbsp;&nbsp;</span>
     </span>
-    <el-form-item label="关联商品" :label-width="formLabelWidth" class="asterisk">
-         <el-button type="primary">选择商品</el-button>
-    </el-form-item>
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button type="primary"  @click="dialogFormVisible = false">取 消</el-button>
@@ -119,29 +98,34 @@
 <el-dialog title="新增优品" :visible.sync="dialogFormVisible3">
   <el-form :model="form">
     <el-form-item label="商品名称" :label-width="formLabelWidth">
-     <el-select v-model="value" placeholder="请选择">
+     <el-select v-model="id" placeholder="请选择">
     <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+      v-for="item in commodityArr"
+      :key="item.id"
+      :label="item.title"
+      :value="item.id">
     </el-option>
   </el-select>
     </el-form-item>
     <el-form-item label="商品图片" :label-width="formLabelWidth">
-     <el-select v-model="value" placeholder="请选择">
+     <el-select v-model="id" placeholder="请选择">
     <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+      v-for="item in getgoods"
+      :key="item.id"
+      :label="item.title"
+      :value="item.id">
     </el-option>
   </el-select>
     </el-form-item>
-    <el-form-item label="展示区域" :label-width="formLabelWidth">
-      <el-select v-model="form.region" placeholder="请选择活动区域">
-        <el-option label="区域一" value="shanghai"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
+
+    <el-form-item label="展示区域"  :label-width="formLabelWidth">
+      <el-select v-model="name" multiple  placeholder="请选择活动区域">
+           <el-option
+      v-for="item in arr"
+      :key="item.id"
+      :label="item.name"
+      :value="item.id">
+    </el-option>
       </el-select>
     </el-form-item>
   </el-form>
@@ -157,8 +141,9 @@ import {mapActions} from "vuex";
 export default {
     data() {
       return {
-        checkedlist : [],
+        checkedlist : [], //选择省区
         value: [],
+        commodityArr:[],//商品名称
         options: [{
             value: '选项1',
             label: '黄金糕'
@@ -220,12 +205,8 @@ export default {
         },
         formLabelWidth: '120px',
         text:'',
-        imageUrl: '',
         checked: true,
         arr : [],
-        dialogImageUrl: '',
-        dialogVisible: false,
-        disabled: false,
         num : 0,
         superName:"",//商品名称
         serialNumber:[],//商品的id
@@ -233,7 +214,22 @@ export default {
         id:""//商品id
       };
     },
-    created () {
+    //这个是频繁更改需要用到watch然后目的是检测id的更改
+    watch:{
+        id:function(newId,oldId){
+          if(newId!=oldId){
+            console.log(this.id);
+            // this.getImg();
+           let target = this.commodityArr.find((item)=>{
+              return item.id == this.id;
+            })
+            this.superName = target.title;
+            console.log(this.superName);
+          }
+        },
+
+    },
+    async created () {
         this.arr.push(
           {
     "name": "北京市",
@@ -329,7 +325,8 @@ export default {
     "name": "新疆维吾尔自治区",
     "id": "650000000000"
 }),
-this.getpremium()
+        this.getpremium();
+        await this.getshopping();
     },
     methods: {
          ...mapActions(["getSuperList","superProductTradeName","superProductTradeImg","createSuperProduct","updateSuperProduct"]),
@@ -347,21 +344,9 @@ this.getpremium()
         emptySelect(){
             this.checkedlist=[];
         },
-        handleChange(value) {
-            console.log(value);
-        },
-        handleRemove(file, fileList) {
-          console.log(file, fileList);
-        },
-        handlePictureCardPreview(file) {
-          console.log(file.url);
-          this.dialogImageUrl = file.url;
-          this.dialogVisible = true;
-        },
         //新增推荐优品
        async newProducts(){
           this.dialogFormVisible3 = false;
-      
           //新增优品
         let suproduct= await this.createSuperProduct({
             superName:this.superName,
@@ -374,22 +359,25 @@ this.getpremium()
           this.dialogFormVisible3 = true;
           //获取商品名称及ID
               let getgoods=await this.superProductTradeName();
-              console.log(getgoods);
-             let getImage=await this.superProductTradeImg({
+              this.commodityArr=getgoods.data;
+        },
+         //获取图片
+         async getImg(){
+            let getImage=await this.superProductTradeImg({
                id:this.id
              });
              console.log(getImage);
-        },
+         },
         //查询商品
-        async inquirygoods(){
-         let inquiry= await this.updateSuperProduct({
-           id:this.id,
-           superName:this.superName,
-           serialNumber:this.serialNumber,
-           regionld:this.regionld
-         });
-         console.log(inquiry);
-         }
+        // async inquirygoods(){
+        //  let inquiry= await this.updateSuperProduct({
+        //    id:this.id,
+        //    superName:this.superName,
+        //    serialNumber:this.serialNumber,
+        //    regionld:this.regionld
+        //  });
+        //  console.log(inquiry);
+        //  },
         
     }
   }

@@ -404,7 +404,7 @@ export default {
      * } 
      */
     updateAdvert(params) {
-        return axios.post('/advert/update', params, postConfig)
+        return axios.post('/advert/refuse', params, postConfig)
     },
     /**
      * @description 删除广告的接口 
@@ -602,6 +602,16 @@ export default {
     createBanner(params) {
         return axios.post('/banner/create', params, postConfig)
     },
+    /**
+     * @description 删除banner 
+     * @params {
+     * id:[number] 必填  'banner的id'
+     * }
+     */
+    deleteBanner(params) {
+        return axios.post('/banner/delete', params, postConfig)
+    },
+
 
 
     //订单管理
@@ -726,5 +736,29 @@ export default {
     getSettledList(params) {
         return axios.post('/settled/list', params, postConfig)
     },
+
+    //店铺管理
+    /**
+     * @description 店铺列表接口 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * title   : [string],     //非必填      根据店铺名称查询
+     * } 
+     */
+    getStoreList(params) {
+        return axios.post('/store/list', params, postConfig)
+    },
+    /**
+     * @description 店铺详情接口 /store/detail
+     * @params {
+     * storeId      : [number],     //必填      店铺的id
+     * } 
+     */
+    getStoreDetail(params) {
+        return axios.post('/store/detail', params, postConfig)
+    },
+
 
 }

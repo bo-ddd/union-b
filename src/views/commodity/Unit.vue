@@ -48,7 +48,10 @@
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="类目" :label-width="formLabelWidth">
-          <el-input v-model="form.type" autocomplete="off"></el-input>
+         <el-select v-model="value1" placeholder="请选择">
+          <el-option v-for="item in category" :key="item.title" :label="item.title" :value="item.title">
+          </el-option>
+        </el-select>
         </el-form-item>
         <el-form-item label="店铺" :label-width="formLabelWidth">
           <el-input v-model="form.source" autocomplete="off"></el-input>
@@ -87,11 +90,16 @@ export default {
           label: "单位名称",
         }],
       value: "选项1",
-      Interludes:''
+      Interludes:'',
+      category: [{
+        value: '',
+        label: ''
+      }],
+      value1: ''
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch","getCategoryList"]),
     /**
      * @description 置顶的方法
      */
@@ -100,17 +108,29 @@ export default {
         this.$message('已经被禁用')
         return
       }
-      var num = ord.id;
       if(ord.index == 1){
         this.$message('已经是第一个')
         return  
       }
-      console.log(num);
+      console.log(this.table);
+      for(let i=0;i<this.tableData.length;i++){
+        if(ord == this.tableData[i]){
+          this.tableData.splice(i,1)
+        }
+      }
+      console.log(this.pageNum);
+      this.tableData.unshift(ord)
+      for(let i=0;i<this.tableData.length;i++){
+        this.tableData[i].index = i+1;
+      }
+      this.table = this.tableData;
+      this.handleCurrentChange(this.pageNum)
+       var num = ord.id;
       let res = await this.unitlibraryStick({
         id:num
       })
+      // this.List();
       console.log(res);
-      this.List();
     },
     /**
      * @description 升序的方法
@@ -189,7 +209,6 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj);
         let ord = obj.currentData.ord;
         obj.currentData.ord = obj.preData.ord;
         obj.preData.ord = ord;
@@ -232,7 +251,7 @@ export default {
       this.dialogFormVisible = false;
       let res = await this.createUnitlibrary({
         title: this.form.name,
-        cid: Number(this.form.type),
+        cid: Number(this.category.id),
         storeId: Number(this.form.source),
       });
       console.log(res);
@@ -280,12 +299,13 @@ export default {
         if (this.tableData[i] != undefined) arr.push(this.tableData[i]);
       }
       this.table = arr;
+      console.log(arr);
+      console.log(this.table);
     },
     /**
      *  @description 查询
      */
     async Interlude(){
-      console.log(this.Interludes);
       let res = await this.unitlibraryFuzzySearch({
         title : this.Interludes
       })
@@ -296,18 +316,27 @@ export default {
           item.index = index + 1;
         })
         this.table = num;
+        this.tableData = num;
         this.aaa = this.table.length;
-        console.log(num);
         this.Interludes = null
       }else{
         this.table = this.tableData
         this.aaa = this.table.length;
-        this.handleCurrentChange(1)
+        this.handleCurrentChange(this.pageNum)
       }
+    },
+    /**
+     * @description 商品类目
+     */
+    async Category(){
+      let res = await this.getCategoryList({});
+      this.category = res.data.rows;
+      console.log(this.category);
     }
   },
   created() {
     this.List();
+    this.Category();
   },
 };
 </script>

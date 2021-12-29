@@ -6,9 +6,7 @@
         <div class="footer_left">
           <el-button
             type="primary"
-            @click="
-              addspecification, (dialogaddFormVisible = true), categoryList()
-            "
+            @click="addspecification, (dialogaddFormVisible = true), submit"
             >添加规格</el-button
           >
           <!-- <el-button type="primary">保存排序</el-button> -->
@@ -47,19 +45,28 @@
             <el-form-item label="规格名称" :label-width="formLabelWidth">
               <el-input v-model="form1.title" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="规格名称" :label-width="formLabelWidth">
+            <el-form-item label="商品类目" :label-width="formLabelWidth">
               <el-input v-model="form1.cid" autocomplete="off"></el-input>
             </el-form-item>
-            <!-- <el-form-item
-              label="商品类目"
-              :label-width="formLabelWidth"
-              class="form-money"
-            >
-              <el-select v-model="form" placeholder="请选择">
-                <el-option v-for="item in option" :key="item" :value="item">
-                </el-option>
-              </el-select>
-            </el-form-item> -->
+            <el-form-item label="商品类目" prop="pid" class="classifya">
+              <template>
+                <div class="block">
+                  <span class="demonstration"></span>
+                  <el-cascader
+                    :ref="cascader"
+                    :options1="options1"
+                    @change="getId()"
+                    :props="{
+                      checkStrictly: true,
+                      label: 'title',
+                      children: 'child',
+                      value: 'title',
+                    }"
+                    clearable
+                  ></el-cascader>
+                </div>
+              </template>
+            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
@@ -167,6 +174,7 @@
 
 <script>
 import { mapActions } from "vuex";
+// import Task from "@/assets/js/Task";
 export default {
   data() {
     return {
@@ -181,8 +189,9 @@ export default {
       currentPage4: 1,
       pageSize1: 50,
       pageNum1: "",
-      option: [],
+
       options1: [],
+      tasks: [],
       options: [
         {
           value: "选项1",
@@ -210,12 +219,15 @@ export default {
         cid: "",
         name: "",
       },
+      ruleForm: {
+        name: "",
+        pid: "",
+      },
       dialogVisible: false,
       dialogFormVisible: false,
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
       multipleSelection: [],
-
       currentPage: 1,
       table: [],
       pageSize: 10, //每页条数
@@ -271,8 +283,11 @@ export default {
     async addspecification() {
       let res = await this.createSpecification({
         title: this.form1.title,
-        cid: Number(this.form1.cid),
+        // cid: Number(this.form1.cid),
+        cid: this.option,
       });
+      console.log("ccc");
+      console.log(this.item);
       console.log(res);
       this.spelist();
     },
@@ -361,43 +376,60 @@ export default {
       }
       this.table = arr;
     },
+    getId() {
+      let res = this.$refs["cascader"].getCheckedNodes();
+      this.ruleForm.pid = res[0].data.id;
+    },
+    async submit() {
+      let res = await this.createSpecification({
+        title: this.ruleForm.name,
+        pid: this.ruleForm.pid == "" ? null : this.ruleForm.pid,
+      });
+      console.log(res);
+    },
+    async getClassifyInfo() {
+      let res = await this.getCategoryList({});
+      let data = res.data.rows.slice();
+      this.arr = data;
+      let target = this.format(data);
+      this.options1 = target;
+      console.log('aa');
+      console.log(res);
+    },
+    format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
     /**
      * 商品类目接口方法
      */
-    async categoryList() {
-      let resource = await this.getCategoryList({
-        pagination: false,
-        pageNum: 1,
-        pageSize: 10,
-      });
-      console.log("aaasdadf");
-      console.log(resource);
-      resource.data.rows.forEach((item) => {
-        this.option.push(item.title);
-      });
-      console.log(this.option);
-
-      // class Task {
-      //   constructor(target) {
-      //     this.target = target.slice();
-      //   }
-      //   /**
-      //    * @description 管理中心页面的任务列表渲染使用
-      //    *  */
-      //   get category() {
-      //     this.target = this.target.slice();
-      //     return this.iterator();
-      //   }
-      //   /**
-      //    * @description 任务中心渲染列表使用
-      //    */
-      //   get data() {
-      //     return this.iterator(
-      //       (item, parent) => item.pid && parent.child.push(item)
-      //     ).filter((task) => task.pid === null);
-      //   }
-      // }
-    },
+    // async categoryList() {
+    //   let resource = await this.getCategoryList();
+    //   console.log("aaasdadf");
+    //   console.log(resource);
+    //   resource.data.rows.forEach((item) => {
+    // this.option.push(item.title);
+    // this.option.label = item.title;
+    // this.option.value = item.id;
+    // });
+    // console.log(this.option);
+    // let resource = await this.getCategoryList();
+    // console.log(resource);
+    // console.log("aaa");
+    // console.log(resource.data.rows);
+    // let task = new Task(resource.data.rows);
+    // this.tasks = task.data.rows;
+    // console.log(this.tasks);
+    // console.log(this.option);
+    // },
     open() {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -420,6 +452,7 @@ export default {
   },
   async created() {
     this.spelist();
+    this.getClassifyInfo();
   },
 };
 </script>

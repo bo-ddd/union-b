@@ -51,17 +51,18 @@
                 
               </el-select>
             </el-form-item> -->
-            <el-form-item label="类目名称" class="classifya">
+            <el-form-item label="类目名称" prop="pid" class="classifya">
               <template>
                 <div class="block">
                   <span class="demonstration"></span>
                   <el-cascader
                     ref="cascader"
-                    :options1="options1"
+                    :options="options"
                     @change="getId()"
                     :props="{
                       checkStrictly: true,
                       label: 'title',
+                      children: 'child',
                       value: 'title',
                     }"
                     clearable
@@ -147,10 +148,24 @@
             <el-button
               i
               class="el-icon-delete cell2"
-              @click="deleteData(scope)"
+              @click="dialogVisible = true"
               type="text"
             >
             </el-button>
+            <el-dialog
+              title="提示"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose"
+            >
+              <span>确定要删除此行数据</span>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="deleteData(scope),dialogVisible = false"
+                  >确 定</el-button
+                >
+              </span>
+            </el-dialog>
           </template>
         </el-table-column>
       </el-table>
@@ -218,6 +233,7 @@ export default {
         cid: "",
         name: "",
       },
+      dialogVisible: false,
       dialogFormVisible: false,
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
@@ -255,6 +271,16 @@ export default {
       "deleteSpecification",
       "getCategoryList",
     ]),
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+          console.log(_);
+        })
+        .catch((_) => {
+          console.log(_);
+        });
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -287,14 +313,13 @@ export default {
       //重新渲染页面
       this.spelist();
       let del = await this.deleteSpecification({
-        id:[row.row.id],
+        id: [row.row.id],
       });
       console.log(del);
     },
 
     //批量删除
     multipleRemove() {
-      // console.log(this.renderDynamic);
       for (let i = 0; i < this.renderDynamic.length; i++) {
         if (!this.cacheArr.includes(this.renderDynamic[i])) {
           this.cacheArr.push(this.renderDynamic[i]);
@@ -319,15 +344,14 @@ export default {
         });
       }
     },
-      getRowKeys(row) {
-        //记录每行的key值
-        return row.id;
-      },
+    getRowKeys(row) {
+      //记录每行的key值
+      return row.id;
+    },
     //单个修改
     // async editListData() {
     //   let editdatalist=await this.();
     // },
-
     /**
      * 获取所有类目规格
      * */

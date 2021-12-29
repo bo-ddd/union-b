@@ -158,7 +158,7 @@ export default {
     },
 
     // 记住密码点击事件
-    Rememberpass() {},
+    // Rememberpass() {},
 
     // 对密码增加rsa（非对称加密）
     Encrypt() {
@@ -195,7 +195,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         password,
         captcha,
       });
-      console.log(res);
+      // console.log(res);
 
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
@@ -225,6 +225,8 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         this.form.password = "";
       }
       this.form.captcha = "";
+
+      localStorage.setItem("checked", this.form.checked);
     },
 
     // 按回车键登录
@@ -251,7 +253,6 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         this.setCookie("password", this.form.password, 7);
         this.setCookie("checked", this.form.checked, 7);
       } else if (this.getCookie("username")) {
-        console.log("ss");
         this.setCookie("username", "", -1);
         this.setCookie("password", "", -1);
         this.setCookie("checked", this.form.checked, -1);
@@ -265,7 +266,6 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         "=" +
         value +
         (expiredays == null ? "" : ";expires=" + exdate.toGMTString());
-      console.log(document.cookie);
     },
     // 获取cookie
     getCookie(key) {
@@ -283,17 +283,13 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   },
 
   async created() {
+    this.form.checked = Boolean(localStorage.getItem("checked"));
     // 进页面直接调用验证码
     this.generatorCaptcha();
     // 将cookie中的值赋值给账号密码
-    if (
-      this.getCookie("username") &&
-      this.getCookie("password") &&
-      this.getCookie("checked")
-    ) {
+    if (this.getCookie("username") && this.getCookie("password")) {
       this.form.username = this.getCookie("username");
       this.form.password = this.getCookie("password");
-      this.form.checked = this.getCookie("checked");
     }
   },
 
@@ -319,7 +315,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 1200px;
+  min-width: 1250px;
   min-height: 500px;
 
   & .main {

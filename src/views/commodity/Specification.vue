@@ -276,32 +276,20 @@ export default {
     /**
      * @description 删除当前行
      */
-    // async deleteData(data){
-    //     console.log(data.$index);
-    //     this.table.splice(data.$index,1) 
-    //     let res = await this.deleteSpecification(
-    //       {
-    //         id:[res.rows.id],
-    //       }
-    //     );
-    //     console.log(res);
-    //     //重新渲染页面
-    //     this.spelist(this.renderDynamic);
-    //   },
     async deleteData(row) {
       for (var i = 0; i < this.renderDynamic.length; i++) {
         let el = this.renderDynamic[i];
-        if (row.id == el.id) {
+        if (row.row.id == el.id) {
           //从第I个开始删除一个
           this.renderDynamic.splice(i, 1);
         }
       }
       //重新渲染页面
-      // this.spelist();
-      let res = await this.deleteSpecification({
-        id:[row.id],
+      this.spelist();
+      let del = await this.deleteSpecification({
+        id:[row.row.id],
       });
-      console.log(res);
+      console.log(del);
     },
 
     //批量删除

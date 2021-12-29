@@ -69,6 +69,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      pageNum:'',
       loading: true,
       checked: true,
       size: "",
@@ -163,6 +164,7 @@ export default {
      * @description 分页的当前页有多少条
      * **/
     handleCurrentChange(val) {
+      this.pageNum = val;
       let arr = [];
       for (
         let i = val * this.pageSize - this.pageSize;
@@ -287,7 +289,7 @@ export default {
         return num2 - num1;
       });
       this.table = arr;
-      this.handleSizeChange(10);
+      this.handleCurrentChange(this.pageNum);
     },
     /**
      * @description 当前行下降一位

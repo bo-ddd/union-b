@@ -49,17 +49,18 @@
         </el-form-item>
         <el-form-item label="类目" :label-width="formLabelWidth">
          <el-select v-model="value1" placeholder="请选择">
-          <el-option v-for="item in category" :key="item.title" :label="item.title" :value="item.title">
-          </el-option>
+          <el-option v-for="item in category" :key="item.title" :label="item.title" :value="item.title"></el-option>
         </el-select>
         </el-form-item>
         <el-form-item label="店铺" :label-width="formLabelWidth">
-          <el-input v-model="form.source" autocomplete="off"></el-input>
+          <el-select v-model="value2" placeholder="请选择">
+            <el-option v-for="item in shopping" :key="item.storeTitle" :label="item.storeTitle" :value="item.storeTitle"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>                                            
+        <el-button type="primary" @click="submit">确 定</el-button>                                  
       </div>
     </el-dialog>
   </div>
@@ -79,27 +80,27 @@ export default {
       table:[],
       dialogFormVisible: false,
       formLabelWidth: "120px",
-      form: {
-        name: "",
-        type: "",
-        source: "",
-      },
+      form: {name: ""},
       tableData: [],
       options: [{
-          value: "选项1",
+          value: "单位名称",
           label: "单位名称",
         }],
-      value: "选项1",
+      value: "单位名称",
       Interludes:'',
       category: [{
         value: '',
         label: ''
       }],
-      value1: ''
+      value1: '',
+      shopping:[],
+      value2:'',
+      cate:'',
+      shopp:''
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch","getCategoryList"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch","getCategoryList","getStoreList"]),
     /**
      * @description 置顶的方法
      */
@@ -165,7 +166,7 @@ export default {
         ]);
         console.log(res)
       }else{
-        this.$message("已经是第一个了不能再升序了")
+        this.$message("已经是第一个了")
       }
     },
     /**
@@ -249,13 +250,26 @@ export default {
      */
     async submit() {
       this.dialogFormVisible = false;
+      console.log(this.form.name);
+      this.category.forEach(item=>{
+        if(item.title == this.value1){
+          this.cate = item.id;
+        }
+      })
+      this.shopping.forEach(item=>{
+        if(item.storeTitle == this.value2){
+          this.shopp = item.storeId
+        }  
+      })
       let res = await this.createUnitlibrary({
-        title: this.form.name,
-        cid: Number(this.category.id),
-        storeId: Number(this.form.source),
+        title : this.form.name,
+        cid : this.cate,
+        storeId : this.shopp
       });
       console.log(res);
       this.form = [];
+      this.cate = '';
+      this.shopp = '';
       this.List();
     },
     /**
@@ -299,8 +313,6 @@ export default {
         if (this.tableData[i] != undefined) arr.push(this.tableData[i]);
       }
       this.table = arr;
-      console.log(arr);
-      console.log(this.table);
     },
     /**
      *  @description 查询
@@ -326,17 +338,26 @@ export default {
       }
     },
     /**
-     * @description 商品类目
+     * @description 获取商品类目
      */
     async Category(){
       let res = await this.getCategoryList({});
-      this.category = res.data.rows;
-      console.log(this.category);
+      this.category = res.data.rows
+      // console.log(this.category);
+    },
+    /**
+     *  @description 获取店铺接口
+     */
+    async shop(){
+      let res = await this.getStoreList({});
+      // console.log(res.data.rows);
+      this.shopping = res.data.rows
     }
   },
   created() {
     this.List();
     this.Category();
+    this.shop();
   },
 };
 </script>

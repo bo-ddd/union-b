@@ -66,8 +66,8 @@
         </div>
         <div class="commodity_operation">
           <el-button type="primary" @click="skip">+ 新增商品</el-button>
-          <el-button type="primary">批量下架</el-button>
-          <el-button type="primary">批量上架</el-button>
+          <!-- <el-button type="primary">批量下架</el-button>
+          <el-button type="primary">批量上架</el-button> -->
           <el-button @click="multipleRemove()" type="primary"
             >批量删除</el-button
           >
@@ -84,30 +84,33 @@
           @select-all="handleSelectionChange"
           :header-cell-style="{ background: '#fcfafb' }"
         >
-          <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
-          <el-table-column label="条码" width="90">
-            <template slot-scope="scope">{{ scope.row.code }}</template>
+          <el-table-column
+            type="selection"
+            width="55"
+            :reserve-selection="true"
+          ></el-table-column>
+          <el-table-column label="条码" width="180">
+            <template slot-scope="scope">{{ scope.row.proNo }}</template>
           </el-table-column>
           <el-table-column label="商品名称" width="180">
-            <template slot-scope="scope">{{ scope.row.name }}</template>
+            <template slot-scope="scope">{{ scope.row.title }}</template>
           </el-table-column>
           <el-table-column label="商品分类" sortable show-overflow-tooltip>
-            <template slot-scope="scope">{{ scope.row.classify }}</template>
+            <template slot-scope="scope">{{
+              scope.row.categoryTitle
+            }}</template>
           </el-table-column>
           <el-table-column label="售价" sortable show-overflow-tooltip>
-            <template slot-scope="scope">{{ scope.row.money }}</template>
-          </el-table-column>
-          <el-table-column label="库存" sortable show-overflow-tooltip>
-            <template slot-scope="scope">{{ scope.row.inventory }}</template>
+            <template slot-scope="scope">{{ scope.row.realPrice }}</template>
           </el-table-column>
           <el-table-column label="销量" sortable show-overflow-tooltip>
-            <template slot-scope="scope">{{ scope.row.sales }}</template>
+            <template slot-scope="scope">{{ scope.row.pv }}</template>
           </el-table-column>
           <el-table-column label="状态" show-overflow-tooltip>
-            <template slot-scope="scope">{{ scope.row.state }}</template>
+            <template slot-scope="scope">{{ scope.row.status }}</template>
           </el-table-column>
           <el-table-column label="创建日期" show-overflow-tooltip>
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+            <template slot-scope="scope">{{ scope.row.createdAt }}</template>
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip align="center">
             <template slot-scope="scope">
@@ -117,7 +120,7 @@
                 @click="getCommodityDat(scope)"
                 >编辑</el-link
               >
-              <el-link type="warning" class="off_the_shelf">下架</el-link>
+              <!-- <el-link type="warning" class="off_the_shelf">下架</el-link> -->
               <el-link type="danger" class="delete" @click="remove([scope])"
                 >删除</el-link
               >
@@ -226,174 +229,7 @@ export default {
       },
 
       tableData: [
-        {
-          id: 1,
-          code: "20160503",
-          name: "立白洗衣液",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "销售中",
-          date: "2019-08-12",
-        },
-        {
-          id: 2,
-          code: "20160503",
-          name: "舒克儿童牙膏",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "婴幼儿用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 3,
-          code: "20160503",
-          name: "苏菲卫生巾",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 4,
-          code: "20160503",
-          name: "阿迪达斯运动鞋",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "婴幼儿用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "销售中",
-          date: "2019-08-12",
-        },
-        {
-          id: 5,
-          code: "20160503",
-          name: "三只松鼠_手撕面包",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "婴幼儿用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 6,
-          code: "20160503",
-          name: "苹果IPhone",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 7,
-          code: "20160503",
-          name: "体重秤",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 8,
-          code: "20160503",
-          name: "南极人袜子",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "婴幼儿用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "销售中",
-          date: "2019-08-12",
-        },
-        {
-          id: 9,
-          code: "20160503",
-          name: "乡巴佬鹌鹑蛋",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "婴幼儿用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 10,
-          code: "20160503",
-          name: "书箱收纳箱",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "婴幼儿用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 11,
-          code: "20160503",
-          name: "桂花奶茶瓜子",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 12,
-          code: "20160503",
-          name: "男女加绒加厚裤子",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 13,
-          code: "20160503",
-          name: "米创网红同款口罩",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
-        {
-          id: 14,
-          code: "20160503",
-          name: "正宗藏红花茶",
-          address: "上海市普陀区金沙江路 1518 弄",
-          classify: "孕产妇用品",
-          money: "159.00",
-          inventory: "4647",
-          sales: "464",
-          state: "已售空",
-          date: "2019-08-12",
-        },
+       
       ],
       deleteDataArr: [],
       arr4: [],
@@ -687,6 +523,52 @@ export default {
 
   methods: {
     ...mapActions(["getProductList", "deleteProduct"]),
+    async salesInformation() {
+      let res = await this.getProductList({});
+      this.tableData = res.data.rows.slice();
+      this.tableData.forEach((item) => {
+        if (item.status == 0) {
+          item.status = "已删除";
+        } else if (item.status == 1) {
+          item.status = "已下架";
+        } else if (item.status == 2) {
+          item.status = "已上架";
+        }
+        item.createdAt = this.time(item.createdAt);
+      });
+      console.log(this.tableData);
+      this.pageList();
+    },
+    time(time) {
+      let d = new Date(time);
+      let year = d.getFullYear();
+      let month = d.getMonth() + 1;
+      let date = d.getDate();
+      date = date > 9 ? date : "0" + date;
+      // let hours = d.getHours();
+      // hours = hours > 9 ? hours : "0" + hours;
+      // let day = ["七", "一", "二", "三", "四", "五", "六"][d.getDay()];
+      // let minutes = d.getMinutes();
+      // minutes = minutes > 9 ? minutes : "0" + minutes;
+      // let seconds = d.getSeconds();
+      // seconds = seconds > 9 ? seconds : "0" + seconds;
+      return (
+        year +
+        "-" +
+        month +
+        "-" +
+        date +
+        " " /* +
+        "  星期" +
+        day +
+        "-" +
+        hours +
+        ":" +
+        minutes +
+        ":" +
+        seconds */
+      );
+    },
     pageList() {
       this.getList(this.query());
     },
@@ -731,6 +613,7 @@ export default {
       let arr = [];
       if (!this.commodityStatusValue && !this.salesTypeValue) {
         arr = this.tableData;
+        // console.log(this.tableData);
         this.flag = true;
       } else if (this.commodityStatusValue && !this.salesTypeValue) {
         arr = this.tableData.filter((item) => {
@@ -756,8 +639,8 @@ export default {
       }
     },
     reset() {
-      this.commodityStatusValue=''
-      this.salesTypeValue = ''
+      this.commodityStatusValue = "";
+      this.salesTypeValue = "";
       this.flag1 = true;
       this.getList(this.query());
     },
@@ -775,13 +658,14 @@ export default {
       this.tableData.splice(this.tableData.indexOf(indexArr[0].row), 1);
       this.table.splice(this.table.indexOf(indexArr[0].row), 1);
       this.getList(this.query());
-      // let res = await this.deleteProduct({
-      //   id: indexArr[0].row.id,
-      // });
-      // console.log(res);
+      let res = await this.deleteProduct({
+        id: [indexArr[0].row.id],
+      });
+      console.log(res);
+      // console.log([indexArr[0].row.id]);
     },
-    multipleRemove() {
-      console.log(this.arr4);
+   async multipleRemove() {
+      let arr  =[]
       for (let i = 0; i < this.arr4.length; i++) {
         if (!this.cacheArr.includes(this.arr4[i])) {
           this.cacheArr.push(this.arr4[i]);
@@ -790,13 +674,17 @@ export default {
           this.cacheArr.splice(temp, 1);
         }
       }
-      // console.log(this.cacheArr);
       this.cacheArr.forEach((item) => {
         this.tableData.splice(this.tableData.indexOf(item), 1);
         this.table.splice(this.table.indexOf(item), 1);
+        arr.push(item.id)
       });
       this.getList(this.query());
-      // console.log(this);
+      let res = await this.deleteProduct({
+        id: arr,
+      });
+      console.log(res);
+      // console.log(arr);
     },
     checkBoxData: function (selection, row) {
       this.arr4.push(row);
@@ -814,10 +702,7 @@ export default {
     },
   },
   async created() {
-    this.pageList();
-    // let res = await this.getProductList({
-    // })
-    // console.log(res);
+    this.salesInformation();
   },
 };
 </script>

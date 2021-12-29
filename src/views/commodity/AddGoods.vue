@@ -7,32 +7,32 @@
         <div>
           <div>
             <el-form :label-position="labelPosition" label-width="80px">
-              <el-form-item label="商品类型" class="commodity_type">
+              <el-form-item label="商品分类" class="commodity_classification">
                 <el-select
                   v-model="commodityType"
                   filterable
-                  placeholder="请选择食品"
+                  placeholder="请选择"
+                  @change="changeCommodityType"
                 >
                   <el-option
                     v-for="item in typeList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.title"
                   >
                   </el-option>
                 </el-select>
-              </el-form-item>
-              <el-form-item label="商品分类" class="commodity_classification">
                 <el-select
                   v-model="commodityClassificationOne"
                   filterable
                   placeholder="请选择"
+                  @change="changeCommodityClassificationOne"
                 >
                   <el-option
                     v-for="item in classificationListOne"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.title"
                   >
                   </el-option>
                 </el-select>
@@ -43,19 +43,6 @@
                 >
                   <el-option
                     v-for="item in classificationListTwo"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-                <el-select
-                  v-model="commodityClassificationThree"
-                  filterable
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in classificationListThree"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -241,7 +228,7 @@
         </div>
       </div>
     </div> -->
-    <div class="m_footer">
+    <!-- <div class="m_footer">
       <div class="m_f_top">商品介绍</div>
       <div class="m_f_center">
         <div>
@@ -291,7 +278,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="preservation">
       <el-button plain type="primary">保存</el-button>
       <el-button plain type="primary">预览</el-button>
@@ -338,40 +325,16 @@ export default {
     return {
       weight: "",
       volume: "",
+      cid:'',
       commodityType: "",
-      typeList: [
-        {
-          value: "选项1",
-          label: "家具类",
-        },
-        {
-          value: "选项2",
-          label: "日用品类",
-        },
-        {
-          value: "选项3",
-          label: "鞋帽类",
-        },
-      ],
+      typeList: [],
       commodityClassificationOne: "",
-      classificationListOne: [
-        {
-          value: "选项1",
-          label: "奶粉",
-        },
-      ],
+      classificationListOne: [],
       commodityClassificationTwo: "",
       classificationListTwo: [
         {
           value: "选项1",
           label: "牛奶粉",
-        },
-      ],
-      commodityClassificationThree: "",
-      classificationListThree: [
-        {
-          value: "选项1",
-          label: "1段牛奶粉",
         },
       ],
       text: "",
@@ -424,60 +387,60 @@ export default {
       // dialogVisible: false,
       // disabled: false,
       // disabled1: false,
-      src: "",
-      src1: "",
+      // src: [],
+      // src1: [],
 
-      tableData: [
-        {
-          dateOfManufacture: "18年7月",
-          capacity: "400ml",
-          amount1: "",
-          amount2: "",
-          amount3: "",
-          amount4: "",
-          amount5: "",
-        },
-        {
-          dateOfManufacture: "18年7月",
-          capacity: "600ml",
-          amount1: "",
-          amount2: "",
-          amount3: "",
-          amount4: "",
-          amount5: "",
-        },
-        {
-          dateOfManufacture: "18年8月",
-          capacity: "400ml",
-          amount1: "",
-          amount2: "",
-          amount3: "",
-          amount4: "",
-          amount5: "",
-        },
-        {
-          dateOfManufacture: "18年8月",
-          capacity: "600ml",
-          amount1: "",
-          amount2: "",
-          amount3: "",
-          amount4: "",
-          amount5: "",
-        },
-      ],
+      // tableData: [
+      //   {
+      //     dateOfManufacture: "18年7月",
+      //     capacity: "400ml",
+      //     amount1: "",
+      //     amount2: "",
+      //     amount3: "",
+      //     amount4: "",
+      //     amount5: "",
+      //   },
+      //   {
+      //     dateOfManufacture: "18年7月",
+      //     capacity: "600ml",
+      //     amount1: "",
+      //     amount2: "",
+      //     amount3: "",
+      //     amount4: "",
+      //     amount5: "",
+      //   },
+      //   {
+      //     dateOfManufacture: "18年8月",
+      //     capacity: "400ml",
+      //     amount1: "",
+      //     amount2: "",
+      //     amount3: "",
+      //     amount4: "",
+      //     amount5: "",
+      //   },
+      //   {
+      //     dateOfManufacture: "18年8月",
+      //     capacity: "600ml",
+      //     amount1: "",
+      //     amount2: "",
+      //     amount3: "",
+      //     amount4: "",
+      //     amount5: "",
+      //   },
+      // ],
       // dialogTableVisible: false,
       // dialogFormVisible: false,
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-      },
-      formLabelWidth: "120px",
+      // form: {
+      //   name: "",
+      //   region: "",
+      //   date1: "",
+      //   date2: "",
+      //   delivery: false,
+      //   type: [],
+      //   resource: "",
+      //   desc: "",
+      // },
+      // formLabelWidth: "120px",
 
       // checkAll: false,
       // checkedCities: ["上海", "北京"],
@@ -486,7 +449,44 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createProduct", "uploadImage","getCategoryList"]),
+    ...mapActions(["createProduct", "uploadImage", "getCategoryList"]),
+    changeCommodityType() {
+      this.typeList.forEach((item) => {
+        if (this.commodityType && this.commodityType == item.title) {
+          this.classificationListOne = item.child ? item.child : [];
+          this.cid = item.id
+        }
+      });
+    },
+    changeCommodityClassificationOne() {
+      this.classificationListOne.forEach((item) => {
+        if (
+          this.commodityClassificationOne &&
+          this.commodityClassificationOne == item.title
+        ) {
+          this.classificationListTwo = item.child ? item.child : [];
+        }
+      });
+    },
+    async getClassifyInfo() {
+      let res = await this.getCategoryList({});
+      let data = res.data.rows.slice();
+      let target = this.format(data);
+      this.typeList = target;
+    },
+    format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        // item.child = item.child || [];
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg" || "png" || "jpg";
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -519,7 +519,7 @@ export default {
       // console.log(val.file);
       let res = await this.uploadImage(formData);
       console.log(res);
-      this.src = res.data;
+      this.src.push(res.data);
     },
     async customUpload1(val) {
       let formData = new FormData();
@@ -528,7 +528,7 @@ export default {
       console.log(val.file);
       let res = await this.uploadImage(formData);
       console.log(res);
-      this.src1 = res.data;
+      this.src1.push(res.data);
     },
     // objectSpanMethod({ rowIndex, columnIndex }) {
     //   if (columnIndex === 0) {
@@ -556,19 +556,21 @@ export default {
     //     checkedCount > 0 && checkedCount < this.cities.length;
     // },
     async preservation() {
-      /* let res = await this.createProduct({
-        cid: 2,
-        title: "我老许要老婆",
-        keywords: "日用类",
-        bannerImg:
-          "http://unier.oss-cn-beijing.aliyuncs.com/category/1c82e33a-9724-4f34-844f-5f922c1fd486.jpg",
-        platformPrice: 1,
-        desc: "老许，要老婆不要",
-        realPrice: 1,
+      let res = await this.createProduct({
+        cid:Number(this.cid) ,
+        title: this.text,
+        keywords: "食品类",
+        platformPrice: Number(this.commodityPlatformPrice) ,
+        desc: this.productDescription,
+        realPrice: Number(this.sellingPriceGoods),
       });
-      console.log(res); */
+      console.log(res);
       
     },
+  },
+  created() {
+    this.getClassifyInfo();
+    // this.preservation()
   },
 };
 </script>

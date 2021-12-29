@@ -154,7 +154,7 @@
         </div>
       </div>
     </div>
-    <div class="m_centenr">
+    <!-- <div class="m_centenr">
       <div class="m_c_top">销售信息</div>
       <div class="m_c_center">
         <div>
@@ -240,7 +240,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="m_footer">
       <div class="m_f_top">商品介绍</div>
       <div class="m_f_center">
@@ -297,7 +297,7 @@
       <el-button plain type="primary">预览</el-button>
       <el-button plain type="primary" @click="preservation">发布</el-button>
     </div>
-    <el-dialog
+    <!-- <el-dialog
       title=""
       :visible.sync="dialogFormVisible"
       align="center"
@@ -326,13 +326,13 @@
           >确 定</el-button
         >
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-const cityOptions = ["上海", "北京", "广州", "深圳", "成都"];
+// const cityOptions = ["上海", "北京", "广州", "深圳", "成都"];
 export default {
   data() {
     return {
@@ -415,15 +415,15 @@ export default {
 
       labelPosition: "right",
       input: "",
-      July: "",
-      August: "",
-      September: "",
-      Fourml: "",
-      Sixml: "",
-      dialogImageUrl: "",
-      dialogVisible: false,
-      disabled: false,
-      disabled1: false,
+      // July: "",
+      // August: "",
+      // September: "",
+      // Fourml: "",
+      // Sixml: "",
+      // dialogImageUrl: "",
+      // dialogVisible: false,
+      // disabled: false,
+      // disabled1: false,
       src: "",
       src1: "",
 
@@ -465,8 +465,8 @@ export default {
           amount5: "",
         },
       ],
-      dialogTableVisible: false,
-      dialogFormVisible: false,
+      // dialogTableVisible: false,
+      // dialogFormVisible: false,
       form: {
         name: "",
         region: "",
@@ -479,19 +479,14 @@ export default {
       },
       formLabelWidth: "120px",
 
-      checkAll: false,
-      checkedCities: ["上海", "北京"],
-      cities: cityOptions,
-      isIndeterminate: true,
+      // checkAll: false,
+      // checkedCities: ["上海", "北京"],
+      // cities: cityOptions,
+      // isIndeterminate: true,
     };
   },
   methods: {
-    ...mapActions(["createProduct", "uploadImage"]),
-    one() {
-      // let formData = new FormData();
-      let file = this.$refs.file.files[0]; //this.$refs.file.files[0] 获取到上传的文件
-      console.log(file);
-    },
+    ...mapActions(["createProduct", "uploadImage","getCategoryList"]),
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg" || "png" || "jpg";
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -535,47 +530,44 @@ export default {
       console.log(res);
       this.src1 = res.data;
     },
-    objectSpanMethod({ rowIndex, columnIndex }) {
-      if (columnIndex === 0) {
-        if (rowIndex % 2 === 0) {
-          return {
-            rowspan: 2,
-            colspan: 1,
-          };
-        } else {
-          return {
-            rowspan: 0,
-            colspan: 0,
-          };
-        }
-      }
-    },
-    handleCheckAllChange(val) {
-      this.checkedCities = val ? cityOptions : [];
-      this.isIndeterminate = false;
-    },
-    handleCheckedCitiesChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
-    },
+    // objectSpanMethod({ rowIndex, columnIndex }) {
+    //   if (columnIndex === 0) {
+    //     if (rowIndex % 2 === 0) {
+    //       return {
+    //         rowspan: 2,
+    //         colspan: 1,
+    //       };
+    //     } else {
+    //       return {
+    //         rowspan: 0,
+    //         colspan: 0,
+    //       };
+    //     }
+    //   }
+    // },
+    // handleCheckAllChange(val) {
+    //   this.checkedCities = val ? cityOptions : [];
+    //   this.isIndeterminate = false;
+    // },
+    // handleCheckedCitiesChange(value) {
+    //   let checkedCount = value.length;
+    //   this.checkAll = checkedCount === this.cities.length;
+    //   this.isIndeterminate =
+    //     checkedCount > 0 && checkedCount < this.cities.length;
+    // },
     async preservation() {
-      // console.log(this.text);
-      // console.log(this.src);
-      // console.log(Number(this.commodityPlatformPrice) );
-      // console.log(+this.sellingPriceGoods);
-      let res = await this.createProduct({
+      /* let res = await this.createProduct({
         cid: 2,
-        title: "景天阳",
+        title: "我老许要老婆",
         keywords: "日用类",
         bannerImg:
           "http://unier.oss-cn-beijing.aliyuncs.com/category/1c82e33a-9724-4f34-844f-5f922c1fd486.jpg",
         platformPrice: 1,
-        desc: "这是一个景天阳",
+        desc: "老许，要老婆不要",
         realPrice: 1,
       });
-      console.log(res);
+      console.log(res); */
+      
     },
   },
 };

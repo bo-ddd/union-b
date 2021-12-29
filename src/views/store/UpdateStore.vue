@@ -1,6 +1,6 @@
 <template>
   <div>
-      Settled
+      updateStatore
   </div>
 </template>
 
@@ -10,6 +10,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
 
 </style>

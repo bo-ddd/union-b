@@ -51,14 +51,11 @@
       </el-table-column>
       <el-table-column
         prop="value"
-        label="属性值"
+        label="属性名"
         align="center"
         >
-        <!-- <template>
-          <input type="text" class="property" v-model="name">
-        </template> -->
       </el-table-column>
-      <el-table-column prop="productTitle" label="商品名"  align="center">
+      <el-table-column prop="productTitle" label="类目名"  align="center">
         <!-- <template>
           <input type="text" class="inp" v-model="input">
         </template> -->
@@ -96,7 +93,6 @@
     </el-table>
       </div>
       </div>
-      <el-footer><el-button type="primary">保存</el-button></el-footer>
       </div>
   </div>
 </template>
@@ -137,7 +133,8 @@ export default {
         tableData: [{
             id:'',
             productTitle:'',
-            value:''
+            value:'',
+            // values:''
           },]
       }
     },
@@ -251,12 +248,18 @@ export default {
     this.apply();
   },
 
-  async delData(){
-    
-    // let res = await this.attributeStick({
-    //   id:a.id
-    // });
-    // console.log(res);
+  async delData(ord){
+    var num = ord.id;
+      if(ord.index == 1){
+        this.$message('已经是第一个')
+        return  
+      }
+      console.log(num);
+      let res = await this.attributeStick({
+        id:num
+      })
+      console.log(res);
+      this.apply();
   }
   },
   async created(){
@@ -315,12 +318,6 @@ export default {
   height: 15px;
   margin: 5px;
 }
-.el-footer {
-    background-color: #ffffff;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
   .el-form-item {
     margin-bottom: 0px;
 }

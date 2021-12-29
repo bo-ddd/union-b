@@ -51,14 +51,12 @@
                   />
                 </div>
               </div>
-              <!-- <el-form-item> -->
               <el-checkbox
                 label="记住密码"
                 class="remember"
                 v-model="form.checked"
                 @click="Rememberpass"
               ></el-checkbox>
-              <!-- </el-form-item> -->
             </el-form>
           </div>
           <div class="main-foot">
@@ -157,9 +155,6 @@ export default {
       return flag;
     },
 
-    // 记住密码点击事件
-    // Rememberpass() {},
-
     // 对密码增加rsa（非对称加密）
     Encrypt() {
       var encryptor = new JSEncrypt(); // 创建加密对象实例
@@ -201,15 +196,15 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         sessionStorage.setItem("token", res.data);
         this.$message.success(res.msg);
 
-        // if (localStorage.getItem("from")) {
-        //   this.$router.push({
-        //     path: localStorage.getItem("from"),
-        //   });
-        // } else {
-        //   this.$router.push({
-        //     path: "/",
-        //   });
-        // }
+        if (localStorage.getItem("from")) {
+          this.$router.push({
+            path: localStorage.getItem("from"),
+          });
+        } else {
+          this.$router.push({
+            path: "/",
+          });
+        }
       } else {
         this.$message.error(res.msg);
         this.generatorCaptcha();

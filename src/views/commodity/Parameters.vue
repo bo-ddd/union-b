@@ -3,102 +3,131 @@
     <!-- ProductParameters商品参数 -->
     <div class="main">
       <div class="mains">
-      <!-- <h1 class="h1">参数项信息</h1>
-      <div class="message">
-        <div class="main-top">
-          <el-form ref="form" :model="form" label-width="90px">
-  <el-form-item label="参数项名称:" class="top">
-    <el-input v-model="form.name" class="el-input__inners"></el-input>
-  </el-form-item>
-  <el-form-item label="参数项多选:" class="middle">
-    <el-checkbox-group v-model="form.choice">
-      <el-checkbox label="启用" name="type"></el-checkbox>
-    </el-checkbox-group>
-  </el-form-item>
+        <h1 class="h1">参数值列表</h1>
+        <div class="list">
+          <el-button
+            type="primary"
+            @click="dialogFormVisible = true"
+            class="button"
+            >新增参数</el-button
+          >
+          <el-dialog title="新增参数" :visible.sync="dialogFormVisible">
+            <el-form :model="forms">
+              <el-form-item label="参数名称" :label-width="formLabelWidth">
+                <el-input v-model="forms.name" autocomplete="off"></el-input>
+              </el-form-item>
 
-  <el-form-item label="参数项必选:">
-    <el-checkbox-group v-model="form.required">
-      <el-checkbox label="启用" name="type"></el-checkbox>
-    </el-checkbox-group>
-  </el-form-item>
-</el-form>
+              <el-form-item
+                label="类型"
+                :label-width="formLabelWidth"
+                class="form-money"
+              >
+                <el-select v-model="values" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in option"
+                    :key="item"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item
+                label="商品名"
+                prop="pid"
+                :label-width="formLabelWidth"
+                class="form-money"
+              >
+                <el-select v-model="value"  placeholder="请选择">
+                  <el-option
+                    v-for="item in productList"
+                    :key="item"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="confirm">确 定</el-button>
+            </div>
+          </el-dialog>
+          <el-table :data="tableData" style="width: 100%">
+            <el-table-column prop="id" label="id" width="100" align="center">
+            </el-table-column>
+            <el-table-column prop="value" label="参数名" align="center">
+            </el-table-column>
+            <el-table-column prop="productTitle" label="商品名" align="center">
+            </el-table-column>
+            <el-table-column prop="sort" label="排序" align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="delData(scope.row)"
+                  >置顶</el-button
+                >
+                <el-button size="mini" @click="ascendingOrder(scope.row)"
+                  >向上</el-button
+                >
+                <el-button size="mini" @click="sescendingOrder(scope.row)"
+                  >向下</el-button
+                >
+              </template>
+            </el-table-column>
+            <el-table-column prop="operate" label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="dialogFormVisibles = true"
+                  >编辑</el-button
+                >
+
+                <el-dialog title="修改信息" :visible.sync="dialogFormVisibles">
+                  <el-form :model="form">
+                    <el-form-item
+                      label="参数名"
+                      :label-width="formLabelWidth"
+                      class="form-money"
+                    >
+                      <el-input
+                        v-model="form.name"
+                        autocomplete="off"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item
+                      label="商品名"
+                      :label-width="formLabelWidth"
+                      class="form-money"
+                    >
+                      <el-input
+                        v-model="form.name"
+                        autocomplete="off"
+                      ></el-input>
+                    </el-form-item>
+                  </el-form>
+                  <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisibles = false"
+                      >取 消</el-button
+                    >
+                    <el-button
+                      type="primary"
+                      @click="dialogFormVisibles = false"
+                      >确 定</el-button
+                    >
+                  </div>
+                </el-dialog>
+
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="deleteData(scope.row)"
+                  >删除</el-button
+                >
+                <!-- <el-button size="mini" type="danger" @click="open">删除</el-button> -->
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-      </div> -->
-      <h1 class="h1">参数值列表</h1>
-      <div class="list">
-        <el-button type="primary" @click="dialogFormVisible = true" class="button">新增参数</el-button>
-        <el-dialog title="新增参数" :visible.sync="dialogFormVisible">
-  <el-form :model="forms">
-    <el-form-item label="参数名称" :label-width="formLabelWidth">
-      <el-input v-model="forms.name" autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="类目" :label-width="formLabelWidth" class="form-money">
-      <el-select v-model="value" filterable placeholder="请选择">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
-    </el-form-item>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-  </div>
-</el-dialog>
-        <el-table
-      :data="tableData"
-      style="width: 100%">
-      <el-table-column type="index" label="id" width="100" align="center">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="参数"
-        align="center"
-        >
-        <!-- <template>
-          <input type="text" class="property" v-model="name">
-        </template> -->
-      </el-table-column>
-      <el-table-column prop="input" label="参数值"  align="center">
-        <!-- <template>
-          <input type="text" class="inp" v-model="input">
-        </template> -->
-      </el-table-column>
-      <el-table-column
-        prop="sort"
-        label="排序"
-        align="center"
-        >
-        <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">置顶</el-button>
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">向上</el-button>
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">向下</el-button>
-      </template>
-      </el-table-column>
-      <el-table-column
-        prop="operate"
-        label="操作"
-        align="center"
-        >
-        <template slot-scope="scope">
-          <el-button size="mini">{{scope.row.redact}}</el-button>
-          <el-button size="mini" type="danger" @click="remove(scope)">{{scope.row.delete}}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
       </div>
-      </div>
-      <el-footer><el-button type="primary">保存</el-button></el-footer>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -106,167 +135,239 @@
 import { mapActions } from "vuex";
 export default {
   data() {
-      return {
-        options: [{
-          value: '选项1',
-          label: '电子'
-        }, {
-          value: '选项2',
-          label: '电器'
-        }, {
-          value: '选项3',
-          label: '服装'
-        }, {
-          value: '选项4',
-          label: '食品'
+    return {
+      valueimg: "",
+      productList: [],
+      option: [
+        {
+          value: 1,
+          label: "属性",
         },
-        ],
-        value: '',
-        dialogFormVisible: false,
-        formLabelWidth: '120px',
-        forms: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+        {
+          value: 2,
+          label: "参数",
         },
-        // input:10,
-        // name:'微辣',
-        form: {
-          name: '',
-          choice: '',
-          required: '',
-        },
-        tableData: [{
-            delete:'删除',
-            redact:'编辑',
-            name:'上市时间',
-            input:'2018年12月'
-          }, {
-           
-            delete:'删除',
-            redact:'编辑',
-            name:'机身尺寸',
-            input:'384x262x25毫米'
-          }, {
-           
-            delete:'删除',
-            redact:'编辑',
-            name:'电源适配器',
-            input:'100V-240V 120W 自适应交流电源适配器'
-          }, {
-            
-            delete:'删除',
-            redact:'编辑',
-            name:'电池类型',
-            input:'4芯锂电池'
-          },
-          {
-           
-            delete:'删除',
-            redact:'编辑',
-            name:'颜色',
-            input:'黑色'
-          },
-          {
-            
-            delete:'删除',
-            redact:'编辑',
-            name:'内存类型',
-            input:'DDR4'
-          }
-          ]
-      }
-    },
-    methods: {
-      ...mapActions(["getAttributeList"]),
-       handleEdit(index, row) {
-        console.log(index, row);
+      ],
+      options: [],
+      value:null,
+      values:null,
+      dialogFormVisible: false,
+      dialogFormVisibles: false,
+      formLabelWidth: "120px",
+      forms: {
+        name: "",
+        pid: "",
       },
-      handleDelete(index, row) {
-        console.log(index, row);
+      tableData: [],
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
       },
-      remove(data){
-        console.log(data.$index);
-       this.tableData.splice(data.$index,1) 
-      }
+    };
   },
-  async created(){
-    let getAttributeList = await this.getAttributeList();
-    console.log(getAttributeList);
-  } 
-}
+  methods: {
+    ...mapActions(["createAttribute","getAttributeList","attributeOrders","deleteAttribute","getProductList","attributeStick","getCategoryList",]),
+    open() {},
+    // async getadd(){
+    //   let res = await this.getProductList();
+    //   console.log(res);
+    // },
+
+    async getClassifyInfo() {
+      let res = await this.getProductList({});
+      this.productList = res.data.rows;
+    },
+    async apply() {
+      let res = await this.getAttributeList();
+      this.tableData = res.data.rows;
+    },
+    async ascendingOrder(row) {
+      console.log(row);
+      console.log(row.ord);
+      //获取当前层所有额数据；
+      var formatData = (row) => {
+        let res = {};
+        for (let i = 0; i < this.tableData.length; i++) {
+          let item = this.tableData[i];
+          if (item.id == row.id) {
+            res.i = i;
+            res.currentData = item; //当前的数据；
+            res.preData = this.tableData[i - 1]; //上一个数据；
+            break;
+          }
+        }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj);
+      if (obj.i) {
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        let res = await this.attributeOrders([
+          obj.currentData.id,
+          obj.preData.id,
+        ]);
+        console.log(res);
+      } else {
+        this.$message("处于顶端，不能继续上移");
+      }
+      this.apply();
+    },
+
+    async sescendingOrder(row) {
+      //获取当前层所有额数据；
+      var formatData = (row) => {
+        let res = {};
+        for (let i = 0; i < this.tableData.length; i++) {
+          let item = this.tableData[i];
+          if (item.id == row.id) {
+            // console.log(item);
+            res.i = i;
+            res.currentData = item; //当前的数据；
+            res.preData = this.tableData[i + 1]; //上一个数据；
+            break;
+          }
+        }
+        return res;
+      };
+      let obj = formatData(row);
+      console.log(obj);
+      let ord = obj.currentData.ord;
+      obj.currentData.ord = obj.preData.ord;
+      obj.preData.ord = ord;
+      let res = await this.attributeOrders([
+        obj.currentData.id,
+        obj.preData.id,
+      ]);
+      console.log(res);
+      this.apply();
+    },
+
+    async deleteData(row) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.deleteAttribute({
+            id: [row.id],
+          });
+          console.log(res);
+          this.apply();
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+
+    async confirm() {
+      this.dialogFormVisible = false;
+      let res = await this.createAttribute({
+        value: this.forms.name,
+        type: this.values,
+        productId: this.value,
+      });
+      console.log(res);
+      this.apply();
+    },
+
+    async delData(ord) {
+      var num = ord.id;
+      if (ord.index == 1) {
+        this.$message("已经是第一个");
+        return;
+      }
+      console.log(num);
+      let res = await this.attributeStick({
+        id: num,
+      });
+      console.log(res);
+      this.apply();
+    },
+  },
+  async created() {
+    // this.getadd();
+    this.getClassifyInfo();
+    this.apply();
+    // this.getList();
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.main{
+.main {
   height: calc(100vh - 100px);
   overflow-y: auto;
   min-height: 77vh;
   background: #ffffff;
 }
-.mains{
+.mains {
   margin: 0 20px;
 }
-.message{
+.message {
   width: 100%;
   border-top: 2px solid #e5e5e5;
 }
-.h1{
+.h1 {
   margin: 20px 0;
 }
-.top{
+.top {
   margin-top: 20px;
 }
 .el-input__inners {
   width: 200px;
 }
-.list{
+.list {
   width: 100%;
   border-top: 2px solid #e5e5e5;
 }
-.button{
+.button {
   margin: 10px 0;
 }
-.inp{
+.inp {
   border: 1px solid #d8dce5;
   width: 50px;
   height: 32px;
   border-radius: 5px;
   text-align: center;
 }
-.property{
+.property {
   border: 1px solid #d8dce5;
   width: 130px;
   height: 32px;
   text-indent: 15px;
   border-radius: 5px;
 }
-.iconimg{
+.iconimg {
   width: 15px;
   height: 15px;
   margin: 5px;
 }
-.el-footer {
-    background-color: #ffffff;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
-  .el-form-item {
-    margin-bottom: 0px;
+.el-form-item {
+  margin-bottom: 0px;
 }
-.middle{
+.middle {
   margin-top: 20px;
 }
-::v-deep .el-table__header-wrapper{
+::v-deep .el-table__header-wrapper {
   font-size: 17px;
 }
-.form-money{
-  margin:20px 0;
+.form-money {
+  margin: 20px 0;
 }
 </style>

@@ -113,14 +113,21 @@ export default {
            email:this.form.email,
            phone:this.form.phone
         })
-        console.log(res);
-        this.$router.push({
+          console.log(res);
+        if(res.status == 1){
+          this.$message({
+          type:"warning",
+          message:"登录成功"
+          })
+          this.$router.push({
             path: "/login",
           });
-        this.$message({
+        }else{
+          this.$message({
           type:"warning",
-          message:`${res.msg}`
+          message:"账号已存在 请重新注册"
         })
+        }
       }
     },
     jumpLogin() {

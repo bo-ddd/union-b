@@ -17,26 +17,27 @@
         </div>
         <!-- 模糊查询 -->
         <div class="">
-          <el-input
-            placeholder="请输入内容"
-            v-model="input3"
-            class="input-with-select"
-          >
+          <el-input placeholder="请输入商品类目" v-model="input3" class="input-with-select">
             <el-select
-              v-model="value"
+              v-model="salesTypeValue"
               filterable
               placeholder="请选择"
               slot="prepend"
               class="sel"
             >
               <el-option
-                v-for="item in options"
+                v-for="item in fuzzyQuery"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              ></el-option>
+              >
+              </el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="query(flag1)"
+            ></el-button>
           </el-input>
         </div>
         <!-- 添加按钮模态框 -->
@@ -92,6 +93,7 @@
         style="width: 97%"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
+        @selection-change="handleSelectionChange"
       >
         <!-- 多选框 -->
         <el-table-column
@@ -187,7 +189,6 @@
 
 <script>
 import { mapActions } from "vuex";
-// import Task from "@/assets/js/Task";
 export default {
   data() {
     return {
@@ -216,11 +217,6 @@ export default {
         speName: "",
         remark: "",
       },
-      form1: {
-        title: "",
-        cid: "",
-        name: "",
-      },
       ruleForm: {
         title: "",
         cid: "",
@@ -234,8 +230,10 @@ export default {
       table: [],
       pageSize: 10, //每页条数
       renderDynamic: [],
-      cacheArr: [],
-      arr4: [],
+      salesTypeValue: "",
+      salesType: [],
+      flag: false,
+      flag1: true,
     };
   },
   watch: {
@@ -299,49 +297,28 @@ export default {
       });
       console.log(del);
     },
-
-    //批量删除
+    /**
+     * 批量删除
+     * */
     async multipleRemove() {
-      let arrx = [];
-      console.log('aaaaaa');
-      console.log(this.arr4);
-      for (let i = 0; i < this.arr4.length; i++) {
-        if (!this.cacheArr.includes(this.arr4[i])) {
-          this.cacheArr.push(this.arr4[i]);
-        } else {
-          let temp = this.cacheArr.indexOf(this.arr4[i]);
-          this.cacheArr.splice(temp, 1);
-        }
-      }
+      let deleteArr = [];
+      this.multipleSelection.forEach((specification) => {
+        deleteArr.push(specification.id);
+      });
+      console.log(deleteArr);
+      let batchDelete = await this.deleteSpecification({
+        id: deleteArr,
+      });
+      console.log(batchDelete);
+      this.spelist();
+    },
 
-      this.cacheArr.forEach((item) => {
-        this.renderDynamic.splice(this.renderDynamic.indexOf(item), 1);
-        this.table.splice(this.table.indexOf(item), 1);
-        arrx.push(item.id);
-      });
-      // this.getList(this.query());
-      let res = await this.deleteSpecification({
-        id: arrx,
-      });
-      console.log(arrx);
-      console.log(res);
-    },
-    checkBoxData: function (selection, row) {
-      this.arr4.push(row);
-      // console.log(this.arr4);
-    },
     handleSelectionChange(val) {
-      if (!val.length) {
-        this.arr4 = [];
-      } else {
-        val.forEach((item) => {
-          this.arr4.push(item);
-          this.$refs.multipleTable.toggleRowSelection(item, true);
-        });
-      }
+      this.multipleSelection = val;
     },
+
+    //记录每行的key值
     getRowKeys(row) {
-      //记录每行的key值
       return row.id;
     },
     //单个修改
@@ -380,10 +357,6 @@ export default {
       }
       this.table = arr;
     },
-    getId() {
-      let res = this.$refs["cascader"].getCheckedNodes();
-      this.ruleForm.pid = res[0].data.id;
-    },
     /**
      * 添加规格
      */
@@ -395,14 +368,15 @@ export default {
       console.log(res);
       this.spelist();
     },
-    async getClassifyInfo() {
+    /**
+     * 获取所有商品类目
+     */
+    async getShopList() {
       let res = await this.getCategoryList({});
       let data = res.data.rows.slice();
       this.arr = data;
       let target = this.format(data);
       this.options = target;
-      console.log("aa");
-      console.log(res);
     },
     format(target) {
       let res = target.slice();
@@ -435,10 +409,28 @@ export default {
           });
         });
     },
+    query(flag) {
+      let fuzzyQuery = [];
+      if (!this.salesTypeValue) {
+        fuzzyQuery = this.renderDynamic;
+        this.flag = true;
+      } else {
+        fuzzyQuery = this.renderDynamic.filter((item) => {
+          return item.categoryTitle == this.salesTypeValue;
+        });
+      }
+      if (flag) {
+        this.flag1 = false;
+      } else {
+        return fuzzyQuery;
+      }
+      console.log("aaaa");
+      console.log(this.salesTypeValue);
+    },
   },
   async created() {
     this.spelist();
-    this.getClassifyInfo();
+    this.getShopList();
   },
 };
 </script>

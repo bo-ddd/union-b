@@ -357,7 +357,7 @@ export default {
                 });
                 return;
             }
-            let res = uploadImg(a.file,1);
+            let res = uploadImg(a.file,7);
             let twores = await this.uploadImage(res);
             this.form.uploadDataImg = twores.data;
         }

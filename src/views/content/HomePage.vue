@@ -1,6 +1,6 @@
 <template>
   <div id="wrap">
-    <el-button type="primary" @click="createData">创建推荐内容</el-button>
+    <el-button type="primary" @click="createData">推荐供应商</el-button>
 
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="id" label='id' width='200'>
@@ -21,13 +21,6 @@
       </el-table-column>
 
       <el-table-column prop="address" label="供应商">
-      </el-table-column>
-
-      <el-table-column width='200' label='详情'>
-        <template slot-scope="scope">
-            <el-link type="primary" @click="openLayer(scope.row)">编辑</el-link>
-            <el-link type="primary" @click="deleteRow(scope.row)" class="ml-10">删除</el-link>
-        </template>
       </el-table-column>
 
     </el-table>
@@ -84,28 +77,17 @@ export default {
         }
     },
     methods :{
-//                       图片接口     增加推荐接口   删除推荐接口  修改推荐接口   获取推荐列表  
-        ...mapActions(["uploadImage","createHome","deleteHome","updateHome","getHomeList"]),
+//                       图片接口          获取推荐列表  
+        ...mapActions(["uploadImage","getHomeList"]),
         // 获取首页推荐的列表
         async getData(){
             let res = await this.getHomeList();
-            this.tableData = res.data;
+            this.tableData = res.data.rows;
         },
         // 创建按钮的点击事件
         createData(){
             this.flag = true;
             this.dialogFormVisible = true;
-        },
-        // 修改本行的事件
-        openLayer (a) {
-            console.log(a);
-            this.dialogFormVisible = true;
-            this.flag = false;
-        },
-        // 删除本行的点击事件
-        deleteRow(a){
-            console.log(a.id);
-            
         },
         // 上传的http事件
         async uploadimg (a) {

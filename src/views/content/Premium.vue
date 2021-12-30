@@ -4,12 +4,12 @@
          <div class="header-title">
          <div class="block">
   <span class="demonstration">地区筛选</span>
-   <el-select v-model="value" placeholder="请选择">
+  <el-select v-model="regionalArea" multiple placeholder="请选择">
     <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.superName"
-      :value="item.value">
+      v-for="item in arr"
+      :key="item.id"
+      :label="item.name"
+      :value="item.id">
     </el-option>
   </el-select>
 </div>
@@ -19,7 +19,8 @@
     </div>
          </div>
          <div class="header-center">
-             <el-button type="primary" icon="el-icon-plus" @click="getshopping">新增优品</el-button>
+           <el-button type="primary" icon="el-icon-plus" @click="getshopping">新增优品</el-button>
+             <!-- <el-button type="primary" icon="el-icon-plus" @click="getshopping">新增优品</el-button> -->
          </div>
      </div>
     <div class="main">
@@ -28,54 +29,68 @@
     stripe
     style="width: 100%">
     <el-table-column
-      prop="superName"
+      prop="productName"
       label="名称"
       width="280">
     </el-table-column>
     <el-table-column
-      prop="num"
-      label="排序"
-      width="180">
+      prop="productNo"
+      label="商品编号">
     </el-table-column>
     <el-table-column
-      prop="goodnum"
+      prop="productCount"
       label="关联商品数量">
     </el-table-column>
-    <el-table-column
+    <!-- <el-table-column
       prop="regionId"
       label="展示区域">
-    </el-table-column>
-    <el-table-column
-      prop="broadcast"
-      label="播放量"
-      width="120">
-    </el-table-column>
+    </el-table-column> -->
     <el-table-column
       label="操作"
-      width="120">
+      width="180">
         <template slot-scope="scope">
-         <el-button type="primary"  @click="editModify(scope.row)">编辑</el-button>
-           </template>
+         <el-button type="primary"  @click="editModify(scope.row)">编辑</el-button> 
+       <el-button type="primary"  @click="handleDelete(scope.row)">删除</el-button>
+        </template>
     </el-table-column>
   </el-table>
     </div>
 <!--编辑优品-->
     <el-dialog title="编辑炫萌优品" :visible.sync="dialogFormVisible">
   <el-form :model="form">
-    <el-form-item label="视频名称" :label-width="formLabelWidth" class="asterisk">
-        <el-input type="text" placeholder="填写视频名称(不超过60个字符)" v-model="superName" maxlength="60" show-word-limit>
+    <el-form-item label="商品名称" :label-width="formLabelWidth" class="asterisk">
+        <el-input type="title" placeholder="填写视频名称(不超过60个字符)" v-model="productName" maxlength="60" show-word-limit>
         </el-input>
     </el-form-item>
-    <el-form-item label="视频链接" :label-width="formLabelWidth" class="asterisk">
-    <el-select v-model="serialNumber"  placeholder="请填写完整的视频链接">
+    <el-form-item label="商品库存" :label-width="formLabelWidth" class="asterisk">
+      <el-input v-model="input" placeholder="请输入内容"></el-input>
+    <!-- <el-select v-model="serialNumber"  placeholder="请填写完整的视频链接"> -->
         <!-- <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value">
         </el-option> -->
-  </el-select>
+  <!-- </el-select> -->
     </el-form-item>
+   <el-form-item
+     label="上传封面"
+    :label-width="formLabelWidth"
+      >
+     <!--上传图片-->
+      <el-upload
+    action=""
+  :http-request="uploadImg"
+    :on-change="fileChange"
+   list-type="picture-card"
+    :on-preview="handlePictureCardPreview"
+   :on-remove="handleRemove">
+   <i class="el-icon-plus"></i>
+    </el-upload>
+   <el-dialog :visible.sync="dialogVisible">
+    <img width="100%" :src="dialogImageUrl" alt="">
+  </el-dialog>
+  </el-form-item>
     <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5 asterisk">
         <el-button type="primary"  @click="dialogFormVisible1 = true">添加省区</el-button>
     </el-form-item>
@@ -97,10 +112,10 @@
 </el-dialog>
 
 <!--新增优品-->
-<el-dialog title="新增优品" :visible.sync="dialogFormVisible3">
+<el-dialog title="新增优品" :visible.sync="dialogTableVisible">
   <el-form :model="form">
     <el-form-item label="商品名称" :label-width="formLabelWidth">
-     <el-select v-model="id" placeholder="请选择">
+      <el-select v-model="id" placeholder="请选择">
     <el-option
       v-for="item in commodityArr"
       :key="item.id"
@@ -109,7 +124,7 @@
     </el-option>
   </el-select>
     </el-form-item>
-    <el-form-item label="商品图片" :label-width="formLabelWidth">
+    <el-form-item label="商品编号" :label-width="formLabelWidth">
      <el-select v-model="id" placeholder="请选择">
     <el-option
       v-for="item in getgoods"
@@ -119,8 +134,7 @@
     </el-option>
   </el-select>
     </el-form-item>
-
-    <el-form-item label="展示区域"  :label-width="formLabelWidth">
+    <!-- <el-form-item label="展示区域"  :label-width="formLabelWidth">
       <el-select v-model="displayArea" multiple  placeholder="请选择活动区域">
            <el-option
       v-for="item in arr"
@@ -129,13 +143,16 @@
       :value="item.id">
     </el-option>
       </el-select>
-    </el-form-item>
+    </el-form-item> -->
   </el-form>
   <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible3 = false">取 消</el-button>
+    <el-button @click="dialogTableVisible = false">取 消</el-button>
     <el-button type="primary" @click="newProducts">确 定</el-button>
   </div>
 </el-dialog>
+
+
+
   </div>
 </template>
 <script>
@@ -145,57 +162,12 @@ export default {
       return {
         checkedlist : [], //选择省区
         value: [],
+       regionalArea:[],//地区筛选
         commodityArr:[],//商品名称
-        displayArea:[],//展示区域
-        options: [{
-            value: '选项1',
-            label: '黄金糕'
-            }, {
-            value: '选项2',
-            label: '双皮奶'
-            }, {
-            value: '选项3',
-            label: '蚵仔煎'
-            }, {
-            value: '选项4',
-            label: '龙须面'
-            }, {
-            value: '选项5',
-            label: '北京烤鸭'
-        }],
-        tableData: [{
-          date: '2016-05-02',
-          name: '奶粉通货行情',
-          num:1,
-          goodnum:5,
-          address: '全国',
-          broadcast:"92,394"
-        }, {
-          date: '2016-05-04',
-          name: '尿不湿通货行情',
-          num:2,
-          goodnum:12,
-          address: '北京,上海,天津',
-          broadcast:"234"
-        }, {
-          date: '2016-05-01',
-          name: '食品辅食',
-          num:3,
-          goodnum:22,
-          address: '全国',
-          broadcast:"768"
-        }, {
-          date: '2016-05-03',
-          name: '婴幼营养',
-          num:4,
-          goodnum:80,
-          address: '上海,天津',
-          broadcast:"2,354"
-        }],
+        // displayArea:[],//展示区域
+        dialogTableVisible:false,
         dialogFormVisible: false,
         dialogFormVisible1: false,
-        dialogFormVisible2: false,
-        dialogFormVisible3: false,
         form: {
           name: '',
           region: '',
@@ -209,127 +181,127 @@ export default {
         formLabelWidth: '120px',
         text:'',
         checked: true,
-        arr : [],
+        // arr : [],
         num : 0,
         superName:"",//商品名称
         serialNumber:[],//商品的id
-        regionld:"",//展示区域
+        // regionld:"",//展示区域
         id:"",//商品id
         rows:[]
       };
     },
     //这个是频繁更改需要用到watch然后目的是检测id的更改
     watch:{
-        id:function(newId,oldId){
-          if(newId!=oldId){
-            console.log(this.id);
-            this.getImg();
-           let target = this.commodityArr.find((item)=>{
-              return item.id == this.id;
-            })
-            this.superName = target.title;
-            console.log(this.superName);
-          }
-        },
+        // id:function(newId,oldId){
+        //   if(newId!=oldId){
+        //     console.log(this.id);
+        //     // this.getImg();
+        //    let target = this.commodityArr.find((item)=>{
+        //       return item.id == this.id;
+        //     })
+        //     this.superName = target.title;
+        //     console.log(this.superName);
+        //   }
+        // },
     },
     async created () {
-        this.arr.push(
-          {
-    "name": "北京市",
-    "id": "110000000000"
-}, {
-    "name": "天津市",
-    "id": "120000000000"
-}, {
-    "name": "河北省",
-    "id": "130000000000"
-}, {
-    "name": "山西省",
-    "id": "140000000000"
-}, {
-    "name": "内蒙古自治区", 
-    "id": "150000000000"
-}, {
-    "name": "辽宁省",
-    "id": "210000000000"
-}, {
-    "name": "吉林省",
-    "id": "220000000000"
-}, {
-    "name": "黑龙江省",
-    "id": "230000000000"
-}, {
-    "name": "上海市",
-    "id": "310000000000"
-}, {
-    "name": "江苏省",
-    "id": "320000000000"
-}, {
-    "name": "浙江省",
-    "id": "330000000000"
-}, {
-    "name": "安徽省",
-    "id": "340000000000"
-}, {
-    "name": "福建省",
-    "id": "350000000000"
-}, {
-    "name": "江西省",
-    "id": "360000000000"
-}, {
-    "name": "山东省",
-    "id": "370000000000"
-}, {
-    "name": "河南省",
-    "id": "410000000000"
-}, {
-    "name": "湖北省",
-    "id": "420000000000"
-}, {
-    "name": "湖南省",
-    "id": "430000000000"
-}, {
-    "name": "广东省",
-    "id": "440000000000"
-}, {
-    "name": "广西壮族自治区",
-    "id": "450000000000"
-}, {
-    "name": "海南省",
-    "id": "460000000000"
-}, {
-    "name": "重庆市",
-    "id": "500000000000"
-}, {
-    "name": "四川省",
-    "id": "510000000000"
-}, {
-    "name": "贵州省",
-    "id": "520000000000"
-}, {
-    "name": "云南省",
-    "id": "530000000000"
-}, {
-    "name": "西藏自治区",  
-    "id": "540000000000"
-}, {
-    "name": "陕西省",
-    "id": "610000000000"
-}, {
-    "name": "甘肃省",
-    "id": "620000000000"
-}, {
-    "name": "青海省",
-    "id": "630000000000"
-}, {
-    "name": "宁夏回族自治区",
-    "id": "640000000000"
-}, {
-    "name": "新疆维吾尔自治区",
-    "id": "650000000000"
-}),
+        // this.arr.push(
+//           {
+//     "name": "北京市",
+//     "id": "110000000000"
+// }, {
+//     "name": "天津市",
+//     "id": "120000000000"
+// }, {
+//     "name": "河北省",
+//     "id": "130000000000"
+// }, {
+//     "name": "山西省",
+//     "id": "140000000000"
+// }, {
+//     "name": "内蒙古自治区", 
+//     "id": "150000000000"
+// }, {
+//     "name": "辽宁省",
+//     "id": "210000000000"
+// }, {
+//     "name": "吉林省",
+//     "id": "220000000000"
+// }, {
+//     "name": "黑龙江省",
+//     "id": "230000000000"
+// }, {
+//     "name": "上海市",
+//     "id": "310000000000"
+// }, {
+//     "name": "江苏省",
+//     "id": "320000000000"
+// }, {
+//     "name": "浙江省",
+//     "id": "330000000000"
+// }, {
+//     "name": "安徽省",
+//     "id": "340000000000"
+// }, {
+//     "name": "福建省",
+//     "id": "350000000000"
+// }, {
+//     "name": "江西省",
+//     "id": "360000000000"
+// }, {
+//     "name": "山东省",
+//     "id": "370000000000"
+// }, {
+//     "name": "河南省",
+//     "id": "410000000000"
+// }, {
+//     "name": "湖北省",
+//     "id": "420000000000"
+// }, {
+//     "name": "湖南省",
+//     "id": "430000000000"
+// }, {
+//     "name": "广东省",
+//     "id": "440000000000"
+// }, {
+//     "name": "广西壮族自治区",
+//     "id": "450000000000"
+// }, {
+//     "name": "海南省",
+//     "id": "460000000000"
+// }, {
+//     "name": "重庆市",
+//     "id": "500000000000"
+// }, {
+//     "name": "四川省",
+//     "id": "510000000000"
+// }, {
+//     "name": "贵州省",
+//     "id": "520000000000"
+// }, {
+//     "name": "云南省",
+//     "id": "530000000000"
+// }, {
+//     "name": "西藏自治区",  
+//     "id": "540000000000"
+// }, {
+//     "name": "陕西省",
+//     "id": "610000000000"
+// }, {
+//     "name": "甘肃省",
+//     "id": "620000000000"
+// }, {
+//     "name": "青海省",
+//     "id": "630000000000"
+// }, {
+//     "name": "宁夏回族自治区",
+//     "id": "640000000000"
+// }, {
+//     "name": "新疆维吾尔自治区",
+//     "id": "650000000000"
+// }),
         this.getpremium();
-        await this.getshopping();
+        // await this.getshopping();
     },
     methods: {
          ...mapActions(["getSuperList","superProductTradeName","superProductTradeImg","createSuperProduct","updateSuperProduct"]),
@@ -350,20 +322,20 @@ export default {
         },
         //新增推荐优品
        async newProducts(){
-          this.dialogFormVisible3 = false;
-          let str = this.displayArea.join(",");
-          console.log(str);
+          this.dialogTableVisible = false
+          // let str = this.displayArea.join(",");
+          // console.log(str);
           //新增优品
         let suproduct= await this.createSuperProduct({
-            superName:this.superName,
-            serialNumber:this.id,
-            regionId:str
+            id:this.id,
+            // regionId:str
         });
         console.log(suproduct);
+        await this.getshopping();
          this.getpremium();
         },
        async getshopping(){
-          this.dialogFormVisible3 = true;
+          this.dialogTableVisible = true;
           //获取商品名称及ID
               let getgoods=await this.superProductTradeName();
               this.commodityArr=getgoods.data;
@@ -375,6 +347,10 @@ export default {
              });
              console.log(getImage);
          },
+         //删除
+          handleDelete(rows) {
+           console.log(rows);
+           },
         //更改商品
         editModify(ware){
           this.dialogFormVisible = true;

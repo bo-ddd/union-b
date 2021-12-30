@@ -1,11 +1,10 @@
 <template>
   <div class="wrap">
       <el-tabs type="border-card" class="tabsbox">
-        <el-tab-pane label="项目管理">
+        <el-tab-pane label="店铺管理">
           <div class="projectmain"> 
             <div class="main-nav">
               <div class="main-nav-title">店铺信息</div>
-              <div class="main-nav-btn"><i class="el-icon-edit"></i></div>
             </div>
             <div class="infobox">
               <div class="info-item">
@@ -13,17 +12,14 @@
                   <el-descriptions-item label="店主头像">
                     <img class="shophead" :src="avatorImg" alt="">
                   </el-descriptions-item>
-                  <el-descriptions-item label="店主ID">{{storeInfo.storeId}}</el-descriptions-item>
                   <el-descriptions-item label="店主名称">{{storeInfo.storeTitle}}</el-descriptions-item>
                   <el-descriptions-item label="店主电话">{{storeInfo.userPhone}}</el-descriptions-item>
-                  <el-descriptions-item label="店铺ID">{{storeInfo.userId}}</el-descriptions-item>
                   <el-descriptions-item label="店铺名称">{{storeInfo.avatorName}}</el-descriptions-item>
-                  <el-descriptions-item label="邮箱ID">{{storeInfo.emailId}}</el-descriptions-item>
                   <el-descriptions-item label="邮箱号">{{storeInfo.email}}</el-descriptions-item>
-                  <el-descriptions-item label="身份ID">{{storeInfo.identityId}}</el-descriptions-item>
                   <el-descriptions-item label="身份">{{storeInfo.identityName}}</el-descriptions-item>
                   <el-descriptions-item label="创建时间">{{gettime(storeInfo.storeCreatedAt)}}</el-descriptions-item>
-                  <el-descriptions-item label="联系地址">江苏省苏州市吴中区吴中大道</el-descriptions-item>
+                  <el-descriptions-item label="经度">{{longitude}}</el-descriptions-item>
+                  <el-descriptions-item label="纬度">{{latitude}}</el-descriptions-item>
                 </el-descriptions>
               </div>
               <div class="info-item-right">
@@ -37,7 +33,6 @@
           <div class="projectbottom">
             <div class="main-nav">
               <div class="main-nav-title">商品信息</div>
-              <div class="main-nav-btn"><i class="el-icon-edit"></i></div>
             </div>
             <!-- <div class="projectleft">
               <div class="left-nav">
@@ -161,7 +156,7 @@ import { mapActions } from "vuex";
         });
         this.storeInfo = res.data[0];
         this.tableData=res.data[0].detail;
-        console.log(this.tableData[0].productStatus);
+        console.log(this.storeInfo);
         this.productStatus=this.tableData[0].productStatus
         if(this.productStatus==0){
           this.productStatus="已删除"
@@ -272,6 +267,8 @@ import { mapActions } from "vuex";
     & .projectbottom{
       margin-top: 15px;
       width: 100%;
+      border: 1px solid #dddddd;  
+        height: 300px;
       // display: flex;
       // justify-content: space-between;
       & .projectleft{

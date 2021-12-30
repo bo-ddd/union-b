@@ -71,7 +71,7 @@ export default {
      * }
      * */
     updateUserInfo(params) {
-        return axios.post('/userInfo/update', params, postConfig)
+        return axios.post('/user/update', params, postConfig)
     },
     /**
      * @description  退出登录接口
@@ -618,9 +618,7 @@ export default {
     /**
      * @description 新增推荐商品 
      * @params {
-     * superNname  : [string]  '商品名称',
-     * serialNumber:[number] '商品的id',
-     * regionId:[string]    '展示区域  1,2,3'  
+     * id : [number] '商品的id' 
      * }
      */
     createSuperProduct(params) {
@@ -630,13 +628,19 @@ export default {
      * @description 更改推荐商品
      * @params {
      * id:[number]   '被更改的id',
-     * superNname  : [string]  '商品名称',
-     * serialNumber:[number] '商品的id',
-     * regionId:[string]    '展示区域  1,2,3'  
      * }
      */
     updateSuperProduct(params) {
         return axios.post('/superProduct/update', params, postConfig)
+    },
+    /**
+     * @description 下架优品接口
+     * @params {
+     * id:[number]   '要删除的id',
+     * }
+     */
+    deleteSuperProduct(params) {
+        return axios.post('/superProduct/delete', params, postConfig)
     },
     /**
      * @description banner列表 
@@ -936,6 +940,38 @@ export default {
      */
     updateRouteMeta(params) {
         return axios.post('/routeMeta/update', params, postConfig)
+    },
+    /**
+     * @description 路由列表  
+     * @params 无
+     */
+    getRouteList(params) {
+        return axios.post('/route/list', params, postConfig)
+    },
+    /**
+     * @description 路由meta列表  
+     * @params 无
+     */
+    getRouteMetaList(params) {
+        return axios.post('/routeMeta/list', params, postConfig)
+    },
+    /**
+     * @description 删除路由接口   
+     * @params {
+     * id:[number]			'需要删除的id'
+     * }
+     */
+    deleteRoute(params) {
+        return axios.post('/route/delete', params, postConfig)
+    },
+    /**
+     * @description 删除路由meta  
+     * @params {
+     * id:[number]			'需要删除的id'
+     * }
+     */
+    deleteRouteMeta(params) {
+        return axios.post('/routeMeta/delete', params, postConfig)
     },
 
 

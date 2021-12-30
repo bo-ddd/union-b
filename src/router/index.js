@@ -124,16 +124,6 @@ export const routes = [{
                     import ( /* webpackChunkName: "mine" */ '../views/store/Mine')
             },
             {
-                path: '/store/update',
-                name: 'UpdateStore',
-                meta: {
-                    title: '修改信息',
-                    flag: "false"
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "update" */ '../views/store/UpdateStore')
-            },
-            {
                 path: '/store/details',
                 name: 'StoreDetails',
                 meta: {
@@ -519,6 +509,34 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "help" */ '../views/news/Help')
+            },
+        ]
+    },
+    {
+        path: '/route',
+        name: 'Route',
+        component: Home,
+        meta: {
+            title: '路由管理',
+            icon: 'el-icon-link'
+        },
+        children: [{
+                path: '/route/index',
+                name: 'RouteManage',
+                meta: {
+                    title: '路由管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "RouteManage" */ '../views/route/RouteManage')
+            },
+            {
+                path: '/route/identity',
+                name: 'Identity',
+                meta: {
+                    title: '路由权限',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "identity" */ '../views/route/Identity')
             },
         ]
     },

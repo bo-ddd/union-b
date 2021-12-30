@@ -374,6 +374,47 @@ export default {
         return axios.post('/content/list', params, postConfig)
     },
     /**
+     * @description 快速入口增加 
+     * @params {
+     * iconUrl:[string] 必填 '入口图标',
+     * entranceName:[string] 必填 '入口名称',
+     * serialNumber:[number] 必填 '序列号',
+     * routeUrl:[string] 必填 '路由地址',
+     * entranceType:[number] 必填 '接口类型  1,代表快速入口'
+     * } 
+     */
+    createQuick(params) {
+        return axios.post('/content/create', params, postConfig)
+    },
+    /**
+     * @description 快速入口更改 
+     * @params {
+     * id:[number] 必填 '入口id'
+     * iconUrl:[string] 必填 '入口图标',
+     * entranceName:[string] 必填 '入口名称',
+     * serialNumber:[number] 必填 '序列号',
+     * routeUrl:[string] 必填 '路由地址',
+     * entranceType:[number] 必填 '接口类型  1,代表快速入口'
+     * } 
+     */
+    updateQuick(params) {
+        return axios.post('/content/update', params, postConfig)
+    },
+    /**
+     * @description 删除快速入口 
+     * @params {
+     * id:[number] 必填 '入口id'
+     * iconUrl:[string] 必填 '入口图标',
+     * entranceName:[string] 必填 '入口名称',
+     * serialNumber:[number] 必填 '序列号',
+     * routeUrl:[string] 必填 '路由地址',
+     * entranceType:[number] 必填 '接口类型  1,代表快速入口'
+     * } 
+     */
+    deleteQuick(params) {
+        return axios.post('/content/delete', params, postConfig)
+    },
+    /**
      * @description 广告管理接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;

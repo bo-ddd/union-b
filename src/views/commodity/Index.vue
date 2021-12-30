@@ -313,7 +313,7 @@ export default {
     },
     query(flag) {
       let arr = [];
-      // console.log(this.commodityStatusValue);
+      //   console.log(this.commodityStatusValue);
       if (!this.commodityStatusValue && !this.salesTypeValue) {
         arr = this.tableData;
         // console.log(this.tableData);

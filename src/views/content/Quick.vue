@@ -181,29 +181,7 @@ import uploadImg from '../../../public/lib/uploud';
 export default {
     data() {
         return {
-            tableData: [
-                {
-                    id : 1,
-                    date: "2016-05-02",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1518 弄",
-                    html : 'home页',
-                },
-                {
-                    id : 2,
-                    date: "2016-05-04",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1517 弄",
-                    html : 'home页',
-                },
-                {
-                    id : 3,
-                    date: "2016-05-01",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1519 弄",
-                    html : 'home页',
-                },
-            ],
+            tableData: [],
             // 模态框显示的状态
             dialogFormVisible: false,
             restaurants: [
@@ -289,13 +267,13 @@ export default {
             this.dialogFormVisible = true;
         },
 
-
         // 编辑模块框的取消
         cancal(){
             this.dialogFormVisible = false;
             this.$refs['my-upload'].clearFiles();
-            this.form.uploadDataImg = '';
+            this.deleteFormData();
         },
+
         // 模态框的确定事件
         async preservation(){
              // 如果有id证明是修改，没有是创建 
@@ -320,7 +298,7 @@ export default {
             await this.getData();
             this.dialogFormVisible = false;
             this.$refs['my-upload'].clearFiles();
-            this.form.uploadDataImg = '';
+            this.deleteFormData();
         },
 
         // 删除行
@@ -346,7 +324,6 @@ export default {
             });
         },
         
-        
         // 上传的http方法
         async upload(a){
             if(a.file.size>4624){
@@ -360,10 +337,17 @@ export default {
             let res = uploadImg(a.file,7);
             let twores = await this.uploadImage(res);
             this.form.uploadDataImg = twores.data;
+        },
+
+        // 清空模态框中已写入的数据
+        deleteFormData(){
+            this.form.uploadDataImg = '';
+            this.form.name = '';
+            this.form.url = '';
+            this.form.sort = '';
         }
 
     },
-
 
     created(){
         this.getData();

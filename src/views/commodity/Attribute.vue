@@ -22,10 +22,10 @@
                 :label-width="formLabelWidth"
                 class="form-money"
               >
-                <el-select v-model="value" clearable placeholder="请选择">
+                <el-select v-model="values" clearable placeholder="请选择">
                   <el-option
                     v-for="item in option"
-                    :key="item.value"
+                    :key="item"
                     :label="item.label"
                     :value="item.value"
                   >
@@ -39,12 +39,12 @@
                 :label-width="formLabelWidth"
                 class="form-money"
               >
-                <el-select v-model="valueimg" placeholder="请选择">
+                <el-select v-model="value"  placeholder="请选择">
                   <el-option
                     v-for="item in productList"
-                    :key="item.value"
-                    :label="item.value"
-                    :value="item.value">
+                    :key="item"
+                    :label="item.title"
+                    :value="item.id">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -140,17 +140,17 @@ export default {
       productList: [],
       option: [
         {
-          value: "1",
+          value: 1,
           label: "属性",
         },
         {
-          value: "2",
+          value: 2,
           label: "参数",
         },
       ],
       options: [],
-      value: "",
-      values: "",
+      value:null,
+      values:null,
       dialogFormVisible: false,
       dialogFormVisibles: false,
       formLabelWidth: "120px",
@@ -158,13 +158,7 @@ export default {
         name: "",
         pid: "",
       },
-      tableData: [
-        {
-          id: "",
-          productTitle: "",
-          value: "",
-        },
-      ],
+      tableData: [],
       form: {
         name: "",
         region: "",
@@ -178,15 +172,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions([
-      "createAttribute",
-      "getAttributeList",
-      "attributeOrders",
-      "deleteAttribute",
-      "getProductList",
-      "attributeStick",
-      "getCategoryList",
-    ]),
+    ...mapActions(["createAttribute","getAttributeList","attributeOrders","deleteAttribute","getProductList","attributeStick","getCategoryList",]),
     open() {},
     // async getadd(){
     //   let res = await this.getProductList();
@@ -195,26 +181,13 @@ export default {
 
     async getClassifyInfo() {
       let res = await this.getProductList({});
-      let data = res.data.rows.slice();
-      console.log(data);
-      data.forEach((item) => {
-        if (item.title) {
-          this.productList.push({
-            label: item.title,
-            value: item.title,
-          });
-        }
-      });
-    console.log(this.productList);
+      this.productList = res.data.rows;
     },
     async apply() {
       let res = await this.getAttributeList();
       this.tableData = res.data.rows;
-      console.log(res.data.rows);
     },
     async ascendingOrder(row) {
-      console.log(row);
-      console.log(row.ord);
       //获取当前层所有额数据；
       var formatData = (row) => {
         let res = {};
@@ -253,7 +226,6 @@ export default {
         for (let i = 0; i < this.tableData.length; i++) {
           let item = this.tableData[i];
           if (item.id == row.id) {
-            // console.log(item);
             res.i = i;
             res.currentData = item; //当前的数据；
             res.preData = this.tableData[i + 1]; //上一个数据；
@@ -264,14 +236,14 @@ export default {
       };
       let obj = formatData(row);
       console.log(obj);
-      let ord = obj.currentData.ord;
-      obj.currentData.ord = obj.preData.ord;
-      obj.preData.ord = ord;
-      let res = await this.attributeOrders([
-        obj.currentData.id,
-        obj.preData.id,
-      ]);
-      console.log(res);
+        let ord = obj.currentData.ord;
+        obj.currentData.ord = obj.preData.ord;
+        obj.preData.ord = ord;
+        let res = await this.attributeOrders([
+          obj.currentData.id,
+          obj.preData.id,
+        ]);
+        console.log(res);
       this.apply();
     },
 
@@ -302,16 +274,10 @@ export default {
 
     async confirm() {
       this.dialogFormVisible = false;
-      this.option.forEach((item) => {
-        console.log(item.value);
-      });
-      this.options.forEach((items) => {
-        console.log(items.value);
-      });
       let res = await this.createAttribute({
         value: this.forms.name,
-        type: Number(this.value),
-        productId: Number(this.forms.pid),
+        type: this.values,
+        productId: this.value,
       });
       console.log(res);
       this.apply();

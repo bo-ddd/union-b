@@ -48,15 +48,19 @@
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="类目" :label-width="formLabelWidth">
-          <el-input v-model="form.type" autocomplete="off"></el-input>
+         <el-select v-model="value1" placeholder="请选择">
+          <el-option v-for="item in category" :key="item.title" :label="item.title" :value="item.title"></el-option>
+        </el-select>
         </el-form-item>
         <el-form-item label="店铺" :label-width="formLabelWidth">
-          <el-input v-model="form.source" autocomplete="off"></el-input>
+          <el-select v-model="value2" placeholder="请选择">
+            <el-option v-for="item in shopping" :key="item.storeTitle" :label="item.storeTitle" :value="item.storeTitle"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>                                            
+        <el-button type="primary" @click="submit">确 定</el-button>                                  
       </div>
     </el-dialog>
   </div>
@@ -76,22 +80,27 @@ export default {
       table:[],
       dialogFormVisible: false,
       formLabelWidth: "120px",
-      form: {
-        name: "",
-        type: "",
-        source: "",
-      },
+      form: {name: ""},
       tableData: [],
       options: [{
-          value: "选项1",
+          value: "单位名称",
           label: "单位名称",
         }],
-      value: "选项1",
-      Interludes:''
+      value: "单位名称",
+      Interludes:'',
+      category: [{
+        value: '',
+        label: ''
+      }],
+      value1: '',
+      shopping:[],
+      value2:'',
+      cate:'',
+      shopp:''
     };
   },
   methods: {
-    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch"]),
+    ...mapActions(["createUnitlibrary", "getUnitlibraryList","unitlibraryOrders","unitlibraryStick","disableUnitlibrary","unitlibraryFuzzySearch","getCategoryList","getStoreList"]),
     /**
      * @description 置顶的方法
      */
@@ -100,17 +109,29 @@ export default {
         this.$message('已经被禁用')
         return
       }
-      var num = ord.id;
       if(ord.index == 1){
         this.$message('已经是第一个')
         return  
       }
-      console.log(num);
+      console.log(this.table);
+      for(let i=0;i<this.tableData.length;i++){
+        if(ord == this.tableData[i]){
+          this.tableData.splice(i,1)
+        }
+      }
+      console.log(this.pageNum);
+      this.tableData.unshift(ord)
+      for(let i=0;i<this.tableData.length;i++){
+        this.tableData[i].index = i+1;
+      }
+      this.table = this.tableData;
+      this.handleCurrentChange(this.pageNum)
+       var num = ord.id;
       let res = await this.unitlibraryStick({
         id:num
       })
+      // this.List();
       console.log(res);
-      this.List();
     },
     /**
      * @description 升序的方法
@@ -145,7 +166,7 @@ export default {
         ]);
         console.log(res)
       }else{
-        this.$message("已经是第一个了不能再升序了")
+        this.$message("已经是第一个了")
       }
     },
     /**
@@ -189,7 +210,6 @@ export default {
         return res;
       };
       let obj = formatData(row);
-      console.log(obj);
         let ord = obj.currentData.ord;
         obj.currentData.ord = obj.preData.ord;
         obj.preData.ord = ord;
@@ -230,13 +250,26 @@ export default {
      */
     async submit() {
       this.dialogFormVisible = false;
+      console.log(this.form.name);
+      this.category.forEach(item=>{
+        if(item.title == this.value1){
+          this.cate = item.id;
+        }
+      })
+      this.shopping.forEach(item=>{
+        if(item.storeTitle == this.value2){
+          this.shopp = item.storeId
+        }  
+      })
       let res = await this.createUnitlibrary({
-        title: this.form.name,
-        cid: Number(this.form.type),
-        storeId: Number(this.form.source),
+        title : this.form.name,
+        cid : this.cate,
+        storeId : this.shopp
       });
       console.log(res);
       this.form = [];
+      this.cate = '';
+      this.shopp = '';
       this.List();
     },
     /**
@@ -285,7 +318,6 @@ export default {
      *  @description 查询
      */
     async Interlude(){
-      console.log(this.Interludes);
       let res = await this.unitlibraryFuzzySearch({
         title : this.Interludes
       })
@@ -296,18 +328,36 @@ export default {
           item.index = index + 1;
         })
         this.table = num;
+        this.tableData = num;
         this.aaa = this.table.length;
-        console.log(num);
         this.Interludes = null
       }else{
         this.table = this.tableData
         this.aaa = this.table.length;
-        this.handleCurrentChange(1)
+        this.handleCurrentChange(this.pageNum)
       }
+    },
+    /**
+     * @description 获取商品类目
+     */
+    async Category(){
+      let res = await this.getCategoryList({});
+      this.category = res.data.rows
+      // console.log(this.category);
+    },
+    /**
+     *  @description 获取店铺接口
+     */
+    async shop(){
+      let res = await this.getStoreList({});
+      // console.log(res.data.rows);
+      this.shopping = res.data.rows
     }
   },
   created() {
     this.List();
+    this.Category();
+    this.shop();
   },
 };
 </script>

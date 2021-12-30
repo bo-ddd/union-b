@@ -208,6 +208,18 @@ export default new Vuex.Store({
         getQuickList(ctx, payload) {
             return Api.getQuickList(payload);
         },
+        //快速入口增加
+        createQuick(ctx, payload) {
+            return Api.createQuick(payload);
+        },
+        //修改快速入口
+        updateQuick(ctx, payload) {
+            return Api.updateQuick(payload);
+        },
+        //删除快速入口
+        deleteQuick(ctx, payload) {
+            return Api.deleteQuick(payload);
+        },
         //广告管理接口
         getAdvertList(ctx, payload) {
             return Api.getAdvertList(payload);
@@ -296,6 +308,26 @@ export default new Vuex.Store({
         createBanner(ctx, payload) {
             return Api.createBanner(payload);
         },
+        //删除banner
+        deleteBanner(ctx, payload) {
+            return Api.deleteBanner(payload);
+        },
+        //首页推荐列表
+        getHomeList(ctx, payload) {
+            return Api.getHomeList(payload);
+        },
+        //新增首页推荐
+        createHome(ctx, payload) {
+            return Api.createHome(payload);
+        },
+        //删除首页推荐
+        deleteHome(ctx, payload) {
+            return Api.deleteHome(payload);
+        },
+        //更改首页推荐
+        updateHome(ctx, payload) {
+            return Api.updateHome(payload);
+        },
 
 
         //订单管理
@@ -352,6 +384,10 @@ export default new Vuex.Store({
         //店铺列表接口
         getStoreList(ctx, payload) {
             return Api.getStoreList(payload);
+        },
+        //我的店铺接口
+        getMineStoreList(ctx, payload) {
+            return Api.getMineStoreList(payload);
         },
         //店铺详情接口
         getStoreDetail(ctx, payload) {

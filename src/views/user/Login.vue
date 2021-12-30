@@ -51,14 +51,12 @@
                   />
                 </div>
               </div>
-              <!-- <el-form-item> -->
               <el-checkbox
                 label="记住密码"
                 class="remember"
                 v-model="form.checked"
                 @click="Rememberpass"
               ></el-checkbox>
-              <!-- </el-form-item> -->
             </el-form>
           </div>
           <div class="main-foot">
@@ -88,6 +86,7 @@
 <script>
 import { mapActions } from "vuex";
 import { JSEncrypt } from "jsencrypt";
+
 export default {
   data() {
     return {
@@ -156,21 +155,6 @@ export default {
       return flag;
     },
 
-    // 记住密码点击事件
-    Rememberpass() {
-      // this.setUserInfo();
-
-      // 账号信息自动填充到登录输入框中(取cookie)
-      let username = this.getCookie("username");
-      let password = this.getCookie("password");
-      // 如果存在赋值给表单，并且将记住密码勾选
-      if (username) {
-        this.form.username = username;
-        this.form.password = password;
-        this.form.checked = true;
-      }
-    },
-
     // 对密码增加rsa（非对称加密）
     Encrypt() {
       var encryptor = new JSEncrypt(); // 创建加密对象实例
@@ -192,8 +176,9 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         this.generatorCaptcha();
         return;
       }
-      // this.setUserInfo();
-      this.getCookie(this.form.username);
+
+      // 执行记住密码方法
+      this.setUserInfo();
 
       // 调用加密方法：
       this.Encrypt();
@@ -205,7 +190,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         password,
         captcha,
       });
-      console.log(res);
+      // console.log(res);
 
       if (res.status == 1) {
         sessionStorage.setItem("token", res.data);
@@ -220,9 +205,6 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
             path: "/",
           });
         }
-
-        // sessionStorage.setItem("username", this.form.username);
-        // sessionStorage.setItem("password", this.form.password);
       } else {
         this.$message.error(res.msg);
         this.generatorCaptcha();
@@ -233,7 +215,13 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
           message: res.msg,
         });
       }
-      this.form.password = "";
+
+      if (this.form.password.length > 15) {
+        this.form.password = "";
+      }
+      this.form.captcha = "";
+
+      localStorage.setItem("checked", this.form.checked);
     },
 
     // 按回车键登录
@@ -255,18 +243,15 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
     setUserInfo: function () {
       // 判断用户是否勾选记住密码，如果勾选，向cookie中储存登录信息
       // 如果没有勾选，储存信息为空
-      // if (this.form.checked) {
-      //   console.log(this.form.username);
-      //   console.log(this.form.password);
-      //   this.form.username = this.setCookie("username", this.form.username, 7);
-      //   this.form.password = this.setCookie("password", this.form.password, 7);
-      //   this.form.checked = this.setCookie("checked", this.form.checked, 7);
-      // }
-      //  else {
-      //   this.form.username = this.setCookie("username", "", -1);
-      //   this.form.password = this.setCookie("password", "", -1);
-      //   this.form.checked = this.setCookie("checked", this.form.checked, 7);
-      // }
+      if (this.form.checked) {
+        this.setCookie("username", this.form.username, 7);
+        this.setCookie("password", this.form.password, 7);
+        this.setCookie("checked", this.form.checked, 7);
+      } else if (this.getCookie("username")) {
+        this.setCookie("username", "", -1);
+        this.setCookie("password", "", -1);
+        this.setCookie("checked", this.form.checked, -1);
+      }
     },
     setCookie(cName, value, expiredays) {
       var exdate = new Date();
@@ -277,6 +262,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
         value +
         (expiredays == null ? "" : ";expires=" + exdate.toGMTString());
     },
+    // 获取cookie
     getCookie(key) {
       if (document.cookie.length > 0) {
         var start = document.cookie.indexOf(key + "=");
@@ -292,10 +278,14 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   },
 
   async created() {
+    this.form.checked = Boolean(JSON.parse(localStorage.getItem("checked")));
     // 进页面直接调用验证码
     this.generatorCaptcha();
-
-    console.log(this.cookie);
+    // 将cookie中的值赋值给账号密码
+    if (this.getCookie("username") && this.getCookie("password")) {
+      this.form.username = this.getCookie("username");
+      this.form.password = this.getCookie("password");
+    }
   },
 
   mounted() {
@@ -303,7 +293,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
     window.addEventListener("keydown", this.keyDown);
 
     // 页面加载调用获取cookie值
-    this.getCookie();
+    // this.getCookie();
   },
 
   destroyed() {
@@ -320,7 +310,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 1200px;
+  min-width: 1250px;
   min-height: 500px;
 
   & .main {
@@ -349,6 +339,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
       & .mainpack {
         width: 100%;
         height: 70%;
+
         & .main-top {
           width: 100%;
           height: 110px;
@@ -425,6 +416,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
     }
   }
 }
+
 ::v-deep input::-webkit-input-placeholder {
   color: #717171;
 }

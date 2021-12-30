@@ -33,24 +33,25 @@
       label="操作"
       width="230">
       <template slot-scope="scope">
-        <el-button class="button"
-          @click.native.prevent="deleteRow(scope.$index, tableData)"
+         <el-button class="button"
+          @click="remove(scope.row)"
           type="text"
           >
           移除
         </el-button>
         <el-button class="button"
-          @click="see"
+          @click="find(scope.row)"
           type="text"
           >
           查看
         </el-button>
         <el-button class="button"
-          @click="change"
+          @click="update"
           type="text"
           >
           更改
         </el-button>
+        
       </template>
     </el-table-column>
   </el-table>
@@ -59,29 +60,50 @@
 
 <script>
 import { mapActions } from "vuex";
+import {getTime} from '../../assets/until/until'
   export default {
+    data() {
+      return{
+        id :'',
+        articleTitle:'我是标题',
+        articleContent:'我是内容',
+        tableData:[],
+
+      }
+    },
    created(){
      this.list();
+    
     },
     methods: {
-      ...mapActions(["getArticleList"]),
+      ...mapActions(["getArticleList","deleteArticle","updateArticle"]),
       async list(){
         let allList = await this.getArticleList();
-        // console.log(allList);
-        this.tableData = allList.data.rows
-        console.log(this.tableData);
+        console.log(allList);
+        allList.data.rows.forEach(fs=>{
+          fs.createdAt = getTime(new Date(fs.createdAt).getTime());
+        })
+        this.tableData = allList.data.rows;
       },
-      async see(){
-        window.location.href = './Details'
+      async remove(target){
+        let deleteArticle = await this.deleteArticle({id :target.id });
+        console.log(deleteArticle)
+        this.list();
       },
-        deleteRow(index, rows) {
-        rows.splice(index, 1);
-      }
-    },
-    data() {
-      return {
-        tableData:[],
-      }
+      async find(target){
+        console.log(target);
+        this.$router.push({ 
+          path:'./Details',
+          query:{
+            target:target,
+          }
+        })
+      },
+      async update(){
+        let updateArticle = await this.updateArticle();
+        console.log(updateArticle)                                                                                                                                                                                                                                                                     
+      },
+       
     },
   }
 </script>

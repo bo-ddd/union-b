@@ -10,6 +10,7 @@ export const postConfig = {
         "X-Requested-With": "XMLHttpRequest",
     },
     timeout: 5000,
+    withCredentials: true,
 }
 export const uploadConfig = {
     url: "",
@@ -18,7 +19,8 @@ export const uploadConfig = {
         "Content-Type": "multipart/form-data",
         "X-Requested-With": "XMLHttpRequest",
     },
-    timeout: 5000
+    timeout: 5000,
+    withCredentials: true,
 }
 
 export const getConfig = {
@@ -27,5 +29,6 @@ export const getConfig = {
     headers: {
         "X-Requested-With": "XMLHttpRequest"
     },
-    timeout: 5000
+    timeout: 5000,
+    withCredentials: true,
 };

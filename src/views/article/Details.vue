@@ -2,24 +2,21 @@
   <div class="wrap">
     <div class="body">
       <div class="center">
-        <span class="title">{{bigTitle}}</span>
+        <span class="title">{{target.target.articleTitle}}</span>
         <div class="information">
          
           <div class="nickName">
             <div class="top">
-              <span class="name">神仙儿</span>
+              <span class="name">{{target.target.authorName}}</span>
               <button type="primary" class="button" @click="follow">{{tit}}</button>
             </div>
             <div class="bottom">
-              <span>日期：2021.12.20 9:14</span>
+              <span>日期：{{target.target.createdAt}}</span>
             </div>
           </div>
         </div>
         <div class="details">
-          <span>
-           {{displayContent}}
-           
-          </span>
+          <span>{{target.target.articleContent}}</span>
         </div>
       </div>
     </div>
@@ -27,20 +24,38 @@
 </template>
 
 <script>
-// import { mapActions } from "vuex";
+import { mapActions } from "vuex";
+import {getTime} from '../../assets/until/until'
 export default {
   data(){
     return{
-      bigTitle:'我是一个大标题',
-      displayContent:'我是展示内容的地方',
+      // bigTitle:'我是一个大标题',
+      // displayContent:'我是展示内容的地方',
       tit:'关注',
       num:0,
+      target:'',
     }
   },
+  created(){
+    this.target = this.$route.query;
+    console.log(this.$route.query);
+    console.log(this.target);
+  },
+
   methods:{
+    ...mapActions(['getArticleList']),
+     async list(){
+        let allList = await this.getArticleList();
+        allList.data.rows.forEach(fs=>{
+           fs.createdAt = getTime(new Date(fs.createdAt).getTime());
+        })
+          console.log(allList.data.rows);
+        this.tableData = allList.data.rows
+        console.log(this.tableData);
+      },
      follow(){
       this.num++;
-      this.num%2 == 0 ? this.tit = '关注' : this.tit = '已关注' 
+      this.tit = this.num % 2 ? '关注' : '已关注'
     }
 
   }

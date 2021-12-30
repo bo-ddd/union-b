@@ -1,130 +1,107 @@
 <template>
   <div id="wrap">
+    <el-button type="primary" @click="dialogTableVisible = true">推荐供应商</el-button>
+
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="id"  width='200'>
-        <template slot="header">
-            <span>id</span>
-        </template>
+      <el-table-column prop="id" label='供应商名称' >
       </el-table-column>
 
-      <el-table-column prop="date"  width='200' label='图片'>
-        <template>
-            <div class="img">
+      <el-table-column prop="name" label='角色归属'>
+      </el-table-column>
 
-            </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="name" label="图片名字">
-      </el-table-column>
-      <el-table-column prop="describe" label="图片描述">
-      </el-table-column>
-      <el-table-column prop="address" label="供应商">
-      </el-table-column>
-      <el-table-column width='200'>
-        <template slot="header">
-            <span>详情</span>
-        </template>
-        <template slot-scope="scope">
-            <el-link type="primary" @click="openLayer(scope)">编辑</el-link>
-        </template>
+      <el-table-column prop="time" label="加盟时间">
       </el-table-column>
 
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisible">
-        <div class="modifydata">
-            <el-form :model="form">
-                <el-form-item label="活动名称">
-                    <!-- <el-input v-model="form.name" autocomplete="off"></el-input> -->
-                    <el-upload
-                        action=""
-                        list-type="picture-card"
-                        :http-request='uploadimg'
-                        >
-                        <i class="el-icon-plus"></i>
-                    </el-upload>
-                    <el-dialog :visible.sync="dialogVisible">
-                        <img width="100%" :src="dialogImageUrl" alt="">
-                    </el-dialog>
-                </el-form-item>
-                <el-form-item label="图片名字">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="图片描述">
-                    <el-input v-model="form.describe" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-        </div>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary"  @click="submit">确 定</el-button>
-        </div>
+    <!-- 编辑的模态框 -->
+    <el-dialog :visible.sync="dialogTableVisible">
+        <el-table :data="gridData">
+            <el-table-column property="id" label="供应商名称"></el-table-column>
+            <el-table-column property="name" label="角色归属"></el-table-column>
+            <el-table-column property="name" label="加盟时间"></el-table-column>
+            <el-table-column label="编辑">
+                <template slot-scope="scope">
+                    <el-link type="primary" @click="recommend(scope.row)">推荐</el-link>
+                </template>
+            </el-table-column>
+        </el-table>
     </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import upload from '../../../public/lib/uploud';
 export default {
     data(){
         return{
-            tableData: [{
-                id : 1,
-                date: '2016-05-02',
-                name: 'oppo',
-                describe : '红色',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                id : 2,
-                date: '2016-05-04',
-                name: 'vivo',
-                describe : '白色',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                id : 3,
-                date: '2016-05-01',
-                name: '华为',
-                describe : '黑色',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                id : 4,
-                date: '2016-05-03',
-                name: '小米',
-                describe : '红色',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
-            dialogFormVisible: false,
-            form : {
-                name : '',
-                describe: '',
-                imgUrl : '',
-            },
-            dialogImageUrl: '',
-            dialogVisible: false
+            tableData: [
+                {
+                    id : 1,
+                    name : '张三',
+                    time : '1.1'
+                },
+                {
+                    id : 2,
+                    name : '李四',
+                    time : '1.1'
+                },
+                {
+                    id : 3,
+                    name : '王五',
+                    time : '1.1'
+                },
+            ],
+            dialogTableVisible: false,    // 模态框状态  flase 不显示 true显示
+            gridData : [
+                {
+                    id : 1,
+                    name : '张三',
+                    time : '1.1'
+                },
+                {
+                    id : 2,
+                    name : '李四',
+                    time : '1.1'
+                },
+                {
+                    id : 3,
+                    name : '王五',
+                    time : '1.1'
+                },
+            ],
         }
     },
     methods :{
-//
-    ...mapActions(["uploadImage"]),
-    openLayer (a) {
-        console.log(a);
-        this.dialogFormVisible = true;
+//                       获取推荐列表  
+        ...mapActions(["getHomeList"]),
+        // 获取首页推荐的列表
+        async getData(){
+            let res = await this.getHomeList();
+            this.gridData = res.data.rows;
+        },
+        // 推荐的按钮
+        recommend(a){
+            console.log(a);
+        }
     },
-    async uploadimg (a) {
-        let res = upload(a.file,5);
-        let b = await this.uploadImage(res);
-        this.form.imgUrl = b.data;
-    },
-    submit(){
-        this.dialogFormVisible = false;
+     created(){
+        // this.getData();
     }
-}
+
 
 }
 </script>
 
 <style lang='scss' scoped>
+::v-deep .el-input__inner{
+    width: 170px;
+    margin-left: 10px;
+}
+.ml-10{
+    margin-left: 10px;
+}
 ::v-deep .el-form-item{
     display: flex;
     align-items: center;
@@ -136,7 +113,7 @@ export default {
 }
 // 模态框最外面的div
 ::v-deep .el-dialog{
-    width: 30%;
+    width: 40%;
 }
 .modifydata{
     width: 100%;
@@ -149,11 +126,5 @@ export default {
 }
 #wrap{
     padding: 20px 20px;
-}
-.img{
-    width: 100px;
-    height: 60px;
-    border: 1px solid #ccc;
-    margin: 0 auto;
 }
 </style>

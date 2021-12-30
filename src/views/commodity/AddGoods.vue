@@ -325,18 +325,13 @@ export default {
     return {
       weight: "",
       volume: "",
-      cid:'',
+      cid: "",
       commodityType: "",
       typeList: [],
       commodityClassificationOne: "",
       classificationListOne: [],
       commodityClassificationTwo: "",
-      classificationListTwo: [
-        {
-          value: "选项1",
-          label: "牛奶粉",
-        },
-      ],
+      classificationListTwo: [],
       text: "",
       productDescription: "",
       commodityPlatformPrice: "",
@@ -453,8 +448,14 @@ export default {
     changeCommodityType() {
       this.typeList.forEach((item) => {
         if (this.commodityType && this.commodityType == item.title) {
-          this.classificationListOne = item.child ? item.child : [];
-          this.cid = item.id
+          if (item.child) {
+            this.classificationListOne = item.child;
+            this.commodityClassificationOne = item.child[0].title;
+          } else {
+            this.classificationListOne = [];
+            this.commodityClassificationOne = "";
+          }
+          this.cid = item.id;
         }
       });
     },
@@ -557,15 +558,24 @@ export default {
     // },
     async preservation() {
       let res = await this.createProduct({
-        cid:Number(this.cid) ,
+        cid: Number(this.cid),
         title: this.text,
         keywords: "食品类",
-        platformPrice: Number(this.commodityPlatformPrice) ,
+        platformPrice: Number(this.commodityPlatformPrice),
         desc: this.productDescription,
         realPrice: Number(this.sellingPriceGoods),
       });
       console.log(res);
-      
+      if (res.status) {
+        this.$message('创建商品成功')
+        this.commodityType = "";
+        this.commodityClassificationOne = "";
+        this.commodityClassificationTwo = "";
+        this.text = "";
+        this.commodityPlatformPrice = "";
+        this.productDescription = "";
+        this.sellingPriceGoods = "";
+      }
     },
   },
   created() {

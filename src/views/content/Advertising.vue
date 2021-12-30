@@ -373,9 +373,6 @@ export default {
       this.id = a.id;
     },
    async confirmRevise(){
-      console.log(this.id);
-      console.log(this.title);
-      console.log(this.imgUrl);
       let modifyAdvert = await this.updateAdvert({
         id:this.id,
         title:this.title,

@@ -98,7 +98,7 @@ export default {
      * @description 上传图片
      * @params {
      * file:  <stream>  上传的流 
-     * type:[Number]  //1.banner图 2.导航图 3.类目图 4.许可证  5.推荐商品  6.文章
+     * type:[Number]  //1.banner图 2.导航图 3.类目图 4.许可证  5.推荐商品  6.文章 7.快捷导航
      * } 
      */
     uploadImage(params) {
@@ -333,13 +333,42 @@ export default {
         return axios.post('/attribute/orders', params, postConfig)
     },
     /**
-     * @description 单位模糊查询接口 /unitlibrary/fuzzySearch
+     * @description 单位模糊查询接口 
      * @params {
      * title : [String]     单位名称
      * } 
      */
     unitlibraryFuzzySearch(params) {
         return axios.post('/unitlibrary/fuzzySearch', params, postConfig)
+    },
+    /**
+     * @description 规格管理更改 
+     * @params {
+     * id:[number] 必填 要修改规格的id
+     * title[String] 规格名称
+     * } 
+     */
+    updateSpecification(params) {
+        return axios.post('/specification/update', params, postConfig)
+    },
+    /**
+     * @description 商品属性更改  
+     * @params {
+     * id:       [number] 必填 要修改属性的id
+     * value  [String]     商品属性值
+     * } 
+     */
+    updateAttribute(params) {
+        return axios.post('/attribute/update', params, postConfig)
+    },
+    /**
+     * @description 类目规格模糊查询接口 
+     * @params {
+     * title : [String]     单位名称
+     * } 
+     */
+    specificationFuzzySearch(params) {
+        return axios.post('/specification/fuzzySearch', params, postConfig)
     },
 
 
@@ -372,6 +401,47 @@ export default {
      */
     getQuickList(params) {
         return axios.post('/content/list', params, postConfig)
+    },
+    /**
+     * @description 快速入口增加 
+     * @params {
+     * iconUrl:[string] 必填 '入口图标',
+     * entranceName:[string] 必填 '入口名称',
+     * serialNumber:[number] 必填 '序列号',
+     * routeUrl:[string] 必填 '路由地址',
+     * entranceType:[number] 必填 '接口类型  1,代表快速入口'
+     * } 
+     */
+    createQuick(params) {
+        return axios.post('/content/create', params, postConfig)
+    },
+    /**
+     * @description 快速入口更改 
+     * @params {
+     * id:[number] 必填 '入口id'
+     * iconUrl:[string] 必填 '入口图标',
+     * entranceName:[string] 必填 '入口名称',
+     * serialNumber:[number] 必填 '序列号',
+     * routeUrl:[string] 必填 '路由地址',
+     * entranceType:[number] 必填 '接口类型  1,代表快速入口'
+     * } 
+     */
+    updateQuick(params) {
+        return axios.post('/content/update', params, postConfig)
+    },
+    /**
+     * @description 删除快速入口 
+     * @params {
+     * id:[number] 必填 '入口id'
+     * iconUrl:[string] 必填 '入口图标',
+     * entranceName:[string] 必填 '入口名称',
+     * serialNumber:[number] 必填 '序列号',
+     * routeUrl:[string] 必填 '路由地址',
+     * entranceType:[number] 必填 '接口类型  1,代表快速入口'
+     * } 
+     */
+    deleteQuick(params) {
+        return axios.post('/content/delete', params, postConfig)
     },
     /**
      * @description 广告管理接口
@@ -814,6 +884,58 @@ export default {
      */
     getStoreDetail(params) {
         return axios.post('/store/detail', params, postConfig)
+    },
+
+    //路由管理
+    /**
+     * @description 新增路由接口 
+     * @params {
+     * path:[string], 		'路径'
+     * name:[string],		'名称'
+     * component:[string],	'所属模板'
+     * key:[string],		'meta中的key'  //选填
+     * value:[string],		'meta中key所对应的value'  //选填
+     * pid:[number]			'属于某个路由下' //选填
+     * } 
+     */
+    createRoute(params) {
+        return axios.post('/route/create', params, postConfig)
+    },
+    /**
+     * @description 新增路由中的meta /routeMeta/create
+     * @params {
+     * key:[string],		'meta中的key'  //选填
+     * value:[string],		'meta中key所对应的value'  //选填
+     * routeId:[number]  	'属于哪个路由下的'
+     * } 
+     */
+    createRouteMeta(params) {
+        return axios.post('/routeMeta/create', params, postConfig)
+    },
+    /**
+     * @description 修改路由接口  
+     * @params {
+     * id:[number]          id
+     * path:[string], 		'路径'
+     * name:[string],		'名称'
+     * component:[string],	'所属模板'
+     * pid:[number]			'属于某个路由下' //选填
+     * } 
+     */
+    updateRoute(params) {
+        return axios.post('/route/update', params, postConfig)
+    },
+    /**
+     * @description 修改路由中的meta 
+     * @params {
+     * id:[number]          id
+     * key:[string],		'meta中的key'  //选填
+     * value:[string],		'meta中key所对应的value'  //选填
+     * routeId:[number]  	'属于哪个路由下的'
+     * } 
+     */
+    updateRouteMeta(params) {
+        return axios.post('/routeMeta/update', params, postConfig)
     },
 
 

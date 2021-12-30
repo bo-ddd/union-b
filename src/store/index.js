@@ -181,6 +181,18 @@ export default new Vuex.Store({
         unitlibraryFuzzySearch(ctx, payload) {
             return Api.unitlibraryFuzzySearch(payload);
         },
+        //规格管理更改
+        updateSpecification(ctx, payload) {
+            return Api.updateSpecification(payload);
+        },
+        //商品属性更改
+        updateAttribute(ctx, payload) {
+            return Api.updateAttribute(payload);
+        },
+        //类目规格模糊查询接口
+        specificationFuzzySearch(ctx, payload) {
+            return Api.specificationFuzzySearch(payload);
+        },
 
 
 
@@ -207,6 +219,18 @@ export default new Vuex.Store({
         //快捷入口接口
         getQuickList(ctx, payload) {
             return Api.getQuickList(payload);
+        },
+        //快速入口增加
+        createQuick(ctx, payload) {
+            return Api.createQuick(payload);
+        },
+        //修改快速入口
+        updateQuick(ctx, payload) {
+            return Api.updateQuick(payload);
+        },
+        //删除快速入口
+        deleteQuick(ctx, payload) {
+            return Api.deleteQuick(payload);
         },
         //广告管理接口
         getAdvertList(ctx, payload) {
@@ -381,6 +405,25 @@ export default new Vuex.Store({
         getStoreDetail(ctx, payload) {
             return Api.getStoreDetail(payload);
         },
+
+        //路由管理
+        // 新增路由接口 
+        createRoute(ctx, payload) {
+            return Api.createRoute(payload);
+        },
+        //新增路由中的meta
+        createRouteMeta(ctx, payload) {
+            return Api.createRouteMeta(payload);
+        },
+        //修改路由接口
+        updateRoute(ctx, payload) {
+            return Api.updateRoute(payload);
+        },
+        //修改路由中的meta 
+        updateRouteMeta(ctx, payload) {
+            return Api.updateRouteMeta(payload);
+        },
+
     },
     modules: {}
 })

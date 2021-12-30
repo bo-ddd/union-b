@@ -157,8 +157,9 @@ export default {
                 role: this.value || null,
                 type: this.typevalue || null
             });
-            if (res.status) {
+            if (res.status == 1) {
                 this.tableData = res.data.rows
+                this.total = res.data.rows.length
             }
         },
 

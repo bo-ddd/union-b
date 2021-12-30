@@ -116,22 +116,21 @@ export const routes = [{
             },
             {
                 path: '/store/mine',
-                name: 'mine',
+                name: 'Mine',
                 meta: {
-                    title: '我的店铺',
+                    title: '店铺装修',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "mine" */ '../views/store/Mine')
             },
             {
-                path: '/store/update',
-                name: 'UpdateStore',
+                path: '/store/map',
+                name: 'Map',
                 meta: {
-                    title: '修改信息',
-                    flag: "false"
+                    title: '店铺位置',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "update" */ '../views/store/UpdateStore')
+                    import ( /* webpackChunkName: "Map" */ '../views/store/Map')
             },
             {
                 path: '/store/details',
@@ -519,6 +518,34 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "help" */ '../views/news/Help')
+            },
+        ]
+    },
+    {
+        path: '/route',
+        name: 'Route',
+        component: Home,
+        meta: {
+            title: '路由管理',
+            icon: 'el-icon-link'
+        },
+        children: [{
+                path: '/route/index',
+                name: 'RouteManage',
+                meta: {
+                    title: '路由管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "RouteManage" */ '../views/route/RouteManage')
+            },
+            {
+                path: '/route/identity',
+                name: 'Identity',
+                meta: {
+                    title: '路由权限',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "identity" */ '../views/route/Identity')
             },
         ]
     },

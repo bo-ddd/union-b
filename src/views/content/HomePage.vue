@@ -55,16 +55,6 @@
                 <el-form-item label="图片描述">
                     <el-input v-model="form.describe" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="供应商" v-show="flag">
-                    <el-select v-model="value" placeholder="请选择">
-                        <el-option
-                            v-for="item in suppliers"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
             </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
@@ -90,14 +80,11 @@ export default {
                 name : '',
                 describe: '',
                 imgUrl : '',
-                supplier : '',   // 供应商
             },
-            flag : false,
-            suppliers : [],    // 供应商的id和名字
         }
     },
     methods :{
-//                       图片接口     增加推荐接口   删除推荐接口  修改推荐接口   获取推荐列表
+//                       图片接口     增加推荐接口   删除推荐接口  修改推荐接口   获取推荐列表  
         ...mapActions(["uploadImage","createHome","deleteHome","updateHome","getHomeList"]),
         // 获取首页推荐的列表
         async getData(){
@@ -118,6 +105,7 @@ export default {
         // 删除本行的点击事件
         deleteRow(a){
             console.log(a.id);
+            
         },
         // 上传的http事件
         async uploadimg (a) {
@@ -129,13 +117,6 @@ export default {
         submit(){
             this.$refs['my-upload'].clearFiles();
             this.dialogFormVisible = false;
-            if(this.flag){
-                console.log(this.form.imgUrl);
-                console.log(this.form.name);
-                console.log(this.form.describe);
-            }else{  
-                console.log('修改本行数据');
-            }
         },
         // 模态框的取消事件
         cancel(){
@@ -144,7 +125,7 @@ export default {
         },
     },
      created(){
-        // this.getData();
+        this.getData();
     }
 
 

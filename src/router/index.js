@@ -116,12 +116,21 @@ export const routes = [{
             },
             {
                 path: '/store/mine',
-                name: 'mine',
+                name: 'Mine',
                 meta: {
-                    title: '我的店铺',
+                    title: '店铺装修',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "mine" */ '../views/store/Mine')
+            },
+            {
+                path: '/store/map',
+                name: 'Map',
+                meta: {
+                    title: '店铺位置',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "Map" */ '../views/store/Map')
             },
             {
                 path: '/store/details',

@@ -1,135 +1,108 @@
 <template>
   <div>
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="店铺管理" name="first">
-        <div class="main">
-          <div class="main-left">
-            <div class="mask"></div>
-            <iframe
-              class="left"
-              src="http://localhost:8081"
-              frameborder="0"
-            ></iframe>
-            <!-- <el-table
-              :data="
-                tableData.filter(
-                  (data) =>
-                    !search ||
-                    data.name.toLowerCase().includes(search.toLowerCase())
-                )
-              "
-              style="width: 100%"
-            >
-              <el-table-column label="店铺名称" prop="date" >
-              </el-table-column>
-              <el-table-column label="店铺介绍" prop="name"> </el-table-column>
-              <el-table-column label="店主电话" prop="name"> </el-table-column>
-              <el-table-column align="right"> </el-table-column> -->
-            <!-- <template slot="header">
-                <el-input
-                  v-model="search"
-                  size="mini"
-                  placeholder="输入关键字搜索"
+    <div class="main">
+      <div class="main-left">
+        <div class="mask"></div>
+        <iframe
+          class="left"
+          src="http://192.168.1.24:8081"
+          frameborder="0"
+        ></iframe>
+      </div>
+      <div class="main-right">
+        <div class="main-riaht-top">
+          <div class="main-riaht-tops">
+            <div class="name">笑呵呵</div>
+            <div>
+              <div class="txt">
+                <span>支持推广到</span>
+                <img
+                  class="logo"
+                  src="../../assets/images/icon-wechat.png"
+                  alt=""
                 />
-              </template> 
-            </el-table> -->
-          </div>
-          <div class="main-right">
-            <div class="main-riaht-top">
-              <div class="main-riaht-tops">
-                <div class="name">笑呵呵</div>
-                <div>
-                  <div class="txt">
-                    <span>支持推广到</span>
-                    <img
-                      class="logo"
-                      src="../../assets/images/icon-wechat.png"
-                      alt=""
-                    />
-                    <img
-                      class="logo"
-                      src="../../assets/images/icon-micro-blog.png"
-                      alt=""
-                    />
-                    <img
-                      class="logo"
-                      src="../../assets/images/icon-qq.png"
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="text">
-                  <h3>更多渠道</h3>
-                  <span>为店铺提供了更多推广渠道</span>
-                </div>
-                <div class="alls">
-                  <div class="all">
-                    <img src="../../assets/images/icon-supplier.png" alt="" />
-                    <div>
-                      <div>有赞精选</div>
-                      <div class="size">千万级流量，促成交易额翻倍提升</div>
-                    </div>
-                  </div>
-                  <div class="all">
-                    <img src="../../assets/images/icon-supplier.png" alt="" />
-                    <div>
-                      <div>有赞精选</div>
-                      <div class="size">千万级流量，促成交易额翻倍提升</div>
-                    </div>
-                  </div>
-                  <div class="all">
-                    <img src="../../assets/images/icon-supplier.png" alt="" />
-                    <div>
-                      <div>有赞精选</div>
-                      <div class="size">千万级流量，促成交易额翻倍提升</div>
-                    </div>
-                  </div>
-                  <div class="all">
-                    <img src="../../assets/images/icon-supplier.png" alt="" />
-                    <div>
-                      <div>有赞精选</div>
-                      <div class="size">千万级流量，促成交易额翻倍提升</div>
-                    </div>
-                  </div>
-                </div>
+                <img
+                  class="logo"
+                  src="../../assets/images/icon-micro-blog.png"
+                  alt=""
+                />
+                <img
+                  class="logo"
+                  src="../../assets/images/icon-qq.png"
+                  alt=""
+                />
               </div>
             </div>
-            <div class="main-right-b">
-              <h3 class="tool">店铺工具</h3>
-              <div class="main-r-b-b">
-                <div class="bootm">
-                  <div>悬浮窗</div>
-                  <span>开启</span>
+          </div>
+          <div>
+            <div class="text">
+              <h3>更多渠道</h3>
+              <span>为店铺提供了更多推广渠道</span>
+            </div>
+            <div class="alls">
+              <div class="all">
+                <img src="../../assets/images/icon-supplier.png" alt="" />
+                <div>
+                  <div>有赞精选</div>
+                  <div class="size">千万级流量，促成交易额翻倍提升</div>
                 </div>
-                <div class="bootm">
-                  <div>公共广告</div>
-                  <span>开启</span>
+              </div>
+              <div class="all">
+                <img src="../../assets/images/icon-supplier.png" alt="" />
+                <div>
+                  <div>有赞精选</div>
+                  <div class="size">千万级流量，促成交易额翻倍提升</div>
                 </div>
-                <div class="bootm">
-                  <div>店铺导航</div>
-                  <span>开启</span>
+              </div>
+              <div class="all">
+                <img src="../../assets/images/icon-supplier.png" alt="" />
+                <div>
+                  <div>有赞精选</div>
+                  <div class="size">千万级流量，促成交易额翻倍提升</div>
                 </div>
-                <div class="bootm">
-                  <div>全店风格</div>
-                  <span>开启</span>
-                </div>
-                <div class="bootm">
-                  <div>装修首页</div>
-                </div>
-                <div class="bootm">
-                  <div>个人中心</div>
-                </div>
-                <div class="bootm">
-                  <div>模板市场</div>
+              </div>
+              <div class="all">
+                <img src="../../assets/images/icon-supplier.png" alt="" />
+                <div>
+                  <div>有赞精选</div>
+                  <div class="size">千万级流量，促成交易额翻倍提升</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </el-tab-pane>
-    </el-tabs>
+        <div class="main-right-b">
+          <h3 class="tool">店铺工具</h3>
+          <div class="main-r-b-b">
+            <div class="bootm">
+              <div>悬浮窗</div>
+              <span>开启</span>
+            </div>
+            <div class="bootm">
+              <div>公共广告</div>
+              <span>开启</span>
+            </div>
+            <div class="bootm">
+              <div>店铺导航</div>
+              <span>开启</span>
+            </div>
+            <div class="bootm">
+              <div>全店风格</div>
+              <span>开启</span>
+            </div>
+            <div class="bootm">
+              <div>装修首页</div>
+            </div>
+            <div class="bootm">
+              <div>个人中心</div>
+            </div>
+            <div class="bootm">
+              <div>模板市场</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -190,10 +163,12 @@ export default {
   height: 100%;
 }
 .main {
-  height: 100%;
+  height: 79vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 30px;
+  background-color: #fff;
 }
 .main-riaht-top {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
@@ -227,7 +202,7 @@ h3 {
 .text > span {
   color: rgb(158, 158, 160);
 }
-.text >h3{
+.text > h3 {
   font-size: 18px;
 }
 img {
@@ -254,7 +229,7 @@ img {
   margin-top: 20px;
   width: 43vw;
   padding: 20px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 .tool {
   margin: 0;
@@ -285,7 +260,7 @@ img {
   display: flex;
   align-items: center;
   font-size: 16px;
-  color: rgb(51,51,52);
+  color: rgb(51, 51, 52);
 }
 .size {
   font-size: 13px;

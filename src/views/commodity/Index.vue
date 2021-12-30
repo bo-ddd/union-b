@@ -39,7 +39,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item>
+              <!-- <el-form-item>
                 <el-input placeholder="请输入内容" v-model="input1">
                   <el-select
                     v-model="value"
@@ -56,7 +56,7 @@
                     </el-option>
                   </el-select>
                 </el-input>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
           </div>
           <div class="query">

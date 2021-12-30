@@ -668,7 +668,7 @@ export default {
 .preservation {
   display: flex;
   justify-content: center;
-  border-top: 1px solid var(--color);
+  // border-top: 1px solid var(--color);
   padding: 20px 0px;
 }
 

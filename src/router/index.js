@@ -116,22 +116,41 @@ export const routes = [{
             },
             {
                 path: '/store/mine',
-                name: 'mine',
+                name: 'Mine',
                 meta: {
-                    title: '我的店铺',
+                    title: '店铺装修',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "mine" */ '../views/store/Mine')
             },
             {
-                path: '/store/update',
-                name: 'UpdateStore',
+                path: '/store/renovation',
+                name: 'Renovation',
                 meta: {
-                    title: '修改信息',
+                    title: '装修首页',
                     flag: "false"
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "update" */ '../views/store/UpdateStore')
+                    import ( /* webpackChunkName: "renovation" */ '../views/store/Renovation')
+            },
+            {
+                path: '/store/mould',
+                name: 'Mould',
+                meta: {
+                    title: '模板市场',
+                    flag: "false"
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "mould" */ '../views/store/Mould')
+            },
+            {
+                path: '/store/map',
+                name: 'Map',
+                meta: {
+                    title: '店铺位置',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "Map" */ '../views/store/Map')
             },
             {
                 path: '/store/details',
@@ -519,6 +538,43 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "help" */ '../views/news/Help')
+            },
+        ]
+    },
+    {
+        path: '/route',
+        name: 'Route',
+        component: Home,
+        meta: {
+            title: '路由管理',
+            icon: 'el-icon-link'
+        },
+        children: [{
+                path: '/route/index',
+                name: 'RouteManage',
+                meta: {
+                    title: '路由管理',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "RouteManage" */ '../views/route/RouteManage')
+            },
+            {
+                path: '/route/add',
+                name: 'AddRoute',
+                meta: {
+                    title: '新增路由',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "AddRoute" */ '../views/route/AddRoute')
+            },
+            {
+                path: '/route/identity',
+                name: 'Identity',
+                meta: {
+                    title: '路由权限',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "identity" */ '../views/route/Identity')
             },
         ]
     },

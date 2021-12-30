@@ -200,6 +200,11 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
           this.$router.push({
             path: localStorage.getItem("from"),
           });
+          if (localStorage.getItem("from") == "/registration") {
+            this.$router.push({
+              path: "/",
+            });
+          }
         } else {
           this.$router.push({
             path: "/",

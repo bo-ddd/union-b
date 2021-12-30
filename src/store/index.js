@@ -208,6 +208,18 @@ export default new Vuex.Store({
         getQuickList(ctx, payload) {
             return Api.getQuickList(payload);
         },
+        //快速入口增加
+        createQuick(ctx, payload) {
+            return Api.createQuick(payload);
+        },
+        //修改快速入口
+        updateQuick(ctx, payload) {
+            return Api.updateQuick(payload);
+        },
+        //删除快速入口
+        deleteQuick(ctx, payload) {
+            return Api.deleteQuick(payload);
+        },
         //广告管理接口
         getAdvertList(ctx, payload) {
             return Api.getAdvertList(payload);

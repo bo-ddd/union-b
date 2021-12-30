@@ -20,119 +20,107 @@
          </div>
          <div class="header-center">
            <el-button type="primary" icon="el-icon-plus" @click="getshopping">新增优品</el-button>
-             <!-- <el-button type="primary" icon="el-icon-plus" @click="getshopping">新增优品</el-button> -->
          </div>
      </div>
     <div class="main">
-         <el-table
-    :data="rows"
-    stripe
-    style="width: 100%">
-    <el-table-column
-      prop="productName"
-      label="名称"
-      width="280">
-    </el-table-column>
-    <el-table-column
-      prop="productNo"
-      label="商品编号">
-    </el-table-column>
-    <el-table-column
-      prop="productCount"
-      label="关联商品数量">
-    </el-table-column>
-    <!-- <el-table-column
-      prop="regionId"
-      label="展示区域">
-    </el-table-column> -->
-    <el-table-column
-      label="操作"
-      width="180">
-        <template slot-scope="scope">
-         <el-button type="primary"  @click="editModify(scope.row)">编辑</el-button> 
-       <el-button type="primary"  @click="handleDelete(scope.row)">删除</el-button>
-        </template>
-    </el-table-column>
-  </el-table>
+         <el-table :data="rows" stripe style="width: 100%">
+            <el-table-column
+              prop="productName"
+              label="名称"
+              width="280">
+            </el-table-column>
+            <el-table-column
+              prop="productNo"
+              label="商品编号">
+            </el-table-column>
+            <el-table-column
+              prop="productCount"
+              label="关联商品数量">
+            </el-table-column>
+            <!-- <el-table-column
+              prop="regionId"
+              label="展示区域">
+            </el-table-column> -->
+            <el-table-column
+              label="操作"
+              width="180">
+                <template slot-scope="scope">
+                <el-button type="primary"  @click="editModify(scope.row)">编辑</el-button> 
+              <el-button type="primary"  @click="handleDelete(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+          </el-table>
     </div>
 <!--编辑优品-->
     <el-dialog title="编辑炫萌优品" :visible.sync="dialogFormVisible">
-  <el-form :model="form">
-    <el-form-item label="商品名称" :label-width="formLabelWidth" class="asterisk">
-        <el-input type="title" placeholder="填写视频名称(不超过60个字符)" v-model="productName" maxlength="60" show-word-limit>
+      <el-form :model="form">
+        <el-form-item label="商品名称" :label-width="formLabelWidth" class="asterisk">
+        <el-input  placeholder="填写视频名称(不超过60个字符)" v-model="title" maxlength="60" show-word-limit>
         </el-input>
-    </el-form-item>
-    <el-form-item label="商品库存" :label-width="formLabelWidth" class="asterisk">
-      <el-input v-model="input" placeholder="请输入内容"></el-input>
-    <!-- <el-select v-model="serialNumber"  placeholder="请填写完整的视频链接"> -->
-        <!-- <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-        </el-option> -->
-  <!-- </el-select> -->
-    </el-form-item>
-   <el-form-item
-     label="上传封面"
-    :label-width="formLabelWidth"
+      </el-form-item>
+      <el-form-item label="商品库存" :label-width="formLabelWidth" class="asterisk">
+        <el-input v-model="total" placeholder="请输入内容"></el-input>
+      </el-form-item>
+      <el-form-item
+         label="上传封面"
+        :label-width="formLabelWidth"
       >
      <!--上传图片-->
       <el-upload
-    action=""
-  :http-request="uploadImg"
-    :on-change="fileChange"
-   list-type="picture-card"
-    :on-preview="handlePictureCardPreview"
-   :on-remove="handleRemove">
-   <i class="el-icon-plus"></i>
-    </el-upload>
-   <el-dialog :visible.sync="dialogVisible">
-    <img width="100%" :src="dialogImageUrl" alt="">
-  </el-dialog>
+        action=""
+        :http-request="uploadImg"
+        :on-change="fileChange"
+        list-type="picture-card"
+        :on-preview="handlePictureCardPreview"
+        :on-remove="handleRemove">
+        <i class="el-icon-plus"></i>
+      </el-upload>
+      <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="">
+      </el-dialog>
   </el-form-item>
-    <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5 asterisk">
+    <!-- <el-form-item label="销售区域" :label-width="formLabelWidth" class="mb-5 asterisk">
         <el-button type="primary"  @click="dialogFormVisible1 = true">添加省区</el-button>
     </el-form-item>
     <span class="pattern">已选省区:
       <span v-for="key in checkedlist" :key="key">{{key}}&nbsp;&nbsp;&nbsp;</span>
-    </span>
+    </span> -->
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button type="primary"  @click="dialogFormVisible = false">取 消</el-button>
     <el-button type="primary" @click="editPremium">确 定</el-button>
   </div>
 </el-dialog>
-<el-dialog title="请选择省区" :visible.sync="dialogFormVisible1" >
+<!-- <el-dialog title="请选择省区" :visible.sync="dialogFormVisible1" >
   <div class="empty" @click="emptySelect">清空已选</div>
   <el-checkbox-group  v-model="checkedlist" @change='gettext'>
     <el-checkbox v-for="key in arr" :key="key.model" :label="key.name">{{key.name}}</el-checkbox>
   </el-checkbox-group>
   
-</el-dialog>
+</el-dialog> -->
 
 <!--新增优品-->
 <el-dialog title="新增优品" :visible.sync="dialogTableVisible">
   <el-form :model="form">
     <el-form-item label="商品名称" :label-width="formLabelWidth">
       <el-select v-model="id" placeholder="请选择">
-    <el-option
+      <el-option
       v-for="item in commodityArr"
       :key="item.id"
       :label="item.title"
       :value="item.id">
-    </el-option>
-  </el-select>
+      </el-option>
+    </el-select>
     </el-form-item>
     <el-form-item label="商品编号" :label-width="formLabelWidth">
      <el-select v-model="id" placeholder="请选择">
-    <el-option
+      <el-option
       v-for="item in getgoods"
       :key="item.id"
       :label="item.title"
       :value="item.id">
-    </el-option>
-  </el-select>
+      </el-option>
+     </el-select>
     </el-form-item>
     <!-- <el-form-item label="展示区域"  :label-width="formLabelWidth">
       <el-select v-model="displayArea" multiple  placeholder="请选择活动区域">
@@ -150,9 +138,6 @@
     <el-button type="primary" @click="newProducts">确 定</el-button>
   </div>
 </el-dialog>
-
-
-
   </div>
 </template>
 <script>
@@ -183,10 +168,12 @@ export default {
         checked: true,
         // arr : [],
         num : 0,
-        superName:"",//商品名称
-        serialNumber:[],//商品的id
+        // superName:"",//商品名称
+        // serialNumber:[],//商品的id
         // regionld:"",//展示区域
         id:"",//商品id
+        title:"",//商品名称
+        total:[],//商品总数
         rows:[]
       };
     },
@@ -304,22 +291,22 @@ export default {
         // await this.getshopping();
     },
     methods: {
-         ...mapActions(["getSuperList","superProductTradeName","superProductTradeImg","createSuperProduct","updateSuperProduct"]),
+         ...mapActions(["getSuperList","superProductTradeName","superProductTradeImg","createSuperProduct","updateSuperProduct","deleteSuperProduct"]),
       //已选省区
-        gettext(value){
-          // this.checkedlist.push(value[this.num]);
-          // this.num++;
-          this.checkedlist = value;
-        },
+        // gettext(value){
+        //   // this.checkedlist.push(value[this.num]);
+        //   // this.num++;
+        //   this.checkedlist = value;
+        // },
        async getpremium(){
         let premium=await this.getSuperList()
           console.log(premium);
           this.rows=premium.data.rows
         },
         //清空已选
-        emptySelect(){
-            this.checkedlist=[];
-        },
+        // emptySelect(){
+        //     this.checkedlist=[];
+        // },
         //新增推荐优品
        async newProducts(){
           this.dialogTableVisible = false
@@ -348,31 +335,36 @@ export default {
              console.log(getImage);
          },
          //删除
-          handleDelete(rows) {
+         async handleDelete(rows) {
            console.log(rows);
+           console.log(rows.productId);
+            let res = await this.deleteSuperProduct({
+              id:rows.productId
+            })
+            console.log(res);
            },
         //更改商品
         editModify(ware){
+          console.log(ware);
           this.dialogFormVisible = true;
-          this.id=ware.id;
-         this.superName=ware.superName;
-         this.serialNumber=ware.serialNumber;
-        //  this.regionId=ware.regionId;
-         console.log(this.checkedlist);
+          this.id=ware.productId;
+         this.title=ware.productName;
+         this.total=ware.productCount;
+        //  console.log(this.checkedlist);
         },
         async editPremium(){
-          console.log(this.checkedlist.join(","));
-        //   this.dialogFormVisible = false
-        //  let inquiry= await this.updateSuperProduct({
-        //    id:this.id,
-        //    superName:this.superName,
-        //    serialNumber:this.serialNumber,
-        //    regionId:this.regionId
-        //  });
-        //  console.log(inquiry);
-          //  this.getpremium();
-         },
-        
+        //   // console.log(this.checkedlist.join(","));
+          this.dialogFormVisible = false;
+          console.log(this.id);
+          console.log(this.total);
+         let inquiry= await this.updateSuperProduct({
+           id:this.id,
+           title:this.title,
+           total:this.total,
+         });
+         console.log(inquiry);
+           this.getpremium();
+         }, 
     }
   }
 </script>
@@ -435,14 +427,7 @@ export default {
   }
   ::v-deep .el-table__row  .el-table_1_column_5 {
     padding-left: 30px;
-  }
-//  ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
-//      background-color: #fcf9fa;
-//   }
-//  ::v-deep .el-table__footer-wrapper, .el-table__header-wrapper {
-//       background-color: #fcf9fa;
-//      }
- 
+  } 
 ::v-deep .el-upload{
     border: 1px dashed #d9d9d9;
 }

@@ -345,7 +345,6 @@ export default {
       article: null,
     };
   },
-
   created() {
     this.getAds()
   },

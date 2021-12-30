@@ -17,7 +17,11 @@
         </div>
         <!-- 模糊查询 -->
         <div class="">
-          <el-input placeholder="请输入商品类目" v-model="input3" class="input-with-select">
+          <el-input
+            placeholder="请输入商品类目"
+            v-model="input3"
+            class="input-with-select"
+          >
             <el-select
               v-model="salesTypeValue"
               filterable
@@ -73,8 +77,8 @@
                   ></el-cascader>
                 </div>
               </template>
-            </el-form-item> -->
-          </el-form>
+            </el-form-item>-->
+          </el-form> 
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
             <el-button
@@ -328,6 +332,7 @@ export default {
       this.form.speName = data.row.title;
       this.form.remark = data.row.productCategory;
       console.log(this.form);
+      
       this.spelist();
     },
     /**
@@ -424,8 +429,6 @@ export default {
       } else {
         return fuzzyQuery;
       }
-      console.log("aaaa");
-      console.log(this.salesTypeValue);
     },
   },
   async created() {

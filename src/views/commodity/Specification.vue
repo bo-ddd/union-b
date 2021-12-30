@@ -2,21 +2,20 @@
   <div class="wrap">
     <div class="wrap_interior">
       <div class="tit">商品规格</div>
+      <!-- header -->
       <div class="addspebut">
+        <!-- 俩个按钮 添加按钮和批量删除按钮 -->
         <div class="footer_left">
           <el-button
             type="primary"
-            @click="addspecification, (dialogaddFormVisible = true), submit"
+            @click="submit, (dialogaddFormVisible = true)"
             >添加规格</el-button
           >
-          <!-- <el-button type="primary">保存排序</el-button> -->
-          <el-button
-            type="primary"
-            class="batch_del_btn"
-            @click="multipleRemove()"
+          <el-button @click="multipleRemove()" type="primary"
             >批量删除</el-button
           >
         </div>
+        <!-- 模糊查询 -->
         <div class="">
           <el-input
             placeholder="请输入内容"
@@ -40,21 +39,28 @@
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
+        <!-- 添加按钮模态框 -->
         <el-dialog title="添加规格" :visible.sync="dialogaddFormVisible">
-          <el-form :model="form1">
+          <el-form :model="ruleForm">
             <el-form-item label="规格名称" :label-width="formLabelWidth">
-              <el-input v-model="form1.title" autocomplete="off"></el-input>
+              <el-input v-model="ruleForm.title" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="商品类目" :label-width="formLabelWidth">
-              <el-input v-model="form1.cid" autocomplete="off"></el-input>
+              <el-input v-model="ruleForm.cid" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="商品类目" prop="pid" class="classifya">
+
+            <!-- <el-form-item
+              label="商品类目"
+              prop="pid"
+              :label-width="formLabelWidth"
+            >
               <template>
                 <div class="block">
                   <span class="demonstration"></span>
                   <el-cascader
+                    @click="submit"
                     :ref="cascader"
-                    :options1="options1"
+                    :options="options"
                     @change="getId()"
                     :props="{
                       checkStrictly: true,
@@ -66,18 +72,19 @@
                   ></el-cascader>
                 </div>
               </template>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
             <el-button
               type="primary"
-              @click="addspecification(), (dialogaddFormVisible = false)"
+              @click="submit(), (dialogaddFormVisible = false)"
               >确 定</el-button
             >
           </div>
         </el-dialog>
       </div>
+      <!-- 表格 center -->
       <el-table
         ref="multipleTable"
         tooltip-effect="dark"
@@ -86,6 +93,7 @@
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
+        <!-- 多选框 -->
         <el-table-column
           :reserve-selection="true"
           type="selection"
@@ -94,6 +102,7 @@
           @click="checkedclick()"
         >
         </el-table-column>
+        <!-- 规格名称 -->
         <el-table-column label="id" align="center" prop="id"> </el-table-column>
         <el-table-column
           label="规格名称"
@@ -102,6 +111,7 @@
           show-overflow-tooltip
         >
         </el-table-column>
+        <!-- 商品类目 -->
         <el-table-column
           label="商品类目"
           prop="productCategory"
@@ -109,7 +119,9 @@
           align="center"
         >
         </el-table-column>
+        <!--操作   俩个按钮  修改按钮和删除按钮 -->
         <el-table-column label="操作" show-overflow-tooltip align="center">
+          <!-- 修改按钮 -->
           <template slot-scope="scope">
             <el-button
               type="primary"
@@ -117,7 +129,7 @@
               class="el-icon-edit cell1"
               @click="getCommodityDat(scope)"
             ></el-button>
-
+            <!-- 修改按钮的模态框 -->
             <el-dialog title="修改此行数据" :visible.sync="dialogFormVisible">
               <el-form :model="form">
                 <el-form-item label="id" :label-width="formLabelWidth">
@@ -143,7 +155,7 @@
                 >
               </div>
             </el-dialog>
-
+            <!-- 删除按钮 以及他的模态框-->
             <el-button
               type="text"
               @click="open(), deleteData(scope.row)"
@@ -153,6 +165,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页 footer -->
       <div class="footer">
         <div class="footer_right">
           <el-pagination
@@ -189,19 +202,8 @@ export default {
       currentPage4: 1,
       pageSize1: 50,
       pageNum1: "",
-
-      options1: [],
       tasks: [],
-      options: [
-        {
-          value: "选项1",
-          label: "规格名称",
-        },
-        {
-          value: "选项2",
-          label: "商品类目",
-        },
-      ],
+      options: [],
       pagination: false,
       id: "",
       title: "",
@@ -220,8 +222,8 @@ export default {
         name: "",
       },
       ruleForm: {
-        name: "",
-        pid: "",
+        title: "",
+        cid: "",
       },
       dialogVisible: false,
       dialogFormVisible: false,
@@ -279,18 +281,6 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-    //添加规格
-    async addspecification() {
-      let res = await this.createSpecification({
-        title: this.form1.title,
-        // cid: Number(this.form1.cid),
-        cid: this.option,
-      });
-      console.log("ccc");
-      console.log(this.item);
-      console.log(res);
-      this.spelist();
-    },
     /**
      * @description 删除当前行
      */
@@ -311,28 +301,42 @@ export default {
     },
 
     //批量删除
-    multipleRemove() {
-      for (let i = 0; i < this.renderDynamic.length; i++) {
-        if (!this.cacheArr.includes(this.renderDynamic[i])) {
-          this.cacheArr.push(this.renderDynamic[i]);
+    async multipleRemove() {
+      let arrx = [];
+      console.log('aaaaaa');
+      console.log(this.arr4);
+      for (let i = 0; i < this.arr4.length; i++) {
+        if (!this.cacheArr.includes(this.arr4[i])) {
+          this.cacheArr.push(this.arr4[i]);
         } else {
-          let temp = this.cacheArr.indexOf(this.renderDynamic[i]);
+          let temp = this.cacheArr.indexOf(this.arr4[i]);
           this.cacheArr.splice(temp, 1);
         }
       }
+
       this.cacheArr.forEach((item) => {
+        this.renderDynamic.splice(this.renderDynamic.indexOf(item), 1);
         this.table.splice(this.table.indexOf(item), 1);
+        arrx.push(item.id);
       });
+      // this.getList(this.query());
+      let res = await this.deleteSpecification({
+        id: arrx,
+      });
+      console.log(arrx);
+      console.log(res);
     },
     checkBoxData: function (selection, row) {
-      this.renderDynamic.push(row);
+      this.arr4.push(row);
+      // console.log(this.arr4);
     },
     handleSelectionChange(val) {
       if (!val.length) {
-        this.renderDynamic = [];
+        this.arr4 = [];
       } else {
         val.forEach((item) => {
-          this.renderDynamic.push(item);
+          this.arr4.push(item);
+          this.$refs.multipleTable.toggleRowSelection(item, true);
         });
       }
     },
@@ -380,20 +384,24 @@ export default {
       let res = this.$refs["cascader"].getCheckedNodes();
       this.ruleForm.pid = res[0].data.id;
     },
+    /**
+     * 添加规格
+     */
     async submit() {
       let res = await this.createSpecification({
-        title: this.ruleForm.name,
-        pid: this.ruleForm.pid == "" ? null : this.ruleForm.pid,
+        title: this.ruleForm.title,
+        cid: Number(this.ruleForm.cid == "" ? null : this.ruleForm.cid),
       });
       console.log(res);
+      this.spelist();
     },
     async getClassifyInfo() {
       let res = await this.getCategoryList({});
       let data = res.data.rows.slice();
       this.arr = data;
       let target = this.format(data);
-      this.options1 = target;
-      console.log('aa');
+      this.options = target;
+      console.log("aa");
       console.log(res);
     },
     format(target) {
@@ -408,28 +416,6 @@ export default {
       });
       return res.filter((type) => type.pid === null);
     },
-    /**
-     * 商品类目接口方法
-     */
-    // async categoryList() {
-    //   let resource = await this.getCategoryList();
-    //   console.log("aaasdadf");
-    //   console.log(resource);
-    //   resource.data.rows.forEach((item) => {
-    // this.option.push(item.title);
-    // this.option.label = item.title;
-    // this.option.value = item.id;
-    // });
-    // console.log(this.option);
-    // let resource = await this.getCategoryList();
-    // console.log(resource);
-    // console.log("aaa");
-    // console.log(resource.data.rows);
-    // let task = new Task(resource.data.rows);
-    // this.tasks = task.data.rows;
-    // console.log(this.tasks);
-    // console.log(this.option);
-    // },
     open() {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",

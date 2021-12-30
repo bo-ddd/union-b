@@ -7,33 +7,27 @@
       <el-table-column prop="id" label='id' width='150' >
       </el-table-column>
 
-      <el-table-column prop="date" label='图标' width='150x' >
-        <template>
-            <i class="el-icon-plus addBorder"></i>
-        </template>
-      </el-table-column>
-
-      <el-table-column prop="date" label='名称'>
+      <el-table-column label='图标' width='150x' >
         <template slot-scope="scope">
-            {{scope.row.date}}
+            <img :src="scope.row.iconUrl" alt="">
         </template>
       </el-table-column>
 
-      <el-table-column prop="date" label='排序'>
-             <template slot-scope="scope">
-                {{scope.row.date}}
-            </template>
+      <el-table-column prop="entranceName" label='入口名称'>
       </el-table-column>
 
-      <el-table-column prop="date" label='关联页面'>
-        <template slot-scope="scope">
-            {{scope.row.html}}
-        </template>
+      <el-table-column prop="serialNumber" label='序列号'>
+      </el-table-column>
+
+      <el-table-column prop="routeUrl" label='路由地址'>
+      </el-table-column>
+      <el-table-column prop="entranceType" label='入口类型'>
       </el-table-column>
 
       <el-table-column prop="date" label='操作' width="150">
         <template slot-scope="scope">
-            <el-link type="primary" @click="edit(scope.row)">编辑</el-link>
+            <el-link type="primary" @click="edit(scope.row)">更改</el-link>
+            <el-link type="primary" @click="deleteRow(scope.row)" class="ml-10">删除</el-link>
         </template>
       </el-table-column>
 
@@ -51,18 +45,11 @@
                 <div class="bbb"><el-input v-model="form.name"  ></el-input></div>
             </div>
             <div class="entrance_input">
-                <div class="aaa"><div>关联页面</div></div>
-                <div class="bbb">
-                    <el-autocomplete
-                        v-model="form.select"
-                        :fetch-suggestions="querySearch"
-                        placeholder="请输入内容"
-                        @select="handleSelect">
-                    </el-autocomplete>
-                </div>
+                <div class="aaa"><div>路由地址</div></div>
+                <div class="bbb"><el-input v-model="form.url"  ></el-input></div>
             </div>
             <div class="entrance_input">
-                <div class="aaa"><div>排序</div></div>
+                <div class="aaa"><div>序列号</div></div>
                 <div class="bbb"><el-input v-model="form.sort"  ></el-input></div>
             </div>
             <div class="entrance_input">
@@ -93,6 +80,9 @@
 </template>
 
 <style lang="scss" scoped>
+.ml-10{
+    margin-left: 10px;
+}
 // 编辑中的上传头像的加号
 ::v-deep .el-upload-list__item{
     width: 100px;
@@ -271,45 +261,34 @@ export default {
             id : '',          
             form : {
                 name : '',     // 入口名称
-                select : '',   // 关联页面
-                sort : '',     // 排序
+                url : '',   // 路由地址
+                sort : '',     // 序列号
                 uploadDataImg : '',  // 上传图片的路径
             }
         };
     },
     methods: {                           
-//                      快接入口的数据    上传图片
-        ...mapActions(['getQuickList','uploadImage']),
+//                      快接入口的数据    上传图片      快速入口增加  删除快速入口   更改快速入口接口
+        ...mapActions(['getQuickList','uploadImage','createQuick','deleteQuick','updateQuick']),
+
+        // 获取所有数据
+        async getData(){
+            let res = await this.getQuickList({});
+            this.tableData = res.data.rows;
+        },
+
         // 编辑的点击事件 
         edit(a){
             this.id = a.id;
             this.dialogFormVisible = true;
         },
+
         // 创建的点击事件
         createData(){
             this.id = '';
             this.dialogFormVisible = true;
         },
 
-
-        querySearch(queryString, cb) {
-            var restaurants = this.restaurants;
-            var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-            // 调用 callback 返回建议列表的数据
-            cb(results);
-        },
-        createFilter(queryString) {
-            return (restaurant) => {
-            return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-            };
-        },
-
-
-
-        // 模态框中关联页面的input框选中的值
-        handleSelect(item) {
-            console.log(item);
-        },
 
         // 编辑模块框的取消
         cancal(){
@@ -318,28 +297,67 @@ export default {
             this.form.uploadDataImg = '';
         },
         // 模态框的确定事件
-        preservation(){
-            this.restaurants = this.loadAll();
+        async preservation(){
              // 如果有id证明是修改，没有是创建 
             if(this.id){
-                console.log('修改');
+                await this.updateQuick({
+                    id : this.id,
+                    iconUrl : this.form.uploadDataImg,
+                    entranceName : this.form.name,
+                    serialNumber : this.form.sort,
+                    routeUrl : this.form.url,
+                    entranceType : 1
+                })
             }else{
-                console.log('创建');
+                await this.createQuick({
+                    iconUrl : this.form.uploadDataImg,
+                    entranceName : this.form.name,
+                    serialNumber : this.form.sort,
+                    routeUrl : this.form.url,
+                    entranceType : 1
+                })
             }
+            await this.getData();
             this.dialogFormVisible = false;
             this.$refs['my-upload'].clearFiles();
             this.form.uploadDataImg = '';
         },
-        
-        // 获取所有数据
-        async getData(){
-            let res = await this.getQuickList({});
-            this.data = res.data.rows;
+
+        // 删除行
+        deleteRow(a){
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(async () => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    await this.deleteQuick({
+                        id : a.id
+                    })
+                    this.getData();
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
+            });
         },
+        
         
         // 上传的http方法
         async upload(a){
-            let res = uploadImg(a.file,1);
+            if(a.file.size>4624){
+                this.$refs['my-upload'].clearFiles();
+                this.$message({
+                    message: '该图片过大，请重试',
+                    type: 'warning'
+                });
+                return;
+            }
+            let res = uploadImg(a.file,7);
             let twores = await this.uploadImage(res);
             this.form.uploadDataImg = twores.data;
         }
@@ -348,7 +366,7 @@ export default {
 
 
     created(){
-        // this.getData();
+        this.getData();
     },
 };
 </script>

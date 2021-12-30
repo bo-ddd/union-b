@@ -332,7 +332,7 @@ export default {
       this.form.speName = data.row.title;
       this.form.remark = data.row.productCategory;
       console.log(this.form);
-      
+      // let speUpdata= await this.();
       this.spelist();
     },
     /**

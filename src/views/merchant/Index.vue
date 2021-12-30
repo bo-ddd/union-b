@@ -31,12 +31,12 @@
         </el-table-column>
         <el-table-column label="资格证书" align="center">
             <template #default="scope">
-                <img :src=" scope.row.qualificationsUrl" alt="" width="50px">
+                <img :src=" scope.row.qualificationsUrl" alt="" width="50px" height="50px">
             </template>
         </el-table-column>
         <el-table-column label="营业执照" align="center">
             <template #default="scope">
-                <img :src=" scope.row.businessUrl" alt="" width="50px">
+                <img :src=" scope.row.businessUrl" alt="" width="50px" height="50px">
             </template>
         </el-table-column>
         <el-table-column label="申请时间" align="center" width="210%">
@@ -55,7 +55,7 @@
             </template>
         </el-table-column>
     </el-table>
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[1, 2, 10, 20]" layout="total, sizes, prev, pager, next, jumper" :total="total" class="paging">
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="pageSize" :page-sizes="[4, 6, 8, 10]" layout="total, sizes, prev, pager, next, jumper" :total="total" class="paging">
     </el-pagination>
 </div>
 </template>
@@ -76,9 +76,9 @@ export default {
             typevalue: '',
             typeArr: ['审核已通过', '审核未通过', '待审核'],
             currentPage: 1,
-            total:null,
-            pageSize:10,
-            pageNum:1
+            total: null,
+            pageSize: 6,
+            pageNum: 1
         }
     },
     methods: {
@@ -93,7 +93,7 @@ export default {
                     let res = await this.settledAdopt({
                         id
                     })
-                    if (res.status) {
+                    if (res.status == 1) {
                         this.$message.success('同意申请');
                         this.getList()
                     }
@@ -102,7 +102,7 @@ export default {
                     let res = await this.settledRefuse({
                         id
                     })
-                    if (res.status) {
+                    if (res.status == 1) {
                         this.$message.error(
                             action === 'cancel' ?
                             '拒绝申请' : '再看一看信息'
@@ -132,19 +132,19 @@ export default {
         },
         async getList() {
             let res = await this.getSettledList({
-                pagination:true,
-                pageNum:this.pageNum,
-                pageSize:this.pageSize
+                pagination: true,
+                pageNum: this.pageNum,
+                pageSize: this.pageSize
             });
-            if (res.status) {
+            if (res.status == 1) {
                 this.tableData = res.data.rows
+                this.total = res.data.count
             }
             console.log(res)
-            this.total = res.data.count
         },
         async getIdentList() {
             let res = await this.getIdentityList()
-            if (res.status) {
+            if (res.status == 1) {
                 this.IdentList = res.data.rows
             }
         },
@@ -161,7 +161,7 @@ export default {
                 this.tableData = res.data.rows
             }
         },
-        
+
     },
     created() {
         this.getList()
@@ -172,6 +172,9 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+
     & .mar-right_20 {
         margin-right: 20px;
     }
@@ -196,9 +199,9 @@ export default {
         }
     }
 
-    & .paging{
+    & .paging {
         text-align: center;
-        margin: 20px 0px ;
+        margin: 20px 0px;
     }
 }
 </style>

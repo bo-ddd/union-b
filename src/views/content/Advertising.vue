@@ -204,20 +204,23 @@
           </div>
         </div>
         </div>
-            <el-input
+        <div>
+        <el-input
           placeholder="请输入广告ID 或广告类型"
           prefix-icon="el-icon-search"
           v-model="id"
           class="ipt"
-         
         >
         </el-input>
+        <el-button type="primary" @click="queryAdver">查询</el-button>
+
+        </div>
       </div>
     </div>
     <div class="main">
       <el-table
         ref="multipleTable"
-        :data="tableData"
+        :data="rows"
         tooltip-effect="dark"
         style="width: 100%"
         @selection-change="handleSelectionChange"
@@ -252,7 +255,7 @@
             <el-button   @click="handleEdit(scope.row)" type="primary"
               >修改</el-button
             >
-            <el-button  @click="deleteRow(scope.$index, tableData)" type="primary"
+            <el-button  @click="deleteRow(scope.row)" type="primary"
               >删除</el-button
             >
           </template>
@@ -297,30 +300,6 @@ export default {
       count:"",
       pageCount:"",
       rows:[],
-      tableData: [
-        {
-          date: "000001",
-          title: "这是一个图片连接",
-          imgUrl: "上海市普陀区金沙江路 1518 弄",
-          size:"800*400",
-          type:"图片"
-        },
-        {
-          date: "000002",
-          title: "这是一个图片连接",
-          imgUrl: "上海市普陀区金沙江路 1518 弄",
-          size:"800*400",
-          type:"图片"
-        },
-        {
-          date: "000003",
-          title: "这是一个图片连接",
-          imgUrl: "上海市普陀区金沙江路 1518 弄",
-          size:"800*400",
-          type:"图片"
-        },
-       
-      ],
       multipleSelection: [],
       options: [
         {
@@ -371,11 +350,11 @@ export default {
     this.getAds()
   },
   methods: {
-    ...mapActions(["getAdvertList","uploadImage","createAdvert","updateAdvert","findIdAdvert"]),
+    ...mapActions(["getAdvertList","uploadImage","createAdvert","updateAdvert","findIdAdvert","deleteAdvert"]),
    async getAds(){
     let res=await this.getAdvertList();
-    // this.rows=res.data.rows;
-    console.log(res);
+    this.rows=res.data.rows;
+
     },
     //新增广告管理信息
   async release(){
@@ -389,13 +368,15 @@ export default {
     //修改广告管理信息
     handleEdit(a) {
       this.dialogFormVisiblefix = true;
-      this.id = a.date;
+      this.title=a.title;
+      this.imgUrl=a.imgUrl;
+      this.id = a.id;
     },
    async confirmRevise(){
-       let modifyAdvert = await this.updateAdvert({
-          id:this.id,
-          title:this.title,
-          imgUrl:this.imgUrl,
+      let modifyAdvert = await this.updateAdvert({
+        id:this.id,
+        title:this.title,
+        imgUrl:this.imgUrl,
     });
     console.log(modifyAdvert);
     this.dialogFormVisiblefix = false;
@@ -406,11 +387,17 @@ export default {
     let queryAdvertion=await this.findIdAdvert({
       id:this.id
     });
-    console.log(queryAdvertion);
+    this.rows = [queryAdvertion.data]
+    console.log(this.rows);
     },
     //删除广告管理信息
-    deleteRow(index, rows) {
-      rows.splice(index, 1);
+   async deleteRow(rows) {
+     console.log(rows);
+   let updateImg=await this.deleteAdvert({
+        id:rows.id
+      })
+      console.log(updateImg);
+      this.getAds();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -429,11 +416,9 @@ export default {
       this.dialogVisible = true;
     },
     async uploadImg(file){
-      console.log(file);
       let name =file.file.name.substring(0,file.file.name.indexOf('.'));
       console.log(name);
       let formdata=uploadMap(file.file,1);
-      console.log(formdata);
     let res=  await this.uploadImage(formdata);
     this.imgUrl=res.data;
      
@@ -447,7 +432,6 @@ export default {
     openFormDialog() {
       this.dialogFormVisible = true;
       this.initEditor();
-
     },
     initEditor() {
       this.cont++;

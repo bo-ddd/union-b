@@ -568,6 +568,95 @@ export default {
     updateSuperProduct(params) {
         return axios.post('/superProduct/update', params, postConfig)
     },
+    /**
+     * @description banner列表 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getBannerList(params) {
+        return axios.post('/banner/list', params, postConfig)
+    },
+    /**
+     * @description 更改banner 
+     * @params {
+     * id:[number]       'banner的id'
+     * imgUrl:[string]   '图片路径'，
+     * imgDescription:[string]  '图片描述',
+     * route:[string]     '路由'
+     * }
+     */
+    updateBanner(params) {
+        return axios.post('/banner/update', params, postConfig)
+    },
+    /**
+     * @description 增加banner  
+     * @params {
+     * imgUrl:[string]   '图片路径'，
+     * imgDescription:[string]  '图片描述',
+     * route:[string]     '路由'
+     * }
+     */
+    createBanner(params) {
+        return axios.post('/banner/create', params, postConfig)
+    },
+    /**
+     * @description 删除banner 
+     * @params {
+     * id:[number] 必填  'banner的id'
+     * }
+     */
+    deleteBanner(params) {
+        return axios.post('/banner/delete', params, postConfig)
+    },
+    /**
+     * @description 首页推荐列表 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getHomeList(params) {
+        return axios.post('/homeRecommend/list', params, postConfig)
+    },
+    /**
+     * @description 新增首页推荐  
+     * @params {
+     * imgUrl:[string] 必填 图片路径,
+     * imgName:[string]必填 图片名称,
+     * imgDecription:[string] 必填 图片描述,
+     * storeId:[number] 摆摊  店铺id
+     * } 
+     */
+    createHome(params) {
+        return axios.post('/homeRecommend/create', params, postConfig)
+    },
+    /**
+     * @description 删除首页推荐 
+     * @params {
+     * id : [number]  必填  '首页推荐的id'
+     * } 
+     */
+    deleteHome(params) {
+        return axios.post('/homeRecommend/delete', params, postConfig)
+    },
+    /**
+     * @description 更改首页推荐
+     * @params {
+     * id : [number]  必填  '首页推荐的id',
+     * imgUrl:[string] 必填 图片路径,
+     * imgName:[string]必填 图片名称,
+     * imgDecription:[string] 必填 图片描述,
+     * storeId:[number] 摆摊  店铺id
+     * } 
+     */
+    updateHome(params) {
+        return axios.post('/homeRecommend/update', params, postConfig)
+    },
+
 
 
     //订单管理
@@ -692,5 +781,40 @@ export default {
     getSettledList(params) {
         return axios.post('/settled/list', params, postConfig)
     },
+
+    //店铺管理
+    /**
+     * @description 店铺列表接口 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * title   : [string],     //非必填      根据店铺名称查询
+     * } 
+     */
+    getStoreList(params) {
+        return axios.post('/store/list', params, postConfig)
+    },
+    /**
+     * @description 我的店铺列表 
+     * @params {
+     * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
+     * pageNum   [number]    每页多少条数据  默认是10条
+     * pageSize  [number]    这是第几页      默认是第1页
+     * } 
+     */
+    getMineStoreList(params) {
+        return axios.post('/store/mineStore', params, postConfig)
+    },
+    /**
+     * @description 店铺详情接口 /store/detail
+     * @params {
+     * storeId      : [number],     //必填      店铺的id
+     * } 
+     */
+    getStoreDetail(params) {
+        return axios.post('/store/detail', params, postConfig)
+    },
+
 
 }

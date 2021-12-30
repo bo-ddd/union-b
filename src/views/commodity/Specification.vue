@@ -2,21 +2,20 @@
   <div class="wrap">
     <div class="wrap_interior">
       <div class="tit">商品规格</div>
+      <!-- header -->
       <div class="addspebut">
+        <!-- 俩个按钮 添加按钮和批量删除按钮 -->
         <div class="footer_left">
           <el-button
             type="primary"
-            @click="addspecification, (dialogaddFormVisible = true)"
+            @click="submit, (dialogaddFormVisible = true)"
             >添加规格</el-button
           >
-          <!-- <el-button type="primary">保存排序</el-button> -->
-          <el-button
-            type="primary"
-            class="batch_del_btn"
-            @click="multipleRemove()"
+          <el-button @click="multipleRemove()" type="primary"
             >批量删除</el-button
           >
         </div>
+        <!-- 模糊查询 -->
         <div class="">
           <el-input
             placeholder="请输入内容"
@@ -40,24 +39,27 @@
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
+        <!-- 添加按钮模态框 -->
         <el-dialog title="添加规格" :visible.sync="dialogaddFormVisible">
-          <el-form :model="form1">
+          <el-form :model="ruleForm">
             <el-form-item label="规格名称" :label-width="formLabelWidth">
-              <el-input v-model="form1.title" autocomplete="off"></el-input>
+              <el-input v-model="ruleForm.title" autocomplete="off"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="备注" :label-width="formLabelWidth">
-              <el-input v-model="form1.name" autocomplete="off"></el-input>
-            </el-form-item> -->
-            <el-form-item label="类目名称" :label-width="formLabelWidth">
-              <el-input v-model="form1.cid" autocomplete="off"></el-input>
-              <!-- <el-select placeholder="请选择" class="sel"></el-select> -->
+            <el-form-item label="商品类目" :label-width="formLabelWidth">
+              <el-input v-model="ruleForm.cid" autocomplete="off"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="类目名称" class="classifya">
+
+            <!-- <el-form-item
+              label="商品类目"
+              prop="pid"
+              :label-width="formLabelWidth"
+            >
               <template>
                 <div class="block">
                   <span class="demonstration"></span>
                   <el-cascader
-                    ref="cascader"
+                    @click="submit"
+                    :ref="cascader"
                     :options="options"
                     @change="getId()"
                     :props="{
@@ -76,12 +78,13 @@
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
             <el-button
               type="primary"
-              @click="addspecification(), (dialogaddFormVisible = false)"
+              @click="submit(), (dialogaddFormVisible = false)"
               >确 定</el-button
             >
           </div>
         </el-dialog>
       </div>
+      <!-- 表格 center -->
       <el-table
         ref="multipleTable"
         tooltip-effect="dark"
@@ -90,6 +93,7 @@
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
       >
+        <!-- 多选框 -->
         <el-table-column
           :reserve-selection="true"
           type="selection"
@@ -98,6 +102,7 @@
           @click="checkedclick()"
         >
         </el-table-column>
+        <!-- 规格名称 -->
         <el-table-column label="id" align="center" prop="id"> </el-table-column>
         <el-table-column
           label="规格名称"
@@ -106,6 +111,7 @@
           show-overflow-tooltip
         >
         </el-table-column>
+        <!-- 商品类目 -->
         <el-table-column
           label="商品类目"
           prop="productCategory"
@@ -113,20 +119,17 @@
           align="center"
         >
         </el-table-column>
-        <!-- <el-table-column label="排序" show-overflow-tooltip align="center">
-          <template slot-scope="scoped">
-            <el-link type="primary" @click="ascendingOrder(scoped.row)">升序</el-link>
-            <el-link class="ml-10" type="primary">降序</el-link>
-          </template>
-        </el-table-column> -->
+        <!--操作   俩个按钮  修改按钮和删除按钮 -->
         <el-table-column label="操作" show-overflow-tooltip align="center">
+          <!-- 修改按钮 -->
           <template slot-scope="scope">
             <el-button
               type="primary"
               i
               class="el-icon-edit cell1"
-              @click="editListData, (dialogFormVisible = true)"
+              @click="getCommodityDat(scope)"
             ></el-button>
+            <!-- 修改按钮的模态框 -->
             <el-dialog title="修改此行数据" :visible.sync="dialogFormVisible">
               <el-form :model="form">
                 <el-form-item label="id" :label-width="formLabelWidth">
@@ -144,12 +147,6 @@
                 <el-form-item label="商品类目" :label-width="formLabelWidth">
                   <el-input v-model="form.remark" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="排列顺序" :label-width="formLabelWidth">
-                  <el-input
-                    v-model="form.sortOrder"
-                    autocomplete="off"
-                  ></el-input>
-                </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -158,16 +155,17 @@
                 >
               </div>
             </el-dialog>
+            <!-- 删除按钮 以及他的模态框-->
             <el-button
+              type="text"
+              @click="open(), deleteData(scope.row)"
               i
               class="el-icon-delete cell2"
-              @click="deleteData(scope.row)"
-              type="text"
-            >
-            </el-button>
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页 footer -->
       <div class="footer">
         <div class="footer_right">
           <el-pagination
@@ -189,6 +187,7 @@
 
 <script>
 import { mapActions } from "vuex";
+// import Task from "@/assets/js/Task";
 export default {
   data() {
     return {
@@ -203,16 +202,8 @@ export default {
       currentPage4: 1,
       pageSize1: 50,
       pageNum1: "",
-      options: [
-        {
-          value: "选项1",
-          label: "规格名称",
-        },
-        {
-          value: "选项2",
-          label: "商品类目",
-        },
-      ],
+      tasks: [],
+      options: [],
       pagination: false,
       id: "",
       title: "",
@@ -224,18 +215,21 @@ export default {
         serialId: "",
         speName: "",
         remark: "",
-        sortOrder: "",
       },
       form1: {
         title: "",
         cid: "",
         name: "",
       },
+      ruleForm: {
+        title: "",
+        cid: "",
+      },
+      dialogVisible: false,
       dialogFormVisible: false,
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
       multipleSelection: [],
-
       currentPage: 1,
       table: [],
       pageSize: 10, //每页条数
@@ -268,6 +262,16 @@ export default {
       "deleteSpecification",
       "getCategoryList",
     ]),
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+          console.log(_);
+        })
+        .catch((_) => {
+          console.log(_);
+        });
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -276,49 +280,6 @@ export default {
       } else {
         this.$refs.multipleTable.clearSelection();
       }
-    },
-    // handleSelectionChange(val) {
-    //   this.multipleSelection = val;
-    // },
-    //添加规格
-    async addspecification() {
-      let res = await this.createSpecification({
-        title: this.form1.title,
-        cid: Number(this.form1.cid),
-      });
-      console.log(res);
-      this.spelist();
-    },
-    //批量删除
-    multipleRemove() {
-      // console.log(this.renderDynamic);
-      for (let i = 0; i < this.renderDynamic.length; i++) {
-        if (!this.cacheArr.includes(this.renderDynamic[i])) {
-          this.cacheArr.push(this.renderDynamic[i]);
-        } else {
-          let temp = this.cacheArr.indexOf(this.renderDynamic[i]);
-          this.cacheArr.splice(temp, 1);
-        }
-      }
-      this.cacheArr.forEach((item) => {
-        this.table.splice(this.table.indexOf(item), 1);
-      });
-    },
-    checkBoxData: function (selection, row) {
-      this.renderDynamic.push(row);
-    },
-    handleSelectionChange(val) {
-      if (!val.length) {
-        this.renderDynamic = [];
-      } else {
-        val.forEach((item) => {
-          this.renderDynamic.push(item);
-        });
-      }
-    },
-    //单个修改
-    editListData() {
-      console.log("单个修改成功");
     },
     /**
      * @description 删除当前行
@@ -332,52 +293,72 @@ export default {
         }
       }
       //重新渲染页面
-      this.spelist(this.renderDynamic);
-      let res = await this.deleteSpecification({
-        id: row.id,
+      this.spelist();
+      let del = await this.deleteSpecification({
+        id: [row.id],
       });
-      console.log(res);
+      console.log(del);
     },
 
-    /**
-     * 升序
-     */
-    // async ascendingOrder(row) {
-    //   console.log(row);
-    //   let res = {};
-    //   var formatData = (row) => {
-    //     this.renderDynamic.reverse()
-    //     for (let i = 0; i < this.renderDynamic.length; i++) {
-    //       let item = this.renderDynamic[i];
-    //       if (item.id == row.id) {
-    //         // console.log(item);
-    //         res.i = i;
-    //         res.currentData = item; //当前的数据；
-    //         res.preData = this.renderDynamic[i - 1]; //上一个数据；
-    //         break;
-    //       }
-    //     }
-    //     // console.log(formatData);
-    //     return res;
-    //   };
-    //   let aaa= formatData(row);
-    //   console.log(aaa);
-    // },
+    //批量删除
+    async multipleRemove() {
+      let arrx = [];
+      console.log('aaaaaa');
+      console.log(this.arr4);
+      for (let i = 0; i < this.arr4.length; i++) {
+        if (!this.cacheArr.includes(this.arr4[i])) {
+          this.cacheArr.push(this.arr4[i]);
+        } else {
+          let temp = this.cacheArr.indexOf(this.arr4[i]);
+          this.cacheArr.splice(temp, 1);
+        }
+      }
+
+      this.cacheArr.forEach((item) => {
+        this.renderDynamic.splice(this.renderDynamic.indexOf(item), 1);
+        this.table.splice(this.table.indexOf(item), 1);
+        arrx.push(item.id);
+      });
+      // this.getList(this.query());
+      let res = await this.deleteSpecification({
+        id: arrx,
+      });
+      console.log(arrx);
+      console.log(res);
+    },
+    checkBoxData: function (selection, row) {
+      this.arr4.push(row);
+      // console.log(this.arr4);
+    },
+    handleSelectionChange(val) {
+      if (!val.length) {
+        this.arr4 = [];
+      } else {
+        val.forEach((item) => {
+          this.arr4.push(item);
+          this.$refs.multipleTable.toggleRowSelection(item, true);
+        });
+      }
+    },
     getRowKeys(row) {
       //记录每行的key值
       return row.id;
+    },
+    //单个修改
+    getCommodityDat(data) {
+      this.dialogFormVisible = true;
+      this.form.serialId = data.row.id;
+      this.form.speName = data.row.title;
+      this.form.remark = data.row.productCategory;
+      console.log(this.form);
+      this.spelist();
     },
     /**
      * 获取所有类目规格
      * */
     async spelist() {
-      let res = await this.getSpecificationList({
-        pagination: false,
-        pageNum: 1,
-        pageSize: this.pageSize1,
-      });
+      let res = await this.getSpecificationList();
       console.log(res);
-      // this.pageSize1 = res.data.count.slice();
       this.renderDynamic = res.data.rows.slice();
       this.handleSizeChange(10);
     },
@@ -399,19 +380,65 @@ export default {
       }
       this.table = arr;
     },
+    getId() {
+      let res = this.$refs["cascader"].getCheckedNodes();
+      this.ruleForm.pid = res[0].data.id;
+    },
+    /**
+     * 添加规格
+     */
+    async submit() {
+      let res = await this.createSpecification({
+        title: this.ruleForm.title,
+        cid: Number(this.ruleForm.cid == "" ? null : this.ruleForm.cid),
+      });
+      console.log(res);
+      this.spelist();
+    },
+    async getClassifyInfo() {
+      let res = await this.getCategoryList({});
+      let data = res.data.rows.slice();
+      this.arr = data;
+      let target = this.format(data);
+      this.options = target;
+      console.log("aa");
+      console.log(res);
+    },
+    format(target) {
+      let res = target.slice();
+      res.forEach((item) => {
+        let p = res.find((type) => item.pid == type.id);
+        if (item.pid && p) {
+          p.child = p.child || [];
+          p.child.push(item);
+        }
+        item.category = p ? p.category + "=>" + item.title : item.title;
+      });
+      return res.filter((type) => type.pid === null);
+    },
+    open() {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
   },
   async created() {
     this.spelist();
-    /**
-     * 商品类目接口方法
-     */
-    let resource = await this.getCategoryList({
-      pagination: false,
-      pageNum: 1,
-      pageSize: 10,
-    });
-    console.log("aaa");
-    console.log(resource);
+    this.getClassifyInfo();
   },
 };
 </script>

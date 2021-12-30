@@ -124,6 +124,26 @@ export const routes = [{
                     import ( /* webpackChunkName: "mine" */ '../views/store/Mine')
             },
             {
+                path: '/store/renovation',
+                name: 'Renovation',
+                meta: {
+                    title: '装修首页',
+                    flag: "false"
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "renovation" */ '../views/store/Renovation')
+            },
+            {
+                path: '/store/mould',
+                name: 'Mould',
+                meta: {
+                    title: '模板市场',
+                    flag: "false"
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "mould" */ '../views/store/Mould')
+            },
+            {
                 path: '/store/map',
                 name: 'Map',
                 meta: {
@@ -537,6 +557,15 @@ export const routes = [{
                 },
                 component: () =>
                     import ( /* webpackChunkName: "RouteManage" */ '../views/route/RouteManage')
+            },
+            {
+                path: '/route/add',
+                name: 'AddRoute',
+                meta: {
+                    title: '新增路由',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "AddRoute" */ '../views/route/AddRoute')
             },
             {
                 path: '/route/identity',

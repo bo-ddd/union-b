@@ -175,6 +175,7 @@ export default {
 .wrap {
     height: calc(100vh - 100px);
     overflow-y: auto;
+    background-color: #fff;
 
     & .mar-right_20 {
         margin-right: 20px;

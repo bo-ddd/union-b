@@ -44,7 +44,7 @@ export default {
         return {
             IdentList: [],
             checkboxGroup: ['订单详情', '我的店铺', '店铺详情', '商品分类', '单位管理', '特卖管理', '标签管理', '口令分享'],
-            checkboxGroup2: ['订单详情','标签管理', '口令分享'],
+            checkboxGroup2: ['订单详情', '标签管理', '口令分享'],
             ident: '',
             activeName: 'first'
         }
@@ -64,8 +64,8 @@ export default {
             }
         },
         handleClick(tab, event) {
-        console.log(tab, event);
-      }
+            console.log(tab, event);
+        }
     },
     created() {
         this.getIdentList()

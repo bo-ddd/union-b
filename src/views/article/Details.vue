@@ -7,7 +7,7 @@
          
           <div class="nickName">
             <div class="top">
-              <span class="name">神仙儿</span>
+              <span class="name">{{target.target.authorName}}</span>
               <button type="primary" class="button" @click="follow">{{tit}}</button>
             </div>
             <div class="bottom">

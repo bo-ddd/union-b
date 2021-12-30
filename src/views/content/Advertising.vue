@@ -230,11 +230,11 @@
           <template slot-scope="scope">{{ scope.row.date }}</template>
         </el-table-column>
         <el-table-column prop="title" label="广告物料名称"> </el-table-column>
-        <el-table-column
-          prop="imgUrl"
-          label="广告物料预览"
-          show-overflow-tooltip
-        >
+        <el-table-column label="广告物料预览" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <img :src="scope.row.imgUrl" alt="" class="imgSize">
+            <!-- {{scope.row.imgUrl}} -->
+          </template>
         </el-table-column>
         <el-table-column
           prop="size"
@@ -373,9 +373,6 @@ export default {
       this.id = a.id;
     },
    async confirmRevise(){
-      console.log(this.id);
-      console.log(this.title);
-      console.log(this.imgUrl);
       let modifyAdvert = await this.updateAdvert({
         id:this.id,
         title:this.title,
@@ -559,5 +556,8 @@ export default {
   }
 }
 }
-
+.imgSize{
+  height: 50px;
+  width: 100px;
+}
 </style>

@@ -5,7 +5,7 @@
         <div class="mask"></div>
         <iframe
           class="left"
-          src="http://192.168.1.24:8081"
+          src="http://192.168.1.24:8081/home/first"
           frameborder="0"
         ></iframe>
       </div>

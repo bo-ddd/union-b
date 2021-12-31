@@ -19,28 +19,28 @@
         <div class="">
           <el-input
             placeholder="请输入商品类目"
-            v-model="input3"
+            v-model="salesType"
             class="input-with-select"
           >
             <el-select
-              v-model="salesTypeValue"
+              v-model="title"
               filterable
               placeholder="请选择"
               slot="prepend"
               class="sel"
             >
               <el-option
-                v-for="item in fuzzyQuery"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="(item, index) in fuzzyQuery"
+                :key="index"
+                :label="item.title"
+                :value="item.title"
               >
               </el-option>
             </el-select>
             <el-button
               slot="append"
               icon="el-icon-search"
-              @click="query(flag1)"
+              @click="fuzzyselect"
             ></el-button>
           </el-input>
         </div>
@@ -78,7 +78,7 @@
                 </div>
               </template>
             </el-form-item>-->
-          </el-form> 
+          </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
             <el-button
@@ -133,7 +133,7 @@
               type="primary"
               i
               class="el-icon-edit cell1"
-              @click="getCommodityDat(scope)"
+              @click="show(scope.row)"
             ></el-button>
             <!-- 修改按钮的模态框 -->
             <el-dialog title="修改此行数据" :visible.sync="dialogFormVisible">
@@ -150,13 +150,12 @@
                     autocomplete="off"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="商品类目" :label-width="formLabelWidth">
-                  <el-input v-model="form.remark" autocomplete="off"></el-input>
-                </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false"
+                <el-button
+                  type="primary"
+                  @click="getCommodityDat(scope), (dialogFormVisible = false)"
                   >确 定</el-button
                 >
               </div>
@@ -210,7 +209,7 @@ export default {
       tasks: [],
       options: [],
       pagination: false,
-      id: "",
+      id: null,
       title: "",
       productCategory: "",
       count: "", //所有条数
@@ -225,6 +224,7 @@ export default {
         title: "",
         cid: "",
       },
+      fuzzyQuery: [],
       dialogVisible: false,
       dialogFormVisible: false,
       dialogaddFormVisible: false,
@@ -257,12 +257,16 @@ export default {
      * createSpecification 添加规格接口
      * deleteSpecification 删除规格接口
      * getCategoryList商品类目接口
+     * updateSpecification规格管理更改
+     * specificationFuzzySearch类目规格模糊查询接口
      */
     ...mapActions([
       "getSpecificationList",
       "createSpecification",
       "deleteSpecification",
       "getCategoryList",
+      "updateSpecification",
+      "specificationFuzzySearch",
     ]),
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -325,23 +329,34 @@ export default {
     getRowKeys(row) {
       return row.id;
     },
-    //单个修改
-    getCommodityDat(data) {
+    show(val) {
+      console.log(val);
+      this.form.serialId = val.id;
+      this.form.speName = val.title;
       this.dialogFormVisible = true;
-      this.form.serialId = data.row.id;
-      this.form.speName = data.row.title;
-      this.form.remark = data.row.productCategory;
-      console.log(this.form);
-      // let speUpdata= await this.();
-      this.spelist();
+    },
+    //单个修改
+    async getCommodityDat() {
+      this.dialogFormVisible = true;
+      let speUpdata = await this.updateSpecification({
+        id: Number(this.form.serialId),
+        title: this.form.speName,
+      });
+      console.log("cccc");
+      console.log(speUpdata);
+      if (speUpdata.status == 1) {
+        this.spelist();
+      }
     },
     /**
      * 获取所有类目规格
      * */
     async spelist() {
       let res = await this.getSpecificationList();
+      console.log("asdfdasdf");
       console.log(res);
       this.renderDynamic = res.data.rows.slice();
+      this.fuzzyQuery = this.renderDynamic;
       this.handleSizeChange(10);
     },
     //分页
@@ -414,26 +429,38 @@ export default {
           });
         });
     },
+    /**
+     * 模糊查询
+     */
     query(flag) {
-      let fuzzyQuery = [];
+
       if (!this.salesTypeValue) {
-        fuzzyQuery = this.renderDynamic;
+        this.fuzzyQuery = this.renderDynamic;
+        console.log(this.fuzzyQuery);
         this.flag = true;
       } else {
-        fuzzyQuery = this.renderDynamic.filter((item) => {
+        this.fuzzyQuery = this.renderDynamic.filter((item) => {
           return item.categoryTitle == this.salesTypeValue;
         });
       }
       if (flag) {
         this.flag1 = false;
       } else {
-        return fuzzyQuery;
+        return this.fuzzyQuery;
       }
+    },
+    async fuzzyselect() {
+      let queryhhh = await this.specificationFuzzySearch({
+        title: this.form.speName,
+      });
+      console.log("zzzzz");
+      console.log(queryhhh);
     },
   },
   async created() {
     this.spelist();
     this.getShopList();
+    this.query(this.flag1);
   },
 };
 </script>

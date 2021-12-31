@@ -627,7 +627,9 @@ export default {
     /**
      * @description 更改推荐商品
      * @params {
-     * id:[number]   '被更改的id',
+     * id:[number] '商品id',
+     * total:[number] '商品的总数',
+     * title:[string] '商品的名称'
      * }
      */
     updateSuperProduct(params) {

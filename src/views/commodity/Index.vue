@@ -246,7 +246,7 @@ export default {
           item.status = "已上架";
         }
         if (item.status && item.categoryTitle) {
-          this.commodityStatus.push({
+         this.commodityStatus.push({
             label: item.status,
             value: item.status,
           });
@@ -257,9 +257,12 @@ export default {
         }
         item.createdAt = this.time(item.createdAt);
       });
+
+      
+
+      console.log(this.commodityStatus);
       this.commodityStatus = [...new Set(this.commodityStatus)];
 
-      // console.log(this.tableData);
       this.pageList();
     },
     time(time) {

@@ -15,7 +15,11 @@
             </div>
           </div>
         </div>
+        
         <div class="details">
+          <div>
+            <img :src="target.target.articleImg" alt="">
+          </div>
           <span>{{target.target.articleContent}}</span>
         </div>
       </div>

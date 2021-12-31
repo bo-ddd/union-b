@@ -10,6 +10,8 @@
         <el-table-column prop="component" label="component" align="center">
         </el-table-column>
     </el-table>
+   <div>routeList = {{routeList}}</div> 
+   <div>metaList = {{metaList}}</div> 
 </div>
 </template>
 
@@ -30,7 +32,7 @@ export default {
         async getRouterList() {
             let res = await this.getRouteList()
             this.routeList = res.data.route
-            this.metaList = res.data.meta[0]
+            this.metaList = res.data.meta
             console.log(this.routeList)
             console.log(this.metaList)
         },

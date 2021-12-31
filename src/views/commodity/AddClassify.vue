@@ -169,6 +169,7 @@ export default {
       value: "",
       options: [],
       arr: [],
+      child:[]
     };
   },
   methods: {
@@ -197,7 +198,23 @@ export default {
       let data = res.data.rows.slice();
       this.arr = data;
       let target = this.format(data);
+       for(var i = 0; i<target.length; i++){
+          if(target[i].child.length){
+            for(var j = 0 ; j <target[i].child.length; j++){
+              if(this.child.indexOf(target[i].child[j])===-1){
+                this.child.push(target[i].child[j])
+              }
+              if(!target[i].child[j].child.length){
+                target[i].child[j].child=''
+              }
+            }
+            target[i].child = this.child
+          }else{
+            target[i].child = ''
+          }
+        }
       this.options = target;
+
     },
     format(target) {
       let res = target.slice();

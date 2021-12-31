@@ -1,11 +1,10 @@
 <template>
   <div class="wrap">
       <el-tabs type="border-card" class="tabsbox">
-        <el-tab-pane label="项目管理">
+        <el-tab-pane label="店铺管理">
           <div class="projectmain"> 
             <div class="main-nav">
               <div class="main-nav-title">店铺信息</div>
-              <div class="main-nav-btn"><i class="el-icon-edit"></i></div>
             </div>
             <div class="infobox">
               <div class="info-item">
@@ -13,17 +12,14 @@
                   <el-descriptions-item label="店主头像">
                     <img class="shophead" :src="avatorImg" alt="">
                   </el-descriptions-item>
-                  <el-descriptions-item label="店主ID">{{storeInfo.storeId}}</el-descriptions-item>
                   <el-descriptions-item label="店主名称">{{storeInfo.storeTitle}}</el-descriptions-item>
                   <el-descriptions-item label="店主电话">{{storeInfo.userPhone}}</el-descriptions-item>
-                  <el-descriptions-item label="店铺ID">{{storeInfo.userId}}</el-descriptions-item>
                   <el-descriptions-item label="店铺名称">{{storeInfo.avatorName}}</el-descriptions-item>
-                  <el-descriptions-item label="邮箱ID">{{storeInfo.emailId}}</el-descriptions-item>
                   <el-descriptions-item label="邮箱号">{{storeInfo.email}}</el-descriptions-item>
-                  <el-descriptions-item label="身份ID">{{storeInfo.identityId}}</el-descriptions-item>
                   <el-descriptions-item label="身份">{{storeInfo.identityName}}</el-descriptions-item>
                   <el-descriptions-item label="创建时间">{{gettime(storeInfo.storeCreatedAt)}}</el-descriptions-item>
-                  <el-descriptions-item label="联系地址">江苏省苏州市吴中区吴中大道</el-descriptions-item>
+                  <el-descriptions-item label="经度">{{longitude}}</el-descriptions-item>
+                  <el-descriptions-item label="纬度">{{latitude}}</el-descriptions-item>
                 </el-descriptions>
               </div>
               <div class="info-item-right">
@@ -36,8 +32,7 @@
           </div>
           <div class="projectbottom">
             <div class="main-nav">
-              <div class="main-nav-title">店铺信息</div>
-              <div class="main-nav-btn"><i class="el-icon-edit"></i></div>
+              <div class="main-nav-title">商品信息</div>
             </div>
             <!-- <div class="projectleft">
               <div class="left-nav">
@@ -79,42 +74,48 @@
                     :data="tableData"
                     style="width: 100%" max-height="240">
                     <el-table-column
-                      prop="date"
+                      prop="productId"
                       label="商品Id"
                       width="80">
                     </el-table-column>
                     <el-table-column
-                      prop="name"
+                      prop="productTitle"
                       label="商品名称"
                       width="100">
                     </el-table-column>
                     <el-table-column
-                      prop="address"
-                      label="商品编号">
+                      prop="proNo"
+                      label="商品编号"
+                      width="180">
                     </el-table-column>
                     <el-table-column
-                      prop="address"
-                      label="商品的关键字">
+                      prop="productKeywords"
+                      label="商品的关键字"
+                      width="120">
                     </el-table-column>
                     <el-table-column
-                      prop="address"
-                      label="商品平台价">
+                      prop="platformPrice"
+                      label="商品平台价"
+                      width="110">
                     </el-table-column>
                     <el-table-column
-                      prop="address"
-                      label="商品介绍">
+                      prop="productDesc"
+                      label="商品介绍"
+                      width="230">
                     </el-table-column>
                     <el-table-column
-                      prop="address"
-                      label="商品售卖价">
+                      prop="realPrice"
+                      label="商品售卖价"
+                      width="110">
                     </el-table-column>
                     <el-table-column
-                      prop="address"
+                      prop="product_pv"
                       label="商品点击量">
                     </el-table-column>
                     <el-table-column
-                      prop="address"
+                      prop="productStatus"
                       label="商品状态">
+                      <template>{{ productStatus }}</template>
                     </el-table-column>
                   </el-table>
                 </template>
@@ -145,32 +146,8 @@ import { mapActions } from "vuex";
           email:"",
           identityId:"",
           identityName:"",
-          tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },{
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          },
-           {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }]
+          tableData: [],
+          productStatus:""
         }
       },
       async created(){
@@ -178,7 +155,16 @@ import { mapActions } from "vuex";
           storeId:1
         });
         this.storeInfo = res.data[0];
+        this.tableData=res.data[0].detail;
         console.log(this.storeInfo);
+        this.productStatus=this.tableData[0].productStatus
+        if(this.productStatus==0){
+          this.productStatus="已删除"
+        }else if(this.productStatus==1){
+          this.productStatus="已上架"
+        }else{
+          this.productStatus="已下架"
+        }
         this.avatorImg = require('@/assets/images/avator/' + this.storeInfo.avatorImg + '.png')
 
       },
@@ -242,8 +228,8 @@ import { mapActions } from "vuex";
               display: flex;
               align-items: center;
             & .shophead{
-              width: 50px;
-              height: 50px;
+              width: 70px;
+              height: 70px;
               background-color: #ececec;
             }
           }
@@ -281,6 +267,8 @@ import { mapActions } from "vuex";
     & .projectbottom{
       margin-top: 15px;
       width: 100%;
+      border: 1px solid #dddddd;  
+        height: 300px;
       // display: flex;
       // justify-content: space-between;
       & .projectleft{

@@ -5,7 +5,7 @@
         <div class="mask"></div>
         <iframe
           class="left"
-          src="http://192.168.1.24:8081"
+          src="http://192.168.1.24:8081/home/first"
           frameborder="0"
         ></iframe>
       </div>
@@ -76,25 +76,54 @@
           <div class="main-r-b-b">
             <div class="bootm">
               <div>悬浮窗</div>
-              <span>开启</span>
+              <el-switch
+                @change="suspension()"
+                style="display: block"
+                v-model="suspen"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+             
+              >
+              </el-switch>
             </div>
             <div class="bootm">
               <div>公共广告</div>
-              <span>开启</span>
+              <el-switch
+                style="display: block"
+                v-model="advertisement"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+              
+              >
+              </el-switch>
             </div>
             <div class="bootm">
               <div>店铺导航</div>
-              <span>开启</span>
+              <el-switch
+                style="display: block"
+                v-model="navigation"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                
+              >
+              </el-switch>
             </div>
             <div class="bootm">
               <div>全店风格</div>
-              <span>开启</span>
+              <el-switch
+                style="display: block"
+                v-model="style"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+           
+              >
+              </el-switch>
             </div>
             <div class="bootm">
               <div>装修首页</div>
             </div>
-            <div class="bootm">
-              <div>个人中心</div>
+            <div class="bootm" @click="store">
+              <div>店铺中心</div>
             </div>
             <div class="bootm">
               <div>模板市场</div>
@@ -134,14 +163,20 @@ export default {
         },
       ],
       search: "",
+      suspen: true,
+      advertisement: true,
+      navigation: true,
+      style: true,
     };
   },
   methods: {
-    handleEdit(index, row) {
-      console.log(index, row);
+    suspension() {
+      console.log(this.suspen);
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+    store() {
+      this.$router.push({
+        path:'details'
+      });
     },
   },
   async created() {},
@@ -167,13 +202,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 30px;
+  padding: 2%;
   background-color: #fff;
 }
 .main-riaht-top {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   width: 43vw;
-  padding: 0 20px;
+  padding: 0 2.8%;
   /* height: vh; */
 }
 .main-riaht-tops {
@@ -217,7 +252,7 @@ img {
   align-items: center;
   justify-content: space-around;
   background-color: rgb(248, 248, 248);
-  margin: 4px 21px 20px 0;
+  margin: 0.1% 3% 3% 0;
 }
 .alls {
   display: flex;
@@ -240,11 +275,13 @@ img {
 }
 .bootm > div {
   font-size: 17px;
+  cursor: pointer;
 }
 .bootm > span {
   color: rgb(142, 143, 145);
   margin: 1% 0;
   display: inline-block;
+  cursor: pointer;
 }
 .main-r-b-b {
   display: flex;
@@ -266,12 +303,12 @@ img {
   font-size: 13px;
 }
 .left {
-  width: 375px;
-  height: 540px;
+  width: 24.5vw;
+  height: 71vh;
 }
 .mask {
-  width: 374px;
-  height: 539px;
+  width: calc(24.5vw - 1px);
+  height: calc(71vh - 1px);
   position: absolute;
   border: 1px solid #ccc;
 }

@@ -1,15 +1,18 @@
 <template>
-  <div>
-      Map
+  <div id="app">
+    <div class="amap-wrapper">
+      <el-amap class="amap-box" :vid="'amap-vue'"></el-amap>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style lang="scss" scoped>
-
+.amap-wrapper {
+  width: 100%;
+  height: 600px;
+}
 </style>

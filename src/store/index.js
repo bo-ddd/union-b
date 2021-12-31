@@ -256,6 +256,11 @@ export default new Vuex.Store({
         getSuperList(ctx, payload) {
             return Api.getSuperList(payload);
         },
+        //下架优品接口
+        deleteSuperProduct(ctx, payload) {
+            return Api.deleteSuperProduct(payload);
+        },
+
         //标签列表接口
         getLableList(ctx, payload) {
             return Api.getLableList(payload);
@@ -340,6 +345,7 @@ export default new Vuex.Store({
         updateHome(ctx, payload) {
             return Api.updateHome(payload);
         },
+
 
 
         //订单管理

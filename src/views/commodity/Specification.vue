@@ -18,25 +18,30 @@
         <!-- 模糊查询 -->
         <div class="">
           <el-input
-            placeholder="请输入内容"
-            v-model="input3"
+            placeholder="请输入商品类目"
+            v-model="salesType"
             class="input-with-select"
           >
             <el-select
-              v-model="value"
+              v-model="title"
               filterable
               placeholder="请选择"
               slot="prepend"
               class="sel"
             >
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
+                v-for="(item, index) in fuzzyQuery"
+                :key="index"
+                :label="item.title"
+                :value="item.title"
+              >
+              </el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="fuzzyselect"
+            ></el-button>
           </el-input>
         </div>
         <!-- 添加按钮模态框 -->
@@ -72,7 +77,7 @@
                   ></el-cascader>
                 </div>
               </template>
-            </el-form-item> -->
+            </el-form-item>-->
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogaddFormVisible = false">取 消</el-button>
@@ -92,6 +97,7 @@
         style="width: 97%"
         :default-sort="{ prop: 'id', order: 'descending' }"
         stripe
+        @selection-change="handleSelectionChange"
       >
         <!-- 多选框 -->
         <el-table-column
@@ -127,7 +133,7 @@
               type="primary"
               i
               class="el-icon-edit cell1"
-              @click="getCommodityDat(scope)"
+              @click="show(scope.row)"
             ></el-button>
             <!-- 修改按钮的模态框 -->
             <el-dialog title="修改此行数据" :visible.sync="dialogFormVisible">
@@ -144,13 +150,12 @@
                     autocomplete="off"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="商品类目" :label-width="formLabelWidth">
-                  <el-input v-model="form.remark" autocomplete="off"></el-input>
-                </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false"
+                <el-button
+                  type="primary"
+                  @click="getCommodityDat(scope), (dialogFormVisible = false)"
                   >确 定</el-button
                 >
               </div>
@@ -187,7 +192,6 @@
 
 <script>
 import { mapActions } from "vuex";
-// import Task from "@/assets/js/Task";
 export default {
   data() {
     return {
@@ -205,7 +209,7 @@ export default {
       tasks: [],
       options: [],
       pagination: false,
-      id: "",
+      id: null,
       title: "",
       productCategory: "",
       count: "", //所有条数
@@ -216,15 +220,11 @@ export default {
         speName: "",
         remark: "",
       },
-      form1: {
-        title: "",
-        cid: "",
-        name: "",
-      },
       ruleForm: {
         title: "",
         cid: "",
       },
+      fuzzyQuery: [],
       dialogVisible: false,
       dialogFormVisible: false,
       dialogaddFormVisible: false,
@@ -234,8 +234,10 @@ export default {
       table: [],
       pageSize: 10, //每页条数
       renderDynamic: [],
-      cacheArr: [],
-      arr4: [],
+      salesTypeValue: "",
+      salesType: [],
+      flag: false,
+      flag1: true,
     };
   },
   watch: {
@@ -255,12 +257,16 @@ export default {
      * createSpecification 添加规格接口
      * deleteSpecification 删除规格接口
      * getCategoryList商品类目接口
+     * updateSpecification规格管理更改
+     * specificationFuzzySearch类目规格模糊查询接口
      */
     ...mapActions([
       "getSpecificationList",
       "createSpecification",
       "deleteSpecification",
       "getCategoryList",
+      "updateSpecification",
+      "specificationFuzzySearch",
     ]),
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -299,67 +305,58 @@ export default {
       });
       console.log(del);
     },
-
-    //批量删除
+    /**
+     * 批量删除
+     * */
     async multipleRemove() {
-      let arrx = [];
-      console.log('aaaaaa');
-      console.log(this.arr4);
-      for (let i = 0; i < this.arr4.length; i++) {
-        if (!this.cacheArr.includes(this.arr4[i])) {
-          this.cacheArr.push(this.arr4[i]);
-        } else {
-          let temp = this.cacheArr.indexOf(this.arr4[i]);
-          this.cacheArr.splice(temp, 1);
-        }
-      }
+      let deleteArr = [];
+      this.multipleSelection.forEach((specification) => {
+        deleteArr.push(specification.id);
+      });
+      console.log(deleteArr);
+      let batchDelete = await this.deleteSpecification({
+        id: deleteArr,
+      });
+      console.log(batchDelete);
+      this.spelist();
+    },
 
-      this.cacheArr.forEach((item) => {
-        this.renderDynamic.splice(this.renderDynamic.indexOf(item), 1);
-        this.table.splice(this.table.indexOf(item), 1);
-        arrx.push(item.id);
-      });
-      // this.getList(this.query());
-      let res = await this.deleteSpecification({
-        id: arrx,
-      });
-      console.log(arrx);
-      console.log(res);
-    },
-    checkBoxData: function (selection, row) {
-      this.arr4.push(row);
-      // console.log(this.arr4);
-    },
     handleSelectionChange(val) {
-      if (!val.length) {
-        this.arr4 = [];
-      } else {
-        val.forEach((item) => {
-          this.arr4.push(item);
-          this.$refs.multipleTable.toggleRowSelection(item, true);
-        });
-      }
+      this.multipleSelection = val;
     },
+
+    //记录每行的key值
     getRowKeys(row) {
-      //记录每行的key值
       return row.id;
     },
-    //单个修改
-    getCommodityDat(data) {
+    show(val) {
+      console.log(val);
+      this.form.serialId = val.id;
+      this.form.speName = val.title;
       this.dialogFormVisible = true;
-      this.form.serialId = data.row.id;
-      this.form.speName = data.row.title;
-      this.form.remark = data.row.productCategory;
-      console.log(this.form);
-      this.spelist();
+    },
+    //单个修改
+    async getCommodityDat() {
+      this.dialogFormVisible = true;
+      let speUpdata = await this.updateSpecification({
+        id: Number(this.form.serialId),
+        title: this.form.speName,
+      });
+      console.log("cccc");
+      console.log(speUpdata);
+      if (speUpdata.status == 1) {
+        this.spelist();
+      }
     },
     /**
      * 获取所有类目规格
      * */
     async spelist() {
       let res = await this.getSpecificationList();
+      console.log("asdfdasdf");
       console.log(res);
       this.renderDynamic = res.data.rows.slice();
+      this.fuzzyQuery = this.renderDynamic;
       this.handleSizeChange(10);
     },
     //分页
@@ -380,10 +377,6 @@ export default {
       }
       this.table = arr;
     },
-    getId() {
-      let res = this.$refs["cascader"].getCheckedNodes();
-      this.ruleForm.pid = res[0].data.id;
-    },
     /**
      * 添加规格
      */
@@ -395,14 +388,15 @@ export default {
       console.log(res);
       this.spelist();
     },
-    async getClassifyInfo() {
+    /**
+     * 获取所有商品类目
+     */
+    async getShopList() {
       let res = await this.getCategoryList({});
       let data = res.data.rows.slice();
       this.arr = data;
       let target = this.format(data);
       this.options = target;
-      console.log("aa");
-      console.log(res);
     },
     format(target) {
       let res = target.slice();
@@ -435,10 +429,38 @@ export default {
           });
         });
     },
+    /**
+     * 模糊查询
+     */
+    query(flag) {
+
+      if (!this.salesTypeValue) {
+        this.fuzzyQuery = this.renderDynamic;
+        console.log(this.fuzzyQuery);
+        this.flag = true;
+      } else {
+        this.fuzzyQuery = this.renderDynamic.filter((item) => {
+          return item.categoryTitle == this.salesTypeValue;
+        });
+      }
+      if (flag) {
+        this.flag1 = false;
+      } else {
+        return this.fuzzyQuery;
+      }
+    },
+    async fuzzyselect() {
+      let queryhhh = await this.specificationFuzzySearch({
+        title: this.form.speName,
+      });
+      console.log("zzzzz");
+      console.log(queryhhh);
+    },
   },
   async created() {
     this.spelist();
-    this.getClassifyInfo();
+    this.getShopList();
+    this.query(this.flag1);
   },
 };
 </script>

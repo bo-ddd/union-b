@@ -21,6 +21,7 @@
     color: var(--color);
     border-color: var(--color);
   }
+
 }
 
 </style>

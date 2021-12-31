@@ -157,8 +157,9 @@ export default {
                 role: this.value || null,
                 type: this.typevalue || null
             });
-            if (res.status) {
+            if (res.status == 1) {
                 this.tableData = res.data.rows
+                this.total = res.data.rows.length
             }
         },
 
@@ -174,6 +175,7 @@ export default {
 .wrap {
     height: calc(100vh - 100px);
     overflow-y: auto;
+    background-color: #fff;
 
     & .mar-right_20 {
         margin-right: 20px;

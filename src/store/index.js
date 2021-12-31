@@ -423,6 +423,23 @@ export default new Vuex.Store({
         updateRouteMeta(ctx, payload) {
             return Api.updateRouteMeta(payload);
         },
+        //路由列表 
+        getRouteList(ctx, payload) {
+            return Api.getRouteList(payload);
+        },
+        //路由meta列表
+        getRouteMetaList(ctx, payload) {
+            return Api.getRouteMetaList(payload);
+        },
+        //删除路由接口
+        deleteRoute(ctx, payload) {
+            return Api.deleteRoute(payload);
+        },
+        //删除路由meta接口
+        deleteRouteMeta(ctx, payload) {
+            return Api.deleteRouteMeta(payload);
+        },
+
 
     },
     modules: {}

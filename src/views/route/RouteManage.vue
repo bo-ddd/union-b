@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-table :data="routeList" stripe style="width: 100%">
-        <el-table-column prop="id" label="id" width="180" align="center"> 
+        <el-table-column prop="id" label="id" width="180" align="center">
         </el-table-column>
         <el-table-column prop="path" label="path" width="180" align="center">
         </el-table-column>
@@ -9,12 +9,9 @@
         </el-table-column>
         <el-table-column prop="component" label="component" align="center">
         </el-table-column>
-        <el-table-column label="meta" align="center">
-            <template #default="scope">
-                <span>{{scope.row.Id}}</span>
-            </template>
-        </el-table-column>
     </el-table>
+   <div>routeList = {{routeList}}</div> 
+   <div>metaList = {{metaList}}</div> 
 </div>
 </template>
 

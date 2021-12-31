@@ -77,6 +77,7 @@ export default {
       table: [],
       pageSize: 10,
       renderData: [],
+      child:[]
     };
   },
   methods: {
@@ -185,9 +186,17 @@ export default {
         this.loading = false;
         let data = res.data.rows.slice();
         let target = this.format(data);
-        target.forEach((el) => {
-          el.association = "";
-        });
+        for(var i = 0; i<target.length; i++){
+            target[i].association = "";
+          if(target[i].child.length){
+            for(var j = 0 ; j <target[i].child.length; j++){
+              if(this.child.indexOf(target[i].child[j])===-1){
+                this.child.push(target[i].child[j])
+              }
+            }
+            target[i].child = this.child
+          }
+        }
         this.renderData = target;
         this.handleSizeChange(10);
       }

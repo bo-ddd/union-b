@@ -269,6 +269,14 @@ export default new Vuex.Store({
         createLable(ctx, payload) {
             return Api.createLable(payload);
         },
+        //更改标签接口
+        updateLable(ctx, payload) {
+            return Api.updateLable(payload);
+        },
+        //删除标签接口
+        deleteLable(ctx, payload) {
+            return Api.deleteLable(payload);
+        },
         //文章列表接口
         getArticleList(ctx, payload) {
             return Api.getArticleList(payload);

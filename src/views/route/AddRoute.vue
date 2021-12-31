@@ -73,11 +73,21 @@ export default {
             console.log(this.form)
             let res = await this.createRoute(this.form)
             console.log(res)
+            if (res.status == 1) {
+                this.$message.success(res.msg)
+            }else{
+                this.$message.error(res.msg)
+            }
         },
         async metaSubmit() {
             console.log(this.metaFrom)
             let res = await this.createRouteMeta(this.metaFrom)
             console.log(res)
+             if (res.status == 1) {
+                this.$message.success(res.msg)
+            }else{
+                this.$message.error(res.msg)
+            }
         },
         cancel() {
             this.form = {}

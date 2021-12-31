@@ -526,6 +526,25 @@ export default {
         return axios.post('/lable/create', params, postConfig)
     },
     /**
+     * @description 更改标签接口 
+     * @params {
+     * id : [number] 必填  '标签id',
+     * lableName:[string] 必填  '标签的名字'
+     * } 
+     */
+    updateLable(params) {
+        return axios.post('/lable/update', params, postConfig)
+    },
+    /**
+     * @description 删除标签接口 
+     * @params {
+     * id : [number] 必填  '标签id',
+     * } 
+     */
+    deleteLable(params) {
+        return axios.post('/lable/delete', params, postConfig)
+    },
+    /**
      * @description 文章列表接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;
@@ -627,7 +646,9 @@ export default {
     /**
      * @description 更改推荐商品
      * @params {
-     * id:[number]   '被更改的id',
+     * id:[number] '商品id',
+     * total:[number] '商品的总数',
+     * title:[string] '商品的名称'
      * }
      */
     updateSuperProduct(params) {

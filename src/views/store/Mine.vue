@@ -82,7 +82,6 @@
                 v-model="suspen"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-             
               >
               </el-switch>
             </div>
@@ -93,7 +92,6 @@
                 v-model="advertisement"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-              
               >
               </el-switch>
             </div>
@@ -104,7 +102,6 @@
                 v-model="navigation"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-                
               >
               </el-switch>
             </div>
@@ -115,17 +112,16 @@
                 v-model="style"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-           
               >
               </el-switch>
             </div>
-            <div class="bootm">
+            <div class="bootm" @click="renovation">
               <div>装修首页</div>
             </div>
             <div class="bootm" @click="store">
               <div>店铺中心</div>
             </div>
-            <div class="bootm">
+            <div class="bootm" @click="templ">
               <div>模板市场</div>
             </div>
           </div>
@@ -175,7 +171,17 @@ export default {
     },
     store() {
       this.$router.push({
-        path:'details'
+        path: "details",
+      });
+    },
+    templ() {
+      this.$router.push({
+        path: "mould",
+      });
+    },
+    renovation() {
+      this.$router.push({
+        path: "renovation",
       });
     },
   },
@@ -303,12 +309,12 @@ img {
   font-size: 13px;
 }
 .left {
-  width: 24.5vw;
-  height: 71vh;
+  width: 21.5vw;
+  height: 83.5vh;
 }
 .mask {
-  width: calc(24.5vw - 1px);
-  height: calc(71vh - 1px);
+  width: calc(21.5vw - 1px);
+  height: calc(83.5vh - 1px);
   position: absolute;
   border: 1px solid #ccc;
 }

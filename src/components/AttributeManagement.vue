@@ -127,16 +127,17 @@
         </div>
       </div>
     </div>
+    <el-demo :key="option.label"></el-demo>
   </div>
+  
 </template>
 
 <script>
 import { mapActions } from "vuex";
+// import attrib from '../views/commodity/Attribute.vue'
 export default {
-    props:[
-        {type: 1, title: '属性'},
-        {type: 2, title: '参数'}
-        ],
+
+  props:['属性','参数'],
   data() {
     return {
       valueimg: "",

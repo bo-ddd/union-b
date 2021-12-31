@@ -359,4 +359,17 @@ import { mapActions } from "vuex";
 ::v-deep .el-descriptions--small {
   font-size: 13px;
 }
+.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
+    color:var(--textcolor)
+
+}
+::v-deep .el-tabs__nav-scroll{
+    background-color: var(--color);
+}
+::v-deep.el-tabs--border-card>.el-tabs__header .el-tabs__item+.el-tabs__item, .el-tabs--border-card>.el-tabs__header .el-tabs__item:first-child {
+    color:var(--textcolor)
+  }
+::v-deep.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
+      color: var(--color);
+}
 </style>

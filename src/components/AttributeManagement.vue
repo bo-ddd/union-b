@@ -83,7 +83,7 @@
                 <el-dialog title="修改信息" :visible.sync="dialogFormVisibles">
                   <el-form :model="form">
                     <el-form-item
-                      label="属性名"
+                      label="ID"
                       :label-width="formLabelWidth"
                       class="form-money"
                     >
@@ -93,7 +93,7 @@
                       ></el-input>
                     </el-form-item>
                     <el-form-item
-                      label="商品名"
+                      label="属性名"
                       :label-width="formLabelWidth"
                       class="form-money"
                     >
@@ -121,7 +121,6 @@
                   @click="deleteData(scope.row)"
                   >删除</el-button
                 >
-                <!-- <el-button size="mini" type="danger" @click="open">删除</el-button> -->
               </template>
             </el-table-column>
           </el-table>
@@ -135,8 +134,8 @@
 import { mapActions } from "vuex";
 export default {
     props:[
-        {id: 1, title: '属性'},
-        {id: 2, title: '参数'}
+        {type: 1, title: '属性'},
+        {type: 2, title: '参数'}
         ],
   data() {
     return {
@@ -177,11 +176,6 @@ export default {
   },
   methods: {
     ...mapActions(["createAttribute","getAttributeList","attributeOrders","deleteAttribute","getProductList","attributeStick","getCategoryList",]),
-    open() {},
-    // async getadd(){
-    //   let res = await this.getProductList();
-    //   console.log(res);
-    // },
 
     async getClassifyInfo() {
       let res = await this.getProductList({});

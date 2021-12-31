@@ -175,18 +175,6 @@ export default {
       paymentStatus: [],
       orderType: [],
       express: [],
-      orderNo: [
-        {
-          value: "选项1",
-          label: "订单编号",
-        },
-      ],
-      purchaser: [
-        {
-          value: "选项1",
-          label: "采购商",
-        },
-      ],
       consignee: [
         {
           value: "选项1",

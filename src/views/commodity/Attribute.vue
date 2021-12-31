@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Attribute type="2"></Attribute>
+    <Attribute type="1"></Attribute>
 </div>
 </template>
 

@@ -288,7 +288,6 @@ export default {
 //     "id": "650000000000"
 // }),
         this.getpremium();
-        // await this.getshopping();
     },
     methods: {
          ...mapActions(["getSuperList","superProductTradeName","superProductTradeImg","createSuperProduct","updateSuperProduct","deleteSuperProduct"]),
@@ -318,7 +317,7 @@ export default {
             // regionId:str
         });
         console.log(suproduct);
-        await this.getshopping();
+        // await this.getshopping();
          this.getpremium();
         },
        async getshopping(){
@@ -342,6 +341,7 @@ export default {
               id:rows.productId
             })
             console.log(res);
+            this.getpremium();
            },
         //更改商品
         editModify(ware){

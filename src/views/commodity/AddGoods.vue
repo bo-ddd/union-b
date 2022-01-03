@@ -50,6 +50,16 @@
                   </el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="商品关键字">
+                <el-input
+                  type="keywords"
+                  placeholder="请输入商品关键字"
+                  maxlength="30"
+                  v-model="text"
+                  show-word-limit
+                >
+                </el-input>
+              </el-form-item>
               <el-form-item label="商品名称" class="trade_name">
                 <el-input
                   type="text"
@@ -370,7 +380,7 @@ export default {
           label: "毫升",
         },
       ],
-
+keywords:'',
       labelPosition: "right",
       input: "",
       // July: "",
@@ -560,7 +570,7 @@ export default {
       let res = await this.createProduct({
         cid: Number(this.cid),
         title: this.text,
-        keywords: "食品类",
+        keywords: this.keywords,
         platformPrice: Number(this.commodityPlatformPrice),
         desc: this.productDescription,
         realPrice: Number(this.sellingPriceGoods),
@@ -671,7 +681,12 @@ export default {
   // border-top: 1px solid var(--color);
   padding: 20px 0px;
 }
-
+::v-deep .essential_information .el-form-item__label{
+  width: 85px !important;
+}
+// ::v-deep .essential_information input:nth-of-type(1){
+//   width:220px
+// }
 ::v-deep .product_picture {
   & > div > div:nth-of-type(1) > div:nth-of-type(1) {
     display: flex;

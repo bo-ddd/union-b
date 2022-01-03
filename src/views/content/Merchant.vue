@@ -2,7 +2,9 @@
   <div class="wrap">
     <div class="wrap_recommend">
       <div class="preservation">
-        <el-button plain @click="dialogFormVisible = true">添加</el-button>
+        <el-button plain @click="(dialogFormVisible = true), addshop"
+          >添加</el-button
+        >
         <el-button plain class="issuebtn">发布</el-button>
       </div>
       <div>
@@ -129,7 +131,7 @@ export default {
       currentPage2: 5,
       currentPage3: 5,
       currentPage4: 4,
-      renderDynamic:[],
+      renderDynamic: [],
       table: [
         {
           code: "20160503",
@@ -258,7 +260,7 @@ export default {
     };
   },
   methods: {
-   //分页
+    //分页
     //分页有多少条
     handleSizeChange(val) {
       this.pageSize = val;
@@ -276,6 +278,13 @@ export default {
       }
       this.table = arr;
     },
+    /**
+     * addshop添加商品
+     */
+    // async addshop(){
+    //   let res=await this.jiekou();
+    //   console.log(res);
+    // }
   },
 };
 </script>

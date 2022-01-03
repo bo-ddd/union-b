@@ -1,6 +1,5 @@
 <template>
   <div class="wrap">
-
     <div class="top">
       <div class="left">
         <el-row>
@@ -24,14 +23,6 @@
                 </el-input>
               </div>
             </div>
-            <div class="se">
-              <el-row>
-                <el-button class="query1" icon="el-icon-plus" type="primary">添加标签</el-button> 
-              </el-row>
-              <el-link>
-                 <i class="el-icon-link"></i> 帮助文档
-              </el-link>
-            </div>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -42,19 +33,11 @@
       <div class="right">
         <div>
           <el-input placeholder="请输入标签值进行搜索" v-model="input2" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="find">搜索</el-button>
           </el-input>
         </div>
       </div>
     </div>
-
-    <!-- <div class="bottom">
-      <div class="long">
-        <span>></span>
-        <b class="s">标签建：默认项目</b>
-      </div>
-    </div> -->
-
     <div class="third">
     <div class="third-top">
     <el-table :data="tableData" style="width: 100%">
@@ -67,6 +50,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog  :visible.sync="dialogFormVisibles">
+      <el-form :model="form">
+        <el-form-item label="标签名称" :label-width="formLabelWidth">
+          <el-input v-model="form.title" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibles = false">取 消</el-button>
+        <el-button type="primary" @click="modify">确 定</el-button>
+      </div>
+    </el-dialog>
     </div>
 
     </div>
@@ -79,7 +73,7 @@
 </template>
 <style scoped lang='scss'>
 ::v-deep .el-pagination{
-  text-align: center;
+  margin-left: 480px;
 }
 .paging{
   margin-top: 10px;
@@ -218,14 +212,17 @@ export default {
       input2: "",
       select: "",
       dialogFormVisible: false,
-      form: {},
+      dialogFormVisibles:false,
+      form: {
+        title : '',
+      },
       formLabelWidth: "200px",
       num : 0,
     };
   },
   
   methods:{
-      ...mapActions(["getLableList","createLable","deleteLable"]),
+      ...mapActions(["getLableList","createLable","deleteLable","updateLable"]),
       async list(){
         let listAll = await this.getLableList({
           pagination : true,
@@ -243,6 +240,10 @@ export default {
         await this.deleteLable({ id: a.id });
         this.list();
       },
+       async update(a) {
+      this.id = a.id
+      this.dialogFormVisibles = true;
+      },
       async aaa(a){
         let res = await this.getLableList({
           pagination : true,
@@ -250,6 +251,18 @@ export default {
           pageSize : a,
         })
         this.tableData = res.data.rows;
+      },
+      async modify(){
+      this.dialogFormVisible = false;
+      let res = await this.updateLable({
+        id : this.id,
+        lableName : this.form.title,
+      });
+      console.log(res);
+      this.list();
+      },
+      async find(){
+        console.log("查找")
       }
   },
   created(){

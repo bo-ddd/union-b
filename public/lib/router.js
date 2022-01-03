@@ -1,0 +1,28 @@
+export default class Router {
+    constructor(routeList, metaList) {
+        this.routeList = routeList.slice();
+        this.metaList = metaList.slice()
+        this.data = this.format(this.routeList, this.metaList);
+    }
+    format(routeList, metaList) {
+        let res = routeList.slice();
+        let result = metaList.slice();
+        result.forEach(el => {
+            let meta = {};
+            el.forEach(key => {
+                meta["routeId"] = key.routeId
+                meta[key.key] = key.value
+            })
+            res.forEach(item => {
+                item.children = [];
+                if (item.id == meta.routeId) {
+                    item.meta = meta
+                }
+                let p = res.find(route => route.id == item.pid);
+                item.pid && p.children.push(item);
+            })
+        })
+        return res.filter(router => router.pid == null)
+            // return res
+    }
+}

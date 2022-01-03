@@ -1,14 +1,10 @@
 <template>
   <div class="wrap">
+
     <div class="top">
       <div class="left">
         <el-row>
-          <el-button
-            class="query"
-            icon="el-icon-plus"
-            type="primary"
-            @click="dialogFormVisible = true"
-            >创建标签</el-button>
+          <el-button class="query"  icon="el-icon-plus" type="primary" @click="dialogFormVisible = true">创建标签</el-button>
         </el-row>
         <el-dialog title="创建标签" :visible.sync="dialogFormVisible">
           <el-form :model="form">
@@ -23,135 +19,68 @@
             <div class="f">
               <div class="demo-input-suffix">
                 标签键：
-                <el-input
-                  class="input1"
-                  placeholder="请选择已有或手动输入"
-                  v-model="input3"
-                >
+                <el-input class="input1" placeholder="请选择已有或手动输入" v-model="lableName">
                   <i slot="suffix" class="el-input__icon el-icon-date"></i>
                 </el-input>
               </div>
-              <!-- <div class="demo-input-suffix">
-                标签键：
-                <el-input
-                  class="input1"
-                  placeholder="请选择已有或手动输入"
-                  v-model="input3"
-                >
-                  <i slot="suffix" class="el-input__icon el-icon-date"></i>
-                </el-input>
-                值：
-                <el-input
-                  class="input1"
-                  placeholder="请选择已有或手动输入"
-                  v-model="input4"
-                >
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-                <button class="bu">X</button>
-              </div> -->
-              <!-- <div class="demo-input-suffix">
-                标签键：
-                <el-input
-                  class="input1"
-                  placeholder="请选择已有或手动输入"
-                  v-model="input3"
-                >
-                  <i slot="suffix" class="el-input__icon el-icon-date"></i>
-                </el-input>
-                值：
-                <el-input
-                  class="input1"
-                  placeholder="请选择已有或手动输入"
-                  v-model="input4"
-                >
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-                <button class="bu">X</button>
-              </div> -->
             </div>
-
             <div class="se">
               <el-row>
-                <el-button
-                  class="query1"
-                  icon="el-icon-plus"
-                  type="primary"
-                  @click="addArticle = true"
-                  >添加标签</el-button
-                > 
+                <el-button class="query1" icon="el-icon-plus" type="primary">添加标签</el-button> 
               </el-row>
-
-              <el-link> <i class="el-icon-link"></i> 帮助文档</el-link>
+              <el-link>
+                 <i class="el-icon-link"></i> 帮助文档
+              </el-link>
             </div>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button
-              class="que"
-              type="primary"
-              @click="(dialogFormVisible = false)"
-              >确 定</el-button
-            >
-            <!-- , third - left() -->
+            <el-button class="que" type="primary" @click="(dialogFormVisible = false),addLabel()" >确 定</el-button>
           </div>
         </el-dialog>
       </div>
       <div class="right">
         <div>
-          <el-input
-            placeholder="请输入标签值进行搜索"
-            v-model="input3"
-            class="input-with-select"
-          >
+          <el-input placeholder="请输入标签值进行搜索" v-model="input2" class="input-with-select">
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
       </div>
     </div>
-    <div class="bottom">
+
+    <!-- <div class="bottom">
       <div class="long">
         <span>></span>
         <b class="s">标签建：默认项目</b>
       </div>
-    </div>
-    <div class="third">
-      <div class="third-top">
-        <el-table
-    :data="tableData"
-    style="width: 100%"
-   >
-    <el-table-column
-      prop="date"
-      label="标签列表"
-      width="250">
-    </el-table-column>
-  </el-table>
-      </div>
-      <div class="third-left">
-        <!-- <div class="t-f">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync="currentPage2"
-      :page-sizes="[100, 200, 300, 400]"
-      :page-size="100"
-      layout="sizes, prev, pager, next"
-      :to5tal="1000">
-    </el-pagination>
-         
-        </div> -->
+    </div> -->
 
-        <div>
-          <!-- <el-pagination class="paging" small layout="prev, pager, next" :total="20">
-          </el-pagination> -->
-        </div>
-      </div>
+    <div class="third">
+    <div class="third-top">
+    <el-table :data="tableData" style="width: 100%">
+    <el-table-column prop="id" label="id"></el-table-column>
+    <el-table-column prop="lableName" label="标签列表"></el-table-column>
+     <el-table-column fixed="right" label="操作" width="230">
+        <template slot-scope="scope">
+          <el-button class="button" @click="remove(scope.row)" type="text">移除</el-button>
+          <el-button class="button" @click="update(scope.row)" type="text">更改</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    </div>
+
+    </div>
+
+    <div class="block">
+      <el-pagination layout="prev, pager, next" :total="num" @current-change='aaa'>
+      </el-pagination>
     </div>
   </div>
 </template>
 <style scoped lang='scss'>
-
+::v-deep .el-pagination{
+  text-align: center;
+}
 .paging{
   margin-top: 10px;
 }
@@ -166,7 +95,6 @@
 }
 .third-left {
   width: 600px;
-  height: 50px;
   float: left;
   margin-top: 20px;
 }
@@ -196,7 +124,6 @@
 }
 .t-f {
   width: 300px;
-  height: 50px;
   float: left;
   text-align: left;
 }
@@ -230,10 +157,8 @@
 }
 .p2 {
   margin-left: 80px;
-
 }
 .wen {
-  height: 100px;
   position: relative;
   right: 40px;
   text-align: left;
@@ -247,94 +172,88 @@
   background-color: #fff;
 }
 .wrap {
-  /* height: 150px; */
   padding: 20px;
 }
 .top {
-  height: 40px;
   display: flex;
   justify-content: space-between;
 }
 .left {
   width: 100px;
-  height: 50px;
 }
 .query {
   border: none;
   color: #fff;
   padding: 10px;
 }
-
 .right {
   width: 500px;
-  height: 40px;
-  // margin-left: 1150px;
 }
 .center {
   width: 30px;
-  height: 35px;
   border: 1px solid rgb(185, 183, 183);
 }
 .bottom {
-  height: 70px;
   margin-top: 20px;
 }
 .long {
-  height: 70px;
   text-align: left;
   line-height: 70px;
   padding-left: 20px;
 }
-
 .s {
   margin-left: 5px;
 }
-.third {
-  height: 90px;
-}
+
 </style>
 <script>
 import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      lableName:"",
+      id: "",
+      lableName:'',
       tableData:[],
-      value : "",
       input3: "",
-      input4: "",
+      input2: "",
       select: "",
-      options:"",
-      dialogTableVisible: false,
       dialogFormVisible: false,
-      dialogFormVisibles: false,
       form: {},
       formLabelWidth: "200px",
+      num : 0,
     };
   },
-  async created(){
-    this.list();
-    // this.lableAll();
-  },
+  
   methods:{
-      ...mapActions(["getLableList","createLable"]),
+      ...mapActions(["getLableList","createLable","deleteLable"]),
       async list(){
-        let listAll = await this.getLableList();
-        console.log(listAll);
-      },
-      
-      async addArticle(){
-        let newLable = [];
-        if(lableAll.content == newLable.content){
-          console.log('该标签已创建');
-        }else{
-          console.log('该标签创建成功');
-        }
-        let lableAll = await this.createLable({
-          lableName:this.lableName,
+        let listAll = await this.getLableList({
+          pagination : true,
+          pageNum : 5
         });
-        console.log(lableAll);
+        this.num = listAll.data.rows.length;
+        console.log(listAll.data.rows);
+        this.tableData = listAll.data.rows;
+      },
+      async addLabel(){
+        await this.createLable({lableName:this.lableName});
+        this.list();
+      },
+      async remove(a){
+        await this.deleteLable({ id: a.id });
+        this.list();
+      },
+      async aaa(a){
+        let res = await this.getLableList({
+          pagination : true,
+          pageNum : 10,
+          pageSize : a,
+        })
+        this.tableData = res.data.rows;
       }
-  }
+  },
+  created(){
+    this.list();
+  },
 };
 </script>

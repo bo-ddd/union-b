@@ -12,7 +12,7 @@ module.exports = {
         //替换结果为  localhost:8080/user/info
         proxy: {
             '/api': {
-                target: 'http://192.168.1.32:7001', //填写服务端的接口地址；
+                target: 'http://192.168.1.52:7001', //填写服务端的接口地址；
                 pathRewrite: {
                     '^/api': ''
                 }

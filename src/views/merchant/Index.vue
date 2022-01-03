@@ -195,10 +195,6 @@ export default {
 
     & .btnbox {
         padding-bottom: 20px;
-
-        & .bac-ff4070 {
-            background-color: '#ff4070';
-        }
     }
 
     & .paging {

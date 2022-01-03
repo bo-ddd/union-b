@@ -19,24 +19,9 @@
         <div class="">
           <el-input
             placeholder="请输入商品类目"
-            v-model="salesType"
+            v-model="form.speName"
             class="input-with-select"
-          >
-            <el-select
-              v-model="title"
-              filterable
-              placeholder="请选择"
-              slot="prepend"
-              class="sel"
-            >
-              <el-option
-                v-for="(item, index) in fuzzyQuery"
-                :key="index"
-                :label="item.title"
-                :value="item.title"
-              >
-              </el-option>
-            </el-select>
+          >                   
             <el-button
               slot="append"
               icon="el-icon-search"
@@ -53,7 +38,6 @@
             <el-form-item label="商品类目" :label-width="formLabelWidth">
               <el-input v-model="ruleForm.cid" autocomplete="off"></el-input>
             </el-form-item>
-
             <!-- <el-form-item
               label="商品类目"
               prop="pid"
@@ -198,15 +182,9 @@ export default {
       checked: false,
       value: "",
       input: "",
-      input1: "",
-      input2: "",
-      input3: "",
-      select: "",
-      currentPage1: 1,
-      currentPage4: 1,
+      select: "",  
       pageSize1: 50,
       pageNum1: "",
-      tasks: [],
       options: [],
       pagination: false,
       id: null,
@@ -224,16 +202,16 @@ export default {
         title: "",
         cid: "",
       },
-      fuzzyQuery: [],
+      fuzzyQuery: [],//模糊查询     把选中的行的id放到此数组里
       dialogVisible: false,
       dialogFormVisible: false,
       dialogaddFormVisible: false,
       formLabelWidth: "120px",
-      multipleSelection: [],
-      currentPage: 1,
-      table: [],
+      multipleSelection: [],//批量删除  multiple多个
+      currentPage: 1,//当前页
+      table: [], //商品列表
       pageSize: 10, //每页条数
-      renderDynamic: [],
+      renderDynamic: [],//存放所有的规格数据
       salesTypeValue: "",
       salesType: [],
       flag: false,
@@ -433,7 +411,6 @@ export default {
      * 模糊查询
      */
     query(flag) {
-
       if (!this.salesTypeValue) {
         this.fuzzyQuery = this.renderDynamic;
         console.log(this.fuzzyQuery);
@@ -452,9 +429,11 @@ export default {
     async fuzzyselect() {
       let queryhhh = await this.specificationFuzzySearch({
         title: this.form.speName,
+        // title:'第三方',
       });
       console.log("zzzzz");
       console.log(queryhhh);
+      this.table=queryhhh.data.rows
     },
   },
   async created() {

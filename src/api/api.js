@@ -526,6 +526,25 @@ export default {
         return axios.post('/lable/create', params, postConfig)
     },
     /**
+     * @description 更改标签接口 
+     * @params {
+     * id : [number] 必填  '标签id',
+     * lableName:[string] 必填  '标签的名字'
+     * } 
+     */
+    updateLable(params) {
+        return axios.post('/lable/update', params, postConfig)
+    },
+    /**
+     * @description 删除标签接口 
+     * @params {
+     * id : [number] 必填  '标签id',
+     * } 
+     */
+    deleteLable(params) {
+        return axios.post('/lable/delete', params, postConfig)
+    },
+    /**
      * @description 文章列表接口
      * @params {
      * pagination[boolean]   默认不传为false 返回所有数据  传pagination:true 则返回分页10条 ;

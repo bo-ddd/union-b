@@ -236,6 +236,7 @@ export default {
     ...mapActions(["getProductList", "deleteProduct"]),
     async salesInformation() {
       let res = await this.getProductList({});
+      let arr = [];
       this.tableData = res.data.rows.slice();
       this.tableData.forEach((item) => {
         if (item.status == 0) {
@@ -246,7 +247,7 @@ export default {
           item.status = "已上架";
         }
         if (item.status && item.categoryTitle) {
-         this.commodityStatus.push({
+          arr.push({
             label: item.status,
             value: item.status,
           });
@@ -257,12 +258,16 @@ export default {
         }
         item.createdAt = this.time(item.createdAt);
       });
-
       
-
-      console.log(this.commodityStatus);
-      this.commodityStatus = [...new Set(this.commodityStatus)];
-
+      var obj = {};
+      for (var i = 0; i < arr.length; i++) {
+        if (!obj[arr[i].key]) {
+          this.commodityStatus.push(arr[i]);
+          obj[arr[i].key] = true;
+        }
+      }
+       console.log(this.commodityStatus);
+      // this.commodityStatus = [...new Set(this.commodityStatus)];
       this.pageList();
     },
     time(time) {

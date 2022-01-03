@@ -1,5 +1,6 @@
 <template>
   <div class="wrap">
+
     <div class="top">
       <div class="left">
         <el-row>
@@ -46,12 +47,14 @@
         </div>
       </div>
     </div>
-    <div class="bottom">
+
+    <!-- <div class="bottom">
       <div class="long">
         <span>></span>
         <b class="s">标签建：默认项目</b>
       </div>
-    </div>
+    </div> -->
+
     <div class="third">
     <div class="third-top">
     <el-table :data="tableData" style="width: 100%">
@@ -65,13 +68,19 @@
       </el-table-column>
     </el-table>
     </div>
-    <div class="third-left">
-        <div></div>
+
     </div>
+
+    <div class="block">
+      <el-pagination layout="prev, pager, next" :total="num" @current-change='aaa'>
+      </el-pagination>
     </div>
   </div>
 </template>
 <style scoped lang='scss'>
+::v-deep .el-pagination{
+  text-align: center;
+}
 .paging{
   margin-top: 10px;
 }
@@ -86,7 +95,6 @@
 }
 .third-left {
   width: 600px;
-  height: 50px;
   float: left;
   margin-top: 20px;
 }
@@ -203,6 +211,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      id: "",
       lableName:'',
       tableData:[],
       input3: "",
@@ -211,28 +220,40 @@ export default {
       dialogFormVisible: false,
       form: {},
       formLabelWidth: "200px",
+      num : 0,
     };
   },
-  created(){
-    this.list();
-  },
+  
   methods:{
-      ...mapActions(["getLableList","createLable"]),
+      ...mapActions(["getLableList","createLable","deleteLable"]),
       async list(){
         let listAll = await this.getLableList({
-          pagination:true,
-          pageNum : 3,
-          pageSize:10
+          pagination : true,
+          pageNum : 5
         });
+        this.num = listAll.data.rows.length;
         console.log(listAll.data.rows);
         this.tableData = listAll.data.rows;
       },
       async addLabel(){
-        console.log(this.lableName);
-        let addlabel = await this.createLable({lableName:this.lableName});
-        console.log(addlabel);
+        await this.createLable({lableName:this.lableName});
         this.list();
+      },
+      async remove(a){
+        await this.deleteLable({ id: a.id });
+        this.list();
+      },
+      async aaa(a){
+        let res = await this.getLableList({
+          pagination : true,
+          pageNum : 10,
+          pageSize : a,
+        })
+        this.tableData = res.data.rows;
       }
-  }
+  },
+  created(){
+    this.list();
+  },
 };
 </script>

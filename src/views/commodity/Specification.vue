@@ -19,7 +19,7 @@
         <div class="">
           <el-input
             placeholder="请输入商品类目"
-            v-model="salesType"
+            v-model="form.speName"
             class="input-with-select"
           >                   
             <el-button
@@ -429,10 +429,11 @@ export default {
     async fuzzyselect() {
       let queryhhh = await this.specificationFuzzySearch({
         title: this.form.speName,
-        // title:'dfas',
+        // title:'第三方',
       });
       console.log("zzzzz");
       console.log(queryhhh);
+      this.table=queryhhh.data.rows
     },
   },
   async created() {

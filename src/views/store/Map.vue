@@ -7,7 +7,16 @@
 </template>
 
 <script>
-export default {};
+import VueAMap from "vue-amap";
+
+export default {
+  created() {
+    // 设置地图级别，级别为数字。
+    // 参数zoom可设范围：[2,20]；
+    // 同时传入缩放级别和中心点经纬度
+    VueAMap.setZoomAndCenter(10, [116.205467, 39.907761]);
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,19 +1,19 @@
 <template>
   <div>
-    <!-- ProductParameters商品属性 -->
+    <!-- ProductParameters商品参数 -->
     <div class="main">
       <div class="mains">
-        <h1 class="h1">属性值列表</h1>
+        <h1 class="h1">参数值列表</h1>
         <div class="list">
           <el-button
             type="primary"
             @click="dialogFormVisible = true"
             class="button"
-            >新增属性</el-button
+            >新增参数</el-button
           >
-          <el-dialog title="新增属性" :visible.sync="dialogFormVisible">
+          <el-dialog title="新增参数" :visible.sync="dialogFormVisible">
             <el-form :model="forms">
-              <el-form-item label="属性名称" :label-width="formLabelWidth">
+              <el-form-item label="参数名称" :label-width="formLabelWidth">
                 <el-input v-model="forms.name" autocomplete="off"></el-input>
               </el-form-item>
 
@@ -57,7 +57,7 @@
           <el-table :data="tableData" style="width: 100%">
             <el-table-column prop="id" label="id" width="100" align="center">
             </el-table-column>
-            <el-table-column prop="value" label="属性名" align="center">
+            <el-table-column prop="value" label="参数名" align="center">
             </el-table-column>
             <el-table-column prop="productTitle" label="商品名" align="center">
             </el-table-column>
@@ -86,7 +86,7 @@
       <el-input v-model="form.id" autocomplete="off"></el-input>
     </el-form-item>
 
-                <el-form-item label="属性名" :label-width="formLabelWidth" class="form-money">
+                <el-form-item label="参数名" :label-width="formLabelWidth" class="form-money">
       <el-input v-model="form.value" autocomplete="off"></el-input>
     </el-form-item>
   </el-form>

@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import AttributeManagement from '../../components/AttributeManagement.vue';
+import ParametersManagement from '../../components/ParametersManagement.vue';
 export default {
     components: {
-        'Attribute': AttributeManagement
+        'Attribute': ParametersManagement
     },
     data(){
         return{

@@ -5,18 +5,14 @@ export default class Router {
         this.metaList = metaList.slice()
         this.data = this.format(this.routeList, this.metaList);
     }
-    _import(file, name) {
-        return () =>
-            import (`/* webpackChunkName: "${name}" */ "${file}"`)
-    }
     format(routeList, metaList) {
         let res = routeList.slice();
         let result = metaList.slice();
         res.forEach(item => {
-            if (item.component === '../views/Home.vue') {
+            if (item.component === 'Home') {
                 item.component = Home
             } else {
-                item.component = this._import(item.component, item.name)
+                item.component = new Function(`import (/* webpackChunkName:"${item.name}"*/  @/views/ ${item.component}.vue )`)
             }
         })
         result.forEach(el => {

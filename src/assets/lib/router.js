@@ -1,8 +1,7 @@
 import Home from '@/views/Home.vue'
 export default class Router {
     constructor(options) {
-        const { routeList, metaList, baseUrl } = options;
-        this.baseUrl = baseUrl || '@/views';
+        const { routeList, metaList } = options;
         this.routeList = routeList.slice();
         this.metaList = metaList.slice()
         this.data = this.format(this.routeList, this.metaList);
@@ -15,7 +14,6 @@ export default class Router {
                 item.component = Home
             } else {
                 const com = item.component;
-                // const file = `${this.baseUrl}/${com}`;
                 item.component =  () => import(`@/views/${com}`)
             }
         })

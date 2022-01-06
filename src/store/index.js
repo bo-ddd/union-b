@@ -1,22 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from '@/api/api'
-import { routes } from '@/router'
-import data from '../assets/js/getToken'
-console.log(data);
 Vue.use(Vuex)
-
-let getRoutes = function() {
-    let defined = ['/', '/registration', '/login'];
-    let arr = routes;
-    let res = [];
-    arr.forEach(item => {
-        if (!defined.includes(item.path)) {
-            res.push(item)
-        }
-    })
-    return res;
-}
 
 export default new Vuex.Store({
     state: {
@@ -24,7 +9,7 @@ export default new Vuex.Store({
         categorylist: {},
         needGetTradeData: true,
         tradeData: {},
-        routes: getRoutes()
+        routes: []
     },
     getters: {
         routes: state => state.routes,
@@ -34,7 +19,6 @@ export default new Vuex.Store({
         needGetTradeData: state => state.needGetTradeData
     },
     mutations: {
-        // ctx.commit('NEED_GETCATEGORYLIST',false)
         NEED_GETCATEGORYLIST: (state, payload) => state.needReCategoryList = payload,
         CATEGORY_LIST: (state, payload) => state.categorylist = payload,
         NEED_GETGETTRADEDATA: (state, payload) => state.needGetTradeData = payload,

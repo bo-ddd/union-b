@@ -286,7 +286,7 @@
 <script>
 import E from "wangeditor";
 import {mapActions} from "vuex";
-import uploadMap from "../../../public/lib/uploud";
+import uploadMap from "../../assets/lib/uploud";
 export default {
   data() {
     return {

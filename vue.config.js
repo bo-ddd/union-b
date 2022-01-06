@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
-    // const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 
 module.exports = {
     devServer: {
@@ -13,6 +13,7 @@ module.exports = {
         proxy: {
             '/api': {
                 target: 'http://192.168.1.52:7001', //填写服务端的接口地址；
+                changeOrigin:isProduction ? false : true,
                 pathRewrite: {
                     '^/api': ''
                 }

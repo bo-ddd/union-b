@@ -177,7 +177,7 @@ h3{
 
 <script>
 import { mapActions } from "vuex";
-import uploadImg from '../../../public/lib/uploud';
+import uploadImg from '../../assets/lib/uploud';
 export default {
     data() {
         return {

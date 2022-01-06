@@ -140,7 +140,7 @@
 import {
     mapActions
 } from "vuex";
-import Router from "../../../public/lib/router"
+import Router from "../../assets/lib/router"
 export default {
     data() {
         return {
@@ -185,7 +185,10 @@ export default {
         ...mapActions(["getRouteList", "createRoute", "createRouteMeta", "updateRoute", "updateRouteMeta", "deleteRoute", "deleteRouteMeta"]),
         async getRouterList() {
             let res = await this.getRouteList()
-            let router = new Router(res.data.route, res.data.meta)
+            let router = new Router({
+                routeList:res.data.route, 
+                metaList: res.data.meta
+            })
             this.routerList = router.data
             console.log(this.routerList)
         },

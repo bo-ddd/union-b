@@ -38,7 +38,8 @@ export default new Vuex.Store({
         NEED_GETCATEGORYLIST: (state, payload) => state.needReCategoryList = payload,
         CATEGORY_LIST: (state, payload) => state.categorylist = payload,
         NEED_GETGETTRADEDATA: (state, payload) => state.needGetTradeData = payload,
-        TRADEDATA: (state, payload) => state.tradeData = payload
+        TRADEDATA: (state, payload) => state.tradeData = payload,
+        ROUTES: (state, payload) => state.routes = payload
     },
     actions: {
         //登录

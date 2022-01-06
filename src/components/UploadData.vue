@@ -30,7 +30,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import uploada from '../../public/lib/uploud';
+import uploada from '../assets/lib/uploud';
 export default {
   props: ["type"],
   data() {

@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 export const routes = [{
         path: '/',
         name: '/',
-        redirect: '/data/realtime',
+        component:Home,
         meta: {
             title: '',
         },

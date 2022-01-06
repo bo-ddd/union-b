@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import uploadImg from '../../../public/lib/uploud';
+import uploadImg from '../../assets/lib/uploud'
 import { mapActions } from "vuex";
 export default {
     data(){

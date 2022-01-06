@@ -1,6 +1,8 @@
 import Home from '@/views/Home.vue'
 export default class Router {
-    constructor(routeList, metaList) {
+    constructor(options) {
+        const { routeList, metaList, baseUrl } = options;
+        this.baseUrl = baseUrl || '@/views';
         this.routeList = routeList.slice();
         this.metaList = metaList.slice()
         this.data = this.format(this.routeList, this.metaList);
@@ -12,7 +14,9 @@ export default class Router {
             if (item.component === 'Home') {
                 item.component = Home
             } else {
-                item.component = new Function(`import (/* webpackChunkName:"${item.name}"*/  @/views/ ${item.component}.vue )`)
+                const com = item.component;
+                // const file = `${this.baseUrl}/${com}`;
+                item.component =  () => import(`@/views/${com}`)
             }
         })
         result.forEach(el => {
@@ -31,6 +35,6 @@ export default class Router {
             })
         })
         return res.filter(router => router.pid == null)
-            // return res
+        // return res
     }
 }

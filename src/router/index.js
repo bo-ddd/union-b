@@ -644,7 +644,7 @@ export const routes = [{
         meta: {
             title: '',
         },
-    }
+    },
 ]
 
 

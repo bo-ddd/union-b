@@ -64,7 +64,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["getUserInfo", "userLogout"]),
+        ...mapActions(["getUserInfo", "userLogout", "getRouteList"]),
         handleOpen() {},
         handleClose() {},
         async logout() {
@@ -81,9 +81,9 @@ export default {
         ...mapGetters(['routes'])
     },
     async created() {
-        let theme=localStorage.getItem("theme");
-        if(theme){
-          changeColor(theme);
+        let theme = localStorage.getItem("theme");
+        if (theme) {
+            changeColor(theme);
         }
         let res = await this.getUserInfo();
         this.userInfo = res.data[0]

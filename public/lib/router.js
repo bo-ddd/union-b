@@ -1,12 +1,24 @@
+import Home from '@/views/Home.vue'
 export default class Router {
     constructor(routeList, metaList) {
         this.routeList = routeList.slice();
         this.metaList = metaList.slice()
         this.data = this.format(this.routeList, this.metaList);
     }
+    _import(file, name) {
+        return () =>
+            import (`/* webpackChunkName: "${name}" */ "${file}"`)
+    }
     format(routeList, metaList) {
         let res = routeList.slice();
         let result = metaList.slice();
+        res.forEach(item => {
+            if (item.component === '../views/Home.vue') {
+                item.component = Home
+            } else {
+                item.component = this._import(item.component, item.name)
+            }
+        })
         result.forEach(el => {
             let meta = {};
             el.forEach(key => {

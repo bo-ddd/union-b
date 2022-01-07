@@ -190,7 +190,6 @@ export default {
                 metaList: res.data.meta
             })
             this.routerList = router.data
-            console.log(this.routerList)
         },
         jump() {
             this.$router.push({
@@ -267,8 +266,6 @@ export default {
         },
     },
     created() {
-        console.log('----------')
-        console.log(this.$router)
         this.getRouterList()
     }
 }

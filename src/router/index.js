@@ -2,13 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/user/Login.vue'
-console.log(Home)
+
 Vue.use(VueRouter)
 
 export const routes = [{
         path: '/',
         name: '/',
-        component:Home,
+        component: Home,
         meta: {
             title: '',
         },

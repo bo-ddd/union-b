@@ -14,25 +14,34 @@ export default class Router {
                 item.component = Home
             } else {
                 const com = item.component;
-                item.component =  () => import(`@/views/${com}`)
+                item.component = () =>
+                    import (`@/views/${com}`)
             }
         })
         result.forEach(el => {
-            let meta = {};
-            el.forEach(key => {
-                meta["routeId"] = key.routeId
-                meta[key.key] = key.value
+            let obj = {};
+            obj["routeId"] = el.routeId;
+            obj[el.key] = el.value;
+            let arr2 = result.filter((target) => {
+                return target.routeId == el.routeId;
             })
+            if (arr2) {
+                for (let i = 0; i < arr2.length; i++) {
+                    if (arr2[i].key != el.key) {
+                        obj[arr2[i].key] = arr2[i].value;
+                    }
+                }
+            }
             res.forEach(item => {
                 item.children = [];
-                if (item.id == meta.routeId) {
-                    item.meta = meta
+                if (item.id === obj.routeId) {
+                    item.meta = obj
                 }
                 let p = res.find(route => route.id == item.pid);
                 item.pid && p.children.push(item);
             })
         })
         return res.filter(router => router.pid == null)
-        // return res
     }
+
 }

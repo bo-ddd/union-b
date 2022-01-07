@@ -7,9 +7,6 @@
 <script>
 import { mapActions } from "vuex";
 import Router from "@/assets/lib/router";
-import Realtime from "@/views/data/Realtime";
-console.log("demo-----------");
-console.log(Realtime);
 export default {
   data() {
     return {
@@ -20,7 +17,6 @@ export default {
     ...mapActions(["getRouteList"]),
     async getRouterList() {
       let res = await this.getRouteList();
-      console.log(res.data.route);
       const { route, meta } = res.data;
       let router = new Router({
         routeList: route,
@@ -29,9 +25,6 @@ export default {
       this.routerList = router.data;
       this.$router.addRoutes(this.routerList);
       this.$router.options.routes.push(this.routerList);
-      console.log("-asdfasd---");
-      console.log(this.$router);
-      console.log(this.routerList);
       this.$store.commit('ROUTES',this.routerList);
     },
   },

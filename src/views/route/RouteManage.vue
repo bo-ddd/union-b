@@ -10,8 +10,8 @@
         </el-table-column>
         <el-table-column prop="name" label="name" align="center">
         </el-table-column>
-        <!-- <el-table-column prop="component" label="component" align="center">
-        </el-table-column> -->
+        <el-table-column prop="meta.identity" label="identity" align="center">
+        </el-table-column>
         <el-table-column prop="meta.icon" label="meta.icon" align="center">
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center">

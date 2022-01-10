@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-                <el-button type='text' @click="handleEdit(scope.row.id)">审核</el-button>
+                <el-button type='text' @click="handleEdit(scope.row)">审核</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -82,8 +82,9 @@ export default {
         }
     },
     methods: {
-        ...mapActions(["getSettledList", "settledAdopt", "settledRefuse", "getIdentityList"]),
-        handleEdit(id) {
+        ...mapActions(["getSettledList", "settledAdopt", "settledRefuse", "getIdentityList", "getUserInfo", "updateUserInfo"]),
+        handleEdit(rows) {
+            console.log(rows)
             this.$confirm('是否可以审核通过', '审核信息', {
                     distinguishCancelAndClose: true,
                     confirmButtonText: '同意申请',
@@ -91,18 +92,26 @@ export default {
                 })
                 .then(async () => {
                     let res = await this.settledAdopt({
-                        id
+                        id: rows.id
                     })
-                    if (res.status == 1) {
+                    if (res.status === 1) {
                         this.$message.success('同意申请');
                         this.getList()
+                        let userInfo = await this.getUserInfo()
+                        console.log(userInfo.data[0])
+                        if (userInfo.data[0].identityId === 0) {
+                            await this.updateUserInfo({
+                                identityId: rows.roleId
+                            })
+                        }
+                        console.log(userInfo.data[0])
                     }
                 })
                 .catch(async action => {
                     let res = await this.settledRefuse({
-                        id
+                        id: rows.id
                     })
-                    if (res.status == 1) {
+                    if (res.status === 1) {
                         this.$message.error(
                             action === 'cancel' ?
                             '拒绝申请' : '再看一看信息'
@@ -136,11 +145,10 @@ export default {
                 pageNum: this.pageNum,
                 pageSize: this.pageSize
             });
-            if (res.status == 1) {
+            if (res.status === 1) {
                 this.tableData = res.data.rows
                 this.total = res.data.count
             }
-            console.log(res)
         },
         async getIdentList() {
             let res = await this.getIdentityList()
@@ -157,7 +165,7 @@ export default {
                 role: this.value || null,
                 type: this.typevalue || null
             });
-            if (res.status == 1) {
+            if (res.status === 1) {
                 this.tableData = res.data.rows
                 this.total = res.data.rows.length
             }

@@ -9,6 +9,7 @@ export const routes = [{
         path: '/',
         name: '/',
         component: Home,
+        redirect: '/data/transaction',
         meta: {
             title: '',
         },

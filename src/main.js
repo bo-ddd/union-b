@@ -10,14 +10,6 @@ Vue.use(VueAMap)
 Vue.use(ElementUI, { size: "small" });
 Vue.config.productionTip = false
 
-router.beforeEach((to, from, next) => {
-    const loginPath = '/login'
-    if (to.path !== loginPath && !sessionStorage.getItem('token')) {
-      next(loginPath)
-    } else {
-      next()
-    }
-})   
 // 地图
 VueAMap.initAMapApiLoader({
   key:'e02bb1f3271957bac9384a27cc1cde3e',

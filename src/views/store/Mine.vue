@@ -118,9 +118,9 @@
             <div class="bootm" @click="renovation">
               <div>装修首页</div>
             </div>
-            <div class="bootm" @click="store">
+            <!-- <div class="bootm" @click="store">
               <div>店铺中心</div>
-            </div>
+            </div> -->
             <div class="bootm" @click="templ">
               <div>模板市场</div>
             </div>
@@ -169,11 +169,11 @@ export default {
     suspension() {
       console.log(this.suspen);
     },
-    store() {
-      this.$router.push({
-        path: "details",
-      });
-    },
+    // store() {
+    //   this.$router.push({
+    //     path: "details",
+    //   });
+    // },
     templ() {
       this.$router.push({
         path: "mould",

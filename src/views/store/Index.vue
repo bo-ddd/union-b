@@ -14,8 +14,16 @@
           scope.row.avatorName || "大帅"
         }}</template>
       </el-table-column>
+      <el-table-column label="操作">
+        <el-button type="text" slot-scope="scope" @click="store(scope.row.storeId)">查看店铺</el-button>
+      </el-table-column>
     </el-table>
-    <el-pagination class="fen"  layout="prev, pager, next" :total="tableData.length"> </el-pagination>
+    <el-pagination
+      class="fen"
+      layout="prev, pager, next"
+      :total="tableData.length"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -52,6 +60,14 @@ export default {
         );
       }
     },
+    store(id) {
+      this.$router.push({
+        path: "details",
+        query:{
+          id:id
+        }
+      });
+    }
   },
   created() {
     this.getlist();
@@ -77,7 +93,7 @@ export default {
 .top {
   display: flex;
 }
-.fen{
+.fen {
   width: auto !important;
   margin: 1% 33%;
 }

@@ -46,6 +46,10 @@ export default new Vuex.Store({
         updateUserInfo(ctx, payload) {
             return Api.updateUserInfo(payload);
         },
+        //更改用户身份
+        updateUserIdentity(ctx, payload) {
+            return Api.updateUserIdentity(payload);
+        },
         //退出登录
         userLogout(ctx, payload) {
             return Api.userLogout(payload);

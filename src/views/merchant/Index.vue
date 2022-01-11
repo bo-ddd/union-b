@@ -82,7 +82,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(["getSettledList", "settledAdopt", "settledRefuse", "getIdentityList", "getUserInfo", "updateUserInfo"]),
+        ...mapActions(["getSettledList", "settledAdopt", "settledRefuse", "getIdentityList", "updateUserIdentity"]),
         handleEdit(rows) {
             console.log(rows)
             this.$confirm('是否可以审核通过', '审核信息', {
@@ -97,14 +97,10 @@ export default {
                     if (res.status === 1) {
                         this.$message.success('同意申请');
                         this.getList()
-                        let userInfo = await this.getUserInfo()
-                        console.log(userInfo.data[0])
-                        if (userInfo.data[0].identityId === 0) {
-                            await this.updateUserInfo({
+                            await this.updateUserIdentity({
+                                id:rows.id,
                                 identityId: rows.roleId
                             })
-                        }
-                        console.log(userInfo.data[0])
                     }
                 })
                 .catch(async action => {
@@ -154,6 +150,7 @@ export default {
             let res = await this.getIdentityList()
             if (res.status == 1) {
                 this.IdentList = res.data.rows
+                this.IdentList.shift()
             }
         },
         reset() {

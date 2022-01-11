@@ -74,6 +74,16 @@ export default {
         return axios.post('/user/update', params, postConfig)
     },
     /**
+     * @description  更改用户身份 
+     * @params {
+     * id: [number],      用户id
+     * identityId : [number]       用户身份
+     * }
+     * */
+    updateUserIdentity(params) {
+        return axios.post('/userIdentity/update', params, postConfig)
+    },
+    /**
      * @description  退出登录接口
      * @params 没有参数  必须登录
      * */

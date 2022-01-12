@@ -151,8 +151,9 @@ import { mapActions } from "vuex";
         }
       },
       async created(){
+        let storeId=this.$route.query.id
         let res =await this.getStoreDetail({
-          storeId:1
+          storeId:storeId
         });
         this.storeInfo = res.data[0];
         this.tableData=res.data[0].detail;

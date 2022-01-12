@@ -151,23 +151,27 @@ import { mapActions } from "vuex";
         }
       },
       async created(){
-        let storeId=this.$route.query.id
+        let Id=this.$route.query.id
         let res =await this.getStoreDetail({
-          storeId:storeId
+          storeId:Id
         });
-        this.storeInfo = res.data[0];
-        this.tableData=res.data[0].detail;
-        console.log(this.storeInfo);
-        this.productStatus=this.tableData[0].productStatus
-        if(this.productStatus==0){
-          this.productStatus="已删除"
-        }else if(this.productStatus==1){
-          this.productStatus="已上架"
+        console.log(res);
+        if(Array.isArray(res.data)==true){
+          this.storeInfo = res.data[0];
+          this.tableData=res.data[0].detail;
+          this.productStatus=this.tableData[0].productStatus
+          if(this.productStatus==0){
+            this.productStatus="已删除"
+          }else if(this.productStatus==1){
+            this.productStatus="已上架"
+          }else{
+            this.productStatus="已下架"
+          }
+          this.avatorImg = require('@/assets/images/avator/' + this.storeInfo.avatorImg + '.png')
         }else{
-          this.productStatus="已下架"
-        }
-        this.avatorImg = require('@/assets/images/avator/' + this.storeInfo.avatorImg + '.png')
-
+          this.storeInfo = res.data;
+          this.avatorImg = require('@/assets/images/avator/' + this.storeInfo.avatorImg + '.png')
+          }
       },
       methods:{
         ...mapActions(["getStoreDetail"]),

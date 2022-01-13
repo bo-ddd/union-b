@@ -95,6 +95,9 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+::v-deep .el-button{
+    margin-bottom: 20px;
+}
 ::v-deep .el-input__inner{
     width: 170px;
     margin-left: 10px;
@@ -125,6 +128,8 @@ export default {
     text-align: center;
 }
 #wrap{
-    padding: 20px 20px;
+    padding: 20px;
+    height: 90%;
+    background-color: white;
 }
 </style>

@@ -12,7 +12,7 @@
     </div>
 
     <div class="text-tips">
-      <h4>桌面端预览</h4>
+      <h3>桌面端预览</h3>
     </div>
     <div class="content">
       <div class="left">
@@ -235,15 +235,14 @@ computed: {
 .wrap {
   height: calc(100vh - 100px);
   overflow-y: auto;
-  margin-right: 100px;
+  background-color: white;
+  padding: 30px;
   .head {
     display: flex;
     justify-content: space-between;
     & .right-block {
       height: 16px;
       width: 8px;
-      background-color: #ff4070;
-      margin-right: 20px;
     }
     & div {
       display: flex;
@@ -252,16 +251,15 @@ computed: {
   }
   .text-tips {
     margin-top: 35px;
-    & h4{
+    & h3{
       text-align: right;
-      margin-right: 295px;
+      margin-right: 280px;
     }
   }
   .content {
     & .left{
       background-color: white;
       width: 700px;
-      height: 520px;
     }
     & .right {
       float: right;

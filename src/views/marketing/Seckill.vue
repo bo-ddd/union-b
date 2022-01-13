@@ -1,6 +1,5 @@
 <template>
   <div class="wrap">
-    <h2>秒杀管理</h2>
     <div class="content">
       <div class="content_header">
         <div class="content_header-left">
@@ -34,35 +33,35 @@
           </div>
         </div>
         <div class="content_header-right">
-          <el-button type="primary" >查询</el-button>
-          <el-button type="primary" >重置</el-button>
+          <el-button>查询</el-button>
+          <el-button>重置</el-button>
         </div>
       </div>
       <div class="content_center">
         <el-button type="primary" >+新增秒杀</el-button>
         <el-button type="primary" >批量终止</el-button>
-        <el-button type="primary" >批量删除</el-button>
+        <el-button type="danger" >批量删除</el-button>
       </div>
       <div class="table">
           <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"  style="width: 100%">
-            <el-table-column type="selection" >
+            <el-table-column type="selection" align="center">
             </el-table-column>
-            <el-table-column label="名称" >
+            <el-table-column label="名称" align="center">
               <template slot-scope="scope">{{ scope.row.name }}</template>
             </el-table-column>
-            <el-table-column prop="start" label="开始时间" >
+            <el-table-column prop="start" label="开始时间" align="center">
             </el-table-column>
-            <el-table-column prop="end" label="结束时间" show-overflow-tooltip>
+            <el-table-column prop="end" label="结束时间" show-overflow-tooltip align="center">
             </el-table-column>
-            <el-table-column prop="account" label="创建账户" show-overflow-tooltip>
+            <el-table-column prop="account" label="创建账户" show-overflow-tooltip align="center">
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip>
+            <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip align="center">
             </el-table-column>
-            <el-table-column prop="area" label="活动地区" show-overflow-tooltip>
+            <el-table-column prop="area" label="活动地区" show-overflow-tooltip align="center">
             </el-table-column>
-            <el-table-column prop="state" label="状态" show-overflow-tooltip>
+            <el-table-column prop="state" label="状态" show-overflow-tooltip align="center">
             </el-table-column>
-            <el-table-column prop="address" label="操作" show-overflow-tooltip>
+            <el-table-column prop="address" label="操作" show-overflow-tooltip align="center">
                 <el-link type="primary">编辑</el-link>
                 <el-link type="warning">终止</el-link>
                 <el-link type="danger">删除</el-link>
@@ -146,7 +145,6 @@ export default {
     min-width: 1000px;
     height: calc(100vh - 260px);
     background-color: #fff;
-    margin-top: 20px;
     padding: 20px;
     & .content_header {
       display: flex;
@@ -164,19 +162,19 @@ export default {
       &>.content_header-right{
         & .el-button:hover{
           color: #fff;
-          background-color: rgb(255, 111, 147);
+         
         }
       }
     }
     & .content_center{
-      margin-top: 50px;
+      margin-top: 30px;
       & .el-button:hover{
          color: #fff;
-         background-color: rgb(255, 111, 147);
+         
       }
     }
     & .table{
-      margin-top: 30px;
+      margin-top: 20px;
       & .el-link{
         margin-right: 20px;
       }

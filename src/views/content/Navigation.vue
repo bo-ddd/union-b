@@ -2,16 +2,13 @@
   <div class="wrap">
     <div class="head">
       <div>
-        <div class="right-block"></div>
-        <h3>桌面端导航</h3>
-      </div>
-      <div>
         <el-button type="primary">保存</el-button>
         <el-button>取消</el-button>
       </div>
     </div>
 
     <div class="text-tips">
+      <h3>桌面端导航</h3>
       <h3>桌面端预览</h3>
     </div>
     <div class="content">
@@ -236,21 +233,19 @@ computed: {
   height: calc(100vh - 100px);
   overflow-y: auto;
   background-color: white;
-  padding: 30px;
+  padding: 20px;
   .head {
-    display: flex;
-    justify-content: space-between;
-    & .right-block {
-      height: 16px;
-      width: 8px;
-    }
     & div {
+      margin-left: 85%;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
     }
   }
   .text-tips {
-    margin-top: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     & h3{
       text-align: right;
       margin-right: 280px;

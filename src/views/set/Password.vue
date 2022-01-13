@@ -71,25 +71,27 @@ export default {
   justify-content: center;
   align-items: center;
   & .box{
-    width: 70%;
-    height: 400px;
-    box-shadow:0px 1px 10px #cecece;
-    background-color: #f3f3f3;
+    width: 45%;
+    height: 450px;
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     & .formbox{
       width: 100%;
+      height: 350px;
     }
     & .top_title{
-      font-size: 25px;
+      font-size: 27px;
       font-weight: 700;
       height: 70px;
       line-height: 70px;
       text-align: center;
+      margin-top: 10px;
+      margin-bottom: 30px;
     }
     & .main_inputbox{
-      width: 40%;
+      width: 50%;
       margin: 10px auto;
       display: flex;
       justify-content: center;
@@ -99,7 +101,9 @@ export default {
         margin-bottom: 10px;
       }
       & .confirmbtn{
-        width: 60%;
+        width: 40%;
+        margin-top: 10px;
+        text-align: center;
       }
     }
   }

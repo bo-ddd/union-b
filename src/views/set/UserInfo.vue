@@ -54,7 +54,10 @@
         >
           <img :src="img.url" alt="" @click="selectAvatar(img.id)" />
         </div>
+    </div>
+      <div class="submit">
         <el-button type="primary" @click="flag = false">确定</el-button>
+        <el-button type="primary" @click="flag = false">取消</el-button>
       </div>
     </div>
   </div>
@@ -329,6 +332,11 @@ export default {
         this.userInfo.avatorName = res.data[0].avatorName;
         this.userInfo.avatorImg = require(`@/assets/images/avator/${res.data[0].avatorImg}.png`);
         this.userInfo.phone = res.data[0].phone;
+        for(let i=0; i<this.img.length; i++) {
+          if(res.data[0].avatorImg == i){
+            this.img[i].active = true;
+          }
+        }
       }
     },
 
@@ -457,7 +465,7 @@ export default {
       border-radius: 4px;
       -webkit-box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
       box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-      margin: 100px auto;
+      margin: 10px auto;
 
       & .active {
         border: 2px solid white;
@@ -468,6 +476,13 @@ export default {
         height: 70px;
         padding: 5px;
       }
+    }
+
+    & .submit {
+      width: 620px;
+      height:30px;
+      text-align: center;
+      margin: 0 auto;
     }
   }
 }

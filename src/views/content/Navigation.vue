@@ -1,19 +1,15 @@
 <template>
   <div class="wrap">
-    <div class="head">
+    <!-- <div class="head">
       <div>
-        <div class="right-block"></div>
-        <h3>桌面端导航</h3>
-      </div>
-      <div>
-        <el-button type="primary">取消</el-button>
         <el-button type="primary">保存</el-button>
+        <el-button>取消</el-button>
       </div>
-    </div>
+    </div> -->
 
     <div class="text-tips">
-      <h4>操作区域</h4>
-      <h4 class="mr-300">桌面端预览</h4>
+      <h3>桌面端导航</h3>
+      <h3>桌面端预览</h3>
     </div>
     <div class="content">
       <div class="left">
@@ -180,7 +176,7 @@ computed: {
 ::v-deep .el-upload {
   width: 120px;
   height: 110px;
-  border: none;
+  // border: none;
 }
 ::v-deep .el-upload--picture-card {
   line-height: 110px;
@@ -236,27 +232,30 @@ computed: {
 .wrap {
   height: calc(100vh - 100px);
   overflow-y: auto;
-  margin-right: 100px;
+  background-color: white;
+  padding: 20px;
   .head {
-    display: flex;
-    justify-content: space-between;
-    & .right-block {
-      height: 16px;
-      width: 8px;
-      background-color: #ff4070;
-      margin-right: 20px;
-    }
     & div {
+      margin-left: 85%;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
     }
   }
   .text-tips {
-    margin-top: 35px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    & h3{
+      text-align: right;
+      margin-right: 280px;
+    }
   }
   .content {
+    & .left{
+      background-color: white;
+      width: 700px;
+    }
     & .right {
       float: right;
       width: 375px;

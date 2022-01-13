@@ -12,9 +12,9 @@
                   <el-descriptions-item label="店主头像">
                     <img class="shophead" :src="avatorImg" alt="">
                   </el-descriptions-item>
-                  <el-descriptions-item label="店主名称">{{storeInfo.storeTitle}}</el-descriptions-item>
+                  <el-descriptions-item label="店主名称">{{storeInfo.avatorName}}</el-descriptions-item>
                   <el-descriptions-item label="店主电话">{{storeInfo.userPhone}}</el-descriptions-item>
-                  <el-descriptions-item label="店铺名称">{{storeInfo.avatorName}}</el-descriptions-item>
+                  <el-descriptions-item label="店铺名称">{{storeInfo.storeTitle}}</el-descriptions-item>
                   <el-descriptions-item label="邮箱号">{{storeInfo.email}}</el-descriptions-item>
                   <el-descriptions-item label="身份">{{storeInfo.identityName}}</el-descriptions-item>
                   <el-descriptions-item label="创建时间">{{gettime(storeInfo.storeCreatedAt)}}</el-descriptions-item>
@@ -34,40 +34,6 @@
             <div class="main-nav">
               <div class="main-nav-title">商品信息</div>
             </div>
-            <!-- <div class="projectleft">
-              <div class="left-nav">
-                <div class="main-nav-title">商品列表</div>
-                <div class="main-nav-btn"><i class="el-icon-more"></i></div>
-              </div>  
-                <template>
-                  <el-table
-                    :data="tableData"
-                    style="width: 100%">
-                    <el-table-column
-                      prop="date"
-                      label="日期"
-                      width="180">
-                    </el-table-column>
-                    <el-table-column
-                      prop="name"
-                      label="姓名"
-                      width="180">
-                    </el-table-column>
-                    <el-table-column
-                      prop="address"
-                      label="地址">
-                    </el-table-column>
-                  </el-table>
-                </template>
-              <div>
-              </div>
-            </div>
-            <div class="projectright">
-              <div class="right-nav">
-                <div class="main-nav-title">{{storeInfo.storeId}}</div>
-                <div class="main-nav-btn"><i class="el-icon-more"></i></div>
-              </div>
-            </div> -->
             <div class="detailinfo">
               <template >
                   <el-table

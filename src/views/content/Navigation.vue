@@ -6,14 +6,13 @@
         <h3>桌面端导航</h3>
       </div>
       <div>
-        <el-button type="primary">取消</el-button>
         <el-button type="primary">保存</el-button>
+        <el-button>取消</el-button>
       </div>
     </div>
 
     <div class="text-tips">
-      <h4>操作区域</h4>
-      <h4 class="mr-300">桌面端预览</h4>
+      <h4>桌面端预览</h4>
     </div>
     <div class="content">
       <div class="left">
@@ -180,7 +179,7 @@ computed: {
 ::v-deep .el-upload {
   width: 120px;
   height: 110px;
-  border: none;
+  // border: none;
 }
 ::v-deep .el-upload--picture-card {
   line-height: 110px;
@@ -253,10 +252,17 @@ computed: {
   }
   .text-tips {
     margin-top: 35px;
-    display: flex;
-    justify-content: space-between;
+    & h4{
+      text-align: right;
+      margin-right: 295px;
+    }
   }
   .content {
+    & .left{
+      background-color: white;
+      width: 700px;
+      height: 520px;
+    }
     & .right {
       float: right;
       width: 375px;

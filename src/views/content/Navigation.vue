@@ -1,11 +1,11 @@
 <template>
   <div class="wrap">
-    <div class="head">
+    <!-- <div class="head">
       <div>
         <el-button type="primary">保存</el-button>
         <el-button>取消</el-button>
       </div>
-    </div>
+    </div> -->
 
     <div class="text-tips">
       <h3>桌面端导航</h3>

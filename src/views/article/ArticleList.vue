@@ -1,28 +1,28 @@
 <template>
   <div class="wrap">
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="id" label="id" width="100"> </el-table-column>
+      <el-table-column prop="id" label="id" width=" 50"> </el-table-column>
       <el-table-column prop="createdAt" label="创建日期" width="230">
       </el-table-column>
       <el-table-column prop="articleTitle" label="文章标题" width="230">
       </el-table-column>
-      <el-table-column prop="articleContent" label="文章内容">
+      <el-table-column prop="articleContent" label="文章内容" width="230">
        <template slot-scope="scope">
         <div v-html="scope.row.articleContent"></div>
        </template>
       </el-table-column>
-      <el-table-column prop="updatedAt" label="更改日期" width="230">
+      <el-table-column prop="updatedAt" label="更改日期" width="200">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="230">
+      <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button class="button" @click="remove(scope.row)" type="text"
-            >移除</el-button
-          >
           <el-button class="button" @click="find(scope.row)" type="text"
             >查看</el-button
           >
           <!-- <el-button class="button" @click="update(scope.row)" type="text">更改</el-button> -->
           <el-button type="text" @click="update(scope.row)">更改</el-button>
+           <el-button class="button" @click="remove(scope.row)" type="text"
+            >移除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -136,8 +136,12 @@ export default {
 <style>
 .wrap {
   padding: 20px;
+  background-color: #fff;
 }
 .el-dialog__body{
   padding: 0px 20px;
+}
+.el-table .cell{
+  text-align: center;
 }
 </style>

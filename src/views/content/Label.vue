@@ -41,12 +41,12 @@
     <div class="third">
     <div class="third-top">
     <el-table :data="tableData" style="width: 100%">
-    <el-table-column prop="id" label="id"></el-table-column>
-    <el-table-column prop="lableName" label="标签列表"></el-table-column>
-     <el-table-column fixed="right" label="操作" width="230">
+    <el-table-column prop="id" label="id" width="100"></el-table-column>
+    <el-table-column prop="lableName" label="标签列表" width="870"></el-table-column>
+     <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button class="button" @click="remove(scope.row)" type="text">移除</el-button>
           <el-button class="button" @click="update(scope.row)" type="text">更改</el-button>
+          <el-button class="button" @click="remove(scope.row)" type="text">移除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -77,6 +77,9 @@
 }
 .paging{
   margin-top: 10px;
+}
+.el-table--fit {
+  margin-top: 20px;
 }
 .go {
   width: 40px;
@@ -162,11 +165,15 @@
 .el-select .el-input {
   width: 130px;
 }
+.block {
+  margin-top: 20px;
+}
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
 }
 .wrap {
   padding: 20px;
+  background-color: #fff;
 }
 .top {
   display: flex;
@@ -198,7 +205,9 @@
 .s {
   margin-left: 5px;
 }
-
+::v-deep .el-table .cell{
+  text-align: center;
+}
 </style>
 <script>
 import { mapActions } from "vuex";

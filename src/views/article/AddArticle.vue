@@ -3,7 +3,7 @@
     <div class="wrap">
       <div class="center">
         <div class="center-content">
-          <span class="content">文章标题</span>
+          <b class="content">文章标题</b>
           <el-input
             class="input"
             v-model="articleTitle"
@@ -15,19 +15,21 @@
       </div>
       <div class="center">
         <div class="center-content">
-          <span class="content-img">文章照片</span>
+          <b class="content-img">文章照片</b>
           <div class="chuan">
-          <el-upload class="photoWall"
-  action=""
-  :http-request="imgAdd"
-  list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
-  <i class="el-icon-plus"></i>
-</el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
-</el-dialog>
+            <el-upload
+              class="photoWall"
+              action=""
+              :http-request="imgAdd"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt="" />
+            </el-dialog>
           </div>
           <i class="el-icon-warning-outline icon-img"></i>
           <span class="tips-img"
@@ -37,9 +39,9 @@
       </div>
       <div class="center">
         <div class="center-content">
-          <span class="content-imges">文章内容</span>
+          <b class="content-imges">文章内容</b>
           <el-input
-            class="articleContent"
+          class="articleContent"
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
@@ -54,7 +56,9 @@
       <div class="bottom">
         <div class="bottom-content">
           <el-button>返回</el-button>
-          <el-button type="primary" class="addArticle" @click="addArticle">添加</el-button>
+          <el-button type="primary" class="addArticle" @click="addArticle"
+            >添加</el-button
+          >
         </div>
       </div>
     </div>
@@ -63,7 +67,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import addImg from '../../../public/lib/uploud';
+import addImg from "../../../public/lib/uploud";
 export default {
   data() {
     return {
@@ -77,18 +81,17 @@ export default {
       item: {},
     };
   },
-  
-   
+
   methods: {
-    ...mapActions(["createArticle", "getUserInfo","uploadImage"]), 
-    async imgAdd(a){
-      let res = addImg(a.file,6);
+    ...mapActions(["createArticle", "getUserInfo", "uploadImage"]),
+    async imgAdd(a) {
+      let res = addImg(a.file, 6);
       // console.log(res);
       let b = await this.uploadImage(res);
       console.log(b);
       this.articleImg = b.data;
     },
-    async addArticle(){
+    async addArticle() {
       let add = await this.createArticle({
         articleTitle: this.articleTitle,
         articleImg: this.articleImg,
@@ -96,12 +99,11 @@ export default {
         authorId: this.authorId,
       });
       console.log(add);
-
     },
-     async list(){
-        let allList = await this.getArticleList();
-        console.log(allList);
-      },
+    async list() {
+      let allList = await this.getArticleList();
+      console.log(allList);
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
@@ -114,20 +116,19 @@ export default {
     let id = await this.getUserInfo();
     console.log(id.data[0].id);
     this.authorId = id.data[0].id;
-    
   },
 };
 </script>
 
 <style scoped lang='scss'>
-.photoWall{
+.photoWall {
   margin: 20px 79px;
 }
 
-.button-img{
- width: 40px;
- height: 20px;
- margin-top: 31px;
+.button-img {
+  width: 40px;
+  height: 20px;
+  margin-top: 31px;
 }
 .body {
   height: calc(100vh - 100px);
@@ -135,6 +136,7 @@ export default {
 }
 .wrap {
   padding: 20px;
+  background-color: #fff;
 }
 
 .add {
@@ -151,21 +153,22 @@ export default {
   margin-left: 10px;
 }
 .content {
-  margin-top: 10px;
-  margin-left: 80px;
+  margin-top: 7px;
+  margin-left: 30px;
   font-size: 14px;
   color: rgb(140, 140, 140);
 }
 .content-img {
-  margin-top: 30px;
-  margin-left: 80px;
+  margin-top: 80px;
+  margin-left: 31px;
   margin-right: -69px;
   font-size: 14px;
   color: rgb(140, 140, 140);
 }
+
 .content-imges {
-  margin-top: 20px;
-  margin-left: 80px;
+  margin-top: 16px;
+  margin-left: 30px;
   font-size: 14px;
   color: rgb(140, 140, 140);
 }
@@ -176,13 +179,13 @@ export default {
   color: rgb(140, 140, 140);
 }
 .tipes {
-  margin-top: 19px;
+  margin-top: 17px;
   margin-left: 15px;
   font-size: 14px;
   color: rgb(140, 140, 140);
 }
 .tips-img {
-  margin-top: 30px;
+  margin-top: 80px;
   margin-left: 15px;
   font-size: 14px;
   color: rgb(140, 140, 140);
@@ -196,15 +199,15 @@ export default {
   display: flex;
 }
 .el-icon-warning-outline {
-  margin-left: 10px;
+  margin-left: 9px;
   margin-top: 10px;
 }
 .character {
   margin-left: 14px;
 }
 .charactar {
-  margin-top: 20px;
-  margin-left: 15px;
+  margin-top: 19px;
+  margin-left: 11px;
 }
 .option {
   margin-left: 30px;
@@ -224,8 +227,8 @@ export default {
   margin-left: 10px;
 }
 .icon-img {
-  margin-left: 60px;
-  margin-top: 33px;
+  margin-left: 82px;
+  margin-top: 80px;
 }
 .icon-i {
   margin-left: 12px;
@@ -235,7 +238,6 @@ export default {
 }
 .articleContent {
   width: 300px;
-  height: 95px;
   margin-left: 10px;
 }
 .bottom {

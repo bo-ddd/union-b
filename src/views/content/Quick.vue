@@ -80,6 +80,9 @@
 </template>
 
 <style lang="scss" scoped>
+::v-deep .el-button{
+    margin-bottom: 20px;
+}
 .ml-10{
     margin-left: 10px;
 }

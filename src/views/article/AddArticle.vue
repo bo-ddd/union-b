@@ -67,11 +67,7 @@
 
 <script>
 import { mapActions } from "vuex";
-<<<<<<< HEAD
-import addImg from "../../../public/lib/uploud";
-=======
 import addImg from '../../assets/lib/uploud';
->>>>>>> 617251addfbf578b4328a04237e08132a980325c
 export default {
   data() {
     return {

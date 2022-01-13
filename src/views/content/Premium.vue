@@ -15,7 +15,7 @@
 </div>
     <div class="block">
          <el-button type="primary" @click="inquirygoods">查询</el-button>
-         <el-button  type="primary">重置</el-button>
+         <el-button>重置</el-button>
     </div>
          </div>
          <div class="header-center">
@@ -27,7 +27,7 @@
             <el-table-column
               prop="productName"
               label="名称"
-              width="280">
+              width="180">
             </el-table-column>
             <el-table-column
               prop="productNo"
@@ -46,7 +46,7 @@
               width="180">
                 <template slot-scope="scope">
                 <el-button type="primary"  @click="editModify(scope.row)">编辑</el-button> 
-              <el-button type="primary"  @click="handleDelete(scope.row)">删除</el-button>
+              <el-button type="danger" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
           </el-table>
@@ -375,10 +375,14 @@ export default {
   grid-template-columns: repeat(5,1fr);
   gap: 20px 20px;
 }
+
 .wrap{
   height: calc(100vh - 100px);
   overflow-y:auto;
+  background: #fff;
+  padding: 20px;
 }
+
 .asterisk{
   position: relative;
 }
@@ -399,8 +403,6 @@ export default {
     font-weight: 700;
 }
 .header{
-    min-height:15vh;
-    padding: 20px 15px;
      & .header-title{
       display: flex;
       justify-content: space-between;
@@ -410,7 +412,7 @@ export default {
       }  
     }
     & .header-center{
-        margin-top: 30px;
+       padding: 20px 0;
     }
   }
  .main {
@@ -422,12 +424,6 @@ export default {
     margin-bottom: 20px;
     color: #ff6051;
   }
-  ::v-deep .el-table__row  .el-table_1_column_3 {
-    padding-left: 70px;
-  }
-  ::v-deep .el-table__row  .el-table_1_column_5 {
-    padding-left: 30px;
-  } 
 ::v-deep .el-upload{
     border: 1px dashed #d9d9d9;
 }
@@ -438,5 +434,8 @@ export default {
     display: inline-block;
     margin-left: 135px;
     margin-bottom: 10px;
+}
+::v-deep .el-table .cell{
+  text-align: center;
 }
 </style>

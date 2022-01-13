@@ -52,7 +52,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import lout from "../../../public/lib/uploud";
+import lout from "../../assets/lib/uploud";
 export default {
   data() {
     return {

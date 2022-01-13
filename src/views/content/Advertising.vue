@@ -1,7 +1,59 @@
 <template>
   <div class="wrap">
     <div class="header">
-      <div class="header-left">
+      <div class="header-search">
+        <div class="selectBox">
+        <div class="select">
+          <span class="mr-10">类型</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="全部">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
+        </div>
+         <div class="select">
+          <span class="mr-10">尺寸</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="全部">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
+         
+        </div>
+         <div class="select">
+          <span class="mr-10">广告</span>
+          <div class="select-suf">
+          <el-select v-model="value" placeholder="请选择广告">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </div>
+        </div>
+        </div>
+        <el-input
+          placeholder="请输入广告ID 或广告类型"
+          prefix-icon="el-icon-search"
+          v-model="id"
+          class="ipt"
+        >
+        </el-input>
+        <el-button type="primary" @click="queryAdver">查询</el-button>
+      </div>
+           <div class="header-increased">
          <el-button  icon="el-icon-plus"  @click="openFormDialog" type="primary"
           >新增广告</el-button
         >
@@ -84,7 +136,7 @@
                       label="图片文件"
                       :label-width="formLabelWidth"
                     >
-                    <!--上传图片-->
+                    <!-- 上传图片 -->
                     <el-upload
                       action=""
                       :http-request="uploadImg"
@@ -161,60 +213,6 @@
           </el-tabs>
         </el-dialog>
       </div>
-      <div class="header-right">
-        <div class="selectBox">
-        <div class="select">
-          <span class="mr-10">类型</span>
-          <div class="select-suf">
-          <el-select v-model="value" placeholder="全部">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          </div>
-        </div>
-         <div class="select">
-          <span class="mr-10">尺寸</span>
-          <div class="select-suf">
-          <el-select v-model="value" placeholder="全部">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          </div>
-         
-        </div>
-         <div class="select">
-          <span class="mr-10">广告</span>
-          <div class="select-suf">
-          <el-select v-model="value" placeholder="请选择广告">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          </div>
-        </div>
-        </div>
-        <div>
-        <el-input
-          placeholder="请输入广告ID 或广告类型"
-          prefix-icon="el-icon-search"
-          v-model="id"
-          class="ipt"
-        >
-        </el-input>
-        <el-button type="primary" @click="queryAdver">查询</el-button>
-        </div>
-      </div>
     </div>
     <div class="main">
       <el-table
@@ -254,7 +252,7 @@
             <el-button   @click="handleEdit(scope.row)" type="primary"
               >修改</el-button
             >
-            <el-button  @click="deleteRow(scope.row)" type="primary"
+            <el-button  @click="deleteRow(scope.row)" type="danger"
               >删除</el-button
             >
           </template>
@@ -286,7 +284,7 @@
 <script>
 import E from "wangeditor";
 import {mapActions} from "vuex";
-import uploadMap from "../../../public/lib/uploud";
+import uploadMap from "../../assets/lib/uploud";
 export default {
   data() {
     return {
@@ -454,24 +452,26 @@ export default {
   height: calc(100vh - 100px);
   overflow-y:auto;
   background: #fff;
+  padding: 20px;
 }
 .header {
   display: grid;
-  grid-template-columns: 20% 80%;
-  padding: 10px;
   align-items: center;
-  & .header-right{
+  & .header-increased{
+  padding: 20px 0;
+  }
+  & .header-search{
     display: flex;
   justify-content: space-between;
   align-items: center;
   & .selectBox{
     display: flex;
   & .select{
-          margin-right: 15px;
+    margin-right: 30px;
     display: flex;
     align-items: center;
    ::v-deep .el-input__inner{
-      width: 120px;
+      width: 180px;
     }
     & .mr-10{
       margin-right: 10px;
@@ -500,10 +500,6 @@ export default {
 ::v-deep .el-input__icon {
   height: 30px;
 }
-.main {
-  margin-top: 15px;
-}
-
 ::v-deep .el-input__icon {
   height: 40px;
 }
@@ -557,5 +553,8 @@ export default {
 .imgSize{
   height: 50px;
   width: 100px;
+}
+::v-deep .el-table .cell{
+  text-align: center;
 }
 </style>

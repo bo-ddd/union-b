@@ -3,18 +3,18 @@
     <el-container>
         <el-aside :width="isCollapse?'60px':'220px'">
             <div class="aside_main">
-                <el-menu class="menu el-menu-vertical-demo" collapse-transition unique-opened :router="true" :default-active="$route.path" @open="handleOpen" @close="handleClose" :collapse="isCollapse" active-text-color="#ff6f93">
+                <el-menu class="menu el-menu-vertical-demo" collapse-transition unique-opened :router="true" :default-active="$route.path" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
                     <div class="logobox">
                         <img src="../assets/logo.png" alt="" class="logo">
                         <div class="fw-b" v-if="!isCollapse">系统管理中心</div>
                     </div>
-                    <el-submenu v-for="(link, index) in routes" :key="index" :index="link.path">
+                    <el-submenu v-for="(link, index) in routes" :key="index" :index="link.path" v-show="link.meta.identity.includes(identity)">
                         <template slot="title">
                             <i :class="link.meta.icon"></i>
                             <span>{{ link.meta.title }}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path" v-show='!children.meta.flag' @click="show = !show">
+                            <el-menu-item v-for="(children, index) in link.children" :key="index" :index="children.path" v-show="!children.meta.isShow && children.meta.identity.includes(identity)"  @click="show = !show">
                                 <span>{{ children.meta.title }}</span>
                             </el-menu-item>
                         </el-menu-item-group>
@@ -34,9 +34,9 @@
                         <div class="imgbox">
                             <img class="avator" :src="avatorImg" alt="">
                         </div>
-                        <span>{{userInfo.avatorName}}</span>
+                        <span>{{userInfo.avatorName || userInfo.email}}</span>
                     </div>
-                    <el-link type="primary" plain size='small' @click="logout" :underline="false">退出</el-link>
+                    <el-link type="primary" plain size='small' @click="logout" :underline="false" class="logout">退出</el-link>
                 </div>
             </el-header>
             <el-main>
@@ -61,10 +61,11 @@ export default {
             show: true,
             userInfo: '',
             avatorImg: '',
+            identity:0
         };
     },
     methods: {
-        ...mapActions(["getUserInfo", "userLogout"]),
+        ...mapActions(["getUserInfo", "userLogout", "getRouteList"]),
         handleOpen() {},
         handleClose() {},
         async logout() {
@@ -81,12 +82,14 @@ export default {
         ...mapGetters(['routes'])
     },
     async created() {
-        let theme=localStorage.getItem("theme");
-        if(theme){
-          changeColor(theme);
+        let theme = localStorage.getItem("theme");
+        if (theme) {
+            changeColor(theme);
         }
         let res = await this.getUserInfo();
         this.userInfo = res.data[0]
+        this.identity = this.userInfo.identityId
+        console.log(this.userInfo)
         this.avatorImg = require('@/assets/images/avator/' + this.userInfo.avatorImg + '.png')
     }
 }
@@ -182,18 +185,23 @@ export default {
 
             & .avatorbox {
                 display: flex;
+                align-items: center;
 
                 & .imgbox {
-                    width: 25px;
-                    height: 25px;
-                    border-radius: 25px;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 30px;
                     overflow: hidden;
                     margin-right: 10px;
 
                     & .avator {
-                        width: 25px;
+                        width: 30px;
                     }
                 }
+            }
+            & .logout{
+                font-size: 16px;
+                width: 40px;
             }
 
         }

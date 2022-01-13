@@ -30,7 +30,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import uploada from '../../public/lib/uploud';
+import uploada from '../assets/lib/uploud';
 export default {
   props: ["type"],
   data() {
@@ -88,7 +88,7 @@ export default {
 <style scoped lang="scss">
 .mainNav {
   & .wrods {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
   }
 

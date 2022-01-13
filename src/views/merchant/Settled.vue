@@ -106,6 +106,7 @@ export default {
             let res = await this.getIdentityList()
             if (res.status == 1) {
                 this.radioList = res.data.rows
+                this.radioList.shift()
             }
         },
         async submit() {

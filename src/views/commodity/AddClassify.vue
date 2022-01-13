@@ -149,7 +149,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import uploud from "../../../public/lib/uploud";
+import uploud from "../../assets/lib/uploud";
 export default {
   data() {
     return {

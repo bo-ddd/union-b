@@ -1,22 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Api from '@/api/api'
-import { routes } from '@/router'
-import data from '../assets/js/getToken'
-console.log(data);
 Vue.use(Vuex)
-
-let getRoutes = function() {
-    let defined = ['/', '/registration', '/login'];
-    let arr = routes;
-    let res = [];
-    arr.forEach(item => {
-        if (!defined.includes(item.path)) {
-            res.push(item)
-        }
-    })
-    return res;
-}
 
 export default new Vuex.Store({
     state: {
@@ -24,7 +9,7 @@ export default new Vuex.Store({
         categorylist: {},
         needGetTradeData: true,
         tradeData: {},
-        routes: getRoutes()
+        routes: []
     },
     getters: {
         routes: state => state.routes,
@@ -34,11 +19,11 @@ export default new Vuex.Store({
         needGetTradeData: state => state.needGetTradeData
     },
     mutations: {
-        // ctx.commit('NEED_GETCATEGORYLIST',false)
         NEED_GETCATEGORYLIST: (state, payload) => state.needReCategoryList = payload,
         CATEGORY_LIST: (state, payload) => state.categorylist = payload,
         NEED_GETGETTRADEDATA: (state, payload) => state.needGetTradeData = payload,
-        TRADEDATA: (state, payload) => state.tradeData = payload
+        TRADEDATA: (state, payload) => state.tradeData = payload,
+        ROUTES: (state, payload) => state.routes = payload
     },
     actions: {
         //登录
@@ -60,6 +45,10 @@ export default new Vuex.Store({
         //更改用户信息
         updateUserInfo(ctx, payload) {
             return Api.updateUserInfo(payload);
+        },
+        //更改用户身份
+        updateUserIdentity(ctx, payload) {
+            return Api.updateUserIdentity(payload);
         },
         //退出登录
         userLogout(ctx, payload) {

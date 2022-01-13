@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import uploadImg from '../../../public/lib/uploud';
+import uploadImg from '../../assets/lib/uploud'
 import { mapActions } from "vuex";
 export default {
     data(){
@@ -169,6 +169,9 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+::v-deep .el-button{
+    margin-bottom: 20px;
+}
 .ml-10{
     margin-left: 10px;
 }
@@ -201,6 +204,8 @@ export default {
 }
 #wrap{
     padding: 20px 20px;
+    height: 90%;
+    background-color: white;
 }
 .img{
     width: 100px;

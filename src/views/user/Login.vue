@@ -315,7 +315,7 @@ FwoIC+vbjhQq8mvv6dYN1uWTpEeQ4L1JEj8Zm/kKLM2prOi5qnN5A1rVgQ5HmB5l
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 1250px;
+  min-width: 1300px;
   min-height: 500px;
 
   & .main {
